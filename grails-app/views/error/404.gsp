@@ -69,6 +69,7 @@
             margin-bottom: 30px;
             line-height: 1.6;
         }
+
         
         .error-actions {
             display: flex;
