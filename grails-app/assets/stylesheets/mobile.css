@@ -1,0 +1,256 @@
+/*
+ * Mobile-specific styles for StreamFit
+ * Optimized for touch interactions and small screens
+ */
+
+/* Touch-friendly tap targets */
+@media (max-width: 768px) {
+    .btn,
+    .option-card,
+    .test-card,
+    .share-btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* Larger touch areas for options */
+    .option-card {
+        padding: 24px;
+        margin-bottom: 16px;
+    }
+    
+    /* Sticky header for test progress */
+    .progress-container {
+        position: sticky;
+        top: 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 16px;
+        margin: -20px -16px 20px;
+        z-index: 100;
+    }
+    
+    /* Full-width cards on mobile */
+    .test-card,
+    .dna-card,
+    .result-card {
+        border-radius: 16px;
+        margin-left: -16px;
+        margin-right: -16px;
+        padding: 24px 16px;
+    }
+    
+    /* Optimized typography for mobile */
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .question-text {
+        font-size: 1.2rem;
+    }
+    
+    /* Bottom-fixed action buttons */
+    .fixed-bottom-action {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 16px;
+        background: white;
+        box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+    }
+    
+    /* Swipe indicators */
+    .swipe-indicator {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.85rem;
+        margin-top: 8px;
+    }
+    
+    /* Mobile navigation */
+    .mobile-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        display: flex;
+        justify-content: space-around;
+        padding: 12px 0;
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+    }
+    
+    .mobile-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: #666;
+        font-size: 0.75rem;
+        text-decoration: none;
+        padding: 8px 16px;
+    }
+    
+    .mobile-nav-item.active {
+        color: #667eea;
+    }
+    
+    .mobile-nav-icon {
+        font-size: 1.5rem;
+        margin-bottom: 4px;
+    }
+    
+    /* Prevent zoom on input focus */
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="number"],
+    select,
+    textarea {
+        font-size: 16px;
+    }
+    
+    /* Optimized modals for mobile */
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: flex-end;
+        z-index: 2000;
+    }
+    
+    .modal-content {
+        background: white;
+        border-radius: 20px 20px 0 0;
+        padding: 24px;
+        width: 100%;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+    
+    /* Pull-to-refresh indicator */
+    .pull-to-refresh {
+        text-align: center;
+        padding: 16px;
+        color: white;
+        font-size: 0.9rem;
+    }
+    
+    /* Horizontal scroll for badges */
+    .badges-grid {
+        display: flex;
+        overflow-x: auto;
+        gap: 12px;
+        padding-bottom: 12px;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .badges-grid::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .badge-card {
+        flex: 0 0 120px;
+    }
+    
+    /* Optimized share buttons for mobile */
+    .share-buttons {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .share-btn {
+        padding: 16px;
+        font-size: 1rem;
+    }
+    
+    /* Safe area insets for notched devices */
+    @supports (padding: max(0px)) {
+        .mobile-container {
+            padding-left: max(16px, env(safe-area-inset-left));
+            padding-right: max(16px, env(safe-area-inset-right));
+        }
+        
+        .mobile-nav {
+            padding-bottom: max(12px, env(safe-area-inset-bottom));
+        }
+    }
+    
+    /* Landscape orientation adjustments */
+    @media (orientation: landscape) {
+        .hero-title {
+            font-size: 1.75rem;
+        }
+        
+        .question-card {
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+    }
+    
+    /* Dark mode support */
+    @media (prefers-color-scheme: dark) {
+        .card,
+        .test-card,
+        .dna-card,
+        .result-card {
+            background: #1f2937;
+            color: #f3f4f6;
+        }
+        
+        .option-card {
+            background: #374151;
+            color: #f3f4f6;
+        }
+        
+        .option-card:hover {
+            background: #4b5563;
+        }
+    }
+    
+    /* Reduced motion for accessibility */
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+}
+
+/* Tablet-specific styles */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .mobile-container {
+        max-width: 720px;
+    }
+    
+    .test-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .share-buttons {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* PWA-specific styles */
+@media (display-mode: standalone) {
+    /* Hide browser UI elements when installed as PWA */
+    .install-prompt {
+        display: none;
+    }
+    
+    /* Add padding for status bar */
+    body {
+        padding-top: env(safe-area-inset-top);
+    }
+}
+

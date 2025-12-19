@@ -1,0 +1,6 @@
+#Fri, 19 Dec 2025 22:24:10 +0530
+
+info.app.version=0.1
+info.app.name=streamfit
+grails.env=production
+info.app.grailsVersion=6.2.3
