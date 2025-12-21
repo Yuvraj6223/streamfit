@@ -186,54 +186,25 @@
     </div>
     
     <script>
+        // Login functionality disabled - UI only for now
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            const email = document.getElementById('email').value;
-            const name = document.getElementById('name').value;
-            const submitBtn = document.getElementById('submit-btn');
+
             const errorMsg = document.getElementById('error-message');
             const successMsg = document.getElementById('success-message');
-            
+
             // Hide messages
             errorMsg.style.display = 'none';
             successMsg.style.display = 'none';
-            
-            // Disable button
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Logging in...';
-            
-            try {
-                const response = await fetch('/api/auth/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, name })
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    successMsg.textContent = 'Login successful! Redirecting...';
-                    successMsg.style.display = 'block';
-                    
-                    setTimeout(() => {
-                        window.location.href = '/dashboard';
-                    }, 1000);
-                } else {
-                    errorMsg.textContent = data.error || 'Login failed';
-                    errorMsg.style.display = 'block';
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Login';
-                }
-            } catch (error) {
-                console.error('Login error:', error);
-                errorMsg.textContent = 'An error occurred. Please try again.';
-                errorMsg.style.display = 'block';
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Login';
-            }
+
+            // Show message that login is coming soon
+            errorMsg.textContent = 'Login functionality coming soon! For now, you can continue as guest.';
+            errorMsg.style.display = 'block';
+            errorMsg.style.background = '#FEF3C7';
+            errorMsg.style.color = '#92400E';
+            errorMsg.style.border = '1px solid #FCD34D';
         });
-        
+
         function continueAsGuest() {
             window.location.href = '/diagnostic';
         }

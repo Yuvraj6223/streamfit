@@ -100,29 +100,31 @@ class UserController {
     
     def stats() {
         def userId = session.userId
-        
+
         if (!userId) {
             response.status = 401
             render([success: false, message: 'User not logged in'] as JSON)
             return
         }
-        
+
         def user = userService.getUserById(userId)
-        
+
         if (!user) {
             response.status = 404
             render([success: false, message: 'User not found'] as JSON)
             return
         }
-        
+
         def stats = userService.getUserStats(user)
         def engagement = analyticsService.getUserEngagementMetrics(user)
-        
+
         render([
             success: true,
             stats: stats,
             engagement: engagement
         ] as JSON)
     }
+
+
 }
 

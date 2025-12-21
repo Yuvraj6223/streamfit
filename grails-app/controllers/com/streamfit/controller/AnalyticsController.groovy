@@ -20,19 +20,11 @@ class AnalyticsController {
     
     def track() {
         def userId = session.userId
+        def user = null
 
-        if (!userId) {
-            response.status = 401
-            render([success: false, message: 'User not logged in'] as JSON)
-            return
-        }
-
-        def user = userService.getUserById(userId)
-
-        if (!user) {
-            response.status = 404
-            render([success: false, message: 'User not found'] as JSON)
-            return
+        // Get user if logged in, otherwise track as anonymous
+        if (userId) {
+            user = userService.getUserById(userId)
         }
 
         def params = request.JSON ?: params
@@ -43,7 +35,13 @@ class AnalyticsController {
         eventData.userAgent = request.getHeader('User-Agent')
         eventData.referrer = request.getHeader('Referer')
 
-        analyticsService.trackEvent(user, eventType, eventData)
+        // Track event (will handle null user for anonymous tracking)
+        if (user) {
+            analyticsService.trackEvent(user, eventType, eventData)
+        } else {
+            // For anonymous users, just log the event without saving to database
+            log.debug "Anonymous event tracked: ${eventType} - ${eventData}"
+        }
 
         render([success: true] as JSON)
     }

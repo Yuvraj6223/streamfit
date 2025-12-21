@@ -66,8 +66,15 @@
                 eventType: eventType,
                 eventData: eventData
             })
-        }).catch(function(error) {
-            console.error('Analytics tracking error:', error);
+        })
+        .then(function(response) {
+            if (!response.ok && response.status !== 401) {
+                console.warn('Analytics tracking failed:', response.status);
+            }
+        })
+        .catch(function(error) {
+            // Silently fail for analytics - don't spam console
+            // console.error('Analytics tracking error:', error);
         });
     }
     

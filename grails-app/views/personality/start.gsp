@@ -213,6 +213,7 @@
         height: 100%;
         display: flex;
         flex-direction: column;
+        position: relative;
     }
 
     .test-card:hover {
@@ -225,6 +226,38 @@
         background: linear-gradient(135deg, #F4F3FF 0%, #E5E2FF 100%);
         border-color: var(--pop-purple);
         box-shadow: var(--shadow-float);
+    }
+
+    .test-icon {
+        font-size: 3.5rem;
+        margin-bottom: 16px;
+        text-align: center;
+    }
+
+    .test-start-btn {
+        margin-top: 16px;
+        padding: 14px 28px;
+        background: linear-gradient(135deg, var(--pop-purple) 0%, var(--pop-teal) 100%);
+        color: white;
+        border: none;
+        border-radius: 100px;
+        font-weight: 700;
+        font-size: 1.05rem;
+        cursor: pointer;
+        transition: all 0.3s var(--ease-elastic);
+        font-family: inherit;
+        width: 100%;
+        display: none;
+        box-shadow: var(--shadow-float);
+    }
+
+    .test-card.selected .test-start-btn {
+        display: block;
+    }
+
+    .test-start-btn:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 20px 40px -12px rgba(159, 151, 243, 0.4);
     }
 
     .test-badge {
@@ -411,28 +444,7 @@
         flex: 1;
     }
 
-    .action-button-top {
-        margin-bottom: 32px;
-        width: 100%;
-        order: -1;
-        box-shadow: var(--shadow-float);
-    }
 
-    .step-container > h2 {
-        order: 1;
-    }
-
-    .step-container > p {
-        order: 2;
-    }
-
-    .gender-options {
-        order: 3;
-    }
-
-    .test-grid {
-        order: 3;
-    }
 
     /* --- TABLET --- */
     @media (max-width: 1024px) {
@@ -466,8 +478,16 @@
         }
 
         .test-grid {
-            grid-template-columns: 1fr;
-            gap: 16px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .test-card {
+            padding: 22px 18px;
+        }
+
+        .test-icon {
+            font-size: 2.8rem;
         }
 
         .step-container h2 {
@@ -539,28 +559,47 @@
         }
 
         .test-grid {
-            grid-template-columns: 1fr;
-            gap: 12px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
         }
 
         .test-card {
-            padding: 16px;
+            padding: 16px 12px;
+            border-radius: 20px;
         }
 
-        .test-card h3 {
-            font-size: 1rem;
+        .test-icon {
+            font-size: 2.5rem;
             margin-bottom: 8px;
         }
 
-        .test-card p {
-            font-size: 0.8rem;
+        .test-card h3 {
+            font-size: 0.95rem;
             margin-bottom: 6px;
+            line-height: 1.2;
+        }
+
+        .test-card p {
+            font-size: 0.75rem;
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+
+        .test-card p:last-of-type {
+            font-size: 0.7rem !important;
+            margin-bottom: 0;
         }
 
         .test-badge {
             font-size: 0.6rem;
             padding: 4px 8px;
             margin-bottom: 8px;
+        }
+
+        .test-start-btn {
+            padding: 10px 16px;
+            font-size: 0.85rem;
+            margin-top: 10px;
         }
 
         .question-text {
@@ -597,12 +636,6 @@
             padding: 14px 20px;
             font-size: 0.95rem;
         }
-
-        .action-button-top {
-            margin-bottom: 20px;
-            padding: 14px 20px;
-            font-size: 0.95rem;
-        }
     }
 
     /* --- EXTRA SMALL MOBILE --- */
@@ -633,16 +666,47 @@
             font-size: 2.2rem;
         }
 
+        .test-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
         .test-card {
-            padding: 14px;
+            padding: 14px 10px;
+            border-radius: 18px;
+        }
+
+        .test-icon {
+            font-size: 2.2rem;
+            margin-bottom: 6px;
         }
 
         .test-card h3 {
-            font-size: 0.95rem;
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+            line-height: 1.2;
         }
 
         .test-card p {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
+            margin-bottom: 3px;
+            line-height: 1.3;
+        }
+
+        .test-card p:last-of-type {
+            font-size: 0.65rem !important;
+        }
+
+        .test-badge {
+            font-size: 0.55rem;
+            padding: 3px 7px;
+            margin-bottom: 6px;
+        }
+
+        .test-start-btn {
+            padding: 9px 14px;
+            font-size: 0.8rem;
+            margin-top: 8px;
         }
 
         .question-text {
@@ -706,9 +770,6 @@
 
             <!-- Step 2: Test Selection -->
             <div id="testSelection" class="step-container hidden">
-                <button id="testNextBtn" class="btn btn-primary action-button-top" disabled onclick="startTest()">
-                    Start Test →
-                </button>
                 <h2>Choose Your Diagnostic Test</h2>
                 <p>Select one test to discover insights about yourself:</p>
                 <div id="testGrid" class="test-grid">
@@ -784,17 +845,33 @@
             }
         }
 
+        // Test emoji mapping
+        const testEmojis = {
+            'SPIRIT_ANIMAL': '🦉',
+            'COGNITIVE_RADAR': '🧠',
+            'FOCUS_STAMINA': '⚡',
+            'GUESSWORK_QUOTIENT': '🎲',
+            'CURIOSITY_COMPASS': '🧭',
+            'MODALITY_MAP': '🎨',
+            'CHALLENGE_DRIVER': '🏆',
+            'WORK_MODE': '💼',
+            'PATTERN_SNAPSHOT': '🔍'
+        };
+
         // Render tests in grid
         function renderTests() {
             const testGrid = document.getElementById('testGrid');
             testGrid.innerHTML = allTests.map(test => {
+                const emoji = testEmojis[test.testId] || '📝';
                 return '<div class="test-card" data-test-id="' + test.testId + '" onclick="selectTest(\'' + test.testId + '\')">' +
+                    '<div class="test-icon">' + emoji + '</div>' +
                     '<div class="test-badge ' + test.testType.toLowerCase() + '">' + test.testType + '</div>' +
                     '<h3>' + test.testName + '</h3>' +
                     '<p>' + (test.description || '') + '</p>' +
-                    '<p style="font-size: 12px; color: #999;">' +
+                    '<p style="font-size: 0.9rem; color: #999; margin-bottom: 0;">' +
                         test.questionCount + ' questions • ' + test.estimatedMinutes + ' min' +
                     '</p>' +
+                    '<button class="test-start-btn" onclick="event.stopPropagation(); startTest()">Start Test →</button>' +
                 '</div>';
             }).join('');
         }
@@ -808,7 +885,6 @@
             selectedCard.classList.add('selected');
 
             selectedTest = allTests.find(t => t.testId === testId);
-            document.getElementById('testNextBtn').disabled = false;
         }
 
         // Show test selection

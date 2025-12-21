@@ -157,58 +157,23 @@
     </div>
     
     <script>
+        // Signup functionality disabled - UI only for now
         document.getElementById('signup-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const age = document.getElementById('age').value;
-            const submitBtn = document.getElementById('submit-btn');
+
             const errorMsg = document.getElementById('error-message');
             const successMsg = document.getElementById('success-message');
-            
+
             // Hide messages
             errorMsg.style.display = 'none';
             successMsg.style.display = 'none';
-            
-            // Disable button
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Creating account...';
-            
-            try {
-                const response = await fetch('/api/auth/signup', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        name,
-                        email,
-                        age: age ? parseInt(age) : null,
-                        agreedToTerms: true
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    successMsg.textContent = 'Account created! Redirecting...';
-                    successMsg.style.display = 'block';
-                    
-                    setTimeout(() => {
-                        window.location.href = '/diagnostic';
-                    }, 1000);
-                } else {
-                    errorMsg.textContent = data.error || 'Signup failed';
-                    errorMsg.style.display = 'block';
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Create Account';
-                }
-            } catch (error) {
-                console.error('Signup error:', error);
-                errorMsg.textContent = 'An error occurred. Please try again.';
-                errorMsg.style.display = 'block';
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Create Account';
-            }
+
+            // Show message that signup is coming soon
+            errorMsg.textContent = 'Signup functionality coming soon! For now, you can start taking tests without an account.';
+            errorMsg.style.display = 'block';
+            errorMsg.style.background = '#FEF3C7';
+            errorMsg.style.color = '#92400E';
+            errorMsg.style.border = '1px solid #FCD34D';
         });
     </script>
 </body>

@@ -281,14 +281,17 @@ class DiagnosticController {
     def resultPage() {
         def sessionId = params.sessionId
         def result = diagnosticService.getResults(sessionId)
-        
+
         if (!result.success) {
             response.status = 404
             render(view: '/error/404')
             return
         }
-        
-        [result: result]
+
+        // Check if user is authenticated
+        def isAnonymous = !authService.isAuthenticated()
+
+        [result: result, isAnonymous: isAnonymous]
     }
 }
 

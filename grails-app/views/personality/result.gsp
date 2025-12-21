@@ -184,14 +184,9 @@
 
             <!-- Actions -->
             <div class="actions-section">
-                <g:if test="${!isAnonymous}">
-                    <a href="${createLink(controller: 'user', action: 'detailedReport', params: [sessionId: session.sessionId])}" class="btn btn-primary btn-large btn-block">
-                        📊 View Detailed Report
-                    </a>
-                    <a href="${createLink(controller: 'user', action: 'prebooking')}" class="btn btn-success btn-block">
-                        🎯 Pre-book Consultation
-                    </a>
-                </g:if>
+                <a href="${createLink(controller: 'dashboard', action: 'index')}" class="btn btn-primary btn-large btn-block" style="padding: 24px 50px; font-size: 1.3rem; font-weight: 800; background: linear-gradient(135deg, #9F97F3 0%, #73D2DE 100%); box-shadow: 0 30px 60px -15px rgba(159, 151, 243, 0.5);">
+                    📊 View Your Complete Dashboard
+                </a>
                 <a href="${session.profileUrl}" target="_blank" class="btn btn-outline btn-block">
                     View Full Profile on 16Personalities.com
                 </a>
