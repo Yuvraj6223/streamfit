@@ -1,347 +1,539 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta name="layout" content="main"/>
-    <title>Personality Types | 16Personalities</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Test Types - StreamFit</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
+
+<!-- Ambient Background -->
+<div class="scenery-layer">
+    <div class="blob b-1"></div>
+    <div class="blob b-2"></div>
+    <div class="blob b-3"></div>
+</div>
+
     <div class="types-page">
         <section class="types-hero">
             <div class="mobile-container">
-                <h1 class="page-title">Personality Types</h1>
+                <h1 class="page-title">Diagnostic Test Types</h1>
                 <p class="page-subtitle">
-                    Understand others. In our free type descriptions you'll learn what really drives, inspires, and worries different personality types, helping you build more meaningful relationships.
+                    Discover your strengths, learning style, and career path through our comprehensive diagnostic tests. Each test is designed to give you actionable insights about yourself.
                 </p>
             </div>
         </section>
-        
-        <!-- Analysts -->
+
+        <!-- Exam Tests -->
         <section class="type-category">
             <div class="mobile-container">
                 <div class="category-header">
-                    <div class="category-icon">🧠</div>
+                    <div class="category-icon">📚</div>
                     <div>
-                        <h2 class="category-title">Analysts</h2>
-                        <p class="category-description">Imaginative and strategic thinkers, with a plan for everything.</p>
+                        <h2 class="category-title">Exam Diagnostics</h2>
+                        <p class="category-description">Discover your learning style, cognitive strengths, and exam strategies to maximize your academic performance.</p>
                     </div>
                 </div>
-                
-                <div class="personality-grid">
-                    <div class="personality-card">
-                        <div class="personality-avatar">👨‍💼</div>
-                        <h3>Architect</h3>
-                        <div class="personality-code">INTJ-A / INTJ-T</div>
-                        <p>Imaginative and strategic thinkers, with a plan for everything.</p>
-                    </div>
-                    
-                    <div class="personality-card">
-                        <div class="personality-avatar">🧑‍🔬</div>
-                        <h3>Logician</h3>
-                        <div class="personality-code">INTP-A / INTP-T</div>
-                        <p>Innovative inventors with an unquenchable thirst for knowledge.</p>
-                    </div>
-                    
-                    <div class="personality-card">
-                        <div class="personality-avatar">👨‍💼</div>
-                        <h3>Commander</h3>
-                        <div class="personality-code">ENTJ-A / ENTJ-T</div>
-                        <p>Bold, imaginative and strong-willed leaders, always finding a way – or making one.</p>
-                    </div>
-                    
-                    <div class="personality-card">
-                        <div class="personality-avatar">💡</div>
-                        <h3>Debater</h3>
-                        <div class="personality-code">ENTP-A / ENTP-T</div>
-                        <p>Smart and curious thinkers who cannot resist an intellectual challenge.</p>
-                    </div>
+
+                <div class="test-grid">
+                    <a href="/diagnostic/test/SPIRIT_ANIMAL" class="test-card">
+                        <div class="test-icon">🦉</div>
+                        <h3>Exam Spirit Animal</h3>
+                        <div class="test-meta">
+                            <span class="test-duration">⏱️ 5 min</span>
+                            <span class="test-questions">📝 12 questions</span>
+                        </div>
+                        <p>Discover your exam personality and learning style. Are you a methodical Owl or an intuitive Fox?</p>
+                        <div class="test-cta">Take Test →</div>
+                    </a>
+
+                    <a href="/diagnostic/test/COGNITIVE_RADAR" class="test-card">
+                        <div class="test-icon">🧠</div>
+                        <h3>Cognitive Strength Radar</h3>
+                        <div class="test-meta">
+                            <span class="test-duration">⏱️ 10 min</span>
+                            <span class="test-questions">📝 6 questions</span>
+                        </div>
+                        <p>Discover your natural cognitive peaks and ideal exam strategy through timed challenges.</p>
+                        <div class="test-cta">Take Test →</div>
+                    </a>
+
+                    <a href="/diagnostic/test/FOCUS_STAMINA" class="test-card">
+                        <div class="test-icon">⚡</div>
+                        <h3>Focus & Stamina Test</h3>
+                        <div class="test-meta">
+                            <span class="test-duration">⏱️ 8 min</span>
+                            <span class="test-questions">📝 5 questions</span>
+                        </div>
+                        <p>Measure your concentration endurance and discover your optimal study session length.</p>
+                        <div class="test-cta">Take Test →</div>
+                    </a>
+
+                    <a href="/diagnostic/test/GUESSWORK_QUOTIENT" class="test-card">
+                        <div class="test-icon">🎲</div>
+                        <h3>Guesswork Quotient</h3>
+                        <div class="test-meta">
+                            <span class="test-duration">⏱️ 6 min</span>
+                            <span class="test-questions">📝 4 questions</span>
+                        </div>
+                        <p>Test your strategic guessing skills and learn when to trust your intuition in exams.</p>
+                        <div class="test-cta">Take Test →</div>
+                    </a>
                 </div>
             </div>
         </section>
-        
-        <!-- Diplomats -->
+
+        <!-- Career Tests -->
         <section class="type-category">
             <div class="mobile-container">
                 <div class="category-header">
-                    <div class="category-icon">🤝</div>
+                    <div class="category-icon">💼</div>
                     <div>
-                        <h2 class="category-title">Diplomats</h2>
-                        <p class="category-description">Empathetic and passionate idealists, always eager to help a good cause.</p>
+                        <h2 class="category-title">Career Diagnostics</h2>
+                        <p class="category-description">Explore your work preferences, motivations, and ideal career paths to find your perfect professional fit.</p>
                     </div>
                 </div>
-                
-                <div class="personality-grid">
-                    <div class="personality-card">
-                        <div class="personality-avatar">🧘</div>
-                        <h3>Advocate</h3>
-                        <div class="personality-code">INFJ-A / INFJ-T</div>
-                        <p>Quiet and mystical, yet very inspiring and tireless idealists.</p>
-                    </div>
-                    
-                    <div class="personality-card">
-                        <div class="personality-avatar">🎭</div>
-                        <h3>Mediator</h3>
-                        <div class="personality-code">INFP-A / INFP-T</div>
-                        <p>Poetic, kind and altruistic people, always eager to help a good cause.</p>
-                    </div>
-                    
-                    <div class="personality-card">
-                        <div class="personality-avatar">🌟</div>
-                        <h3>Protagonist</h3>
-                        <div class="personality-code">ENFJ-A / ENFJ-T</div>
-                        <p>Charismatic and inspiring leaders, able to mesmerize their listeners.</p>
-                    </div>
-                    
-                    <div class="personality-card">
-                        <div class="personality-avatar">🎨</div>
-                        <h3>Campaigner</h3>
-                        <div class="personality-code">ENFP-A / ENFP-T</div>
-                        <p>Enthusiastic, creative and sociable free spirits, who can always find a reason to smile.</p>
-                    </div>
+
+                <div class="test-grid">
+                    <a href="/diagnostic/test/CURIOSITY_COMPASS" class="test-card">
+                        <div class="test-icon">🧭</div>
+                        <h3>Curiosity Compass</h3>
+                        <div class="test-meta">
+                            <span class="test-duration">⏱️ 4 min</span>
+                            <span class="test-questions">📝 5 questions</span>
+                        </div>
+                        <p>Discover what truly sparks your intellectual curiosity and drives your learning journey.</p>
+                        <div class="test-cta">Take Test →</div>
+                    </a>
+
+                    <a href="/diagnostic/test/MODALITY_MAP" class="test-card">
+                        <div class="test-icon">🎨</div>
+                        <h3>Learning Modality Map</h3>
+                        <div class="test-meta">
+                            <span class="test-duration">⏱️ 5 min</span>
+                            <span class="test-questions">📝 6 questions</span>
+                        </div>
+                        <p>Identify your preferred learning style: visual, auditory, kinesthetic, or reading/writing.</p>
+                        <div class="test-cta">Take Test →</div>
+                    </a>
+
+                    <a href="/diagnostic/test/CHALLENGE_DRIVER" class="test-card">
+                        <div class="test-icon">🏆</div>
+                        <h3>Challenge Driver</h3>
+                        <div class="test-meta">
+                            <span class="test-duration">⏱️ 2 min</span>
+                            <span class="test-questions">📝 5 questions</span>
+                        </div>
+                        <p>Identifies your core motivational pattern and what drives you to overcome challenges.</p>
+                        <div class="test-cta">Take Test →</div>
+                    </a>
+
+                    <a href="/diagnostic/test/WORK_MODE" class="test-card">
+                        <div class="test-icon">💼</div>
+                        <h3>Work Mode Preference</h3>
+                        <div class="test-meta">
+                            <span class="test-duration">⏱️ 3 min</span>
+                            <span class="test-questions">📝 4 questions</span>
+                        </div>
+                        <p>Discover whether you thrive in collaborative teams or focused solo work environments.</p>
+                        <div class="test-cta">Take Test →</div>
+                    </a>
+
+                    <a href="/diagnostic/test/PATTERN_SNAPSHOT" class="test-card">
+                        <div class="test-icon">🔍</div>
+                        <h3>Pattern Recognition Snapshot</h3>
+                        <div class="test-meta">
+                            <span class="test-duration">⏱️ 7 min</span>
+                            <span class="test-questions">📝 5 questions</span>
+                        </div>
+                        <p>Assess your ability to identify patterns and connections in complex information.</p>
+                        <div class="test-cta">Take Test →</div>
+                    </a>
                 </div>
             </div>
         </section>
-        
-        <!-- Sentinels -->
-        <section class="type-category">
-            <div class="mobile-container">
-                <div class="category-header">
-                    <div class="category-icon">🛡️</div>
-                    <div>
-                        <h2 class="category-title">Sentinels</h2>
-                        <p class="category-description">Practical and fact-minded individuals, whose reliability cannot be doubted.</p>
-                    </div>
-                </div>
-                
-                <div class="personality-grid">
-                    <div class="personality-card">
-                        <div class="personality-avatar">📋</div>
-                        <h3>Logistician</h3>
-                        <div class="personality-code">ISTJ-A / ISTJ-T</div>
-                        <p>Practical and fact-minded individuals, whose reliability cannot be doubted.</p>
-                    </div>
-                    
-                    <div class="personality-card">
-                        <div class="personality-avatar">🤗</div>
-                        <h3>Defender</h3>
-                        <div class="personality-code">ISFJ-A / ISFJ-T</div>
-                        <p>Very dedicated and warm protectors, always ready to defend their loved ones.</p>
-                    </div>
-                    
-                    <div class="personality-card">
-                        <div class="personality-avatar">👔</div>
-                        <h3>Executive</h3>
-                        <div class="personality-code">ESTJ-A / ESTJ-T</div>
-                        <p>Excellent administrators, unsurpassed at managing things – or people.</p>
-                    </div>
-                    
-                    <div class="personality-card">
-                        <div class="personality-avatar">🎉</div>
-                        <h3>Consul</h3>
-                        <div class="personality-code">ESFJ-A / ESFJ-T</div>
-                        <p>Extraordinarily caring, social and popular people, always eager to help.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Explorers -->
-        <section class="type-category">
-            <div class="mobile-container">
-                <div class="category-header">
-                    <div class="category-icon">🎨</div>
-                    <div>
-                        <h2 class="category-title">Explorers</h2>
-                        <p class="category-description">Bold and practical experimenters, masters of all kinds of tools.</p>
-                    </div>
-                </div>
-                
-                <div class="personality-grid">
-                    <div class="personality-card">
-                        <div class="personality-avatar">🔧</div>
-                        <h3>Virtuoso</h3>
-                        <div class="personality-code">ISTP-A / ISTP-T</div>
-                        <p>Bold and practical experimenters, masters of all kinds of tools.</p>
-                    </div>
-                    
-                    <div class="personality-card">
-                        <div class="personality-avatar">🎨</div>
-                        <h3>Adventurer</h3>
-                        <div class="personality-code">ISFP-A / ISFP-T</div>
-                        <p>Flexible and charming artists, always ready to explore and experience something new.</p>
-                    </div>
-                    
-                    <div class="personality-card">
-                        <div class="personality-avatar">⚡</div>
-                        <h3>Entrepreneur</h3>
-                        <div class="personality-code">ESTP-A / ESTP-T</div>
-                        <p>Smart, energetic and very perceptive people, who truly enjoy living on the edge.</p>
-                    </div>
-                    
-                    <div class="personality-card">
-                        <div class="personality-avatar">🎭</div>
-                        <h3>Entertainer</h3>
-                        <div class="personality-code">ESFP-A / ESFP-T</div>
-                        <p>Spontaneous, energetic and enthusiastic people – life is never boring around them.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
+
         <!-- CTA Section -->
         <section class="types-cta">
             <div class="mobile-container">
-                <h2>Discover Your Personality Type</h2>
-                <p>Take our free personality test to find out which of the 16 types you are.</p>
-                <a href="${createLink(controller: 'personality', action: 'start')}" class="btn btn-primary btn-large">
-                    Take the Test
-                </a>
+                <div class="cta-content">
+                    <h2>Ready to Discover Yourself?</h2>
+                    <p>Take all our diagnostic tests to get a complete picture of your strengths, learning style, and career potential.</p>
+                    <div class="cta-buttons">
+                        <a href="/diagnostic" class="btn btn-primary btn-large">
+                            Browse All Tests
+                        </a>
+                        <a href="/personality/start" class="btn btn-secondary btn-large">
+                            Take Personality Test
+                        </a>
+                    </div>
+                </div>
             </div>
         </section>
     </div>
-    
+
     <style>
-        .types-page {
-            padding-bottom: 0;
-        }
-        
+    :root {
+        /* BRAND PALETTE - SOFT POP */
+        --bg-warm: #FDFCF8;
+        --text-dark: #1A1825;
+        --text-grey: #8E8C9A;
+
+        /* VITAMIN COLORS */
+        --pop-coral: #FF8F7D;
+        --pop-purple: #9F97F3;
+        --pop-teal: #73D2DE;
+        --pop-yellow: #FFD86D;
+        --pop-cream: #FFF4F0;
+
+        /* SURFACES */
+        --card-base: #FFFFFF;
+        /* CLAYMORPHISM SHADOWS */
+        --shadow-soft: 0 12px 30px -10px rgba(28, 26, 40, 0.04);
+        --shadow-float: 0 20px 40px -12px rgba(159, 151, 243, 0.2);
+
+        /* ANIMATION */
+        --ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
+        --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        background-color: var(--bg-warm);
+        color: var(--text-dark);
+        margin: 0;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    /* --- AMBIENT BACKGROUND --- */
+    .scenery-layer {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        z-index: -1;
+        overflow: hidden;
+        background: var(--bg-warm);
+    }
+    .blob {
+        position: absolute;
+        filter: blur(80px);
+        opacity: 0.5;
+        animation: float-blob 20s infinite ease-in-out alternate;
+    }
+    .b-1 { top: -10%; right: -5%; width: 600px; height: 600px;
+        background: var(--pop-purple); border-radius: 40% 60% 70% 30%; }
+    .b-2 { bottom: -10%; left: -10%; width: 700px;
+        height: 700px; background: var(--pop-teal); border-radius: 60% 40% 30% 70%; animation-delay: -5s; }
+    .b-3 { top: 40%;
+        left: 40%; width: 400px; height: 400px; background: var(--pop-coral); opacity: 0.3; border-radius: 30% 70%; animation-duration: 18s;
+    }
+
+    @keyframes float-blob {
+        0% { transform: translate(0, 0) rotate(0deg); }
+        100% { transform: translate(40px, 40px) rotate(10deg); }
+    }
+
+    .types-page {
+        padding-bottom: 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    .mobile-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+    }
+
+    .types-hero {
+        padding: 80px 0 60px;
+        text-align: center;
+    }
+
+    .page-title {
+        font-size: clamp(2.5rem, 6vw, 3.5rem);
+        font-weight: 800;
+        color: var(--text-dark);
+        margin-bottom: 24px;
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+    }
+
+    .page-subtitle {
+        font-size: 1.3rem;
+        color: var(--text-grey);
+        font-weight: 600;
+        max-width: 800px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+
+    .type-category {
+        padding: 50px 0;
+    }
+
+    .category-header {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        margin-bottom: 40px;
+        background: linear-gradient(135deg, var(--pop-cream) 0%, white 100%);
+        border-radius: 28px;
+        padding: 32px;
+        border: 1px solid rgba(255,255,255,0.5);
+        box-shadow: var(--shadow-float);
+    }
+
+    .category-icon {
+        font-size: 3.5rem;
+        animation: float-blob 3s infinite ease-in-out alternate;
+    }
+
+    .category-title {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: var(--text-dark);
+        margin-bottom: 8px;
+        letter-spacing: -0.02em;
+    }
+
+    .category-description {
+        font-size: 1.15rem;
+        color: var(--text-grey);
+        font-weight: 600;
+        line-height: 1.5;
+    }
+
+    .test-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 24px;
+    }
+
+    .test-card {
+        background: var(--card-base);
+        border-radius: 28px;
+        padding: 36px;
+        text-align: center;
+        transition: all 0.3s var(--ease-elastic);
+        cursor: pointer;
+        box-shadow: var(--shadow-float);
+        border: 1px solid rgba(255,255,255,0.5);
+        text-decoration: none;
+        display: block;
+    }
+
+    .test-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 25px 50px -12px rgba(159, 151, 243, 0.3);
+    }
+
+    .test-icon {
+        font-size: 4.5rem;
+        margin-bottom: 20px;
+        animation: float-blob 3s infinite ease-in-out alternate;
+    }
+
+    .test-card h3 {
+        font-size: 1.6rem;
+        color: var(--text-dark);
+        margin-bottom: 16px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+    }
+
+    .test-meta {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+    }
+
+    .test-duration,
+    .test-questions {
+        font-size: 0.9rem;
+        color: var(--text-grey);
+        font-weight: 700;
+        background: var(--pop-cream);
+        padding: 6px 12px;
+        border-radius: 12px;
+    }
+
+    .test-card p {
+        color: var(--text-grey);
+        line-height: 1.7;
+        margin-bottom: 20px;
+        font-weight: 500;
+        font-size: 1.05rem;
+    }
+
+    .test-cta {
+        color: var(--text-dark);
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin-top: auto;
+    }
+
+    .types-cta {
+        padding: 100px 0;
+        text-align: center;
+    }
+
+    .cta-content {
+        background: linear-gradient(135deg, var(--pop-purple) 0%, var(--pop-teal) 100%);
+        border-radius: 32px;
+        padding: 80px 50px;
+        box-shadow: var(--shadow-float);
+    }
+
+    .types-cta h2 {
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 800;
+        color: white;
+        margin-bottom: 20px;
+        letter-spacing: -0.03em;
+    }
+
+    .types-cta p {
+        font-size: 1.3rem;
+        color: white;
+        opacity: 0.95;
+        margin-bottom: 40px;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+        font-weight: 600;
+        line-height: 1.6;
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    /* --- BUTTONS --- */
+    .btn {
+        display: inline-block;
+        padding: 18px 40px;
+        border-radius: 100px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        text-decoration: none;
+        transition: all 0.3s var(--ease-elastic);
+        cursor: pointer;
+        border: none;
+        font-family: inherit;
+        text-align: center;
+    }
+
+    .btn-primary {
+        background: var(--text-dark);
+        color: white;
+        box-shadow: 0 20px 40px -12px rgba(26, 24, 37, 0.3);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 25px 50px -12px rgba(26, 24, 37, 0.5);
+    }
+
+    .btn-secondary {
+        background: white;
+        color: var(--text-dark);
+        border: 2px solid rgba(255,255,255,0.3);
+        box-shadow: 0 20px 40px -12px rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-secondary:hover {
+        transform: translateY(-3px);
+        background: rgba(255,255,255,0.95);
+        box-shadow: 0 25px 50px -12px rgba(255, 255, 255, 0.4);
+    }
+
+    .btn-large {
+        padding: 20px 50px;
+        font-size: 1.2rem;
+    }
+
+    /* --- ANIMATIONS --- */
+    @keyframes reveal {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-in {
+        opacity: 0;
+        animation: reveal 0.8s var(--ease-smooth) forwards;
+    }
+
+    @media (max-width: 768px) {
         .types-hero {
-            padding: 60px 0;
-            text-align: center;
+            padding: 60px 0 40px;
         }
-        
+
+        .mobile-container {
+            padding: 0 16px;
+        }
+
         .page-title {
-            font-size: 3rem;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 20px;
-        }
-        
-        .page-subtitle {
-            font-size: 1.3rem;
-            color: white;
-            opacity: 0.95;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .type-category {
-            padding: 40px 0;
-        }
-        
-        .category-header {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .category-icon {
-            font-size: 3rem;
-        }
-        
-        .category-title {
             font-size: 2rem;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 8px;
         }
-        
-        .category-description {
+
+        .page-subtitle {
             font-size: 1.1rem;
-            color: white;
-            opacity: 0.9;
         }
-        
-        .personality-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 24px;
-        }
-        
-        .personality-card {
-            background: white;
-            border-radius: 16px;
-            padding: 32px;
+
+        .category-header {
+            flex-direction: column;
             text-align: center;
-            transition: all 0.3s;
-            cursor: pointer;
+            padding: 24px;
         }
-        
-        .personality-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+
+        .category-title {
+            font-size: 1.8rem;
         }
-        
-        .personality-avatar {
-            font-size: 4rem;
-            margin-bottom: 16px;
+
+        .category-description {
+            font-size: 1rem;
         }
-        
-        .personality-card h3 {
-            font-size: 1.5rem;
-            color: #333;
-            margin-bottom: 8px;
+
+        .test-grid {
+            grid-template-columns: 1fr;
         }
-        
-        .personality-code {
-            font-size: 0.9rem;
-            color: #667eea;
-            font-weight: 600;
-            margin-bottom: 12px;
+
+        .test-card {
+            padding: 28px;
         }
-        
-        .personality-card p {
-            color: #666;
-            line-height: 1.6;
+
+        .cta-content {
+            padding: 60px 30px;
         }
-        
-        .types-cta {
-            padding: 80px 0;
-            text-align: center;
+
+        .cta-buttons {
+            flex-direction: column;
         }
-        
-        .types-cta h2 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 16px;
+
+        .btn {
+            width: 100%;
         }
-        
-        .types-cta p {
-            font-size: 1.2rem;
-            color: white;
-            opacity: 0.95;
-            margin-bottom: 32px;
-        }
-        
-        @media (max-width: 768px) {
-            .page-title {
-                font-size: 2rem;
-            }
-            
-            .page-subtitle {
-                font-size: 1.1rem;
-            }
-            
-            .category-header {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .category-title {
-                font-size: 1.5rem;
-            }
-            
-            .personality-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+    }
     </style>
+
+    <script>
+        // Add animation on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.test-card');
+            cards.forEach(function(card, index) {
+                card.classList.add('animate-in');
+                card.style.animationDelay = (index * 0.1) + 's';
+            });
+        });
+    </script>
 </body>
 </html>
 

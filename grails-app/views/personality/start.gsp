@@ -72,7 +72,7 @@
     .test-page {
         max-width: 800px;
         margin: 0 auto;
-        padding: 40px 24px;
+        padding: 40px 0;
         position: relative;
         z-index: 1;
     }
@@ -80,9 +80,10 @@
     .mobile-container {
         background: var(--card-base);
         border-radius: 32px;
-        padding: 40px;
+        padding: 50px 40px;
         box-shadow: var(--shadow-float);
         border: 1px solid rgba(255,255,255,0.5);
+        margin: 0 24px;
     }
 
     /* --- PROGRESS BAR --- */
@@ -359,11 +360,12 @@
     /* --- MOBILE & TABLET --- */
     @media (max-width: 768px) {
         .test-page {
-            padding: 30px 16px;
+            padding: 30px 0;
         }
 
         .mobile-container {
-            padding: 32px 24px;
+            padding: 40px 24px;
+            margin: 0 16px;
         }
 
         .gender-options {
