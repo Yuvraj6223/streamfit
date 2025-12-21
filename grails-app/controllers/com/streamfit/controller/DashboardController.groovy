@@ -1,92 +1,100 @@
 package com.streamfit.controller
 
+import com.streamfit.service.DiagnosticService
 import com.streamfit.service.UserService
-import com.streamfit.service.DashboardService
-import com.streamfit.service.AnalyticsService
+import com.streamfit.service.RewardService
+import com.streamfit.service.AuthService
 import grails.converters.JSON
 
 class DashboardController {
 
+    DiagnosticService diagnosticService
     UserService userService
-    DashboardService dashboardService
-    AnalyticsService analyticsService
+    RewardService rewardService
+    AuthService authService
     
+    /**
+     * Main dashboard page
+     * GET /dashboard
+     */
     def index() {
-        def userId = session.userId
-        
-        if (!userId) {
-            redirect controller: 'user', action: 'register'
-            return
-        }
-        
-        def user = userService.getUserById(userId)
-        
-        if (!user) {
-            redirect controller: 'user', action: 'register'
-            return
-        }
-        
-        def dashboardData = dashboardService.getDashboardData(user)
-        
-        // Track dashboard view
-        if (dashboardData.unlocked) {
-            analyticsService.trackDashboardView(user)
-        }
-        
-        [
-            user: user,
-            dashboard: dashboardData
-        ]
+        def user = authService.getOrCreateSessionUser()
+
+        [user: user]
     }
-    
-    def learningDNA() {
-        def userId = session.userId
-        
-        if (!userId) {
-            response.status = 401
-            render([success: false, message: 'User not logged in'] as JSON)
-            return
-        }
-        
-        def user = userService.getUserById(userId)
-        
-        if (!user) {
-            response.status = 404
-            render([success: false, message: 'User not found'] as JSON)
-            return
-        }
-        
-        def dna = dashboardService.getLearningDNA(user)
-        
-        render([
-            success: true,
-            learningDNA: dna
-        ] as JSON)
-    }
-    
+
+    /**
+     * Get dashboard data
+     * GET /api/dashboard/data
+     */
     def data() {
-        def userId = session.userId
-        
-        if (!userId) {
-            response.status = 401
-            render([success: false, message: 'User not logged in'] as JSON)
-            return
+        try {
+            def user = authService.getOrCreateSessionUser()
+            
+            // Get test history
+            def testHistory = diagnosticService.getUserTestHistory(user)
+            
+            // Get points and level
+            def pointsInfo = rewardService.getUserPointsInfo(user)
+            
+            // Get badges
+            def badges = rewardService.getUserBadges(user)
+            
+            // Get achievements
+            def achievements = rewardService.getUserAchievements(user)
+            
+            // Calculate completion stats
+            def examTestsCompleted = testHistory.findAll { it.testType == 'EXAM' && it.status == 'COMPLETED' }.size()
+            def careerTestsCompleted = testHistory.findAll { it.testType == 'CAREER' && it.status == 'COMPLETED' }.size()
+            def totalCompleted = examTestsCompleted + careerTestsCompleted
+
+            response.status = 200
+            render([
+                success: true,
+                user: [
+                    userId: user.userId,
+                    name: user.name ?: 'Anonymous User'
+                ],
+                stats: [
+                    totalTestsCompleted: totalCompleted,
+                    examTestsCompleted: examTestsCompleted,
+                    careerTestsCompleted: careerTestsCompleted,
+                    totalPoints: pointsInfo.totalPoints,
+                    currentLevel: pointsInfo.currentLevel,
+                    pointsToNextLevel: pointsInfo.pointsToNextLevel,
+                    currentStreak: pointsInfo.currentStreak,
+                    longestStreak: pointsInfo.longestStreak,
+                    badgesEarned: badges.size(),
+                    achievementsUnlocked: achievements.size()
+                ],
+                testResults: testHistory,
+                badges: badges.collect { userBadge ->
+                    [
+                        badgeId: userBadge.badge.badgeId,
+                        badgeName: userBadge.badge.badgeName,
+                        emoji: userBadge.badge.emoji,
+                        category: userBadge.badge.category,
+                        rarity: userBadge.badge.rarity,
+                        earnedAt: userBadge.earnedAt,
+                        isNew: userBadge.isNew
+                    ]
+                },
+                achievements: achievements.collect { achievement ->
+                    [
+                        achievementType: achievement.achievementType,
+                        achievementTitle: achievement.achievementTitle,
+                        achievementDescription: achievement.achievementDescription,
+                        emoji: achievement.emoji,
+                        pointsAwarded: achievement.pointsAwarded,
+                        achievedAt: achievement.achievedAt
+                    ]
+                }
+            ] as JSON)
+        } catch (Exception e) {
+            log.error "Error fetching dashboard data: ${e.message}", e
+            response.status = 500
+            render([success: false, error: 'Failed to fetch dashboard data'] as JSON)
         }
-        
-        def user = userService.getUserById(userId)
-        
-        if (!user) {
-            response.status = 404
-            render([success: false, message: 'User not found'] as JSON)
-            return
-        }
-        
-        def dashboardData = dashboardService.getDashboardData(user)
-        
-        render([
-            success: true,
-            dashboard: dashboardData
-        ] as JSON)
     }
 }
 

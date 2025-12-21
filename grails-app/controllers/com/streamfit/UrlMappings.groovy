@@ -5,47 +5,54 @@ class UrlMappings {
     static mappings = {
         // Home
         "/"(controller: 'home', action: 'index')
-        "/welcome"(controller: 'home', action: 'welcome')
         "/about"(controller: 'home', action: 'about')
-        
+
         // User
         "/register"(controller: 'user', action: 'register')
         "/profile"(controller: 'user', action: 'profile')
-        "/user/preferences"(controller: 'user', action: 'updatePreferences')
-        "/user/stats"(controller: 'user', action: 'stats')
-        
-        // Tests
-        "/tests"(controller: 'test', action: 'index')
-        "/test/$testCode/start"(controller: 'test', action: 'start')
-        "/test/question"(controller: 'test', action: 'question')
-        "/test/submit"(controller: 'test', action: 'submitAnswer')
-        "/test/result"(controller: 'test', action: 'result')
-        "/test/history"(controller: 'test', action: 'history')
-        "/test/abandon"(controller: 'test', action: 'abandon')
-        
-        // Dashboard
-        "/dashboard"(controller: 'dashboard', action: 'index')
-        "/dashboard/dna"(controller: 'dashboard', action: 'learningDNA')
-        "/dashboard/data"(controller: 'dashboard', action: 'data')
-        
-        // Sharing
-        "/share/$userId"(controller: 'share', action: 'index')
-        "/share/card"(controller: 'share', action: 'card')
-        "/share/links"(controller: 'share', action: 'links')
-        "/share/track"(controller: 'share', action: 'track')
-        
+
+        // Authentication
+        "/login"(controller: 'auth', action: 'login')
+        "/signup"(controller: 'auth', action: 'signup')
+        "/api/auth/login"(controller: 'auth', action: 'doLogin')
+        "/api/auth/signup"(controller: 'auth', action: 'doSignup')
+        "/api/auth/logout"(controller: 'auth', action: 'logout')
+        "/api/auth/me"(controller: 'auth', action: 'me')
+
+        // Personality Test Pages
+        "/personality"(controller: 'personality', action: 'index')
+        "/personality/start"(controller: 'personality', action: 'start')
+        "/personality/result"(controller: 'personality', action: 'result')
+        "/personality/types"(controller: 'personality', action: 'types')
+
         // Analytics
         "/analytics"(controller: 'analytics', action: 'index')
         "/analytics/track"(controller: 'analytics', action: 'track')
-        "/analytics/prebook"(controller: 'analytics', action: 'prebook')
-        "/analytics/stats"(controller: 'analytics', action: 'stats')
-        "/analytics/dropoff"(controller: 'analytics', action: 'dropoffRates')
-        "/analytics/cta"(controller: 'analytics', action: 'ctaStats')
-        "/analytics/prebooking"(controller: 'analytics', action: 'prebookingStats')
-        
-        // API endpoints
-        "/api/share/card/$userId/image"(controller: 'share', action: 'image')
-        
+
+        // Dashboard
+        "/dashboard"(controller: 'dashboard', action: 'index')
+        "/api/dashboard/data"(controller: 'dashboard', action: 'data')
+
+        // Personality API endpoints (16personalities compatible)
+        "/api/personality/questions"(controller: 'personality', action: 'questions')
+        "/api/personality/submit"(controller: 'personality', action: 'submit')
+        "/api/personality/result/$sessionId"(controller: 'personality', action: 'getResult')
+
+        // Diagnostic Test Pages
+        "/diagnostic"(controller: 'diagnostic', action: 'index')
+        "/diagnostic/test/$testId"(controller: 'diagnostic', action: 'testPage')
+        "/diagnostic/result/$sessionId"(controller: 'diagnostic', action: 'resultPage')
+
+        // Diagnostic API endpoints
+        "/api/diagnostic/tests"(controller: 'diagnostic', action: 'tests')
+        "/api/diagnostic/test/$testId"(controller: 'diagnostic', action: 'test')
+        "/api/diagnostic/questions/$testId"(controller: 'diagnostic', action: 'questions')
+        "/api/diagnostic/start"(controller: 'diagnostic', action: 'start')
+        "/api/diagnostic/response"(controller: 'diagnostic', action: 'submitResponse')
+        "/api/diagnostic/submit"(controller: 'diagnostic', action: 'submit')
+        "/api/diagnostic/result/$sessionId"(controller: 'diagnostic', action: 'result')
+        "/api/diagnostic/history"(controller: 'diagnostic', action: 'history')
+
         // Error pages
         "404"(view: '/error/404')
         "500"(view: '/error/500')

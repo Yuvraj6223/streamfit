@@ -105,8 +105,8 @@ environments:
         dataSource:
             dbCreate: create-drop
             url: jdbc:mysql://localhost:3306/wsuser?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
-            logSql: true
-            formatSql: true
+            logSql: false
+            formatSql: false
             properties:
                 jmxEnabled: true
                 initialSize: 5

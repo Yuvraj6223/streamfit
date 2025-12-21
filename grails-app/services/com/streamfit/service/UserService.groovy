@@ -107,11 +107,58 @@ class UserService {
     
     private Double calculateCompletionPercentage(LearningDNA dna) {
         if (!dna) return 0.0
-        
+
         int totalRequired = 5 // 3 core + 2 streamfit minimum
         int completed = Math.min(dna.coreTestsCompleted, 3) + Math.min(dna.streamFitTestsCompleted, 2)
-        
+
         return (completed / totalRequired) * 100
+    }
+
+    /**
+     * Create an anonymous user for personality test
+     */
+    def createAnonymousUser() {
+        String userId = "anon_" + UUID.randomUUID().toString()
+
+        User user = new User(
+            userId: userId,
+            name: "Anonymous User",
+            agreedToTerms: true,
+            optInForUpdates: false
+        )
+
+        if (!user.save(flush: true)) {
+            log.error "Failed to create anonymous user: ${user.errors}"
+            return null
+        }
+
+        // Create Learning DNA for the user
+        createLearningDNA(user)
+
+        log.info "Created anonymous user: ${user.userId}"
+        return user
+    }
+
+    /**
+     * Get or create an anonymous user for diagnostic tests
+     * This creates a new anonymous user each time for now
+     * In production, you might want to use session-based user tracking
+     */
+    def getOrCreateAnonymousUser() {
+        // For now, always create a new anonymous user
+        // In production, you could check session or use a different strategy
+        return createAnonymousUser()
+    }
+
+    /**
+     * Get the current authenticated user
+     * Returns null if no user is authenticated
+     * Note: This will be delegated to AuthService in controllers
+     */
+    def getCurrentUser() {
+        // This method is kept for backward compatibility
+        // Controllers should use AuthService.getCurrentUser() or AuthService.getOrCreateSessionUser()
+        return null
     }
 }
 

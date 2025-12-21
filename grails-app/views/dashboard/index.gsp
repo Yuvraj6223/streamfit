@@ -1,526 +1,472 @@
-
 <!DOCTYPE html>
 <html>
 <head>
     <meta name="layout" content="main"/>
-    <title>My Learning DNA Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-</head>
-<body>
-    <div class="dashboard-page">
-        <div class="mobile-container">
-            <g:if test="${!dashboard.unlocked}">
-                <!-- Locked Dashboard -->
-                <div class="locked-dashboard">
-                    <div class="lock-icon">🔒</div>
-                    <h1 class="lock-title">Dashboard Locked</h1>
-                    <p class="lock-message">${dashboard.message}</p>
-                    
-                    <div class="progress-requirements">
-                        <div class="requirement-item">
-                            <div class="requirement-label">Core Tests</div>
-                            <div class="requirement-progress">
-                                <div class="requirement-bar">
-                                    <div class="requirement-fill" style="width: ${(dashboard.coreTestsCompleted / dashboard.coreTestsRequired) * 100}%"></div>
-                                </div>
-                                <div class="requirement-text">${dashboard.coreTestsCompleted} / ${dashboard.coreTestsRequired}</div>
-                            </div>
-                        </div>
-                        
-                        <div class="requirement-item">
-                            <div class="requirement-label">StreamFit Tests</div>
-                            <div class="requirement-progress">
-                                <div class="requirement-bar">
-                                    <div class="requirement-fill" style="width: ${(dashboard.streamFitTestsCompleted / dashboard.streamFitTestsRequired) * 100}%"></div>
-                                </div>
-                                <div class="requirement-text">${dashboard.streamFitTestsCompleted} / ${dashboard.streamFitTestsRequired}</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <a href="${createLink(controller: 'test', action: 'index')}" class="btn btn-primary btn-large">
-                        Take More Tests 🚀
-                    </a>
-                </div>
-            </g:if>
-            <g:else>
-                <!-- Unlocked Dashboard -->
-                <div class="dashboard-header">
-                    <h1 class="dashboard-title">
-                        <span class="emoji">🧬</span>
-                        Your Learning DNA
-                    </h1>
-                    <p class="dashboard-subtitle">Personalized insights based on your test results</p>
-                </div>
-                
-                <!-- Badges Section -->
-                <div class="badges-section">
-                    <h2 class="section-title">Your Badges</h2>
-                    <div class="badges-grid">
-                        <g:each in="${dashboard.badges}" var="badge">
-                            <div class="badge-card">
-                                <div class="badge-emoji">${badge.emoji}</div>
-                                <div class="badge-label">${badge.label}</div>
-                            </div>
-                        </g:each>
-                    </div>
-                </div>
-                
-                <!-- Learning Style -->
-                <g:if test="${dashboard.learningStyle?.persona}">
-                    <div class="dna-card">
-                        <h2 class="card-title">
-                            <span class="emoji">${dashboard.learningStyle.emoji}</span>
-                            Learning Style
-                        </h2>
-                        <h3 class="persona-name">${dashboard.learningStyle.persona}</h3>
-                        <p class="persona-description">${dashboard.learningStyle.description}</p>
-                    </div>
-                </g:if>
-                
-                <!-- Cognitive Profile -->
-                <g:if test="${dashboard.cognitiveProfile?.skew}">
-                    <div class="dna-card">
-                        <h2 class="card-title">
-                            <span class="emoji">${dashboard.cognitiveProfile.emoji}</span>
-                            Cognitive Strength
-                        </h2>
-                        <h3 class="persona-name">${dashboard.cognitiveProfile.skew}</h3>
-                        
-                        <g:if test="${dashboard.cognitiveProfile.radarData}">
-                            <div class="chart-container">
-                                <canvas id="radarChart"></canvas>
-                            </div>
-                        </g:if>
-                    </div>
-                </g:if>
-                
-                <!-- Work Style -->
-                <g:if test="${dashboard.workStyle?.style}">
-                    <div class="dna-card">
-                        <h2 class="card-title">
-                            <span class="emoji">${dashboard.workStyle.emoji}</span>
-                            Work Style
-                        </h2>
-                        <h3 class="persona-name">${dashboard.workStyle.style}</h3>
-                        <p class="persona-description">${dashboard.workStyle.description}</p>
-                    </div>
-                </g:if>
-                
-                <!-- StreamFit Recommendations -->
-                <g:if test="${dashboard.streamFit?.recommendations}">
-                    <div class="dna-card">
-                        <h2 class="card-title">
-                            <span class="emoji">🎯</span>
-                            Your Top Stream Matches
-                        </h2>
-                        
-                        <div class="streams-grid">
-                            <g:each in="${dashboard.streamFit.recommendations}" var="stream">
-                                <div class="stream-card">
-                                    <div class="stream-icon">${stream.icon}</div>
-                                    <h3 class="stream-name">${stream.name}</h3>
-                                    <p class="stream-description">${stream.description}</p>
-                                    <g:if test="${stream.careers}">
-                                        <div class="stream-careers">
-                                            <strong>Careers:</strong>
-                                            <ul>
-                                                <g:each in="${stream.careers}" var="career">
-                                                    <li>${career}</li>
-                                                </g:each>
-                                            </ul>
-                                        </div>
-                                    </g:if>
-                                </div>
-                            </g:each>
-                        </div>
-                    </div>
-                </g:if>
-                
-                <!-- Shareable Card -->
-                <div class="share-card">
-                    <h2 class="card-title">Share Your Learning DNA</h2>
-                    <div class="shareable-preview">
-                        <div class="preview-content">
-                            <h3>My Learning DNA</h3>
-                            <p>${dashboard.shareableCard?.persona}</p>
-                            <p>${dashboard.shareableCard?.cognitive}</p>
-                            <p>${dashboard.shareableCard?.workStyle}</p>
-                        </div>
-                    </div>
-                    
-                    <div class="share-buttons">
-                        <button class="share-btn whatsapp" data-platform="whatsapp">
-                            📱 WhatsApp
-                        </button>
-                        <button class="share-btn instagram" data-platform="instagram">
-                            📸 Instagram
-                        </button>
-                        <button class="share-btn telegram" data-platform="telegram">
-                            ✈️ Telegram
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- CTA for Full Report -->
-                <div class="cta-card">
-                    <h2 class="cta-title">Want Your Complete StreamMap Report?</h2>
-                    <p class="cta-text">
-                        Get detailed analysis, personalized study plans, and career roadmaps
-                    </p>
-                    <button id="prebook-btn" class="btn btn-primary btn-large btn-block">
-                        Prebook Full Report (Free) 🎯
-                    </button>
-                </div>
-            </g:else>
-        </div>
-    </div>
-    
+    <title>Learning DNA Dashboard - StreamFit</title>
     <style>
-        .dashboard-page {
-            min-height: 100vh;
-            padding: 40px 0;
-        }
-        
-        .locked-dashboard {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        }
-        
-        .lock-icon {
-            font-size: 5rem;
-            margin-bottom: 20px;
-        }
-        
-        .lock-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 16px;
-            color: #333;
-        }
-        
-        .lock-message {
-            font-size: 1.1rem;
-            color: #666;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-        
-        .progress-requirements {
-            margin-bottom: 30px;
-        }
-        
-        .requirement-item {
-            margin-bottom: 20px;
-        }
-        
-        .requirement-label {
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #333;
-        }
-        
-        .requirement-bar {
-            height: 24px;
-            background: #e9ecef;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 4px;
-        }
-        
-        .requirement-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .requirement-text {
-            text-align: right;
-            font-weight: 600;
-            color: #667eea;
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
         
         .dashboard-header {
-            text-align: center;
-            margin-bottom: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
         }
         
-        .dashboard-title {
+        .dashboard-header h1 {
             font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
         
-        .dashboard-title .emoji {
-            font-size: 3rem;
-        }
-        
-        .dashboard-subtitle {
-            font-size: 1.1rem;
+        .dashboard-header p {
+            font-size: 1.2rem;
             opacity: 0.95;
         }
         
-        .badges-section {
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
             background: white;
-            border-radius: 20px;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: #666;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 16px;
             padding: 30px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
         }
         
         .section-title {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 700;
-            margin-bottom: 20px;
             color: #333;
+        }
+        
+        .test-results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .test-result-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .test-result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 10px;
+        }
+        
+        .test-result-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .test-result-type {
+            font-size: 0.8rem;
+            padding: 4px 12px;
+            border-radius: 12px;
+            background: #667eea;
+            color: white;
+        }
+        
+        .test-result-title {
+            font-size: 1.1rem;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .test-result-date {
+            font-size: 0.9rem;
+            color: #888;
         }
         
         .badges-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
         }
         
         .badge-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 16px;
+            background: #f8f9fa;
+            border-radius: 12px;
             padding: 20px;
             text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .badge-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .badge-card.new::after {
+            content: 'NEW!';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff4757;
             color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
         }
         
         .badge-emoji {
-            font-size: 2.5rem;
-            margin-bottom: 8px;
+            font-size: 3rem;
+            margin-bottom: 10px;
         }
         
-        .badge-label {
+        .badge-name {
             font-size: 0.9rem;
             font-weight: 600;
-        }
-        
-        .dna-card {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        }
-        
-        .card-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 20px;
             color: #333;
         }
         
-        .card-title .emoji {
-            font-size: 1.5rem;
+        .badge-rarity {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 5px;
         }
         
-        .persona-name {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: #667eea;
+        .achievements-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
         
-        .persona-description {
-            font-size: 1.1rem;
-            color: #666;
-            line-height: 1.6;
-        }
-        
-        .chart-container {
-            margin-top: 20px;
-            max-width: 400px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .streams-grid {
-            display: grid;
-            gap: 16px;
-        }
-        
-        .stream-card {
+        .achievement-item {
             background: #f8f9fa;
             border-radius: 12px;
             padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
         
-        .stream-icon {
-            font-size: 2.5rem;
-            margin-bottom: 12px;
+        .achievement-emoji {
+            font-size: 3rem;
         }
         
-        .stream-name {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #333;
+        .achievement-content {
+            flex: 1;
         }
         
-        .stream-description {
-            color: #666;
-            margin-bottom: 12px;
-            line-height: 1.5;
-        }
-        
-        .stream-careers ul {
-            margin-top: 8px;
-            padding-left: 20px;
-        }
-        
-        .stream-careers li {
-            color: #666;
-            margin-bottom: 4px;
-        }
-        
-        .share-card, .cta-card {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        }
-        
-        .shareable-preview {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 20px;
-            color: white;
-            text-align: center;
-        }
-        
-        .preview-content h3 {
-            font-size: 1.5rem;
-            margin-bottom: 12px;
-        }
-        
-        .preview-content p {
-            margin-bottom: 8px;
-            font-size: 1.1rem;
-        }
-        
-        .share-buttons {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
-        
-        .share-btn {
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
-            border-radius: 12px;
-            padding: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
+        .achievement-title {
+            font-size: 1.2rem;
             font-weight: 600;
             color: #333;
+            margin-bottom: 5px;
         }
         
-        .cta-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-align: center;
+        .achievement-description {
+            font-size: 0.9rem;
+            color: #666;
         }
         
-        .cta-title {
+        .achievement-points {
             font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 12px;
+            color: #667eea;
         }
         
-        .cta-text {
-            margin-bottom: 20px;
-            opacity: 0.95;
-            line-height: 1.6;
+        .progress-section {
+            margin-bottom: 30px;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            color: #666;
+        }
+        
+        .progress-bar {
+            background: #e0e0e0;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+        
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+        
+        .cta-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
     </style>
-    
-    <content tag="scripts">
-        <g:if test="${dashboard.unlocked && dashboard.cognitiveProfile?.radarData}">
-            <script>
-                // Render Radar Chart
-                const ctx = document.getElementById('radarChart');
-                new Chart(ctx, {
-                    type: 'radar',
-                    data: ${raw(dashboard.cognitiveProfile.radarData as grails.converters.JSON)},
-                    options: {
-                        scales: {
-                            r: {
-                                beginAtZero: true,
-                                max: 100
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        }
-                    }
-                });
-            </script>
-        </g:if>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>🧬 Your Learning DNA</h1>
+            <p id="welcome-text">Welcome back! Here's your personalized learning profile.</p>
+        </div>
         
-        <script>
-            // Share functionality
-            document.querySelectorAll('.share-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const platform = this.dataset.platform;
-                    
-                    fetch('${createLink(controller: 'share', action: 'links')}', {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'}
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success && data.links[platform]) {
-                            fetch('${createLink(controller: 'share', action: 'track')}', {
-                                method: 'POST',
-                                headers: {'Content-Type': 'application/json'},
-                                body: JSON.stringify({platform: platform})
-                            });
-                            window.open(data.links[platform], '_blank');
-                        }
-                    });
-                });
-            });
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-value" id="stat-tests">0</div>
+                <div class="stat-label">Tests Completed</div>
+            </div>
             
-            // Prebook functionality
-            const prebookBtn = document.getElementById('prebook-btn');
-            if (prebookBtn) {
-                prebookBtn.addEventListener('click', function() {
-                    this.disabled = true;
-                    this.textContent = 'Processing...';
-                    
-                    fetch('${createLink(controller: 'analytics', action: 'prebook')}', {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({leadType: 'STREAMMAP_REPORT'})
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert(data.message);
-                            this.textContent = 'Prebooked! ✓';
-                        } else {
-                            alert('Error: ' + data.message);
-                            this.disabled = false;
-                            this.textContent = 'Prebook Full Report (Free) 🎯';
-                        }
-                    });
-                });
+            <div class="stat-card">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-value" id="stat-level">1</div>
+                <div class="stat-label">Current Level</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">💎</div>
+                <div class="stat-value" id="stat-points">0</div>
+                <div class="stat-label">Total Points</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">🔥</div>
+                <div class="stat-value" id="stat-streak">0</div>
+                <div class="stat-label">Day Streak</div>
+            </div>
+        </div>
+        
+        <!-- Level Progress -->
+        <div class="section">
+            <div class="progress-section">
+                <div class="progress-label">
+                    <span>Level <span id="current-level">1</span></span>
+                    <span><span id="points-to-next">100</span> points to next level</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="level-progress" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Test Results -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">📊 Your Test Results</h2>
+            </div>
+            <div class="test-results-grid" id="test-results">
+                <div class="empty-state">
+                    <div class="empty-state-icon">📝</div>
+                    <p>No tests completed yet</p>
+                    <button class="cta-button" onclick="window.location.href='/diagnostic'">
+                        Take Your First Test
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Badges -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">🏅 Badges Earned</h2>
+                <span id="badge-count">0 badges</span>
+            </div>
+            <div class="badges-grid" id="badges-grid">
+                <div class="empty-state">
+                    <div class="empty-state-icon">🏅</div>
+                    <p>Complete tests to earn badges!</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Achievements -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">🏆 Achievements</h2>
+                <span id="achievement-count">0 achievements</span>
+            </div>
+            <div class="achievements-list" id="achievements-list">
+                <div class="empty-state">
+                    <div class="empty-state-icon">🏆</div>
+                    <p>Unlock achievements by completing milestones!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        async function loadDashboard() {
+            try {
+                const response = await fetch('/api/dashboard/data');
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayDashboard(data);
+                }
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
             }
-        </script>
-    </content>
+        }
+        
+        function displayDashboard(data) {
+            // Update welcome text
+            document.getElementById('welcome-text').textContent =
+                `Welcome back, ${'$'}{data.user.name}! Here's your personalized learning profile.`;
+            
+            // Update stats
+            document.getElementById('stat-tests').textContent = data.stats.totalTestsCompleted;
+            document.getElementById('stat-level').textContent = data.stats.currentLevel;
+            document.getElementById('stat-points').textContent = data.stats.totalPoints;
+            document.getElementById('stat-streak').textContent = data.stats.currentStreak;
+            
+            // Update level progress
+            document.getElementById('current-level').textContent = data.stats.currentLevel;
+            document.getElementById('points-to-next').textContent = data.stats.pointsToNextLevel;
+            
+            const levelProgress = ((data.stats.totalPoints % 100) / 100) * 100;
+            document.getElementById('level-progress').style.width = `${'$'}{levelProgress}%`;
+            
+            // Display test results
+            if (data.testResults && data.testResults.length > 0) {
+                displayTestResults(data.testResults);
+            }
+            
+            // Display badges
+            if (data.badges && data.badges.length > 0) {
+                displayBadges(data.badges);
+            }
+            
+            // Display achievements
+            if (data.achievements && data.achievements.length > 0) {
+                displayAchievements(data.achievements);
+            }
+        }
+        
+        function displayTestResults(results) {
+            const container = document.getElementById('test-results');
+            container.innerHTML = results.map(result => `
+                <div class="test-result-card">
+                    <div class="test-result-header">
+                        <div class="test-result-name">${'$'}{result.testName}</div>
+                        <div class="test-result-type">${'$'}{result.testType}</div>
+                    </div>
+                    <div class="test-result-title">${'$'}{result.resultTitle}</div>
+                    <div class="test-result-date">
+                        Completed ${'$'}{new Date(result.completedAt).toLocaleDateString()}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function displayBadges(badges) {
+            document.getElementById('badge-count').textContent = `${'$'}{badges.length} badge${'$'}{badges.length !== 1 ? 's' : ''}`;
+
+            const container = document.getElementById('badges-grid');
+            container.innerHTML = badges.map(badge => `
+                <div class="badge-card ${'$'}{badge.isNew ? 'new' : ''}">
+                    <div class="badge-emoji">${'$'}{badge.emoji}</div>
+                    <div class="badge-name">${'$'}{badge.badgeName}</div>
+                    <div class="badge-rarity">${'$'}{badge.rarity}</div>
+                </div>
+            `).join('');
+        }
+        
+        function displayAchievements(achievements) {
+            document.getElementById('achievement-count').textContent =
+                `${'$'}{achievements.length} achievement${'$'}{achievements.length !== 1 ? 's' : ''}`;
+
+            const container = document.getElementById('achievements-list');
+            container.innerHTML = achievements.map(ach => `
+                <div class="achievement-item">
+                    <div class="achievement-emoji">${'$'}{ach.emoji}</div>
+                    <div class="achievement-content">
+                        <div class="achievement-title">${'$'}{ach.achievementTitle}</div>
+                        <div class="achievement-description">${'$'}{ach.achievementDescription}</div>
+                    </div>
+                    <div class="achievement-points">+${'$'}{ach.pointsAwarded}</div>
+                </div>
+            `).join('');
+        }
+        
+        document.addEventListener('DOMContentLoaded', loadDashboard);
+    </script>
 </body>
 </html>
-
-
 

@@ -1,9 +1,7 @@
 package com.streamfit.user
 
-import com.streamfit.test.UserTestSession
-
 class User {
-    
+
     String userId
     String name
     String email
@@ -12,21 +10,19 @@ class User {
     String gender
     String educationLevel
     String currentStream
-    
+
     // Tracking
     Date dateCreated
     Date lastUpdated
     String ipAddress
     String userAgent
     String referralSource
-    
+
     // Preferences
     Boolean agreedToTerms = false
     Boolean optInForUpdates = false
     Boolean prebookedStreamMap = false
-    
-    static hasMany = [testSessions: UserTestSession]
-    
+
     static constraints = {
         userId unique: true, blank: false
         name nullable: true
@@ -40,13 +36,12 @@ class User {
         userAgent nullable: true
         referralSource nullable: true
     }
-    
+
     static mapping = {
         table 'streamfit_user'
         version false
-        testSessions cascade: 'all-delete-orphan'
     }
-    
+
     String toString() {
         return name ?: userId
     }

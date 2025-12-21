@@ -6,13 +6,18 @@
         </encoder>
     </appender>
 
-    <root level="INFO">
+    <root level="ERROR">
         <appender-ref ref="STDOUT" />
     </root>
 
-    <logger name="org.springframework" level="WARN"/>
-    <logger name="org.hibernate" level="WARN"/>
-    <logger name="grails" level="INFO"/>
-    <logger name="com.streamfit" level="DEBUG"/>
+    <logger name="org.springframework" level="ERROR"/>
+    <logger name="org.hibernate" level="ERROR"/>
+    <logger name="org.hibernate.SQL" level="ERROR"/>
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="ERROR"/>
+    <logger name="grails" level="ERROR"/>
+    <logger name="com.streamfit" level="ERROR"/>
+    <logger name="org.apache.tomcat" level="ERROR"/>
+    <logger name="org.apache.catalina" level="ERROR"/>
+    <logger name="com.zaxxer.hikari" level="ERROR"/>
 </configuration>
 
