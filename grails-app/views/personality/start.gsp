@@ -70,29 +70,35 @@
 
     /* --- LAYOUT --- */
     .test-page {
-        max-width: 800px;
+        max-width: 1200px;
         margin: 0 auto;
-        padding: 40px 0;
+        padding: 40px 20px;
         position: relative;
         z-index: 1;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .mobile-container {
         background: var(--card-base);
         border-radius: 32px;
-        padding: 50px 40px;
+        padding: 48px 56px;
         box-shadow: var(--shadow-float);
         border: 1px solid rgba(255,255,255,0.5);
-        margin: 0 24px;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 100%;
     }
 
     /* --- PROGRESS BAR --- */
     .progress-container {
-        margin-bottom: 40px;
+        margin-bottom: 24px;
     }
 
     .progress-bar {
-        height: 12px;
+        height: 10px;
         background: #F0F0F3;
         border-radius: 100px;
         overflow: hidden;
@@ -108,11 +114,11 @@
     }
 
     .progress-text {
-        margin-top: 12px;
+        margin-top: 8px;
         text-align: center;
         font-weight: 700;
         color: var(--text-grey);
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
 
     /* --- STEP CONTAINERS --- */
@@ -120,6 +126,8 @@
         opacity: 1;
         transform: translateY(0);
         transition: all 0.5s var(--ease-smooth);
+        display: flex;
+        flex-direction: column;
     }
 
     .step-container.hidden {
@@ -127,7 +135,7 @@
     }
 
     .step-container h2 {
-        font-size: clamp(1.8rem, 4vw, 2.5rem);
+        font-size: clamp(2rem, 4vw, 2.5rem);
         font-weight: 800;
         letter-spacing: -0.03em;
         margin: 0 0 16px 0;
@@ -138,7 +146,7 @@
     .step-container p {
         font-size: 1.1rem;
         color: var(--text-grey);
-        line-height: 1.7;
+        line-height: 1.6;
         font-weight: 600;
         margin: 0 0 32px 0;
     }
@@ -146,20 +154,20 @@
     /* --- GENDER SELECTION --- */
     .gender-options {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 16px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
         margin-bottom: 32px;
     }
 
     .gender-btn {
         background: white;
         border: 2px solid #F0F0F5;
-        border-radius: 24px;
-        padding: 24px 16px;
+        border-radius: 20px;
+        padding: 32px 20px;
         cursor: pointer;
         transition: all 0.3s var(--ease-elastic);
         font-family: inherit;
-        font-size: 1rem;
+        font-size: 1.1rem;
         font-weight: 700;
         color: var(--text-dark);
         display: flex;
@@ -169,7 +177,7 @@
     }
 
     .gender-btn:hover {
-        transform: translateY(-5px);
+        transform: translateY(-3px);
         box-shadow: var(--shadow-float);
         border-color: var(--pop-purple);
     }
@@ -181,29 +189,34 @@
     }
 
     .gender-icon {
-        font-size: 3rem;
+        font-size: 3.5rem;
     }
 
     /* --- TEST GRID --- */
     .test-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 20px;
-        margin-bottom: 32px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+        margin-bottom: 0;
+        max-height: none;
+        overflow: visible;
     }
 
     .test-card {
         background: white;
-        border-radius: 28px;
-        padding: 24px;
+        border-radius: 24px;
+        padding: 28px;
         border: 2px solid #F0F0F5;
         transition: all 0.3s var(--ease-elastic);
         cursor: pointer;
         box-shadow: var(--shadow-soft);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
     }
 
     .test-card:hover {
-        transform: translateY(-5px);
+        transform: translateY(-3px);
         box-shadow: var(--shadow-float);
         border-color: var(--pop-purple);
     }
@@ -216,13 +229,14 @@
 
     .test-badge {
         padding: 6px 14px;
-        border-radius: 12px;
+        border-radius: 10px;
         font-size: 0.75rem;
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.05em;
         display: inline-block;
         margin-bottom: 16px;
+        width: fit-content;
     }
 
     .test-badge.diagnostic {
@@ -230,11 +244,21 @@
         color: var(--pop-purple);
     }
 
+    .test-badge.exam {
+        background: rgba(115, 210, 222, 0.1);
+        color: var(--pop-teal);
+    }
+
+    .test-badge.career {
+        background: rgba(255, 143, 125, 0.1);
+        color: var(--pop-coral);
+    }
+
     .test-card h3 {
         font-weight: 800;
         color: var(--text-dark);
         margin: 0 0 12px 0;
-        font-size: 1.2rem;
+        font-size: 1.3rem;
         letter-spacing: -0.02em;
     }
 
@@ -242,8 +266,8 @@
         color: var(--text-grey);
         font-weight: 600;
         line-height: 1.6;
-        margin: 0 0 12px 0;
-        font-size: 0.95rem;
+        margin: 0 0 10px 0;
+        font-size: 1rem;
     }
 
     /* --- QUESTION CONTAINER --- */
@@ -258,16 +282,17 @@
     }
 
     .question-text {
-        font-size: 1.3rem;
+        font-size: 1.5rem;
         font-weight: 700;
         color: var(--text-dark);
         margin-bottom: 32px;
         line-height: 1.5;
+        text-align: center;
     }
 
     .options-container {
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 16px;
         margin-bottom: 32px;
     }
@@ -275,17 +300,22 @@
     .option {
         background: white;
         border: 2px solid #F0F0F5;
-        border-radius: 20px;
+        border-radius: 18px;
         padding: 20px 24px;
         cursor: pointer;
         transition: all 0.3s var(--ease-elastic);
         font-weight: 600;
         color: var(--text-dark);
-        font-size: 1rem;
+        font-size: 1.05rem;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 80px;
     }
 
     .option:hover {
-        transform: translateX(5px);
+        transform: translateY(-3px);
         border-color: var(--pop-purple);
         box-shadow: var(--shadow-soft);
     }
@@ -296,6 +326,24 @@
         box-shadow: var(--shadow-float);
         color: var(--text-dark);
         font-weight: 700;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .option.selected::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 4px;
+        background: var(--pop-purple);
+        width: 0%;
+        animation: autoAdvanceProgress 3s linear forwards;
+    }
+
+    @keyframes autoAdvanceProgress {
+        from { width: 0%; }
+        to { width: 100%; }
     }
 
     /* --- BUTTONS --- */
@@ -303,13 +351,14 @@
         padding: 16px 32px;
         border-radius: 100px;
         font-weight: 700;
-        font-size: 1rem;
+        font-size: 1.05rem;
         border: none;
         cursor: pointer;
         transition: all 0.3s var(--ease-elastic);
         font-family: inherit;
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 8px;
     }
 
@@ -320,8 +369,8 @@
     }
 
     .btn-primary:hover:not(:disabled) {
-        transform: translateY(-3px) scale(1.02);
-        box-shadow: 0 25px 50px -12px rgba(159, 151, 243, 0.4);
+        transform: translateY(-2px) scale(1.01);
+        box-shadow: 0 20px 40px -12px rgba(159, 151, 243, 0.4);
     }
 
     .btn-primary:disabled {
@@ -339,7 +388,7 @@
     }
 
     .btn-secondary:hover:not(:disabled) {
-        transform: translateY(-3px);
+        transform: translateY(-2px);
         border-color: var(--pop-purple);
         box-shadow: var(--shadow-float);
     }
@@ -353,36 +402,257 @@
 
     .navigation-buttons {
         display: flex;
-        gap: 16px;
+        gap: 12px;
         justify-content: space-between;
+        margin-top: 32px;
     }
 
-    /* --- MOBILE & TABLET --- */
-    @media (max-width: 768px) {
+    .navigation-buttons .btn {
+        flex: 1;
+    }
+
+    .action-button-top {
+        margin-bottom: 32px;
+        width: 100%;
+        order: -1;
+        box-shadow: var(--shadow-float);
+    }
+
+    .step-container > h2 {
+        order: 1;
+    }
+
+    .step-container > p {
+        order: 2;
+    }
+
+    .gender-options {
+        order: 3;
+    }
+
+    .test-grid {
+        order: 3;
+    }
+
+    /* --- TABLET --- */
+    @media (max-width: 1024px) {
         .test-page {
-            padding: 30px 0;
+            max-width: 900px;
+            padding: 30px 16px;
         }
 
         .mobile-container {
-            padding: 40px 24px;
-            margin: 0 16px;
+            padding: 36px 32px;
         }
 
-        .gender-options {
-            grid-template-columns: 1fr;
+        .test-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .options-container {
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        }
+    }
+
+    /* --- SMALL TABLET --- */
+    @media (max-width: 900px) {
+        .test-page {
+            padding: 24px 12px;
+        }
+
+        .mobile-container {
+            padding: 32px 24px;
         }
 
         .test-grid {
             grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .step-container h2 {
+            font-size: 1.8rem;
+        }
+
+        .step-container p {
+            font-size: 1rem;
+        }
+    }
+
+    /* --- MOBILE --- */
+    @media (max-width: 768px) {
+        body {
+            overflow-x: hidden;
+        }
+
+        .test-page {
+            padding: 12px 8px;
+            max-width: 100%;
+        }
+
+        .mobile-container {
+            padding: 24px 16px;
+            margin: 0;
+            border-radius: 20px;
+            width: calc(100% - 16px);
+            max-width: 100%;
+        }
+
+        .progress-container {
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            height: 8px;
+        }
+
+        .progress-text {
+            font-size: 0.75rem;
+            margin-top: 6px;
+        }
+
+        .step-container h2 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .step-container p {
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .gender-options {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .gender-btn {
+            padding: 16px 8px;
+            font-size: 0.85rem;
+            border-radius: 16px;
+        }
+
+        .gender-icon {
+            font-size: 2.5rem;
+            margin-bottom: 4px;
+        }
+
+        .test-grid {
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .test-card {
+            padding: 16px;
+        }
+
+        .test-card h3 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .test-card p {
+            font-size: 0.8rem;
+            margin-bottom: 6px;
+        }
+
+        .test-badge {
+            font-size: 0.6rem;
+            padding: 4px 8px;
+            margin-bottom: 8px;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .options-container {
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .option {
+            padding: 16px 18px;
+            font-size: 0.9rem;
+            min-height: 56px;
+            text-align: left;
         }
 
         .navigation-buttons {
             flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
         }
 
         .navigation-buttons .btn {
             width: 100%;
             justify-content: center;
+        }
+
+        .btn {
+            padding: 14px 20px;
+            font-size: 0.95rem;
+        }
+
+        .action-button-top {
+            margin-bottom: 20px;
+            padding: 14px 20px;
+            font-size: 0.95rem;
+        }
+    }
+
+    /* --- EXTRA SMALL MOBILE --- */
+    @media (max-width: 480px) {
+        .test-page {
+            padding: 8px 4px;
+        }
+
+        .mobile-container {
+            padding: 20px 12px;
+            border-radius: 16px;
+        }
+
+        .step-container h2 {
+            font-size: 1.3rem;
+        }
+
+        .step-container p {
+            font-size: 0.85rem;
+        }
+
+        .gender-btn {
+            padding: 14px 6px;
+            font-size: 0.8rem;
+        }
+
+        .gender-icon {
+            font-size: 2.2rem;
+        }
+
+        .test-card {
+            padding: 14px;
+        }
+
+        .test-card h3 {
+            font-size: 0.95rem;
+        }
+
+        .test-card p {
+            font-size: 0.75rem;
+        }
+
+        .question-text {
+            font-size: 1rem;
+        }
+
+        .option {
+            padding: 14px 16px;
+            font-size: 0.85rem;
+            min-height: 50px;
         }
     }
 
@@ -413,6 +683,9 @@
 
             <!-- Step 1: Gender Selection -->
             <div id="genderSelection" class="step-container">
+                <button id="genderNextBtn" class="btn btn-primary action-button-top" disabled onclick="showTestSelection()">
+                    Continue →
+                </button>
                 <h2>Before we begin...</h2>
                 <p>Please select your gender for personalized results:</p>
                 <div class="gender-options">
@@ -429,21 +702,18 @@
                         <div>Other</div>
                     </button>
                 </div>
-                <button id="genderNextBtn" class="btn btn-primary" disabled onclick="showTestSelection()">
-                    Continue →
-                </button>
             </div>
 
             <!-- Step 2: Test Selection -->
             <div id="testSelection" class="step-container hidden">
+                <button id="testNextBtn" class="btn btn-primary action-button-top" disabled onclick="startTest()">
+                    Start Test →
+                </button>
                 <h2>Choose Your Diagnostic Test</h2>
                 <p>Select one test to discover insights about yourself:</p>
                 <div id="testGrid" class="test-grid">
                     <!-- Tests will be loaded here -->
                 </div>
-                <button id="testNextBtn" class="btn btn-primary" disabled onclick="startTest()">
-                    Start Test →
-                </button>
             </div>
 
             <!-- Step 3: Question Container -->
@@ -472,6 +742,7 @@
         let currentQuestionIndex = 0;
         let answers = [];
         let sessionId = null;
+        let autoAdvanceTimer = null;
 
         // Load tests on page load
         document.addEventListener('DOMContentLoaded', function() {
@@ -584,6 +855,12 @@
 
         // Show question
         function showQuestion(index) {
+            // Clear any existing timer when changing questions
+            if (autoAdvanceTimer) {
+                clearTimeout(autoAdvanceTimer);
+                autoAdvanceTimer = null;
+            }
+
             currentQuestionIndex = index;
             const question = questions[index];
 
@@ -622,13 +899,25 @@
 
         // Select option
         function selectOption(value) {
+            // Clear any existing timer
+            if (autoAdvanceTimer) {
+                clearTimeout(autoAdvanceTimer);
+                autoAdvanceTimer = null;
+            }
+
             // Save answer
             answers[currentQuestionIndex] = value;
 
-            // Update UI
+            // Update UI - remove selected class from all first
             const options = document.querySelectorAll('.option');
             options.forEach(opt => {
                 opt.classList.remove('selected');
+                // Remove and re-add to restart animation
+                void opt.offsetWidth; // Trigger reflow
+            });
+
+            // Add selected class to chosen option
+            options.forEach(opt => {
                 if (opt.dataset.value === value) {
                     opt.classList.add('selected');
                 }
@@ -636,6 +925,16 @@
 
             // Enable next button
             document.getElementById('nextBtn').disabled = false;
+
+            // Auto-advance after 3 seconds
+            autoAdvanceTimer = setTimeout(() => {
+                if (currentQuestionIndex < questions.length - 1) {
+                    showQuestion(currentQuestionIndex + 1);
+                } else {
+                    // Last question - just keep it selected, user needs to click submit
+                    // Don't auto-submit
+                }
+            }, 3000);
         }
 
         // Next question
@@ -655,6 +954,12 @@
 
         // Previous question
         function previousQuestion() {
+            // Clear any existing timer
+            if (autoAdvanceTimer) {
+                clearTimeout(autoAdvanceTimer);
+                autoAdvanceTimer = null;
+            }
+
             if (currentQuestionIndex > 0) {
                 showQuestion(currentQuestionIndex - 1);
             }

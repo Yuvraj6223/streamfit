@@ -213,6 +213,24 @@
         font-weight: 700;
         transform: translateY(-2px);
         box-shadow: var(--shadow-float);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .option.selected::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.8);
+        width: 0%;
+        animation: autoAdvanceProgress 3s linear forwards;
+    }
+
+    @keyframes autoAdvanceProgress {
+        from { width: 0%; }
+        to { width: 100%; }
     }
 
     .navigation-buttons {
@@ -332,6 +350,7 @@
         let questions = [];
         let answers = [];
         let sessionId = null;
+        let autoAdvanceTimer = null;
         const testId = '${test.testId}';
         
         // Load questions and start session
@@ -395,6 +414,12 @@
         }
         
         function showQuestion(index) {
+            // Clear any existing timer when changing questions
+            if (autoAdvanceTimer) {
+                clearTimeout(autoAdvanceTimer);
+                autoAdvanceTimer = null;
+            }
+
             document.querySelectorAll('.question-card').forEach(function(card) {
                 card.classList.remove('active');
             });
@@ -415,9 +440,17 @@
         }
 
         function selectOption(questionIndex, value) {
-            // Remove previous selection
-            document.querySelectorAll('[data-index="' + questionIndex + '"] .option').forEach(function(opt) {
+            // Clear any existing timer
+            if (autoAdvanceTimer) {
+                clearTimeout(autoAdvanceTimer);
+                autoAdvanceTimer = null;
+            }
+
+            // Remove previous selection and trigger reflow to restart animation
+            const options = document.querySelectorAll('[data-index="' + questionIndex + '"] .option');
+            options.forEach(function(opt) {
                 opt.classList.remove('selected');
+                void opt.offsetWidth; // Trigger reflow
             });
 
             // Add new selection
@@ -428,9 +461,25 @@
 
             // Enable next button
             document.getElementById('next-btn-' + questionIndex).disabled = false;
+
+            // Auto-advance after 3 seconds
+            autoAdvanceTimer = setTimeout(function() {
+                if (currentQuestionIndex < questions.length - 1) {
+                    showQuestion(currentQuestionIndex + 1);
+                } else {
+                    // Last question - just keep it selected, user needs to click submit
+                    // Don't auto-submit
+                }
+            }, 3000);
         }
         
         function nextQuestion() {
+            // Clear any existing timer
+            if (autoAdvanceTimer) {
+                clearTimeout(autoAdvanceTimer);
+                autoAdvanceTimer = null;
+            }
+
             if (currentQuestionIndex < questions.length - 1) {
                 showQuestion(currentQuestionIndex + 1);
             } else {
@@ -439,6 +488,12 @@
         }
         
         function previousQuestion() {
+            // Clear any existing timer
+            if (autoAdvanceTimer) {
+                clearTimeout(autoAdvanceTimer);
+                autoAdvanceTimer = null;
+            }
+
             if (currentQuestionIndex > 0) {
                 showQuestion(currentQuestionIndex - 1);
             }
