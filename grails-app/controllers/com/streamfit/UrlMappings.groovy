@@ -6,6 +6,7 @@ class UrlMappings {
         // Home
         "/"(controller: 'home', action: 'index')
         "/about"(controller: 'about', action: 'index')
+        "/faq"(controller: 'faq', action: 'index')
 
         // User
         "/register"(controller: 'user', action: 'register')

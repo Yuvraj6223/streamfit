@@ -54,8 +54,7 @@
                 <!-- Primary CTA -->
                 <a href="${createLink(controller: 'personality', action: 'start')}"
                    class="btn btn-primary btn-hero-cta">
-                    End the Confusion Now
-                    <span class="cta-arrow">→</span>
+                    Start Now →
                 </a>
 
                 <!-- Empathy line below CTA -->
@@ -288,7 +287,7 @@
                     <strong>20 minutes now could save you 4 years of regret.</strong>
                 </p>
                 <a href="${createLink(controller: 'personality', action: 'start')}" class="btn btn-primary btn-urgency">
-                    Get My Clarity Now →
+                    Start Test →
                 </a>
             </div>
 
@@ -631,177 +630,14 @@
                 <div class="instagram-cta">
                     <p>Take the test and share YOUR result</p>
                     <a href="${createLink(controller: 'personality', action: 'start')}" class="btn btn-primary btn-instagram">
-                        Get My Result to Share →
+                        Get My Result →
                     </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 7. FAQ (Accordion) -->
-    <section class="faq-section">
-        <div class="mobile-container">
-            <h2 class="section-title">Frequently Asked Questions</h2>
-
-            <div class="faq-accordion">
-                <!-- TRUST BLOCKERS - MOVED TO TOP -->
-                <div class="faq-item critical-faq">
-                    <button class="faq-question">
-                        <span>Is this scientifically validated?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>Our assessments are based on established cognitive psychology principles and have been tested with over 10,000 students with 89% reporting accurate matches.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item critical-faq">
-                    <button class="faq-question">
-                        <span>Is this just another personality test?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p><strong>No. Big difference.</strong> Personality tests ask "Do you like parties?" We test <strong>cognitive abilities</strong> — how fast you process information, how you solve problems, how you handle pressure. It's about how your brain works, not just what you prefer. Way more useful for choosing a stream.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item critical-faq">
-                    <button class="faq-question">
-                        <span>Will this help me convince my parents?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p><strong>Yes, if you use it right.</strong> Don't just say "the test said so." Show them your cognitive radar chart, explain your strengths, share the career match reasoning. Parents respect data. One student said: <em>"My dad wanted me in Engineering. I showed him my low spatial reasoning score and high verbal reasoning. He finally understood why Law made more sense for me."</em></p>
-                    </div>
-                </div>
-
-                <!-- OTHER COMMON QUESTIONS -->
-                <div class="faq-item">
-                    <button class="faq-question">
-                        <span>How long does it take?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>The complete assessment takes about 20 minutes. You can complete all 9 brain games in one sitting or take breaks between tests.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <button class="faq-question">
-                        <span>Is it really free?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>Yes! 100% free, no hidden costs, no credit card required. We believe every student deserves access to quality career guidance.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <button class="faq-question">
-                        <span>What do I get?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>You'll receive your Learning Animal profile, cognitive radar chart, work style analysis, and top 3 career/stream recommendations personalized to your strengths.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <button class="faq-question">
-                        <span>Can I share my results?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>Absolutely! You can download your results as a PDF or share them directly on social media. Many students share their Learning Animal with friends!</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <button class="faq-question">
-                        <span>Do I need to complete all tests?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>For the most accurate results, we recommend completing all 9 tests. However, you'll get partial insights even if you complete just a few.</p>
-                    </div>
-                </div>
-
-                <!-- ADDITIONAL CRITICAL QUESTIONS -->
-                <div class="faq-item critical-faq">
-                    <button class="faq-question">
-                        <span>What if my parents disagree with my results?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p><strong>Share your detailed profile with them.</strong> It includes scientific reasoning, cognitive data, and career match explanations that parents respect. Many students say this helped them have "the conversation" with their parents using facts, not feelings.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item critical-faq">
-                    <button class="faq-question">
-                        <span>Is this better than school career counseling?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p><strong>9 out of 10 students say yes.</strong> School counselors often use generic questionnaires or just look at your marks. We test how your brain actually works — your cognitive strengths, processing speed, learning style. It's personalized, not one-size-fits-all.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item critical-faq">
-                    <button class="faq-question">
-                        <span>What if I disagree with my results?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>That's totally normal! Sometimes the results reveal things you haven't noticed about yourself yet. <strong>Read the full explanation first</strong> — many students say "wait, that actually makes sense" after reading the details. If you still disagree, you can retake the test anytime.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item critical-faq">
-                    <button class="faq-question">
-                        <span>Can I retake the test?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p><strong>Yes, anytime!</strong> But most students don't need to. Your cognitive profile is pretty stable. If you do retake it, try to answer honestly based on how you naturally think, not how you wish you thought.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item critical-faq">
-                    <button class="faq-question">
-                        <span>Do I need to sign up before starting?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p><strong>Nope! Zero signup required.</strong> Just click "Start Test" and go. We only ask for your email at the END if you want to save your results. No spam, no BS.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item critical-faq">
-                    <button class="faq-question">
-                        <span>What if I'm stuck between two streams?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>Perfect! That's exactly what this test is for. <strong>We'll show you which stream matches your cognitive strengths</strong> — not just your interests. For example, you might love Biology AND Math, but your brain might be better wired for one over the other. We'll tell you which.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item critical-faq">
-                    <button class="faq-question">
-                        <span>Can I change my stream choice after this?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p><strong>Of course!</strong> This is a discovery tool, not a binding contract. But here's the thing: <strong>89% of students say it confirmed their gut feeling</strong> or helped them realize something they already suspected. It's validation, not a life sentence.</p>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- 8. FINAL CTA - URGENT CLOSE -->
+    <!-- 7. FINAL CTA - URGENT CLOSE -->
     <section class="final-cta-section">
         <div class="mobile-container">
             <div class="final-cta-content">
@@ -827,7 +663,7 @@
                 <!-- Primary CTA -->
                 <a href="${createLink(controller: 'personality', action: 'start')}"
                    class="btn btn-primary btn-final-cta">
-                    End the Confusion in 20 Minutes →
+                    Start Test →
                 </a>
 
                 <!-- Parent Reassurance -->
@@ -869,7 +705,7 @@
 <!-- MOBILE STICKY CTA BAR - Always visible on mobile -->
 <div class="mobile-sticky-cta">
     <a href="${createLink(controller: 'personality', action: 'start')}" class="btn">
-        Get My Clarity Now →
+        Start Test →
     </a>
 </div>
 
@@ -1435,14 +1271,14 @@ h1, h2, h3, h4, h5, h6,
 
 .btn {
     display: inline-block;
-    padding: 16px 40px;
-    border-radius: 30px;
+    padding: 12px 24px;
+    border-radius: 50px;
     font-weight: 700;
     text-decoration: none;
     transition: all 0.3s ease;
     border: none;
     cursor: pointer;
-    font-size: 1.1rem;
+    font-size: 0.95rem;
 }
 
 .btn-primary {
@@ -1460,23 +1296,14 @@ h1, h2, h3, h4, h5, h6,
 
 /* Primary CTA Button */
 .btn-hero-cta {
-    padding: 22px 50px;
-    font-size: 1.4rem;
+    padding: 14px 28px;
+    font-size: 1rem;
     font-weight: 700;
     display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     margin-bottom: 15px;
     animation: gentlePulse 3s ease-in-out infinite;
-}
-
-.cta-arrow {
-    font-size: 1.6rem;
-    transition: transform 0.3s ease;
-}
-
-.btn-hero-cta:hover .cta-arrow {
-    transform: translateX(5px);
 }
 
 @keyframes gentlePulse {
@@ -1636,14 +1463,20 @@ h1, h2, h3, h4, h5, h6,
 
 .discover-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+@media (max-width: 1024px) {
+    .discover-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 .outcome-card {
     background: var(--card-base);
-    border-radius: 32px;
-    padding: 35px 30px 30px;
+    border-radius: 24px;
+    padding: 24px 20px 20px;
     text-align: center;
     border: 1px solid rgba(255, 255, 255, 0.5);
     transition: all 0.3s var(--ease-elastic);
@@ -1657,8 +1490,8 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .discover-icon {
-    font-size: 4.5rem;
-    margin-bottom: 20px;
+    font-size: 3rem;
+    margin-bottom: 12px;
     display: inline-block;
     animation: iconBounce 2s ease-in-out infinite;
 }
@@ -1674,18 +1507,18 @@ h1, h2, h3, h4, h5, h6,
 .outcome-card:nth-child(4) .discover-icon { animation-delay: 0.6s; }
 
 .outcome-card h3 {
-    font-size: 1.5rem;
+    font-size: 1.15rem;
     color: var(--text-dark);
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     font-weight: 800;
     line-height: 1.3;
 }
 
 .outcome-card p {
     color: var(--text-dark);
-    font-size: 1.1rem;
-    line-height: 1.7;
-    margin-bottom: 20px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 12px;
     font-weight: 500;
 }
 
@@ -1696,16 +1529,16 @@ h1, h2, h3, h4, h5, h6,
 
 /* Benefit Tags */
 .card-benefit {
-    margin-top: 20px;
+    margin-top: 12px;
 }
 
 .benefit-tag {
     display: inline-block;
     background: linear-gradient(135deg, #FF6B53 0%, #FF8F7D 100%);
     color: var(--card-base);
-    padding: 8px 20px;
+    padding: 6px 16px;
     border-radius: 20px;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     font-weight: 700;
     box-shadow: 0 4px 12px rgba(255, 107, 83, 0.4);
 }
@@ -2097,8 +1930,8 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .btn-urgency {
-    padding: 20px 50px;
-    font-size: 1.3rem;
+    padding: 14px 28px;
+    font-size: 1rem;
     font-weight: 700;
 }
 
@@ -2209,16 +2042,16 @@ h1, h2, h3, h4, h5, h6,
 
 .results-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
     margin-bottom: 30px;
 }
 
 /* Testimonial Card - Clean Design */
 .testimonial-card {
     background: var(--card-base);
-    border-radius: 28px;
-    padding: 30px;
+    border-radius: 24px;
+    padding: 24px 20px;
     border: 1px solid rgba(255, 255, 255, 0.5);
     transition: all 0.3s var(--ease-elastic);
     box-shadow: var(--shadow-soft);
@@ -2232,48 +2065,48 @@ h1, h2, h3, h4, h5, h6,
 
 .testimonial-avatar {
     position: relative;
-    width: 60px;
-    height: 60px;
-    margin-bottom: 15px;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 12px;
 }
 
 .testimonial-avatar img {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    border: 3px solid var(--light-blue-bg);
+    border: 2px solid var(--light-blue-bg);
 }
 
 .verified-badge {
     position: absolute;
     bottom: -2px;
     right: -2px;
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     background: #4CAF50;
     color: white;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     font-weight: bold;
     border: 2px solid var(--pure-white);
 }
 
 .testimonial-header-info {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .testimonial-name {
-    font-size: 1.2rem;
+    font-size: 1.05rem;
     font-weight: 700;
     color: var(--charcoal-teal);
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 }
 
 .testimonial-type {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     font-weight: 600;
     color: var(--ocean-blue);
     text-transform: uppercase;
@@ -2281,9 +2114,9 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .testimonial-text {
-    font-size: 1.05rem;
+    font-size: 0.95rem;
     color: var(--soft-text);
-    line-height: 1.7;
+    line-height: 1.6;
     text-align: left;
 }
 
@@ -2524,49 +2357,49 @@ h1, h2, h3, h4, h5, h6,
 /* BEFORE/AFTER TRANSFORMATIONS */
 .transformation-section {
     margin-top: 60px;
-    padding: 50px 30px;
+    padding: 40px 24px;
     background: linear-gradient(135deg, #f0fff4 0%, #ffffff 100%);
-    border-radius: 24px;
-    border: 3px solid #4CAF50;
+    border-radius: 20px;
+    border: 2px solid #4CAF50;
 }
 
 .transformation-title {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
     color: var(--charcoal-teal);
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     font-weight: 800;
 }
 
 .transformation-subtitle {
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: var(--soft-text);
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
 .transformations-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 30px;
+    grid-template-columns: 1fr;
+    gap: 20px;
 }
 
 .transformation-card {
     background: var(--pure-white);
-    border-radius: 24px;
-    padding: 30px;
+    border-radius: 20px;
+    padding: 24px 20px;
     display: grid;
     grid-template-columns: 1fr auto 1fr;
-    gap: 20px;
+    gap: 16px;
     align-items: center;
     border: 2px solid var(--sky-blue);
-    box-shadow: 0 6px 20px rgba(168, 218, 220, 0.2);
+    box-shadow: 0 4px 12px rgba(168, 218, 220, 0.15);
     transition: all 0.3s ease;
 }
 
 .transformation-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 32px rgba(168, 218, 220, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(168, 218, 220, 0.25);
 }
 
 .transformation-before,
@@ -2575,13 +2408,13 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .transform-label {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     font-weight: 800;
-    letter-spacing: 1px;
-    padding: 6px 16px;
-    border-radius: 20px;
+    letter-spacing: 0.8px;
+    padding: 5px 12px;
+    border-radius: 16px;
     display: inline-block;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .before-label {
@@ -2595,34 +2428,38 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .transform-emoji {
-    font-size: 3rem;
-    margin-bottom: 15px;
+    font-size: 2.2rem;
+    margin-bottom: 10px;
 }
 
 .transformation-before p,
 .transformation-after p {
-    font-size: 1rem;
+    font-size: 0.85rem;
     color: var(--soft-text);
-    line-height: 1.6;
-    margin-bottom: 15px;
+    line-height: 1.5;
+    margin-bottom: 10px;
 }
 
 .transform-student {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
     color: var(--ocean-blue);
     font-weight: 600;
 }
 
 .transform-result {
-    font-size: 1rem;
+    font-size: 0.85rem;
     color: #2e7d32;
     font-weight: 700;
 }
 
 .transformation-arrow {
-    font-size: 2.5rem;
+    font-size: 2rem;
     color: var(--ocean-blue);
     font-weight: 800;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* INSTAGRAM SOCIAL PROOF */
@@ -2777,136 +2614,12 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .btn-instagram {
-    padding: 18px 40px;
-    font-size: 1.2rem;
+    padding: 14px 28px;
+    font-size: 1rem;
     font-weight: 800;
 }
 
-/* 7. FAQ SECTION */
-.faq-section {
-    padding: 80px 0;
-    background: var(--light-blue-bg);  /* Light blue background for visual separation */
-}
-
-.faq-accordion {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.faq-item {
-    background: var(--pure-white);
-    border-radius: 16px;
-    margin-bottom: 15px;
-    border: 2px solid var(--sky-blue);
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-.faq-item:hover {
-    border-color: var(--ocean-blue);
-    box-shadow: 0 4px 16px rgba(168, 218, 220, 0.2);
-}
-
-/* Critical FAQ Items - Stand Out */
-.critical-faq {
-    border-color: #FF9800;
-    background: linear-gradient(135deg, #ffffff 0%, #FFF8F0 100%);
-    position: relative;
-}
-
-.critical-faq::before {
-    content: '🔥';
-    position: absolute;
-    top: 20px;
-    left: -5px;
-    font-size: 1.5rem;
-}
-
-.critical-faq:hover {
-    border-color: #FF6F00;
-    box-shadow: 0 6px 20px rgba(255, 152, 0, 0.25);
-}
-
-.faq-question {
-    width: 100%;
-    padding: 20px 25px 20px 35px;
-    background: none;
-    border: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--charcoal-teal);
-    text-align: left;
-    transition: all 0.3s ease;
-}
-
-.critical-faq .faq-question {
-    font-weight: 700;
-    color: #FF6F00;
-}
-
-.faq-question:hover {
-    background: var(--light-blue-bg);
-}
-
-.critical-faq .faq-question:hover {
-    background: #FFF3E0;
-}
-
-.faq-icon {
-    font-size: 1.5rem;
-    color: var(--ocean-blue);
-    font-weight: 700;
-    transition: transform 0.3s ease;
-}
-
-.critical-faq .faq-icon {
-    color: #FF6F00;
-}
-
-.faq-item.active .faq-icon {
-    transform: rotate(45deg);
-}
-
-.faq-answer {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-}
-
-.faq-item.active .faq-answer {
-    max-height: 600px;
-}
-
-.faq-answer p {
-    padding: 0 25px 20px 35px;
-    color: var(--soft-text);
-    font-size: 1.05rem;
-    line-height: 1.8;
-}
-
-.faq-answer p strong {
-    color: var(--ocean-blue);
-    font-weight: 700;
-}
-
-.critical-faq .faq-answer p strong {
-    color: #FF6F00;
-}
-
-.faq-answer p em {
-    font-style: italic;
-    color: var(--charcoal-teal);
-    display: block;
-    margin-top: 10px;
-    padding-left: 15px;
-    border-left: 3px solid var(--sky-blue);
-}
-
-/* 8. FINAL CTA - URGENT CLOSE */
+/* 7. FINAL CTA - URGENT CLOSE */
 .final-cta-section {
     padding: 80px 0;
     text-align: center;
@@ -3002,13 +2715,13 @@ h1, h2, h3, h4, h5, h6,
 
 /* Primary CTA Button */
 .btn-final-cta {
-    padding: 22px 60px;
-    font-size: 1.5rem;
+    padding: 14px 28px;
+    font-size: 1rem;
     font-weight: 700;
     background: linear-gradient(135deg, #FF6B53 0%, #FF8F7D 100%);
     color: var(--card-base);
     border: none;
-    border-radius: 30px;
+    border-radius: 50px;
     box-shadow: 0 4px 14px rgba(255, 107, 83, 0.5);
     transition: all 0.3s var(--ease-elastic);
     display: inline-block;
@@ -3117,6 +2830,13 @@ h1, h2, h3, h4, h5, h6,
         max-width: 100%;
     }
 
+    /* Nav CTA should NOT be full width */
+    .nav-cta {
+        width: auto;
+        max-width: none;
+        display: inline-flex;
+    }
+
     .btn-primary,
     .btn-secondary {
         min-height: 48px;
@@ -3124,8 +2844,8 @@ h1, h2, h3, h4, h5, h6,
 
     .btn-hero-cta,
     .btn-final-cta {
-        font-size: 1.1rem;
-        padding: 16px 32px;
+        font-size: 0.95rem;
+        padding: 12px 24px;
     }
 
     /* Reduce vertical spacing between sections */
@@ -3213,8 +2933,12 @@ h1, h2, h3, h4, h5, h6,
         display: flex;
         overflow-x: auto;
         scroll-snap-type: x mandatory;
-        gap: 20px;
+        gap: 16px;
         padding-bottom: 20px;
+        padding-left: 16px;
+        padding-right: 16px;
+        margin-left: -16px;
+        margin-right: -16px;
         -webkit-overflow-scrolling: touch;  /* Smooth scrolling on iOS */
     }
 
@@ -3240,22 +2964,63 @@ h1, h2, h3, h4, h5, h6,
 
     .discover-card,
     .testimonial-card {
-        min-width: 280px;
+        min-width: calc(100vw - 64px);
+        max-width: calc(100vw - 64px);
         flex-shrink: 0;
-        scroll-snap-align: start;
-        padding: 25px 20px;
+        scroll-snap-align: center;
+        padding: 20px 18px;
     }
 
     .discover-card h3,
     .testimonial-card h3 {
-        font-size: 1.3rem;
-        margin-bottom: 12px;
+        font-size: 1.05rem;
+        margin-bottom: 8px;
     }
 
     .discover-card p,
     .testimonial-card p {
-        font-size: 1rem;
-        line-height: 1.6;
+        font-size: 0.85rem;
+        line-height: 1.4;
+        margin-bottom: 10px;
+    }
+
+    .discover-icon {
+        font-size: 2.2rem;
+        margin-bottom: 8px;
+    }
+
+    .benefit-tag {
+        font-size: 0.75rem;
+        padding: 5px 12px;
+    }
+
+    /* Testimonial specific mobile styles */
+    .testimonial-avatar {
+        width: 45px;
+        height: 45px;
+        margin-bottom: 10px;
+    }
+
+    .testimonial-avatar img {
+        width: 45px;
+        height: 45px;
+    }
+
+    .testimonial-name {
+        font-size: 0.95rem;
+    }
+
+    .testimonial-type {
+        font-size: 0.7rem;
+    }
+
+    .testimonial-text {
+        font-size: 0.85rem;
+        line-height: 1.4;
+    }
+
+    .testimonial-location {
+        font-size: 0.75rem;
     }
 
     /* Show scroll hint on mobile */
@@ -3350,29 +3115,68 @@ h1, h2, h3, h4, h5, h6,
 
     /* Transformations - Mobile */
     .transformation-section {
-        padding: 35px 20px;
+        padding: 24px 16px;
+        margin-top: 40px;
     }
 
     .transformation-title {
-        font-size: 1.8rem;
+        font-size: 1.4rem;
+        margin-bottom: 6px;
+    }
+
+    .transformation-subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 20px;
     }
 
     .transformations-grid {
         grid-template-columns: 1fr;
+        gap: 16px;
     }
 
     .transformation-card {
         grid-template-columns: 1fr;
-        gap: 15px;
+        gap: 12px;
+        padding: 18px 16px;
     }
 
     .transformation-arrow {
         transform: rotate(90deg);
-        font-size: 2rem;
+        font-size: 1.5rem;
+        margin: 8px 0;
+        padding: 0;
+        line-height: 1;
+    }
+
+    .transformation-before,
+    .transformation-after {
+        padding: 0;
     }
 
     .transform-emoji {
-        font-size: 2.5rem;
+        font-size: 1.8rem;
+        margin-bottom: 8px;
+    }
+
+    .transform-label {
+        font-size: 0.65rem;
+        padding: 4px 10px;
+        margin-bottom: 8px;
+    }
+
+    .transformation-before p,
+    .transformation-after p {
+        font-size: 0.8rem;
+        line-height: 1.4;
+        margin-bottom: 8px;
+    }
+
+    .transform-student {
+        font-size: 0.7rem;
+    }
+
+    .transform-result {
+        font-size: 0.75rem;
     }
 
     /* Instagram Proof - Mobile */
@@ -3404,8 +3208,8 @@ h1, h2, h3, h4, h5, h6,
     }
 
     .btn-instagram {
-        padding: 16px 35px;
-        font-size: 1.1rem;
+        padding: 12px 24px;
+        font-size: 0.95rem;
     }
 
     /* FAQ - Mobile */
@@ -3444,8 +3248,8 @@ h1, h2, h3, h4, h5, h6,
     }
 
     .btn-final-cta {
-        padding: 18px 45px;
-        font-size: 1.3rem;
+        padding: 12px 24px;
+        font-size: 0.95rem;
     }
 
     .final-trust-signals {
@@ -3698,8 +3502,8 @@ h1, h2, h3, h4, h5, h6,
     }
 
     .btn-urgency {
-        padding: 16px 35px;
-        font-size: 1.15rem;
+        padding: 12px 24px;
+        font-size: 0.95rem;
     }
 
     .journey-title {
@@ -3862,19 +3666,20 @@ h1, h2, h3, h4, h5, h6,
 
     /* Transformations - Small Mobile */
     .transformation-section {
-        padding: 30px 15px;
+        padding: 20px 12px;
+        margin-top: 30px;
     }
 
     .transformation-title {
-        font-size: 1.6rem;
+        font-size: 1.25rem;
     }
 
     .transformation-subtitle {
-        font-size: 1.05rem;
+        font-size: 0.85rem;
     }
 
     .transformation-card {
-        padding: 20px;
+        padding: 16px 12px;
     }
 
     .transform-emoji {
@@ -3932,8 +3737,8 @@ h1, h2, h3, h4, h5, h6,
     }
 
     .btn-instagram {
-        padding: 14px 30px;
-        font-size: 1rem;
+        padding: 10px 20px;
+        font-size: 0.9rem;
     }
 
     /* FAQ - Small Mobile */
@@ -3984,8 +3789,8 @@ h1, h2, h3, h4, h5, h6,
     }
 
     .btn-final-cta {
-        padding: 16px 35px;
-        font-size: 1.15rem;
+        padding: 10px 20px;
+        font-size: 0.9rem;
     }
 
     .trust-signal-item {
@@ -4061,48 +3866,6 @@ h1, h2, h3, h4, h5, h6,
 </style>
 
 <script>
-    // FAQ Accordion functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        const faqItems = document.querySelectorAll('.faq-item');
-
-        faqItems.forEach(item => {
-            const question = item.querySelector('.faq-question');
-
-            question.addEventListener('click', () => {
-                const isActive = item.classList.contains('active');
-
-                // Close all items
-                faqItems.forEach(i => i.classList.remove('active'));
-
-                // Open clicked item if it wasn't active
-                if (!isActive) {
-                    item.classList.add('active');
-                }
-            });
-        });
-    });
-
-    // FAQ Accordion Functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        const faqItems = document.querySelectorAll('.faq-item');
-
-        faqItems.forEach(item => {
-            const question = item.querySelector('.faq-question');
-
-            question.addEventListener('click', () => {
-                // Close other items
-                faqItems.forEach(otherItem => {
-                    if (otherItem !== item) {
-                        otherItem.classList.remove('active');
-                    }
-                });
-
-                // Toggle current item
-                item.classList.toggle('active');
-            });
-        });
-    });
-
     // Scroll Navigation for Discover Section
     document.addEventListener('DOMContentLoaded', function() {
         const discoverGrid = document.querySelector('.discover-grid');

@@ -80,7 +80,7 @@
 
     /* BUTTON SYSTEM */
     .btn {
-        padding: 12px 24px;
+        padding: 8px 16px;
         border-radius: 12px;
         border: none;
         font-weight: 700;
@@ -88,6 +88,7 @@
         text-decoration: none;
         display: inline-block;
         transition: all 0.3s ease;
+        font-size: 0.85rem;
     }
 
     .btn-primary {
@@ -179,6 +180,11 @@
         .nav-logo {
             font-size: 1.1rem;
         }
+
+        .nav-cta {
+            font-size: 0.65rem;
+            padding: 5px 10px;
+        }
     }
     </style>
 </head>
@@ -194,7 +200,7 @@
 
         <a href="${createLink(controller: 'personality', action: 'start')}"
            class="btn btn-primary nav-cta">
-            Get My Clarity Now →
+            Get Clarity →
         </a>
     </div>
 </nav>
