@@ -122,7 +122,6 @@
                     <div class="discover-icon">🚀</div>
                     <h3>Get Your Top 3 Career Matches</h3>
                     <p><strong>IIT-JEE? NEET? Law? Design? Business?</strong> We'll tell you which fits YOUR mind</p>
-                    <p class="card-reassurance">Based on how you think — not marks, ranks, or pressure.</p>
                     <div class="card-benefit">
                         <span class="benefit-tag">Make the right choice</span>
                     </div>
@@ -709,6 +708,11 @@
     </a>
 </div>
 
+<!-- Scroll to Top Button -->
+<button class="scroll-to-top" id="scrollToTop" title="Back to top">
+    <span>↑</span>
+</button>
+
 <style>
 /* Import Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
@@ -913,15 +917,64 @@ h1, h2, h3, h4, h5, h6,
     justify-content: center;
     font-size: 1rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #FF6B53 0%, #FF8F7D 100%);
-    color: var(--card-base);
-    box-shadow: 0 4px 14px rgba(255, 107, 83, 0.5);
+    background: #ffffff;
+    color: #000000;
+    border: 2px solid #000000;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
     border-radius: 30px;
+    outline: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+.mobile-sticky-cta .btn:focus,
+.mobile-sticky-cta .btn:active,
+.mobile-sticky-cta .btn:focus-visible {
+    outline: none !important;
+    outline-style: none !important;
+    outline-width: 0 !important;
+    -webkit-tap-highlight-color: transparent !important;
 }
 
 .mobile-sticky-cta .btn:active {
     transform: scale(0.98);  /* Tactile feedback */
     background: linear-gradient(135deg, #FF5239 0%, #FF6B53 100%);
+}
+
+/* Scroll to Top Button */
+.scroll-to-top {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--soft-teal-blue) 100%);
+    color: var(--pure-white);
+    border: none;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(58, 109, 137, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scroll-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.scroll-to-top:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 24px rgba(58, 109, 137, 0.4);
+}
+
+.scroll-to-top:active {
+    transform: translateY(-2px);
 }
 
 /* Horizontal Scroll Hint - Shows on mobile to indicate swipeable cards */
@@ -1255,6 +1308,7 @@ h1, h2, h3, h4, h5, h6,
     padding: 12px 30px;
     border-radius: 50px;
     margin-bottom: 30px;
+    margin-right: 5px;
     border: 1px solid rgba(255, 255, 255, 0.5);
     box-shadow: var(--shadow-soft);
 }
@@ -1276,22 +1330,57 @@ h1, h2, h3, h4, h5, h6,
     font-weight: 700;
     text-decoration: none;
     transition: all 0.3s ease;
-    border: none;
+    border: 2px solid #000000;
     cursor: pointer;
     font-size: 0.95rem;
+    background: #ffffff;
+    color: #000000;
+}
+
+/* Remove dotted outline on focus/active - Enhanced for all browsers */
+.btn:focus,
+.btn:active,
+.btn-primary:focus,
+.btn-primary:active,
+a:focus,
+a:active,
+button:focus,
+button:active {
+    outline: none !important;
+    outline-style: none !important;
+    outline-width: 0 !important;
+    outline-color: transparent !important;
+    -moz-outline-style: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Specifically target mobile webkit browsers */
+.btn:focus-visible,
+.btn-primary:focus-visible,
+a:focus-visible,
+button:focus-visible {
+    outline: none !important;
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #FF6B53 0%, #FF8F7D 100%);
-    color: var(--card-base);
-    box-shadow: 0 4px 14px rgba(255, 107, 83, 0.5);
+    background: #ffffff;
+    color: #000000;
+    border: 2px solid #000000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     font-weight: 700;
 }
 
 .btn-primary:hover {
     transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 6px 20px rgba(255, 107, 83, 0.7);
-    background: linear-gradient(135deg, #FF5239 0%, #FF6B53 100%);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    background: #f5f5f5;
+    border-color: #000000;
+}
+
+.btn-primary:active {
+    transform: translateY(-1px) scale(1.01);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Primary CTA Button */
@@ -2045,6 +2134,24 @@ h1, h2, h3, h4, h5, h6,
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 20px;
     margin-bottom: 30px;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Desktop: Make testimonial cards smaller and aligned */
+@media (min-width: 1024px) {
+    .results-grid {
+        grid-template-columns: repeat(5, 1fr);
+        max-width: 1200px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1023px) {
+    .results-grid {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 900px;
+    }
 }
 
 /* Testimonial Card - Clean Design */
@@ -2718,11 +2825,11 @@ h1, h2, h3, h4, h5, h6,
     padding: 14px 28px;
     font-size: 1rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #FF6B53 0%, #FF8F7D 100%);
-    color: var(--card-base);
-    border: none;
+    background: #ffffff;
+    color: #000000;
+    border: 2px solid #000000;
     border-radius: 50px;
-    box-shadow: 0 4px 14px rgba(255, 107, 83, 0.5);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.3s var(--ease-elastic);
     display: inline-block;
     text-decoration: none;
@@ -2731,8 +2838,9 @@ h1, h2, h3, h4, h5, h6,
 
 .btn-final-cta:hover {
     transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 6px 20px rgba(255, 107, 83, 0.7);
-    background: linear-gradient(135deg, #FF5239 0%, #FF6B53 100%);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    background: #f5f5f5;
+    border-color: #000000;
 }
 
 /* Trust Signals Below CTA */
@@ -2815,6 +2923,15 @@ h1, h2, h3, h4, h5, h6,
     /* Add bottom padding to prevent content hiding behind sticky CTA */
     .landing-page {
         padding-bottom: 80px;
+    }
+
+    /* Adjust scroll-to-top button position on mobile to avoid sticky CTA */
+    .scroll-to-top {
+        bottom: 90px;
+        right: 15px;
+        width: 45px;
+        height: 45px;
+        font-size: 1.3rem;
     }
 
     /* THUMB-FRIENDLY CTA BUTTONS - 48px minimum for mobile */
@@ -3930,6 +4047,24 @@ h1, h2, h3, h4, h5, h6,
 
         // Initial update
         updateActiveDot();
+    });
+
+    // Scroll to Top Button functionality
+    const scrollToTopBtn = document.getElementById('scrollToTop');
+
+    window.addEventListener('scroll', function() {
+        if (window.pageYOffset > 300) {
+            scrollToTopBtn.classList.add('visible');
+        } else {
+            scrollToTopBtn.classList.remove('visible');
+        }
+    });
+
+    scrollToTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     });
 </script>
 </body>
