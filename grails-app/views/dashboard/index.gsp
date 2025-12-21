@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="layout" content="main"/>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Learning DNA | Cognitive Space</title>
@@ -75,70 +76,7 @@
         padding: 24px 24px 40px 24px;
     }
 
-    /* --- FLOATING NAVBAR --- */
-    .navbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 40px;
-
-        /* Glass/Clay Pill Look */
-        background: rgba(255, 255, 255, 0.85);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        padding: 12px 16px 12px 24px;
-        border-radius: 100px;
-        box-shadow: 0 10px 40px -10px rgba(0,0,0,0.05);
-        border: 1px solid rgba(255,255,255,0.6);
-        transition: all 0.3s var(--ease-smooth);
-    }
-
-    /* Slight compression on scroll could be added via JS, but CSS default is clean */
-
-    .nav-logo {
-        font-weight: 800;
-        font-size: 1.4rem;
-        color: var(--text-dark);
-        text-decoration: none;
-        letter-spacing: -0.03em;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .logo-icon svg {
-        width: 32px;
-        height: 32px;
-        /* Animation for logo */
-        animation: pulse-logo 3s infinite ease-in-out;
-    }
-
-    @keyframes pulse-logo {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-    }
-
-    .nav-btn-primary {
-        background: var(--text-dark);
-        color: white;
-        padding: 12px 24px;
-        border-radius: 100px;
-        font-weight: 700;
-        font-size: 0.9rem;
-        border: none;
-        cursor: pointer;
-        transition: all 0.3s var(--ease-elastic);
-        text-decoration: none;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        font-family: inherit;
-        white-space: nowrap;
-    }
-
-    .nav-btn-primary:hover {
-        transform: translateY(-2px) scale(1.02);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        background: #2D2A3D;
-    }
+    /* Dashboard-specific styles - navbar inherited from main.gsp */
 
     /* HEADER */
     .dashboard-header {
@@ -417,128 +355,7 @@
         min-width: 0;
     }
 
-    /* --- FOOTER STYLES --- */
-    .dashboard-footer {
-        margin-top: 80px;
-        background: rgba(255, 255, 255, 0.5);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-radius: 32px;
-        padding: 60px;
-        border: 1px solid rgba(255,255,255,0.6);
-        box-shadow: var(--shadow-soft);
-        position: relative;
-        overflow: hidden;
-        display: grid;
-        grid-template-columns: 1.5fr 1fr 1fr 1fr;
-        gap: 40px;
-        align-items: start;
-    }
-
-    .footer-brand h2 {
-        font-size: 1.5rem;
-        font-weight: 800;
-        color: var(--text-dark);
-        margin: 0 0 16px 0;
-        letter-spacing: -0.03em;
-    }
-
-    .footer-brand p {
-        color: var(--text-grey);
-        line-height: 1.6;
-        font-size: 0.95rem;
-        max-width: 280px;
-        margin: 0 0 24px 0;
-    }
-
-    .social-row {
-        display: flex;
-        gap: 12px;
-    }
-
-    .social-btn {
-        width: 40px;
-        height: 40px;
-        border-radius: 12px;
-        background: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--text-dark);
-        transition: all 0.2s;
-        border: 1px solid rgba(0,0,0,0.05);
-        cursor: pointer;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-        text-decoration: none;
-    }
-
-    .social-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        color: var(--pop-purple);
-    }
-
-    .footer-col h3 {
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: var(--text-grey);
-        font-weight: 700;
-        margin: 0 0 20px 0;
-    }
-
-    .footer-link-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .footer-link-list a {
-        text-decoration: none;
-        color: var(--text-dark);
-        font-weight: 500;
-        font-size: 0.95rem;
-        transition: color 0.2s;
-        opacity: 0.8;
-    }
-
-    .footer-link-list a:hover {
-        color: var(--pop-purple);
-        opacity: 1;
-    }
-
-    .footer-bottom {
-        grid-column: 1 / -1;
-        margin-top: 40px;
-        padding-top: 24px;
-        border-top: 1px solid rgba(0,0,0,0.05);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 20px;
-        color: var(--text-grey);
-        font-size: 0.85rem;
-        font-weight: 600;
-    }
-
-    .footer-links {
-        display: flex;
-        gap: 20px;
-    }
-
-    .footer-links a {
-        color: var(--text-grey);
-        text-decoration: none;
-        transition: color 0.2s;
-    }
-
-    .footer-links a:hover {
-        color: var(--pop-purple);
-    }
+    /* Footer styles inherited from main.gsp */
 
     /* --- MOBILE & TABLET --- */
     @media (max-width: 900px) {
@@ -548,17 +365,14 @@
         .card-progress { grid-column: span 2; }
         .bottom-split { grid-template-columns: 1fr; }
     }
+
+    @media (max-width: 768px) {
+        /* Navbar styles inherited from main.gsp */
+    }
+
     @media (max-width: 480px) {
         .dashboard-container { padding: 30px 16px; }
-
-        /* Nav Stack */
-        .navbar {
-            top: 10px;
-            padding: 10px 12px 10px 16px;
-        }
-        .nav-logo { font-size: 1.2rem; gap: 8px; }
-        .logo-icon svg { width: 24px; height: 24px; }
-        .nav-btn-primary { padding: 10px 16px; font-size: 0.8rem; }
+        /* Navbar styles inherited from main.gsp */
 
         .bento-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
         /* Mobile: Level takes full width */
@@ -599,22 +413,7 @@
             padding: 16px;
         }
 
-        /* Footer Mobile */
-        .dashboard-footer {
-            padding: 32px;
-            margin-top: 40px;
-            grid-template-columns: 1fr;
-            gap: 32px;
-        }
-        .footer-bottom {
-            flex-direction: column;
-            gap: 12px;
-            align-items: center;
-            text-align: center;
-        }
-        .footer-links {
-            justify-content: center;
-        }
+        /* Footer styles inherited from main.gsp */
     }
 
     /* UTILS */
@@ -632,23 +431,9 @@
     <div class="blob b-3"></div>
 </div>
 
-<div class="dashboard-container">
+<!-- Navbar inherited from main.gsp layout -->
 
-    <!-- NAVIGATION (STICKY PILL) -->
-    <nav class="navbar animate-in">
-        <a href="#" class="nav-logo">
-            <div class="logo-icon">
-                <!-- Custom DNA-Brain Helix Icon -->
-                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 28C12 28 8 24 8 20C8 13.3726 13.3726 8 20 8C26.6274 8 32 13.3726 32 20C32 26.6274 26.6274 32 20 32" stroke="#FF8F7D" stroke-width="4" stroke-linecap="round"/>
-                    <path d="M28 12C28 12 32 16 32 20C32 26.6274 26.6274 32 20 32C13.3726 32 8 26.6274 8 20C8 13.3726 13.3726 8 20 8" stroke="#9F97F3" stroke-width="4" stroke-linecap="round" stroke-dasharray="4 4"/>
-                    <circle cx="20" cy="20" r="4" fill="#1A1825"/>
-                </svg>
-            </div>
-            learnerdna
-        </a>
-        <button class="nav-btn-primary">Get my clarity now</button>
-    </nav>
+<div class="dashboard-container">
 
     <!-- HEADER -->
     <div class="dashboard-header animate-in">
@@ -767,63 +552,7 @@
 
     </div>
 
-    <!-- FOOTER -->
-    <footer class="dashboard-footer animate-in d-4">
-        <!-- Brand Col -->
-        <div class="footer-brand">
-            <h2>StreamFit</h2>
-            <p>Unlock your cognitive potential with adaptive learning paths designed for your unique brain.</p>
-            <div class="social-row">
-                <a href="#" class="social-btn" aria-label="Twitter">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
-                </a>
-                <a href="#" class="social-btn" aria-label="LinkedIn">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-                </a>
-                <a href="#" class="social-btn" aria-label="Instagram">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                </a>
-            </div>
-        </div>
-
-        <!-- Links Col 1 -->
-        <div class="footer-col">
-            <h3>STREAMFIT</h3>
-            <ul class="footer-link-list">
-                <li><a href="/">Home</a></li>
-                <li><a href="/personality/start">Take the Test</a></li>
-                <li><a href="/personality/types">Learning Animals</a></li>
-            </ul>
-        </div>
-
-        <!-- Links Col 2 -->
-        <div class="footer-col">
-            <h3>LEGAL</h3>
-            <ul class="footer-link-list">
-                <li><a href="/privacy">Privacy Policy</a></li>
-                <li><a href="/terms">Terms of Service</a></li>
-            </ul>
-        </div>
-
-        <!-- Links Col 3 -->
-        <div class="footer-col">
-            <h3>SUPPORT</h3>
-            <ul class="footer-link-list">
-                <li><a href="/faq">FAQ</a></li>
-                <li><a href="/contact">Contact Us</a></li>
-                <li><a href="/about">About StreamFit</a></li>
-            </ul>
-        </div>
-
-        <div class="footer-bottom">
-            <div>© 2025 StreamFit. All rights reserved.</div>
-            <div class="footer-links">
-                <a href="/terms">Terms</a>
-                <a href="/privacy">Privacy</a>
-                <a href="/contact">Contact</a>
-            </div>
-        </div>
-    </footer>
+    <!-- Footer inherited from main.gsp layout -->
 
 </div>
 

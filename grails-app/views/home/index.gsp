@@ -701,13 +701,6 @@
 
 </div>
 
-<!-- MOBILE STICKY CTA BAR - Always visible on mobile -->
-<div class="mobile-sticky-cta">
-    <a href="${createLink(controller: 'personality', action: 'start')}" class="btn">
-        Start Test →
-    </a>
-</div>
-
 <!-- Scroll to Top Button -->
 <button class="scroll-to-top" id="scrollToTop" title="Back to top">
     <span>↑</span>

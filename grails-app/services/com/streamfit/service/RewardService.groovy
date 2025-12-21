@@ -274,33 +274,54 @@ class RewardService {
      * Get user's badges
      */
     def getUserBadges(User user) {
-        return UserBadge.findAllByUser(user, [sort: 'earnedAt', order: 'desc'])
+        try {
+            return UserBadge.findAllByUser(user, [sort: 'earnedAt', order: 'desc'])
+        } catch (Exception e) {
+            log.warn "Could not fetch badges for user ${user.userId}: ${e.message}"
+            return []
+        }
     }
-    
+
     /**
      * Get user's achievements
      */
     def getUserAchievements(User user) {
-        return Achievement.findAllByUser(user, [sort: 'achievedAt', order: 'desc'])
+        try {
+            return Achievement.findAllByUser(user, [sort: 'achievedAt', order: 'desc'])
+        } catch (Exception e) {
+            log.warn "Could not fetch achievements for user ${user.userId}: ${e.message}"
+            return []
+        }
     }
-    
+
     /**
      * Get user's points and level info
      */
     def getUserPointsInfo(User user) {
-        def userPoints = UserPoints.findByUser(user)
-        
-        if (!userPoints) {
-            userPoints = new UserPoints(user: user).save(flush: true)
+        try {
+            def userPoints = UserPoints.findByUser(user)
+
+            if (!userPoints) {
+                userPoints = new UserPoints(user: user).save(flush: true)
+            }
+
+            return [
+                totalPoints: userPoints.totalPoints,
+                currentLevel: userPoints.currentLevel,
+                pointsToNextLevel: userPoints.getPointsToNextLevel(),
+                currentStreak: userPoints.currentStreak,
+                longestStreak: userPoints.longestStreak
+            ]
+        } catch (Exception e) {
+            log.warn "Could not fetch points info for user ${user.userId}: ${e.message}"
+            return [
+                totalPoints: 0,
+                currentLevel: 1,
+                pointsToNextLevel: 100,
+                currentStreak: 0,
+                longestStreak: 0
+            ]
         }
-        
-        return [
-            totalPoints: userPoints.totalPoints,
-            currentLevel: userPoints.currentLevel,
-            pointsToNextLevel: userPoints.getPointsToNextLevel(),
-            currentStreak: userPoints.currentStreak,
-            longestStreak: userPoints.longestStreak
-        ]
     }
     
     /**

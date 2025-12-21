@@ -25,13 +25,18 @@ class DiagnosticService {
      * Get all available diagnostic tests
      */
     def getAvailableTests(String testType = null) {
-        def criteria = DiagnosticTest.createCriteria()
-        return criteria.list {
-            eq('isActive', true)
-            if (testType) {
-                eq('testType', testType)
+        try {
+            def criteria = DiagnosticTest.createCriteria()
+            return criteria.list {
+                eq('isActive', true)
+                if (testType) {
+                    eq('testType', testType)
+                }
+                order('testId', 'asc')
             }
-            order('testId', 'asc')
+        } catch (Exception e) {
+            log.warn "Could not fetch available tests: ${e.message}"
+            return []
         }
     }
 
@@ -273,20 +278,25 @@ class DiagnosticService {
      * Get user's test history
      */
     def getUserTestHistory(User user) {
-        def sessions = DiagnosticTestSession.findAllByUser(user, [sort: 'dateCreated', order: 'desc'])
+        try {
+            def sessions = DiagnosticTestSession.findAllByUser(user, [sort: 'dateCreated', order: 'desc'])
 
-        return sessions.collect { session ->
-            [
-                sessionId: session.sessionId,
-                testId: session.test.testId,
-                testName: session.test.testName,
-                testType: session.test.testType,
-                status: session.status,
-                resultType: session.resultType,
-                resultTitle: session.resultTitle,
-                startedAt: session.startedAt,
-                completedAt: session.completedAt
-            ]
+            return sessions.collect { session ->
+                [
+                    sessionId: session.sessionId,
+                    testId: session.test.testId,
+                    testName: session.test.testName,
+                    testType: session.test.testType,
+                    status: session.status,
+                    resultType: session.resultType,
+                    resultTitle: session.resultTitle,
+                    startedAt: session.startedAt,
+                    completedAt: session.completedAt
+                ]
+            }
+        } catch (Exception e) {
+            log.warn "Could not fetch test history for user ${user.userId}: ${e.message}"
+            return []
         }
     }
 

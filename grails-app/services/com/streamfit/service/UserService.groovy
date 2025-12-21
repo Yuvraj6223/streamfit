@@ -35,8 +35,12 @@ class UserService {
                 return null
             }
 
-            // Create Learning DNA for the user
-            createLearningDNA(user)
+            // Create Learning DNA for the user (optional - won't fail if table doesn't exist)
+            try {
+                createLearningDNA(user)
+            } catch (Exception e) {
+                log.warn "Could not create Learning DNA for user ${user.userId}: ${e.message}"
+            }
 
             log.info "Created new user: ${user.userId}"
         } else {
@@ -53,29 +57,34 @@ class UserService {
     }
 
     def createLearningDNA(User user) {
-        if (!LearningDNA.findByUser(user)) {
-            def dna = new LearningDNA(
-                user: user,
-                coreTestsCompleted: 0,
-                streamFitTestsCompleted: 0,
-                isDashboardUnlocked: false
-            )
+        try {
+            if (!LearningDNA.findByUser(user)) {
+                def dna = new LearningDNA(
+                    user: user,
+                    coreTestsCompleted: 0,
+                    streamFitTestsCompleted: 0,
+                    isDashboardUnlocked: false
+                )
 
-            // Set JSON fields as strings
-            dna.cognitiveScores = JsonOutput.toJson([:])
-            dna.motivationTraits = JsonOutput.toJson([:])
-            dna.topStreamSuggestions = JsonOutput.toJson([])
-            dna.streamFitScores = JsonOutput.toJson([:])
+                // Set JSON fields as strings
+                dna.cognitiveScores = JsonOutput.toJson([:])
+                dna.motivationTraits = JsonOutput.toJson([:])
+                dna.topStreamSuggestions = JsonOutput.toJson([])
+                dna.streamFitScores = JsonOutput.toJson([:])
 
-            if (!dna.save(flush: true)) {
-                log.error "Failed to create Learning DNA: ${dna.errors}"
-                return null
+                if (!dna.save(flush: true)) {
+                    log.error "Failed to create Learning DNA: ${dna.errors}"
+                    return null
+                }
+
+                return dna
             }
 
-            return dna
+            return LearningDNA.findByUser(user)
+        } catch (Exception e) {
+            log.error "Error creating Learning DNA for user ${user.userId}: ${e.message}", e
+            return null
         }
-
-        return LearningDNA.findByUser(user)
     }
     
     def getUserById(String userId) {
@@ -94,8 +103,13 @@ class UserService {
     }
     
     def getUserStats(User user) {
-        def dna = LearningDNA.findByUser(user)
-        
+        def dna = null
+        try {
+            dna = LearningDNA.findByUser(user)
+        } catch (Exception e) {
+            log.warn "Could not fetch Learning DNA for user ${user.userId}: ${e.message}"
+        }
+
         return [
             totalTestsCompleted: (dna?.coreTestsCompleted ?: 0) + (dna?.streamFitTestsCompleted ?: 0),
             coreTestsCompleted: dna?.coreTestsCompleted ?: 0,
@@ -132,8 +146,12 @@ class UserService {
             return null
         }
 
-        // Create Learning DNA for the user
-        createLearningDNA(user)
+        // Create Learning DNA for the user (optional - won't fail if table doesn't exist)
+        try {
+            createLearningDNA(user)
+        } catch (Exception e) {
+            log.warn "Could not create Learning DNA for anonymous user ${user.userId}: ${e.message}"
+        }
 
         log.info "Created anonymous user: ${user.userId}"
         return user

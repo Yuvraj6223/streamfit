@@ -56,26 +56,26 @@
     .nav-container {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 16px 20px;
+        padding: 8px 20px;
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
 
     .nav-logo {
-        font-size: 1.8rem;
-        font-weight: 800;
         text-decoration: none;
         display: flex;
-        gap: 6px;
+        align-items: center;
     }
 
-    .nav-logo .stream {
-        color: var(--soft-teal-blue);
+    .nav-logo img {
+        height: 120px;
+        width: auto;
+        transition: transform 0.3s ease;
     }
 
-    .nav-logo .fit {
-        color: var(--ocean-blue);
+    .nav-logo img:hover {
+        transform: scale(1.05);
     }
 
     /* BUTTON SYSTEM */
@@ -240,8 +240,8 @@
 
     /* RESPONSIVE */
     @media (max-width: 768px) {
-        .nav-logo {
-            font-size: 1.2rem;
+        .nav-logo img {
+            height: 90px;
         }
 
         .nav-cta {
@@ -271,11 +271,11 @@
 
     @media (max-width: 480px) {
         .nav-container {
-            padding: 8px 12px;
+            padding: 6px 12px;
         }
 
-        .nav-logo {
-            font-size: 1.1rem;
+        .nav-logo img {
+            height: 75px;
         }
 
         .nav-cta {
@@ -292,7 +292,7 @@
 <nav class="main-nav">
     <div class="nav-container">
         <a href="${createLink(uri: '/')}" class="nav-logo">
-            <span class="stream">Stream</span><span class="fit">Fit</span>
+            <img src="${assetPath(src: 'logo1.png')}" alt="StreamFit"/>
         </a>
 
         <a href="${createLink(controller: 'personality', action: 'start')}"
