@@ -5,7 +5,7 @@ class UrlMappings {
     static mappings = {
         // Home
         "/"(controller: 'home', action: 'index')
-        "/about"(controller: 'home', action: 'about')
+        "/about"(controller: 'about', action: 'index')
 
         // User
         "/register"(controller: 'user', action: 'register')

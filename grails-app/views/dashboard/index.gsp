@@ -77,8 +77,11 @@
     /* HEADER */
     .dashboard-header {
         display: flex;
-        justify-content: space-between; align-items: flex-end;
+        justify-content: space-between;
+        align-items: center;
         margin-bottom: 50px;
+        flex-wrap: wrap;
+        gap: 20px;
     }
     .header-content h1 {
         font-size: clamp(2.5rem, 5vw, 4rem);
@@ -101,8 +104,12 @@
         font-weight: 700;
         color: var(--text-dark);
         box-shadow: var(--shadow-soft);
-        display: flex; align-items: center; gap: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
         font-size: 0.9rem;
+        white-space: nowrap;
     }
 
     /* --- 3. BENTO GRID (4 Column Return) --- */
@@ -138,6 +145,9 @@
         grid-row: span 2;
         background: var(--pop-cream); /* Warm hero background */
         border: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
     /* The Abstract Art Decoration */
@@ -165,46 +175,143 @@
     /* STAT CARDS (Quests & XP) */
     .stat-icon-bubble {
         width: 56px;
-        height: 56px; border-radius: 20px;
-        display: flex; align-items: center; justify-content: center;
-        margin-bottom: 16px; font-size: 24px;
+        height: 56px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+        font-size: 24px;
     }
     .bubble-teal { background: rgba(115, 210, 222, 0.15); color: #2A9BA8; }
     .bubble-yellow { background: rgba(255, 216, 109, 0.2); color: #D4A628; }
     .bubble-purple { background: rgba(159, 151, 243, 0.15); color: var(--pop-purple); }
 
-    .stat-val { font-size: 2.5rem; font-weight: 800; color: var(--text-dark); letter-spacing: -0.03em; line-height: 1; }
-    .stat-lbl { color: var(--text-grey); font-weight: 600; font-size: 0.95rem; margin-top: 8px; }
+    .stat-val {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--text-dark);
+        letter-spacing: -0.03em;
+        line-height: 1;
+        margin: 0;
+    }
+    .stat-lbl {
+        color: var(--text-grey);
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin-top: 8px;
+    }
 
     /* PROGRESS CARD (Now Span 2 to sit next to Hero) */
-    .card-progress { grid-column: span 2; }
+    .card-progress {
+        grid-column: span 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .progress-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 16px;
+    }
+
+    .progress-label {
+        color: var(--text-grey);
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .progress-value {
+        color: var(--text-dark);
+        font-size: 1.5rem;
+        font-weight: 800;
+        margin-top: 4px;
+    }
+
+    .progress-icon {
+        width: 40px;
+        height: 40px;
+        background: var(--text-dark);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        flex-shrink: 0;
+    }
 
     .progress-rail {
-        height: 16px; background: #F0F0F3; border-radius: 100px;
-        overflow: hidden; position: relative; margin-top: 16px;
+        height: 16px;
+        background: #F0F0F3;
+        border-radius: 100px;
+        overflow: hidden;
+        position: relative;
+        margin-top: 16px;
     }
     .progress-bar {
         height: 100%;
         background: linear-gradient(90deg, var(--pop-teal), var(--pop-purple));
-        border-radius: 100px; width: 0%; transition: width 1.5s var(--ease-smooth);
+        border-radius: 100px;
+        width: 0%;
+        transition: width 1.5s var(--ease-smooth);
     }
 
     /* --- 4. TABS & RESULTS --- */
-    .section-header { display: flex;
-        justify-content: space-between; align-items: center; margin-bottom: 32px; }
-    .section-title { font-size: 1.5rem; font-weight: 800; color: var(--text-dark); letter-spacing: -0.02em; }
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 32px;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--text-dark);
+        letter-spacing: -0.02em;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .count-badge {
+        background: #E5E5EA;
+        padding: 2px 10px;
+        border-radius: 20px;
+        font-size: 0.8em;
+        font-weight: 700;
+    }
 
     .tabs-pill {
-        background: white; padding: 6px; border-radius: 100px;
-        box-shadow: var(--shadow-soft); display: flex; gap: 4px;
+        background: white;
+        padding: 6px;
+        border-radius: 100px;
+        box-shadow: var(--shadow-soft);
+        display: flex;
+        gap: 4px;
+        flex-wrap: wrap;
     }
     .tab-btn {
         border: none;
-        background: transparent; padding: 10px 24px; border-radius: 100px;
-        color: var(--text-grey); font-weight: 700; cursor: pointer; transition: all 0.3s;
-        font-size: 0.9rem; font-family: inherit;
+        background: transparent;
+        padding: 10px 24px;
+        border-radius: 100px;
+        color: var(--text-grey);
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 0.9rem;
+        font-family: inherit;
     }
-    .tab-btn.active { background: var(--text-dark); color: white; }
+    .tab-btn.active {
+        background: var(--text-dark);
+        color: white;
+    }
 
     .results-grid {
         display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -212,12 +319,20 @@
     }
 
     .result-card {
-        background: white; border-radius: 28px;
+        background: white;
+        border-radius: 28px;
         padding: 24px;
-        border: 1px solid #F0F0F5; transition: all 0.3s var(--ease-smooth);
-        cursor: pointer; box-shadow: var(--shadow-soft);
+        border: 1px solid #F0F0F5;
+        transition: all 0.3s var(--ease-smooth);
+        cursor: pointer;
+        box-shadow: var(--shadow-soft);
+        display: flex;
+        flex-direction: column;
     }
-    .result-card:hover { transform: translateY(-5px); border-color: var(--pop-purple); }
+    .result-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--pop-purple);
+    }
 
     .tag {
         padding: 6px 14px; border-radius: 12px; font-size: 0.75rem;
@@ -229,8 +344,13 @@
     .tag-assess { background: rgba(115, 210, 222, 0.15); color: #2A9BA8; }
 
     /* --- 5. NEW PROUDFUL BADGES --- */
-    .bottom-split { display: grid;
-        grid-template-columns: 1.5fr 1fr; gap: 40px; margin-top: 60px; }
+    .bottom-split {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        gap: 40px;
+        margin-top: 60px;
+        align-items: start;
+    }
 
     /* Updated Grid for Vertical Cards */
     .badge-grid-wrapper {
@@ -241,16 +361,18 @@
 
     .badge-card {
         border-radius: 24px;
-        padding: 24px 12px;
+        padding: 24px 16px;
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: center;
         text-align: center;
         position: relative;
         overflow: hidden;
         transition: all 0.4s var(--ease-elastic);
         cursor: default;
         border: 2px solid white;
+        min-height: 180px;
     }
 
     .badge-card:hover {
@@ -305,62 +427,147 @@
 
     .b-icon-bg {
         width: 64px;
-        height: 64px; border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
-        margin-bottom: 16px; font-size: 1.8rem;
-        position: relative; z-index: 2;
+        height: 64px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+        font-size: 1.8rem;
+        position: relative;
+        z-index: 2;
+        flex-shrink: 0;
     }
 
     .b-title {
-        font-weight: 800; font-size: 0.95rem; color: var(--text-dark);
-        margin-bottom: 8px; line-height: 1.2; position: relative; z-index: 2;
+        font-weight: 800;
+        font-size: 0.95rem;
+        color: var(--text-dark);
+        margin-bottom: 8px;
+        line-height: 1.3;
+        position: relative;
+        z-index: 2;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 
     .b-rarity {
         font-size: 0.65rem;
-        text-transform: uppercase; letter-spacing: 0.1em;
-        padding: 4px 12px; border-radius: 100px; font-weight: 700; position: relative; z-index: 2;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        padding: 4px 12px;
+        border-radius: 100px;
+        font-weight: 700;
+        position: relative;
+        z-index: 2;
+        white-space: nowrap;
     }
 
     .ach-item {
-        display: flex; align-items: center; gap: 16px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
         padding: 20px;
-        background: white; border-radius: 24px; margin-bottom: 16px;
+        background: white;
+        border-radius: 24px;
+        margin-bottom: 16px;
         box-shadow: var(--shadow-soft);
         min-width: 0;
     }
 
+    .ach-item > div:nth-child(1) {
+        flex-shrink: 0;
+    }
+
     .ach-item > div:nth-child(2) {
         min-width: 0;
+        flex: 1;
+        overflow: hidden;
+    }
+
+    .ach-item > div:nth-child(3) {
+        flex-shrink: 0;
     }
 
     /* --- MOBILE & TABLET --- */
     @media (max-width: 900px) {
-        .bento-grid { grid-template-columns: repeat(2, 1fr); }
-        .card-hero { grid-column: span 2; }
-        .card-progress { grid-column: span 2; }
-        .bottom-split { grid-template-columns: 1fr; }
+        .dashboard-header {
+            align-items: flex-start;
+        }
+        .bento-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .card-hero {
+            grid-column: span 2;
+        }
+        .card-progress {
+            grid-column: span 2;
+        }
+        .bottom-split {
+            grid-template-columns: 1fr;
+        }
     }
     @media (max-width: 480px) {
-        .dashboard-container { padding: 30px 16px; }
-        .bento-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-        .card-hero { grid-column: span 2; }
-        .stat-icon-bubble { width: 40px; height: 40px; font-size: 20px; margin-bottom: 12px; }
-        .stat-val { font-size: 2rem; }
-        .card-progress { grid-column: span 2; padding: 24px; }
-
+        .dashboard-container {
+            padding: 30px 16px;
+        }
+        .dashboard-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .date-pill {
+            width: 100%;
+        }
+        .bento-grid {
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+        .card-hero {
+            grid-column: span 1;
+        }
+        .stat-icon-bubble {
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+        .stat-val {
+            font-size: 2rem;
+        }
+        .card-progress {
+            grid-column: span 1;
+            padding: 24px;
+        }
         .section-header {
-            flex-direction: column; align-items: flex-start; gap: 16px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 16px;
         }
         .tabs-pill {
-            width: 100%; overflow-x: auto; padding-bottom: 4px; white-space: nowrap; justify-content: flex-start;
-            -ms-overflow-style: none; scrollbar-width: none;
+            width: 100%;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            white-space: nowrap;
+            justify-content: flex-start;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
-        .tabs-pill::-webkit-scrollbar { display: none; }
-        .tab-btn { flex-shrink: 0; }
-        .results-grid { grid-template-columns: 1fr; }
-        .badge-grid-wrapper { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
-        .ach-item { padding: 16px; }
+        .tabs-pill::-webkit-scrollbar {
+            display: none;
+        }
+        .tab-btn {
+            flex-shrink: 0;
+        }
+        .results-grid {
+            grid-template-columns: 1fr;
+        }
+        .badge-grid-wrapper {
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        }
+        .ach-item {
+            padding: 16px;
+            flex-wrap: wrap;
+        }
     }
 
     /* UTILS */
@@ -423,16 +630,16 @@
             </div>
         </div>
 
-        <div class="clay-card card-progress animate-in d-4" style="justify-content: center;">
+        <div class="clay-card card-progress animate-in d-4">
             <div>
-                <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+                <div class="progress-header">
                     <div>
-                        <div style="color: var(--text-grey); font-size: 0.8rem; font-weight: 700; text-transform:uppercase; letter-spacing:0.05em;">Next Milestone</div>
-                        <div style="color: var(--text-dark); font-size: 1.5rem; font-weight: 800; margin-top:4px;">
+                        <div class="progress-label">Next Milestone</div>
+                        <div class="progress-value">
                             <span id="points-to-next">100</span> XP Left
                         </div>
                     </div>
-                    <div style="width: 40px; height: 40px; background: var(--text-dark); border-radius: 50%; display:flex; align-items:center; justify-content:center; color:white;">
+                    <div class="progress-icon">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
                     </div>
                 </div>
@@ -461,7 +668,10 @@
     <div class="bottom-split animate-in d-4">
         <div>
             <div class="section-header">
-                <div class="section-title">Badges <span id="badge-count" style="background:#E5E5EA; padding:2px 10px; border-radius:20px; font-size:0.8em; margin-left:10px;">0</span></div>
+                <div class="section-title">
+                    Badges
+                    <span id="badge-count" class="count-badge">0</span>
+                </div>
             </div>
             <div class="badge-grid-wrapper" id="badges-grid">
             </div>
@@ -514,8 +724,7 @@
         // Date
         const now = new Date();
         const dateStr = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
-        // NOTE: ${ is used here to escape GSP execution
-        document.getElementById('date-widget').innerHTML = `\${svgLib.calendar} \${dateStr}`;
+        document.getElementById('date-widget').innerHTML = svgLib.calendar + ' ' + dateStr;
 
         try {
             const response = await fetch('/api/dashboard/data');
@@ -533,7 +742,7 @@
             // Render Header
             const hour = now.getHours();
             const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
-            document.getElementById('welcome-text').textContent = `\${greeting}, \${data.user.name}`;
+            document.getElementById('welcome-text').textContent = greeting + ', ' + data.user.name;
 
             // Render Stats
             document.getElementById('stat-level').textContent = data.stats.currentLevel;
@@ -553,7 +762,7 @@
                 const pointsIntoLevel = data.stats.totalPoints - levelStartPoints;
                 const pointsForNextLevel = data.stats.pointsToNextLevel + pointsIntoLevel;
                 const pct = pointsForNextLevel > 0 ? (pointsIntoLevel / pointsForNextLevel) * 100 : 0;
-                document.getElementById('level-progress').style.width = `\${pct}%`;
+                document.getElementById('level-progress').style.width = pct + '%';
             }, 500);
 
             // Render Lists
@@ -565,11 +774,11 @@
             console.error('Error initializing dashboard:', error);
             // Render an error state in the UI
             const container = document.querySelector('.dashboard-container');
-            container.innerHTML = `<div style="text-align:center; padding: 80px; color: #D9534F; font-weight: 500; background: white; border-radius: 20px;">
-                <h2>Oops! Something went wrong.</h2>
-                <p>We couldn't load your dashboard data. Please try again later.</p>
-                <p style="font-size: 0.8em; color: #666; margin-top: 20px;">Error: \${error.message}</p>
-            </div>`;
+            container.innerHTML = '<div style="text-align:center; padding: 80px; color: #D9534F; font-weight: 500; background: white; border-radius: 20px;">' +
+                '<h2>Oops! Something went wrong.</h2>' +
+                '<p>We couldn\'t load your dashboard data. Please try again later.</p>' +
+                '<p style="font-size: 0.8em; color: #666; margin-top: 20px;">Error: ' + error.message + '</p>' +
+            '</div>';
         }
     }
 
@@ -595,66 +804,96 @@
     function renderTests(list) {
         const container = document.getElementById('test-results');
         if(!list || list.length === 0) {
-            container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:60px; color:#9CA3AF; font-weight:500;">No activities found</div>`;
+            container.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:60px; color:#9CA3AF; font-weight:500;">No activities found</div>';
             return;
         }
-        // GSP Escape: \${}
+
         container.innerHTML = list.map((t, i) => {
             const resultTitle = t.resultTitle || (t.status === 'COMPLETED' ? 'Result available' : 'In Progress...');
-            const dateInfo = t.status === 'COMPLETED' && t.completedAt 
-                ? `<span>\${new Date(t.completedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>` 
-                : `<span>Started: \${new Date(t.startedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>`;
             const statusText = t.status === 'COMPLETED' ? 'Completed' : 'In Progress';
+            const tagClass = getTagClass(t.testType);
+            const testType = t.testType || 'Test';
+            const testName = t.testName || 'Unnamed Test';
 
-            return `
-                <div class="result-card" style="animation: reveal 0.6s var(--ease-smooth) forwards \${i * 0.1}s; opacity:0; transform:translateY(20px);">
-                    <div class="tag \${getTagClass(t.testType)}">\${t.testType}</div>
-                    <div style="font-weight:800; color:var(--text-dark); margin-bottom:4px; font-size:1.1rem; letter-spacing:-0.02em;">\${t.testName}</div>
-                    <div style="color:var(--text-grey); font-size:0.95rem; font-weight:600;">\${resultTitle}</div>
-                    <div style="margin-top:20px; padding-top: 12px; border-top:1px solid #F3F4F6; font-size:0.8rem; color:#9CA3AF; display:flex; justify-content:space-between; font-weight:600;">
-                        \${dateInfo}
-                        <span>\${statusText}</span>
-                    </div>
-                </div>
-            `
+            let dateInfo = '';
+            if (t.status === 'COMPLETED' && t.completedAt) {
+                const completedDate = new Date(t.completedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+                dateInfo = '<span>' + completedDate + '</span>';
+            } else if (t.startedAt) {
+                const startedDate = new Date(t.startedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                dateInfo = '<span>Started: ' + startedDate + '</span>';
+            }
+
+            const animationDelay = (i * 0.1) + 's';
+
+            return '<div class="result-card" style="animation: reveal 0.6s var(--ease-smooth) forwards ' + animationDelay + '; opacity:0; transform:translateY(20px);">' +
+                '<div class="tag ' + tagClass + '">' + testType + '</div>' +
+                '<div style="font-weight:800; color:var(--text-dark); margin-bottom:4px; font-size:1.1rem; letter-spacing:-0.02em;">' + testName + '</div>' +
+                '<div style="color:var(--text-grey); font-size:0.95rem; font-weight:600;">' + resultTitle + '</div>' +
+                '<div style="margin-top:20px; padding-top: 12px; border-top:1px solid #F3F4F6; font-size:0.8rem; color:#9CA3AF; display:flex; justify-content:space-between; font-weight:600; flex-wrap:wrap; gap:8px;">' +
+                dateInfo +
+                '<span>' + statusText + '</span>' +
+                '</div>' +
+                '</div>';
         }).join('');
     }
 
     // --- NEW BADGE RENDERER ---
     function renderBadges(list) {
-        document.getElementById('badge-count').textContent = list.length;
-        document.getElementById('badges-grid').innerHTML = list.map(b => {
+        const badgeCount = document.getElementById('badge-count');
+        const badgesGrid = document.getElementById('badges-grid');
+
+        if (!list || list.length === 0) {
+            badgeCount.textContent = '0';
+            badgesGrid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding:40px; color:#9CA3AF;">No badges earned yet</div>';
+            return;
+        }
+
+        badgeCount.textContent = list.length;
+        badgesGrid.innerHTML = list.map(b => {
             let rarityClass = 'b-common';
             if(b.rarity === 'Rare') rarityClass = 'b-rare';
             if(b.rarity === 'Epic') rarityClass = 'b-epic';
 
-            // GSP Escape: \${}
-            return `
-                <div class="badge-card \${rarityClass}">
-                    <div class="b-icon-bg">\${getIcon(b.badgeName)}</div>
-                    <div class="b-title">\${b.badgeName}</div>
-                    <div class="b-rarity">\${b.rarity}</div>
-                </div>
-                `;
+            const icon = getIcon(b.badgeName);
+            const badgeName = b.badgeName || 'Unknown Badge';
+            const rarity = b.rarity || 'Common';
+
+            return '<div class="badge-card ' + rarityClass + '">' +
+                '<div class="b-icon-bg">' + icon + '</div>' +
+                '<div class="b-title">' + badgeName + '</div>' +
+                '<div class="b-rarity">' + rarity + '</div>' +
+                '</div>';
         }).join('');
     }
 
     function renderAchievements(list) {
-        // GSP Escape: \${}
-        document.getElementById('achievements-list').innerHTML = list.map(a => `
-                <div class="ach-item">
-                    <div style="width:48px; height:48px; background:rgba(255, 143, 125, 0.15); color:var(--pop-coral); border-radius:14px; display:flex; align-items:center; justify-content:center;">
-                        \${getIcon(a.achievementTitle)}
-                    </div>
-                    <div style="flex:1;">
-                        <div style="font-weight:700; font-size:1rem; color:var(--text-dark);">\${a.achievementTitle}</div>
-                        <div style="font-size:0.85rem; color:var(--text-grey); font-weight:600;">\${a.achievementDescription}</div>
-                    </div>
-                    <div style="font-weight:800; color:var(--pop-purple); background:rgba(159, 151, 243, 0.1); padding:6px 12px; border-radius:10px; font-size:0.85rem;">
-                        +\${a.pointsAwarded}
-                    </div>
-                </div>
-            `).join('');
+        const achievementsList = document.getElementById('achievements-list');
+
+        if (!list || list.length === 0) {
+            achievementsList.innerHTML = '<div style="text-align:center; padding:40px; color:#9CA3AF;">No recent unlocks</div>';
+            return;
+        }
+
+        achievementsList.innerHTML = list.map(a => {
+            const icon = getIcon(a.achievementTitle);
+            const title = a.achievementTitle || 'Achievement';
+            const description = a.achievementDescription || '';
+            const points = a.pointsAwarded || 0;
+
+            return '<div class="ach-item">' +
+                '<div style="width:48px; height:48px; background:rgba(255, 143, 125, 0.15); color:var(--pop-coral); border-radius:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">' +
+                icon +
+                '</div>' +
+                '<div style="flex:1; min-width:0;">' +
+                '<div style="font-weight:700; font-size:1rem; color:var(--text-dark);">' + title + '</div>' +
+                '<div style="font-size:0.85rem; color:var(--text-grey); font-weight:600;">' + description + '</div>' +
+                '</div>' +
+                '<div style="font-weight:800; color:var(--pop-purple); background:rgba(159, 151, 243, 0.1); padding:6px 12px; border-radius:10px; font-size:0.85rem; white-space:nowrap;">' +
+                '+' + points +
+                '</div>' +
+                '</div>';
+        }).join('');
     }
 
     document.addEventListener('DOMContentLoaded', init);
