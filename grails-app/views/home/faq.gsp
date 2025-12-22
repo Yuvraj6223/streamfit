@@ -2,7 +2,61 @@
 <html>
 <head>
     <meta name="layout" content="main"/>
-    <title>FAQ - StreamFit</title>
+    <g:set var="pageTitle" value="Frequently Asked Questions | LearnerDNA Student Diagnostic Tests" />
+    <g:set var="pageDescription" value="Get answers to common questions about LearnerDNA's aptitude tests, learning style assessments, and career guidance platform. Free, scientifically-validated, no signup required." />
+    <g:set var="pageKeywords" value="FAQ, student aptitude test questions, learning style test help, career guidance FAQ" />
+
+    <!-- FAQ Schema -->
+    <g:set var="structuredData">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "Is this scientifically validated?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Our assessments are based on established cognitive psychology principles and have been tested with over 10,000 students with 89% reporting accurate matches. We use validated frameworks like VARK learning styles and cognitive load theory."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How long does the test take?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "The complete Learning DNA assessment takes approximately 20 minutes. Individual diagnostic tests range from 5 to 10 minutes each. You can take tests at your own pace and return anytime."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Is it really free? No hidden costs?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, all our diagnostic tests are 100% free with no hidden costs. You get instant results, personalized insights, and shareable reports without any payment. We may offer premium features in the future, but core tests will always remain free."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Do I need to sign up or create an account?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "No signup required to take tests and view results. You can start immediately. However, creating a free account allows you to save your results, track progress, and access your dashboard anytime."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How accurate are the results?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Based on feedback from 10,000+ students, 89% reported that their results accurately matched their learning style and strengths. Our tests use scientifically-validated methodologies and are continuously refined based on user data."
+                }
+            }
+        ]
+    }
+    </g:set>
+
+    <title>${pageTitle}</title>
 </head>
 <body>
 
@@ -12,7 +66,7 @@
         <div class="mobile-container">
             <div class="faq-header">
                 <h2 class="section-title">Frequently Asked Questions</h2>
-                <p class="faq-subtitle">Everything you need to know about StreamFit</p>
+                <p class="faq-subtitle">Everything you need to know about learnerDNA</p>
             </div>
 
             <!-- Search Bar -->

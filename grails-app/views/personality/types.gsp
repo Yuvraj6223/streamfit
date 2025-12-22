@@ -2,9 +2,12 @@
 <html lang="en">
 <head>
     <meta name="layout" content="main"/>
+    <g:set var="pageTitle" value="All Diagnostic Test Types | Learning Style & Career Tests | LearnerDNA" />
+    <g:set var="pageDescription" value="Explore 9 diagnostic tests covering exam personality, cognitive strengths, learning modality, and career direction. Free assessments for students aged 14-20. Start discovering your Learning DNA." />
+    <g:set var="pageKeywords" value="diagnostic test types, learning style tests, career assessment tests, exam personality test, cognitive tests" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Test Types - StreamFit</title>
+    <title>${pageTitle}</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>

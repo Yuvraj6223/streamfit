@@ -2,7 +2,34 @@
 <html>
 <head>
     <meta name="layout" content="main"/>
-    <title>StreamFit - Discover Your Learning DNA in 20 Minutes</title>
+    <g:set var="pageTitle" value="Free Student Aptitude Test India | Discover Your Learning DNA | LearnerDNA" />
+    <g:set var="pageDescription" value="Discover your learning style, cognitive strengths & ideal career stream. Free aptitude test for students aged 14-20. No signup required. 10,000+ students tested. Start in 20 minutes." />
+    <g:set var="pageKeywords" value="student aptitude test, learning style test, career guidance, stream selection, cognitive assessment, free aptitude test India, personality test for students" />
+    <g:set var="pageType" value="website" />
+
+    <!-- Structured Data for Homepage -->
+    <g:set var="structuredData">
+    {
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "LearnerDNA",
+        "alternateName": "StreamFit",
+        "url": "${request.scheme}://${request.serverName}",
+        "logo": "${request.scheme}://${request.serverName}${assetPath(src: 'logo1.png')}",
+        "description": "India's leading student diagnostic platform for learning style assessment and career guidance. Free aptitude tests for students aged 14-20.",
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "IN"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.7",
+            "reviewCount": "10247"
+        }
+    }
+    </g:set>
+
+    <title>${pageTitle}</title>
 </head>
 <body>
 <!-- Ambient Background Layer -->

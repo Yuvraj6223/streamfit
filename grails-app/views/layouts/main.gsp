@@ -1,15 +1,91 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-IN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><g:layoutTitle default="StreamFit - Discover Your Mental Fitness Journey"/></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- SEO Meta Tags -->
+    <title><g:layoutTitle default="Free Student Aptitude Test India | Discover Your Learning DNA | LearnerDNA"/></title>
+    <meta name="description" content="${pageDescription ?: 'Discover your learning style, cognitive strengths & ideal career stream. Free aptitude test for students aged 14-20. No signup required. 10,000+ students tested.'}">
+    <meta name="keywords" content="${pageKeywords ?: 'student aptitude test, learning style test, career guidance, stream selection, cognitive assessment, free aptitude test India'}">
+    <meta name="author" content="LearnerDNA">
+    <meta name="robots" content="${pageRobots ?: 'index, follow'}">
+
+    <!-- Geographic Targeting -->
+    <meta name="geo.region" content="IN">
+    <meta name="geo.placename" content="India">
+
+    <!-- Canonical URL -->
+    <g:set var="canonicalUrl" value="${pageCanonical ?: (request.scheme + '://' + request.serverName + request.forwardURI)}" />
+    <link rel="canonical" href="${canonicalUrl}">
+
+    <!-- Alternate Language Versions -->
+    <link rel="alternate" hreflang="en-IN" href="${canonicalUrl}">
+    <link rel="alternate" hreflang="en" href="${canonicalUrl}">
+    <link rel="alternate" hreflang="x-default" href="${canonicalUrl}">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:type" content="${pageType ?: 'website'}">
+    <meta property="og:site_name" content="LearnerDNA">
+    <meta property="og:title" content="${pageTitle ?: 'LearnerDNA - Discover Your Learning DNA'}">
+    <meta property="og:description" content="${pageDescription ?: 'Free aptitude test for students. Discover your learning style and ideal career stream in 20 minutes.'}">
+    <meta property="og:url" content="${canonicalUrl}">
+    <meta property="og:locale" content="en_IN">
+    <meta property="og:image" content="${pageImage ?: (request.scheme + '://' + request.serverName + assetPath(src: 'logo1.png'))}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${pageTitle ?: 'LearnerDNA - Discover Your Learning DNA'}">
+    <meta name="twitter:description" content="${pageDescription ?: 'Free aptitude test for students. Discover your learning style and ideal career stream.'}">
+    <meta name="twitter:image" content="${pageImage ?: (request.scheme + '://' + request.serverName + assetPath(src: 'logo1.png'))}">
+
+    <!-- Mobile Optimization -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="LearnerDNA">
+    <meta name="theme-color" content="#3A7CA5">
+
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <asset:stylesheet src="application.css"/>
     <asset:stylesheet src="personality-test.css"/>
+    <asset:stylesheet src="mobile.css"/>
     <asset:javascript src="application.js"/>
+    <asset:javascript src="mobile-enhancements.js"/>
+    <asset:javascript src="mobile-share.js"/>
 
     <g:layoutHead/>
+
+    <!-- Structured Data (JSON-LD) -->
+    <g:if test="${structuredData}">
+        <script type="application/ld+json">
+            ${raw(structuredData)}
+        </script>
+    </g:if>
+    <g:else>
+        <!-- Default Organization Schema -->
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "EducationalOrganization",
+            "name": "LearnerDNA",
+            "alternateName": "StreamFit",
+            "url": "${request.scheme}://${request.serverName}",
+            "logo": "${request.scheme}://${request.serverName}${assetPath(src: 'logo1.png')}",
+            "description": "India's leading student diagnostic platform for learning style assessment and career guidance",
+            "address": {
+                "@type": "PostalAddress",
+                "addressCountry": "IN"
+            }
+        }
+        </script>
+    </g:else>
 
     <style>
     /* StreamFit Color Palette */
@@ -292,7 +368,7 @@
 <nav class="main-nav">
     <div class="nav-container">
         <a href="${createLink(uri: '/')}" class="nav-logo">
-            <img src="${assetPath(src: 'logo1.png')}" alt="StreamFit"/>
+            <img src="${assetPath(src: 'logo1.png')}" alt="LearnerDNA - Free Student Aptitude Test" width="120" height="120"/>
         </a>
 
         <a href="${createLink(controller: 'personality', action: 'start')}"
@@ -349,7 +425,7 @@
         <ul class="footer-link-list">
             <li><a href="${createLink(uri: '/faq')}">FAQ</a></li>
             <li><a href="${createLink(uri: '/contact')}">Contact Us</a></li>
-            <li><a href="${createLink(uri: '/about')}">About StreamFit</a></li>
+            <li><a href="${createLink(uri: '/about')}">About learnerDNA</a></li>
         </ul>
     </div>
 

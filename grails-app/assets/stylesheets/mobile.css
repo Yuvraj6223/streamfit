@@ -1,25 +1,42 @@
 /*
  * Mobile-specific styles for StreamFit
  * Optimized for touch interactions and small screens
+ * Target: Students aged 14-20 on Android/iOS smartphones
+ * Focus: Thumb-zone optimization, tap accuracy, speed
  */
 
-/* Touch-friendly tap targets */
+/* Touch-friendly tap targets - WCAG AAA compliant (48x48px minimum) */
 @media (max-width: 768px) {
-    .btn,
+    .btn:not(.nav-cta),
     .option-card,
-    .test-card,
-    .share-btn {
-        min-height: 44px;
-        min-width: 44px;
+    .share-btn,
+    .gender-btn,
+    .option {
+        min-height: 48px;
+        min-width: 48px;
+        /* Increase tap area with padding */
+        padding: 16px 24px;
     }
-    
-    /* Larger touch areas for options */
-    .option-card {
-        padding: 24px;
-        margin-bottom: 16px;
+
+    /* Larger touch areas for test options - critical for accuracy */
+    .option-card,
+    .option {
+        padding: 20px 24px;
+        margin-bottom: 12px;
+        font-size: 1.05rem;
+        line-height: 1.5;
+        /* Add visual feedback on tap */
+        transition: all 0.15s ease-out;
+        -webkit-tap-highlight-color: rgba(159, 151, 243, 0.2);
     }
-    
-    /* Sticky header for test progress */
+
+    .option-card:active,
+    .option:active {
+        transform: scale(0.98);
+        background: rgba(159, 151, 243, 0.1);
+    }
+
+    /* Sticky header for test progress - always visible */
     .progress-container {
         position: sticky;
         top: 0;
@@ -27,10 +44,10 @@
         padding: 16px;
         margin: -20px -16px 20px;
         z-index: 100;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
-    
-    /* Full-width cards on mobile */
-    .test-card,
+
+    /* Full-width cards on mobile - maximize screen real estate */
     .dna-card,
     .result-card {
         border-radius: 16px;
@@ -38,37 +55,86 @@
         margin-right: -16px;
         padding: 24px 16px;
     }
-    
-    /* Optimized typography for mobile */
+
+    /* Optimized typography for mobile - readability first */
     .hero-title {
         font-size: 2rem;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
     }
-    
+
     .question-text {
-        font-size: 1.2rem;
+        font-size: 1.25rem;
+        line-height: 1.5;
+        font-weight: 600;
+        margin-bottom: 24px;
+        color: #1A1825;
     }
-    
-    /* Bottom-fixed action buttons */
+
+    /* Question number indicator - clear progress */
+    .question-number {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #8E8C9A;
+        margin-bottom: 16px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    /* Bottom-fixed action buttons - thumb zone optimized */
     .fixed-bottom-action {
         position: fixed;
         bottom: 0;
         left: 0;
         right: 0;
         padding: 16px;
+        padding-bottom: max(16px, env(safe-area-inset-bottom));
         background: white;
-        box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
         z-index: 1000;
     }
-    
-    /* Swipe indicators */
+
+    /* Navigation buttons - thumb-friendly positioning */
+    .navigation-buttons {
+        display: flex;
+        gap: 12px;
+        margin-top: 32px;
+        padding-bottom: 16px;
+    }
+
+    .navigation-buttons .btn {
+        flex: 1;
+        min-height: 52px;
+        font-size: 1.05rem;
+        font-weight: 700;
+        border-radius: 12px;
+    }
+
+    /* Primary CTA - always prominent (but not nav-cta) */
+    .btn-primary:not(.nav-cta) {
+        background: linear-gradient(135deg, #9F97F3 0%, #73D2DE 100%);
+        box-shadow: 0 4px 12px rgba(159, 151, 243, 0.3);
+    }
+
+    .btn-primary:not(.nav-cta):active {
+        transform: scale(0.97);
+    }
+
+    /* Swipe indicators - subtle guidance */
     .swipe-indicator {
         text-align: center;
         color: rgba(255, 255, 255, 0.7);
         font-size: 0.85rem;
         margin-top: 8px;
+        animation: pulse 2s ease-in-out infinite;
     }
-    
-    /* Mobile navigation */
+
+    @keyframes pulse {
+        0%, 100% { opacity: 0.7; }
+        50% { opacity: 1; }
+    }
+
+    /* Mobile navigation - bottom tab bar */
     .mobile-nav {
         position: fixed;
         bottom: 0;
@@ -78,10 +144,11 @@
         display: flex;
         justify-content: space-around;
         padding: 12px 0;
+        padding-bottom: max(12px, env(safe-area-inset-bottom));
         box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
         z-index: 1000;
     }
-    
+
     .mobile-nav-item {
         display: flex;
         flex-direction: column;
@@ -90,17 +157,24 @@
         font-size: 0.75rem;
         text-decoration: none;
         padding: 8px 16px;
+        min-width: 48px;
+        min-height: 48px;
+        transition: all 0.2s ease;
     }
-    
+
+    .mobile-nav-item:active {
+        transform: scale(0.95);
+    }
+
     .mobile-nav-item.active {
         color: #667eea;
     }
-    
+
     .mobile-nav-icon {
         font-size: 1.5rem;
         margin-bottom: 4px;
     }
-    
+
     /* Prevent zoom on input focus */
     input[type="text"],
     input[type="email"],
@@ -110,7 +184,7 @@
     textarea {
         font-size: 16px;
     }
-    
+
     /* Optimized modals for mobile */
     .modal {
         position: fixed;
@@ -123,7 +197,7 @@
         align-items: flex-end;
         z-index: 2000;
     }
-    
+
     .modal-content {
         background: white;
         border-radius: 20px 20px 0 0;
@@ -132,7 +206,7 @@
         max-height: 80vh;
         overflow-y: auto;
     }
-    
+
     /* Pull-to-refresh indicator */
     .pull-to-refresh {
         text-align: center;
@@ -140,7 +214,7 @@
         color: white;
         font-size: 0.9rem;
     }
-    
+
     /* Horizontal scroll for badges */
     .badges-grid {
         display: flex;
@@ -149,71 +223,151 @@
         padding-bottom: 12px;
         -webkit-overflow-scrolling: touch;
     }
-    
+
     .badges-grid::-webkit-scrollbar {
         display: none;
     }
-    
+
     .badge-card {
         flex: 0 0 120px;
     }
-    
-    /* Optimized share buttons for mobile */
+
+    /* Optimized share buttons for mobile - one-tap sharing */
     .share-buttons {
         display: grid;
         grid-template-columns: 1fr;
         gap: 12px;
+        margin-top: 24px;
     }
-    
+
     .share-btn {
-        padding: 16px;
-        font-size: 1rem;
+        padding: 16px 20px;
+        font-size: 1.05rem;
+        min-height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        border-radius: 12px;
+        font-weight: 700;
+        transition: all 0.2s ease;
     }
-    
+
+    .share-btn:active {
+        transform: scale(0.97);
+    }
+
+    /* Platform-specific share button colors */
+    .share-btn.whatsapp {
+        background: #25D366;
+        color: white;
+    }
+
+    .share-btn.instagram {
+        background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        color: white;
+    }
+
+    .share-btn.telegram {
+        background: #0088cc;
+        color: white;
+    }
+
+    .share-btn.native {
+        background: #f0f0f0;
+        color: #333;
+    }
+
     /* Safe area insets for notched devices */
     @supports (padding: max(0px)) {
         .mobile-container {
             padding-left: max(16px, env(safe-area-inset-left));
             padding-right: max(16px, env(safe-area-inset-right));
         }
-        
+
         .mobile-nav {
             padding-bottom: max(12px, env(safe-area-inset-bottom));
         }
     }
-    
-    /* Landscape orientation adjustments */
+
+    /* Landscape orientation adjustments - optimize for horizontal viewing */
     @media (orientation: landscape) {
         .hero-title {
             font-size: 1.75rem;
         }
-        
+
         .question-card {
             max-height: 80vh;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Reduce vertical spacing in landscape */
+        .option-card,
+        .option {
+            padding: 14px 20px;
+            margin-bottom: 8px;
         }
     }
-    
+
+    /* Visual feedback for selections - instant confirmation */
+    .option.selected,
+    .option-card.selected {
+        background: linear-gradient(135deg, rgba(159, 151, 243, 0.15) 0%, rgba(115, 210, 222, 0.15) 100%);
+        border: 2px solid #9F97F3;
+        box-shadow: 0 4px 12px rgba(159, 151, 243, 0.2);
+    }
+
+    .option.selected::after,
+    .option-card.selected::after {
+        content: '✓';
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.5rem;
+        color: #9F97F3;
+        font-weight: 700;
+    }
+
+    /* Loading states - clear feedback */
+    .loading {
+        text-align: center;
+        padding: 40px 20px;
+        font-size: 1.1rem;
+        color: #8E8C9A;
+    }
+
+    .loading::after {
+        content: '...';
+        animation: dots 1.5s steps(4, end) infinite;
+    }
+
+    @keyframes dots {
+        0%, 20% { content: '.'; }
+        40% { content: '..'; }
+        60%, 100% { content: '...'; }
+    }
+
     /* Dark mode support */
     @media (prefers-color-scheme: dark) {
         .card,
-        .test-card,
         .dna-card,
         .result-card {
             background: #1f2937;
             color: #f3f4f6;
         }
-        
+
         .option-card {
             background: #374151;
             color: #f3f4f6;
         }
-        
+
         .option-card:hover {
             background: #4b5563;
         }
     }
-    
+
     /* Reduced motion for accessibility */
     @media (prefers-reduced-motion: reduce) {
         *,
@@ -224,6 +378,91 @@
             transition-duration: 0.01ms !important;
         }
     }
+
+    /* Performance optimizations - prevent layout shifts */
+    .test-container,
+    .results-container,
+    .mobile-container {
+        contain: layout style;
+    }
+
+    /* Optimize images for mobile */
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    /* Lazy loading placeholder */
+    img[loading="lazy"] {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+    }
+
+    /* Optimize animations for 60fps */
+    .btn:not(.nav-cta),
+    .option,
+    .option-card,
+    .card {
+        will-change: transform;
+        transform: translateZ(0);
+        backface-visibility: hidden;
+    }
+
+    /* Prevent text selection during interactions */
+    .btn:not(.nav-cta),
+    .option,
+    .option-card {
+        -webkit-user-select: none;
+        user-select: none;
+    }
+
+    /* Improve scrolling performance */
+    .question-container,
+    .results-container,
+    .modal-content {
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+    }
+
+    /* Gender selection - mobile optimized */
+    .gender-options {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-top: 24px;
+    }
+
+    .gender-btn {
+        min-height: 64px;
+        padding: 20px;
+        font-size: 1.1rem;
+        border-radius: 12px;
+        background: white;
+        border: 2px solid #e0e0e0;
+        transition: all 0.2s ease;
+    }
+
+    .gender-btn:active {
+        transform: scale(0.98);
+    }
+
+    .gender-btn.selected {
+        border-color: #9F97F3;
+        background: rgba(159, 151, 243, 0.1);
+    }
+
+    .gender-icon {
+        font-size: 2rem;
+        margin-bottom: 8px;
+        display: block;
+    }
 }
 
 /* Tablet-specific styles */
@@ -231,11 +470,11 @@
     .mobile-container {
         max-width: 720px;
     }
-    
+
     .test-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-    
+
     .share-buttons {
         grid-template-columns: repeat(3, 1fr);
     }
@@ -247,10 +486,276 @@
     .install-prompt {
         display: none;
     }
-    
+
     /* Add padding for status bar */
     body {
         padding-top: env(safe-area-inset-top);
+    }
+}
+
+/* Additional mobile optimizations for small screens */
+@media (max-width: 480px) {
+    /* Further optimize for very small screens */
+    .hero-title {
+        font-size: 1.75rem;
+    }
+
+    .question-text {
+        font-size: 1.15rem;
+    }
+
+    /* Compact navigation buttons */
+    .navigation-buttons {
+        gap: 8px;
+    }
+
+    .navigation-buttons .btn {
+        padding: 14px 20px;
+        font-size: 1rem;
+    }
+
+    /* Optimize result cards for small screens */
+    .result-card {
+        padding: 20px 16px;
+        border-radius: 12px;
+    }
+
+    /* Reduce emoji sizes slightly */
+    .reward-emoji,
+    .result-emoji {
+        font-size: 4rem;
+    }
+}
+
+/* Thumb zone optimization - bottom 1/3 of screen */
+@media (max-width: 768px) {
+    /* Primary actions in thumb zone */
+    .action-buttons {
+        position: sticky;
+        bottom: 0;
+        background: white;
+        padding: 16px;
+        padding-bottom: max(16px, env(safe-area-inset-bottom));
+        margin: 0 -16px;
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
+        z-index: 50;
+    }
+
+    .action-buttons .btn {
+        width: 100%;
+        margin-bottom: 12px;
+        min-height: 52px;
+    }
+
+    .action-buttons .btn:last-child {
+        margin-bottom: 0;
+    }
+
+    /* Screenshot-friendly result cards */
+    .result-header {
+        background: linear-gradient(135deg, #9F97F3 0%, #73D2DE 100%);
+        padding: 32px 24px;
+        border-radius: 16px;
+        margin: -24px -16px 24px;
+        color: white;
+        text-align: center;
+    }
+
+    .personality-type-badge {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        padding: 8px 16px;
+        border-radius: 20px;
+        display: inline-block;
+        font-size: 0.9rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    .personality-name,
+    .result-title {
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 8px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Trait cards - vertical stack */
+    .traits-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .trait-card {
+        padding: 20px;
+        border-radius: 12px;
+        background: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+}
+
+/* Performance optimization for blob animations */
+@media (max-width: 768px) {
+    .blob {
+        will-change: transform;
+        transform: translateZ(0);
+        backface-visibility: hidden;
+        /* Reduce blur on mobile for better performance */
+        filter: blur(60px);
+    }
+
+    /* Simplify blob animations on mobile */
+    @keyframes float-blob {
+        0%, 100% {
+            transform: translate3d(0, 0, 0) rotate(0deg);
+        }
+        50% {
+            transform: translate3d(20px, 20px, 0) rotate(5deg);
+        }
+    }
+}
+
+/* Network-aware optimizations for Indian mobile networks */
+@media (max-width: 768px) {
+    /* Reduce animation complexity on slower connections */
+    @media (prefers-reduced-data: reduce) {
+        .blob {
+            display: none;
+        }
+
+        .scenery-layer {
+            background: var(--bg-warm);
+        }
+
+        * {
+            animation: none !important;
+            transition: none !important;
+        }
+    }
+
+    /* Optimize font loading */
+    body {
+        font-display: swap;
+    }
+}
+
+/* Prevent Cumulative Layout Shift (CLS) */
+@media (max-width: 768px) {
+    /* Reserve space for images to prevent layout shifts */
+    .personality-avatar,
+    .result-emoji {
+        aspect-ratio: 1 / 1;
+        width: 100%;
+        max-width: 200px;
+        height: auto;
+    }
+
+    /* Reserve space for buttons */
+    .btn:not(.nav-cta),
+    .option,
+    .option-card {
+        min-height: 48px;
+    }
+
+    /* Prevent font loading shifts */
+    body {
+        font-display: swap;
+        text-rendering: optimizeSpeed;
+    }
+
+    /* Optimize critical rendering path */
+    .test-container,
+    .results-container,
+    .personality-result-page {
+        content-visibility: auto;
+    }
+
+    /* Reduce paint areas */
+    .card,
+    .result-card {
+        contain: layout paint;
+    }
+}
+
+/* Battery-aware optimizations */
+@media (max-width: 768px) {
+    /* Reduce animations when battery is low (if supported) */
+    @media (prefers-reduced-motion: reduce) {
+        .blob {
+            animation: none;
+            opacity: 0.3;
+        }
+
+        * {
+            animation-duration: 0.01ms !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+}
+
+/* Optimize for slow 3G connections */
+@media (max-width: 768px) and (prefers-reduced-data: reduce) {
+    /* Hide decorative elements */
+    .blob,
+    .scenery-layer {
+        display: none;
+    }
+
+    /* Simplify gradients to solid colors */
+    .btn-primary {
+        background: #9F97F3 !important;
+    }
+
+    /* Remove shadows */
+    * {
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+}
+
+/* Optimize scrolling performance */
+@media (max-width: 768px) {
+    /* Enable hardware acceleration for scrolling */
+    .test-container,
+    .results-container,
+    .question-container {
+        -webkit-overflow-scrolling: touch;
+        overflow-y: auto;
+        overscroll-behavior-y: contain;
+    }
+
+    /* Optimize scroll snap */
+    .questions-container {
+        scroll-snap-type: y proximity;
+    }
+
+    .question-card {
+        scroll-snap-align: start;
+    }
+}
+
+/* Focus states for keyboard navigation */
+@media (max-width: 768px) {
+    .btn:not(.nav-cta):focus-visible,
+    .option:focus-visible,
+    .option-card:focus-visible {
+        outline: 3px solid #9F97F3;
+        outline-offset: 2px;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .btn:not(.nav-cta),
+    .option,
+    .option-card {
+        border: 2px solid currentColor;
+    }
+
+    .option.selected,
+    .option-card.selected {
+        border-width: 3px;
     }
 }
 

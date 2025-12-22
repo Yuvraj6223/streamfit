@@ -2,9 +2,12 @@
 <html lang="en">
 <head>
     <meta name="layout" content="main"/>
+    <g:set var="pageTitle" value="About LearnerDNA | Student Diagnostic Platform | Career Guidance" />
+    <g:set var="pageDescription" value="Learn about LearnerDNA's mission to help students discover their learning style and ideal career path through scientifically-validated diagnostic tests. Trusted by 10,000+ students." />
+    <g:set var="pageKeywords" value="about LearnerDNA, student diagnostic platform, career guidance platform, learning style assessment" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>About StreamFit</title>
+    <title>${pageTitle}</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
     :root {

@@ -54,6 +54,10 @@ class UrlMappings {
         "/api/diagnostic/result/$sessionId"(controller: 'diagnostic', action: 'result')
         "/api/diagnostic/history"(controller: 'diagnostic', action: 'history')
 
+        // SEO - Sitemap and Robots
+        "/sitemap.xml"(controller: 'sitemap', action: 'index')
+        "/robots.txt"(controller: 'sitemap', action: 'robots')
+
         // Error pages
         "404"(view: '/error/404')
         "500"(view: '/error/500')

@@ -607,11 +607,28 @@
             }
 
             .result-header {
+                background: linear-gradient(135deg, #9F97F3 0%, #73D2DE 100%);
                 padding: 40px 24px;
+                border-radius: 16px;
+                margin: -16px -16px 32px;
+                color: white;
+            }
+
+            .personality-type-badge {
+                background: rgba(255, 255, 255, 0.2);
+                backdrop-filter: blur(10px);
+                color: white;
+            }
+
+            .personality-name,
+            .personality-subtitle {
+                color: white !important;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             }
 
             .personality-avatar {
                 width: 150px;
+                filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
                 height: 150px;
             }
 
@@ -625,6 +642,29 @@
 
             .premium-features {
                 grid-template-columns: 1fr;
+            }
+
+            .actions-section {
+                position: sticky;
+                bottom: 0;
+                background: var(--bg-warm);
+                padding: 16px;
+                padding-bottom: max(16px, env(safe-area-inset-bottom));
+                margin: 0 -16px;
+                box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
+                z-index: 50;
+                gap: 12px;
+            }
+
+            .btn {
+                min-height: 56px;
+                font-size: 1.1rem;
+                padding: 18px 32px;
+                border-radius: 12px;
+            }
+
+            .btn:active {
+                transform: scale(0.97);
             }
         }
     </style>

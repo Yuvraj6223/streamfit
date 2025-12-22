@@ -2,9 +2,33 @@
 <html lang="en">
 <head>
     <meta name="layout" content="main"/>
+    <g:set var="pageTitle" value="${test.testName} - Free Student Diagnostic Test | LearnerDNA" />
+    <g:set var="pageDescription" value="${test.description} - Take this ${test.estimatedMinutes}-minute diagnostic test to discover insights about your learning style and cognitive strengths. Free, no signup required." />
+    <g:set var="pageKeywords" value="${test.testName}, diagnostic test, learning assessment, student test" />
+
+    <!-- Quiz Schema for Test Page -->
+    <g:set var="structuredData">
+    {
+        "@context": "https://schema.org",
+        "@type": "Quiz",
+        "name": "${test.testName}",
+        "description": "${test.description}",
+        "educationalLevel": "High School",
+        "timeRequired": "PT${test.estimatedMinutes}M",
+        "numberOfQuestions": ${test.questionCount},
+        "provider": {
+            "@type": "EducationalOrganization",
+            "name": "LearnerDNA",
+            "url": "${request.scheme}://${request.serverName}"
+        },
+        "isAccessibleForFree": true,
+        "inLanguage": "en-IN"
+    }
+    </g:set>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>${test.testName} - StreamFit</title>
+    <title>${pageTitle}</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
     :root {
@@ -120,11 +144,21 @@
         border-radius: 12px;
     }
 
+    .progress-container {
+        position: sticky;
+        top: 0;
+        background: var(--bg-warm);
+        padding: 16px 0;
+        margin: 0 0 20px;
+        z-index: 100;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
     .progress-bar {
         background: #F0F0F3;
         height: 12px;
         border-radius: 100px;
-        margin: 0 24px 30px;
+        margin: 0 24px;
         overflow: hidden;
         position: relative;
     }
@@ -134,6 +168,16 @@
         height: 100%;
         transition: width 0.5s var(--ease-smooth);
         border-radius: 100px;
+    }
+
+    .progress-text {
+        text-align: center;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--text-grey);
+        margin-top: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
     }
 
     .question-card {
@@ -336,10 +380,13 @@
             </div>
         </div>
         
-        <div class="progress-bar">
-            <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+            <div class="progress-text" id="progress-text">Question 0 of ${test.questionCount}</div>
         </div>
-        
+
         <div id="questions-container">
             <div class="loading">Loading questions...</div>
         </div>
@@ -503,6 +550,12 @@
             const answeredCount = answers.filter(function(a) { return a.answerValue !== null; }).length;
             const percentage = (answeredCount / questions.length) * 100;
             document.getElementById('progress-fill').style.width = percentage + '%';
+
+            // Update progress text
+            const progressText = document.getElementById('progress-text');
+            if (progressText) {
+                progressText.textContent = 'Question ' + (currentQuestionIndex + 1) + ' of ' + questions.length;
+            }
         }
         
         async function submitTest() {

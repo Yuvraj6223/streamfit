@@ -2,7 +2,46 @@
 <html>
 <head>
     <meta name="layout" content="main"/>
-    <title>Diagnostic Tests - StreamFit</title>
+    <g:set var="pageTitle" value="Free Diagnostic Tests for Students | Learning Style & Career Assessment | LearnerDNA" />
+    <g:set var="pageDescription" value="Take 9 free diagnostic tests to discover your learning style, cognitive strengths, and ideal career path. Scientifically validated assessments for students aged 14-20. No signup required." />
+    <g:set var="pageKeywords" value="diagnostic tests, learning style assessment, career aptitude test, cognitive assessment, student tests" />
+
+    <!-- Structured Data for Diagnostic Tests Hub -->
+    <g:set var="structuredData">
+    {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": "LearnerDNA Diagnostic Tests",
+        "description": "Comprehensive suite of 9 diagnostic tests for students",
+        "numberOfItems": 9,
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "item": {
+                    "@type": "Quiz",
+                    "name": "Exam Spirit Animal",
+                    "description": "Discover your exam-taking personality",
+                    "educationalLevel": "High School",
+                    "timeRequired": "PT5M"
+                }
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "item": {
+                    "@type": "Quiz",
+                    "name": "Cognitive Radar",
+                    "description": "Identify your cognitive strengths",
+                    "educationalLevel": "High School",
+                    "timeRequired": "PT7M"
+                }
+            }
+        ]
+    }
+    </g:set>
+
+    <title>${pageTitle}</title>
     <style>
         .diagnostic-hero {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);

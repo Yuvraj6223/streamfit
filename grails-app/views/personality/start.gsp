@@ -94,7 +94,13 @@
 
     /* --- PROGRESS BAR --- */
     .progress-container {
-        margin-bottom: 24px;
+        position: sticky;
+        top: 0;
+        background: var(--bg-warm);
+        padding: 16px 0;
+        margin: 0 0 24px;
+        z-index: 100;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
     .progress-bar {
@@ -111,6 +117,16 @@
         border-radius: 100px;
         width: 0%;
         transition: width 0.5s var(--ease-smooth);
+    }
+
+    .progress-text {
+        text-align: center;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--text-grey);
+        margin-top: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
     }
 
     .progress-text {
