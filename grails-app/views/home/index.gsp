@@ -2,725 +2,317 @@
 <html>
 <head>
     <meta name="layout" content="main"/>
-    <g:set var="pageTitle" value="Free Student Aptitude Test India | Discover Your Learning DNA | LearnerDNA" />
-    <g:set var="pageDescription" value="Discover your learning style, cognitive strengths & ideal career stream. Free aptitude test for students aged 14-20. No signup required. 10,000+ students tested. Start in 20 minutes." />
-    <g:set var="pageKeywords" value="student aptitude test, learning style test, career guidance, stream selection, cognitive assessment, free aptitude test India, personality test for students" />
-    <g:set var="pageType" value="website" />
-
-    <!-- Structured Data for Homepage -->
-    <g:set var="structuredData">
-    {
-        "@context": "https://schema.org",
-        "@type": "EducationalOrganization",
-        "name": "LearnerDNA",
-        "alternateName": "StreamFit",
-        "url": "${request.scheme}://${request.serverName}",
-        "logo": "${request.scheme}://${request.serverName}${assetPath(src: 'logo1.png')}",
-        "description": "India's leading student diagnostic platform for learning style assessment and career guidance. Free aptitude tests for students aged 14-20.",
-        "address": {
-            "@type": "PostalAddress",
-            "addressCountry": "IN"
-        },
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.7",
-            "reviewCount": "10247"
-        }
-    }
-    </g:set>
-
-    <title>${pageTitle}</title>
+    <title>What's Your Learning Superpower? 🎮 | StreamFit</title>
 </head>
 <body>
-<!-- Ambient Background Layer -->
+<!-- Ambient Background Layer - Enhanced with Neon Glow -->
 <div class="scenery-layer">
     <div class="blob b-1"></div>
     <div class="blob b-2"></div>
     <div class="blob b-3"></div>
+    <div class="particle-container" id="particles"></div>
 </div>
 
 <div class="landing-page">
 
-    <!-- 1. HERO SECTION - PROBLEM-FIRST APPROACH -->
-    <section class="hero-section">
+    <!-- 1. HERO GAME PORTAL - INSTANT ACTION -->
+    <section class="hero-section game-portal">
         <div class="mobile-container">
             <div class="hero-content">
 
-                <!-- Problem Statement with Visual -->
-                <div class="problem-visual">
-                    <div class="confused-student">
-                        <div class="student-icon">🤔</div>
-                        <!-- Helper line above chips -->
-                        <p class="confusion-normalizer">Most students are confused between at least two.</p>
-                        <div class="stream-options">
-                            <span class="stream-option science">Science?</span>
-                            <span class="stream-option commerce">Commerce?</span>
-                            <span class="stream-option arts">Arts?</span>
-                        </div>
-                    </div>
+                <!-- Live Player Counter -->
+                <div class="live-counter pulse-glow">
+                    <span class="live-dot"></span>
+                    <span class="live-text"><strong>1,247</strong> people playing right now 🔥</span>
                 </div>
 
-                <!-- Emotional Hook Headline -->
-                <h1 class="hero-title">
-                    Stuck Between Science,<br>
-                    Commerce, or Arts? Let's figure out why.
+                <!-- Big Simple Headline -->
+                <h1 class="hero-title game-title">
+                    What's Your Learning<br>
+                    Superpower? 🎮
                 </h1>
 
-                <!-- Real Talk Sub-headline -->
-                <p class="hero-subtitle">
-                    Start with 1 fun brain game. Unlock deeper insights only if you want.<br>
-                    Discover what you're built for — based on how you think, not marks or pressure.
+                <!-- One-liner Sub-headline -->
+                <p class="hero-subtitle game-subtitle">
+                    Find your brain type in 3 minutes ⚡
                 </p>
 
-                <!-- Benefit-Focused Time -->
-                <div class="time-benefit">
-                    <span class="time-icon">⏱️</span>
-                    <span class="time-text">Get your answer in just 20 minutes</span>
+                <!-- Animated Character Preview Cards -->
+                <div class="character-selection">
+                    <div class="character-card" data-character="owl">
+                        <div class="character-icon bounce-hover">
+                            <img src="${assetPath(src: 'owl.png')}" alt="Wise Owl" class="character-image"/>
+                        </div>
+                        <div class="character-name">Wise Owl</div>
+                        <div class="character-trait">Deep Thinker</div>
+                    </div>
+                    <div class="character-card" data-character="wolf">
+                        <div class="character-icon bounce-hover">
+                            <img src="${assetPath(src: 'wolf.png')}" alt="Strategic Wolf" class="character-image"/>
+                        </div>
+                        <div class="character-name">Strategic Wolf</div>
+                        <div class="character-trait">Quick Decider</div>
+                    </div>
+                    <div class="character-card" data-character="tiger">
+                        <div class="character-icon bounce-hover">
+                            <img src="${assetPath(src: 'tiger.png')}" alt="Bold Tiger" class="character-image"/>
+                        </div>
+                        <div class="character-name">Bold Tiger</div>
+                        <div class="character-trait">Creative Sprinter</div>
+                    </div>
+                    <div class="character-card" data-character="bee">
+                        <div class="character-icon bounce-hover">
+                            <img src="${assetPath(src: 'bee.png')}" alt="Disciplined Bee" class="character-image"/>
+                        </div>
+                        <div class="character-name">Disciplined Bee</div>
+                        <div class="character-trait">Steady Builder</div>
+                    </div>
                 </div>
 
-                <!-- Primary CTA -->
+                <!-- Giant Play Now Button -->
                 <a href="${createLink(controller: 'personality', action: 'start')}"
-                   class="btn btn-primary btn-hero-cta">
-                    Start Now →
+                   class="btn btn-primary btn-play-now pulse-animation"
+                   data-track="hero_play_now">
+                    <span class="btn-icon">🚀</span>
+                    <span class="btn-text">Play Now</span>
                 </a>
 
-                <!-- Empathy line below CTA -->
-                <p class="cta-empathy">You don't need to be 100% sure — just less confused than you are today.</p>
-
-                <!-- Trust Indicators - Prominent -->
-                <div class="trust-badges">
-                    <div class="trust-badge">
-                        <span class="trust-icon">✓</span>
-                        <span class="trust-text"><strong>100% Free</strong><br>No hidden costs</span>
-                    </div>
-                    <div class="trust-badge">
-                        <span class="trust-icon">✓</span>
-                        <span class="trust-text"><strong>No Signup</strong><br>Start instantly</span>
-                    </div>
-                    <div class="trust-badge">
-                        <span class="trust-icon">✓</span>
-                        <span class="trust-text"><strong>10,000+ Students</strong><br>Found clarity without switching blindly</span>
-                    </div>
-                </div>
-
-                <!-- Social Proof Snippet -->
-                <div class="quick-proof">
-                    <div class="proof-avatars">
-                        <span class="avatar">👨‍🎓</span>
-                        <span class="avatar">👩‍🎓</span>
-                        <span class="avatar">👨‍🎓</span>
-                        <span class="avatar">👩‍🎓</span>
-                    </div>
-                    <p class="proof-text">
-                        <strong>89% of students</strong> said this helped them choose the right stream with confidence
-                    </p>
+                <!-- Quick Trust Signals -->
+                <div class="quick-trust">
+                    <span class="trust-item">⚡ 3 min to start</span>
+                    <span class="trust-divider">•</span>
+                    <span class="trust-item">✅ 100% free</span>
+                    <span class="trust-divider">•</span>
+                    <span class="trust-item">🔥 12,847+ played</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 2. WHAT YOU'LL GET - OUTCOME-FOCUSED -->
-    <section class="discover-section">
+    <!-- 2. LIVE MINI-GAME DEMO - INSTANT INTERACTION -->
+    <section class="mini-game-section">
         <div class="mobile-container">
-            <h2 class="section-title">Here's What You'll Get</h2>
-            <p class="section-subtitle">Real answers to the questions keeping you up at night</p>
-            <p class="section-emotional-anchor">Clear answers when everyone around you has an opinion.</p>
+            <h2 class="section-title game-title">Try It Right Now 👇</h2>
+            <p class="section-subtitle">Answer 1 question, get a sneak peek</p>
 
-            <div class="discover-grid">
-                <div class="discover-card outcome-card">
-                    <div class="discover-icon">🎯</div>
-                    <h3>Stop Wasting Time on Wrong Subjects</h3>
-                    <p>Find out if you're built for <strong>Math, Biology, or Commerce</strong> in just 3 minutes</p>
-                    <div class="card-benefit">
-                        <span class="benefit-tag">Save 4 years of your life</span>
-                    </div>
+            <!-- Interactive Demo Question -->
+            <div class="demo-question-card">
+                <div class="demo-question-header">
+                    <span class="demo-badge">DEMO</span>
+                    <span class="demo-timer">⚡ 5 sec</span>
                 </div>
-
-                <div class="discover-card outcome-card">
-                    <div class="discover-icon">💡</div>
-                    <h3>Discover Your Natural Talents</h3>
-                    <p>See which skills come naturally to <strong>YOUR brain</strong>—Logic? Creativity? Speed? Memory?</p>
-                    <div class="card-benefit">
-                        <span class="benefit-tag">Play to your strengths</span>
-                    </div>
+                <h3 class="demo-question-text">Quick - which emoji describes you in exams?</h3>
+                <div class="demo-options">
+                    <button class="demo-option" data-result="wolf">
+                        <span class="demo-emoji">😰</span>
+                        <span class="demo-label">Stressed but focused</span>
+                    </button>
+                    <button class="demo-option" data-result="tiger">
+                        <span class="demo-emoji">😎</span>
+                        <span class="demo-label">Confident & quick</span>
+                    </button>
+                    <button class="demo-option" data-result="owl">
+                        <span class="demo-emoji">🤓</span>
+                        <span class="demo-label">Overthinking everything</span>
+                    </button>
+                    <button class="demo-option" data-result="bee">
+                        <span class="demo-emoji">😴</span>
+                        <span class="demo-label">Calm & prepared</span>
+                    </button>
                 </div>
-
-                <div class="discover-card outcome-card">
-                    <div class="discover-icon">🚀</div>
-                    <h3>Get Your Top 3 Career Matches</h3>
-                    <p><strong>IIT-JEE? NEET? Law? Design? Business?</strong> We'll tell you which fits YOUR mind</p>
-                    <div class="card-benefit">
-                        <span class="benefit-tag">Make the right choice</span>
-                    </div>
-                </div>
-
-                <div class="discover-card outcome-card">
-                    <div class="discover-icon">📊</div>
-                    <h3>Prove You're Right (To Your Parents)</h3>
-                    <p>Get a shareable report with <strong>science-backed reasoning</strong> they'll actually respect</p>
-                    <div class="card-benefit">
-                        <span class="benefit-tag">Get my proof →</span>
+                <div class="demo-result" id="demoResult" style="display: none;">
+                    <div class="demo-result-content">
+                        <div class="demo-result-icon" id="demoResultIcon">🐺</div>
+                        <p class="demo-result-text" id="demoResultText">Hmm... you might be a Strategic Wolf!</p>
+                        <a href="${createLink(controller: 'personality', action: 'start')}"
+                           class="btn btn-primary btn-demo-cta">
+                            Find Out For Sure 🎯
+                        </a>
                     </div>
                 </div>
             </div>
-
-            <!-- Scroll Navigation -->
-            <div class="scroll-navigation">
-                <button class="scroll-arrow scroll-arrow-left" aria-label="Previous">‹</button>
-                <div class="scroll-dots">
-                    <span class="scroll-dot active"></span>
-                    <span class="scroll-dot"></span>
-                    <span class="scroll-dot"></span>
-                    <span class="scroll-dot"></span>
-                </div>
-                <button class="scroll-arrow scroll-arrow-right" aria-label="Next">›</button>
-            </div>
-
-            <p class="scroll-hint">Swipe to see more</p>
         </div>
     </section>
 
-    <!-- 3. PROGRESSIVE REVEAL - GAMIFIED APPROACH -->
-    <section class="tests-section">
+    <!-- 3. QUICK VISUAL RESULTS SHOWCASE -->
+    <section class="results-showcase-section">
         <div class="mobile-container">
-            <h2 class="section-title">How It Works</h2>
-            <p class="section-subtitle">Start simple, unlock everything</p>
+            <h2 class="section-title">What You'll Unlock 🎁</h2>
 
-            <!-- STEP 1: The Hook - Start Here -->
-            <div class="journey-step step-primary">
-                <div class="step-badge">START HERE</div>
-                <div class="step-content">
-                    <div class="step-visual">
-                        <div class="big-icon">🦉</div>
-                        <div class="unlock-indicator">
-                            <span class="unlock-text">Unlocked & Ready</span>
-                        </div>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">🎯</div>
+                    <div class="benefit-text">Find YOUR subjects in 3 min</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🧠</div>
+                    <div class="benefit-text">How your brain works</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🚀</div>
+                    <div class="benefit-text">Top 3 career matches</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">📊</div>
+                    <div class="benefit-text">Proof for your parents</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. GAME LEVELS - HOW IT WORKS -->
+    <section class="game-levels-section">
+        <div class="mobile-container">
+            <h2 class="section-title">3 Levels to Your Superpower 🎮</h2>
+
+            <div class="game-levels">
+                <!-- Level 1 -->
+                <div class="game-level level-unlocked">
+                    <div class="level-number">
+                        <span class="level-badge">LEVEL 1</span>
+                        <span class="level-status unlocked">🔓 UNLOCKED</span>
                     </div>
-                    <div class="step-info">
-                        <h3>Start With ONE Quick Test (3 Minutes)</h3>
-                        <p class="step-description">
-                            Discover your <strong>Learning Animal</strong> — Are you an Owl, Wolf, Bee, or Tiger?
-                        </p>
-                        <div class="step-benefit">
-                            <span class="benefit-pill">✓ Instant results</span>
-                            <span class="benefit-pill">✓ Shareable</span>
-                            <span class="benefit-pill">✓ Fun AF</span>
-                        </div>
+                    <div class="level-content">
+                        <div class="level-icon">🦉</div>
+                        <h3 class="level-title">Find Your Animal</h3>
+                        <p class="level-desc">3 min • Instant results</p>
+                    </div>
+                </div>
+
+                <!-- Level 2 -->
+                <div class="game-level level-locked">
+                    <div class="level-number">
+                        <span class="level-badge">LEVEL 2</span>
+                        <span class="level-status locked">🔒 UNLOCK NEXT</span>
+                    </div>
+                    <div class="level-content">
+                        <div class="level-icon">🧠</div>
+                        <h3 class="level-title">Brain Superpowers</h3>
+                        <p class="level-desc">+8 mini-games (optional)</p>
+                    </div>
+                </div>
+
+                <!-- Level 3 -->
+                <div class="game-level level-locked">
+                    <div class="level-number">
+                        <span class="level-badge">BOSS LEVEL</span>
+                        <span class="level-status locked">🏆 FINAL REWARD</span>
+                    </div>
+                    <div class="level-content">
+                        <div class="level-icon">📊</div>
+                        <h3 class="level-title">Your Complete Profile</h3>
+                        <p class="level-desc">Stream match + career paths</p>
                     </div>
                 </div>
             </div>
 
-            <!-- STEP 2: The Unlock -->
-            <div class="journey-step step-secondary">
-                <div class="step-badge">THEN UNLOCK</div>
-                <div class="step-content">
-                    <div class="step-visual">
-                        <div class="treasure-chest">
-                            <div class="chest-icon">🎁</div>
-                            <div class="chest-badge">+8 More</div>
-                        </div>
-                    </div>
-                    <div class="step-info">
-                        <h3>Unlock More Insights (Only If You Want)</h3>
-                        <p class="step-description">
-                            Each test reveals something new: Your <strong>cognitive strengths, work style, career matches</strong>, and more
-                        </p>
-                        <p class="step-micro-reassurance">Most students stop after 2–3 tests and still get clarity.</p>
-                        <div class="mini-tests-preview">
-                            <span class="mini-test">🧠 Brain Radar</span>
-                            <span class="mini-test">⚡ Focus Power</span>
-                            <span class="mini-test">🎯 Career Match</span>
-                            <span class="mini-test">+5 more</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- STEP 3: The Reward -->
-            <div class="journey-step step-reward">
-                <div class="step-badge">GET RESULTS</div>
-                <div class="step-content">
-                    <div class="step-visual">
-                        <div class="results-preview">
-                            <div class="result-icon">📊</div>
-                            <div class="result-sparkle">✨</div>
-                        </div>
-                    </div>
-                    <div class="step-info">
-                        <h3>Get Your Complete Profile</h3>
-                        <p class="step-description">
-                            Full report with your <strong>top 3 stream recommendations, cognitive chart, and personalized study tips</strong>
-                        </p>
-                        <div class="step-benefit">
-                            <span class="benefit-pill gold">🏆 Downloadable PDF</span>
-                            <span class="benefit-pill gold">📱 Share on Social</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Total Time - Reframed as Benefit -->
-            <div class="time-commitment">
-                <div class="time-box">
-                    <span class="time-number">20</span>
-                    <span class="time-label">minutes total</span>
-                </div>
-                <p class="time-message">
-                    That's less time than scrolling Instagram. But this could change your next 4 years.
+            <!-- Time Reframe -->
+            <div class="time-reframe">
+                <p class="time-text">
+                    <span class="time-highlight">Just 3 minutes to start!</span><br>
+                    Most students stop after 2-3 tests and that's totally fine! 😊
                 </p>
             </div>
         </div>
     </section>
 
-    <!-- 4. FEAR-ADDRESSING STORY SECTION -->
-    <section class="story-section">
-        <div class="mobile-container">
-            <div class="story-header">
-                <h2 class="section-title">Don't Be That Person</h2>
-                <p class="story-subtitle">You know the one...</p>
-            </div>
-
-            <div class="story-grid">
-                <!-- The Mistake -->
-                <div class="story-card mistake-card">
-                    <div class="story-emoji">😰</div>
-                    <h3>Picked Science Because "Good Students Do Science"</h3>
-                    <p>Spent 2 years struggling with Physics and Chemistry, hating every minute</p>
-                    <div class="story-outcome bad">
-                        <span class="outcome-label">Result:</span>
-                        <span class="outcome-text">Dropped out, lost 2 years, parents disappointed</span>
-                    </div>
-                </div>
-
-                <!-- The Alternative -->
-                <div class="story-card success-card">
-                    <div class="story-emoji">🎯</div>
-                    <h3>Took This Test, Found Out They're a "Creative Wolf"</h3>
-                    <p>Switched to Design stream, discovered natural talent for visual thinking</p>
-                    <div class="story-outcome good">
-                        <span class="outcome-label">Result:</span>
-                        <span class="outcome-text">Top of class, loving life, got into NID</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- The Urgency Message -->
-            <div class="urgency-box">
-                <div class="urgency-icon">⚠️</div>
-                <h3>Every Day You Wait, a Decision Is Being Made for You</h3>
-                <p>
-                    Whether you realize it or not, every day you spend in the wrong stream is a day you can't get back.
-                    <strong>20 minutes now could save you 4 years of regret.</strong>
-                </p>
-                <a href="${createLink(controller: 'personality', action: 'start')}" class="btn btn-primary btn-urgency">
-                    Start Test →
-                </a>
-            </div>
-
-            <!-- The Journey -->
-            <div class="journey-preview">
-                <h3 class="journey-title">Here's What Happens When You Click That Button:</h3>
-
-                <div class="journey-timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-dot">1</div>
-                        <div class="timeline-content">
-                            <h4>Answer 12 Fun Questions (3 min)</h4>
-                            <p>No studying, no stress. Just honest answers about how you think</p>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-dot">2</div>
-                        <div class="timeline-content">
-                            <h4>Get Your Spirit Animal + Superpowers</h4>
-                            <p>Owl? Wolf? Bee? Tiger? Find out what your brain is built for</p>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-dot">3</div>
-                        <div class="timeline-content">
-                            <h4>See Which Stream Matches YOUR Brain</h4>
-                            <p>Engineering? Medicine? Law? Design? Business? Get your top 3 matches</p>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-dot">4</div>
-                        <div class="timeline-content">
-                            <h4>Save & Share Your Profile 📱</h4>
-                            <p>Keep it private or show the world — your choice</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 5. UNEXPECTED RESULTS - REAL SOCIAL PROOF -->
-    <section class="results-section">
-        <div class="mobile-container">
-            <!-- Section Header with Icon -->
-            <div class="testimonials-header">
-                <div class="testimonials-icon">💬</div>
-                <p class="testimonials-label">TESTIMONIALS</p>
-                <h2 class="section-title">See what others have to say</h2>
-            </div>
-
-            <div class="results-grid">
-                <!-- Testimonial Card 1 -->
-                <div class="testimonial-card">
-                    <div class="testimonial-avatar">
-                        <img src="https://ui-avatars.com/api/?name=Aditya&background=3A6D89&color=fff&size=60&rounded=true" alt="Aditya">
-                        <div class="verified-badge">✓</div>
-                    </div>
-                    <div class="testimonial-header-info">
-                        <h4 class="testimonial-name">Aditya</h4>
-                        <p class="testimonial-type">THE WISE OWL</p>
-                    </div>
-                    <p class="testimonial-text">
-                        "I thought I was a <strong>Science person</strong> 🧪 because I'm good at math. But turns out my brain is built for <strong>arguments and logic patterns</strong> 🦉, not formulas. Now I'm crushing it in debate club!"
-                    </p>
-                    <p class="testimonial-location">- Aditya, 17, Mumbai</p>
-                </div>
-
-                <!-- Testimonial Card 2 -->
-                <div class="testimonial-card">
-                    <div class="testimonial-avatar">
-                        <img src="https://ui-avatars.com/api/?name=Kavya&background=82A6C9&color=fff&size=60&rounded=true" alt="Kavya">
-                        <div class="verified-badge">✓</div>
-                    </div>
-                    <div class="testimonial-header-info">
-                        <h4 class="testimonial-name">Kavya</h4>
-                        <p class="testimonial-type">THE BOLD TIGER</p>
-                    </div>
-                    <p class="testimonial-text">
-                        "My parents wanted me in <strong>CA/Commerce</strong> 💼. But the test showed I'm literally a <strong>creative sprinter</strong> 🐯 — I work in bursts of intense creativity. Switched to NID prep and I've never been happier."
-                    </p>
-                    <p class="testimonial-location">- Kavya, 18, Bangalore</p>
-                </div>
-
-                <!-- Testimonial Card 3 -->
-                <div class="testimonial-card">
-                    <div class="testimonial-avatar">
-                        <img src="https://ui-avatars.com/api/?name=Rohan&background=113D67&color=fff&size=60&rounded=true" alt="Rohan">
-                        <div class="verified-badge">✓</div>
-                    </div>
-                    <div class="testimonial-header-info">
-                        <h4 class="testimonial-name">Rohan</h4>
-                        <p class="testimonial-type">THE STRATEGIC WOLF</p>
-                    </div>
-                    <p class="testimonial-text">
-                        "I thought my 'gut feeling' in exams was <strong>just luck</strong> 🎲. Turns out it's a <strong>cognitive advantage</strong> 🐺 — pattern recognition under pressure. Perfect for diagnostics. Changed my whole study strategy."
-                    </p>
-                    <p class="testimonial-location">- Rohan, 17, Delhi</p>
-                </div>
-
-                <!-- Testimonial Card 4 -->
-                <div class="testimonial-card">
-                    <div class="testimonial-avatar">
-                        <img src="https://ui-avatars.com/api/?name=Priya&background=A8DADC&color=333&size=60&rounded=true" alt="Priya">
-                        <div class="verified-badge">✓</div>
-                    </div>
-                    <div class="testimonial-header-info">
-                        <h4 class="testimonial-name">Priya</h4>
-                        <p class="testimonial-type">THE DISCIPLINED BEE</p>
-                    </div>
-                    <p class="testimonial-text">
-                        "Everyone said I was <strong>'too creative' for tech</strong> 🎨. But the test revealed I have <strong>structured creativity</strong> 🐝 — perfect for UI/UX and front-end dev. Now I'm building apps and loving it."
-                    </p>
-                    <p class="testimonial-location">- Priya, 15, Pune</p>
-                </div>
-
-                <!-- Testimonial Card 5 -->
-                <div class="testimonial-card">
-                    <div class="testimonial-avatar">
-                        <img src="https://ui-avatars.com/api/?name=Meera&background=2B5F7E&color=fff&size=60&rounded=true" alt="Meera">
-                        <div class="verified-badge">✓</div>
-                    </div>
-                    <div class="testimonial-header-info">
-                        <h4 class="testimonial-name">Meera</h4>
-                        <p class="testimonial-type">THE CREATIVE EXPLORER</p>
-                    </div>
-                    <p class="testimonial-text">
-                        "I thought I was <strong>just confused about everything</strong> 😕. But the test showed I'm actually a <strong>multi-talented explorer</strong> 🌟 — I thrive when I combine creativity with purpose. Found my path in Psychology + Design."
-                    </p>
-                    <p class="testimonial-location">- Meera, 17, Chennai</p>
-                </div>
-            </div>
-            <p class="scroll-hint">Swipe to see more</p>
-        </div>
-    </section>
-
-    <!-- 6. CREDIBLE SOCIAL PROOF WITH URGENCY -->
+    <!-- 5. SOCIAL PROOF - GAMING ACHIEVEMENT STYLE -->
     <section class="social-proof-section">
         <div class="mobile-container">
-            <!-- Reframed Stats with Context -->
-            <div class="stats-bar">
+            <div class="achievement-header">
+                <h2 class="section-title">🏆 12,847 Superpowers Unlocked This Month</h2>
+            </div>
+
+            <!-- Instagram-style Feed -->
+            <div class="social-feed">
+                <div class="feed-card">
+                    <div class="feed-header">
+                        <div class="feed-avatar">
+                            <img src="${assetPath(src: 'wolf.png')}" alt="Wolf" class="feed-avatar-image"/>
+                        </div>
+                        <div class="feed-info">
+                            <div class="feed-name">Rohan</div>
+                            <div class="feed-time">just discovered he's a Strategic Wolf</div>
+                        </div>
+                    </div>
+                    <div class="feed-quote">"Yo this test is actually legit 😳"</div>
+                </div>
+
+                <div class="feed-card">
+                    <div class="feed-header">
+                        <div class="feed-avatar">
+                            <img src="${assetPath(src: 'tiger.png')}" alt="Tiger" class="feed-avatar-image"/>
+                        </div>
+                        <div class="feed-info">
+                            <div class="feed-name">Kavya</div>
+                            <div class="feed-time">unlocked Bold Tiger 2 min ago</div>
+                        </div>
+                    </div>
+                    <div class="feed-quote">"Finally makes sense why I hate slow classes 🐯"</div>
+                </div>
+
+                <div class="feed-card">
+                    <div class="feed-header">
+                        <div class="feed-avatar">
+                            <img src="${assetPath(src: 'owl.png')}" alt="Owl" class="feed-avatar-image"/>
+                        </div>
+                        <div class="feed-info">
+                            <div class="feed-name">Aditya</div>
+                            <div class="feed-time">became a Wise Owl 5 min ago</div>
+                        </div>
+                    </div>
+                    <div class="feed-quote">"I'm an Owl apparently... explains SO much"</div>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="quick-stats">
                 <div class="stat-item">
-                    <div class="stat-icon">👥</div>
-                    <div class="stat-number-large">12,847+</div>
-                    <div class="stat-label">Students Discovered Their Stream</div>
-                    <div class="stat-context">Join them today</div>
-                </div>
-                <div class="stat-item highlight-stat">
-                    <div class="stat-icon">🎯</div>
-                    <div class="stat-number-large">9/10</div>
-                    <div class="stat-label">Say This Was More Helpful Than Their School Counselor</div>
-                    <div class="stat-context">Based on 2,400+ surveys</div>
+                    <div class="stat-number">9/10</div>
+                    <div class="stat-label">say this beats asking 10 friends</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-icon">⭐</div>
-                    <div class="stat-number-large">4.8/5</div>
-                    <div class="stat-label">Average Rating</div>
-                    <div class="stat-context">
-                        <a href="#" class="stat-link">See Google Reviews →</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Urgency Signal -->
-            <div class="urgency-signal">
-                <div class="urgency-pulse"></div>
-                <span class="urgency-text">
-                    <strong>1,247 students</strong> took this test this week
-                </span>
-            </div>
-
-            <!-- Trust Badges / Featured In -->
-            <div class="trust-section">
-                <h3 class="trust-title">As Featured In</h3>
-                <div class="trust-logos">
-                    <div class="trust-logo-item">
-                        <div class="logo-placeholder">🎓</div>
-                        <span class="logo-text">Top Schools</span>
-                    </div>
-                    <div class="trust-logo-item">
-                        <div class="logo-placeholder">📰</div>
-                        <span class="logo-text">Education Media</span>
-                    </div>
-                    <div class="trust-logo-item">
-                        <div class="logo-placeholder">🏆</div>
-                        <span class="logo-text">EdTech Awards</span>
-                    </div>
-                    <div class="trust-logo-item">
-                        <div class="logo-placeholder">💼</div>
-                        <span class="logo-text">Career Counselors</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- BEFORE/AFTER TRANSFORMATIONS -->
-            <div class="transformation-section">
-                <h3 class="transformation-title">Real Transformations</h3>
-                <p class="transformation-subtitle">See how students went from confused to confident</p>
-
-                <div class="transformations-grid">
-                    <!-- Transformation 1 -->
-                    <div class="transformation-card">
-                        <div class="transformation-before">
-                            <div class="transform-label before-label">BEFORE</div>
-                            <div class="transform-emoji">😰</div>
-                            <p>"Confused about Science vs Commerce. Parents pushing for Engineering but I hate Physics."</p>
-                            <div class="transform-student">Aditya, 17</div>
-                        </div>
-                        <div class="transformation-arrow">→</div>
-                        <div class="transformation-after">
-                            <div class="transform-label after-label">AFTER</div>
-                            <div class="transform-emoji">🎯</div>
-                            <p>"Discovered I'm a Strategic Owl. Chose CA based on my analytical strengths. Now top of my class."</p>
-                            <div class="transform-result">✓ Confidently chose Commerce</div>
-                        </div>
-                    </div>
-
-                    <!-- Transformation 2 -->
-                    <div class="transformation-card">
-                        <div class="transformation-before">
-                            <div class="transform-label before-label">BEFORE</div>
-                            <div class="transform-emoji">😕</div>
-                            <p>"Everyone said I should do Science because I'm 'smart'. But I was miserable studying for JEE."</p>
-                            <div class="transform-student">Priya, 18</div>
-                        </div>
-                        <div class="transformation-arrow">→</div>
-                        <div class="transformation-after">
-                            <div class="transform-label after-label">AFTER</div>
-                            <div class="transform-emoji">🚀</div>
-                            <p>"Test showed I'm a Creative Tiger. Switched to Design. Got into NID. Finally doing what I love."</p>
-                            <div class="transform-result">✓ Switched streams & thriving</div>
-                        </div>
-                    </div>
-
-                    <!-- Transformation 3 -->
-                    <div class="transformation-card">
-                        <div class="transformation-before">
-                            <div class="transform-label before-label">BEFORE</div>
-                            <div class="transform-emoji">😣</div>
-                            <p>"Failing in Bio. Thought I wasn't cut out for Medical. Parents disappointed."</p>
-                            <div class="transform-student">Rohan, 17</div>
-                        </div>
-                        <div class="transformation-arrow">→</div>
-                        <div class="transformation-after">
-                            <div class="transform-label after-label">AFTER</div>
-                            <div class="transform-emoji">💪</div>
-                            <p>"Turns out I'm a Logical Wolf — better at Physics/Math. Switched to Engineering. Grades skyrocketed."</p>
-                            <div class="transform-result">✓ Found the right path</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- INSTAGRAM SOCIAL PROOF -->
-            <div class="instagram-proof-section">
-                <h3 class="instagram-title">Students Are Sharing Their Results</h3>
-                <p class="sharing-use-case">Most students share their results to explain their choice to parents.</p>
-                <div class="instagram-stat">
-                    <span class="instagram-icon">📱</span>
-                    <span class="instagram-text"><strong>2,000+ students</strong> shared their results on Instagram this month</span>
-                </div>
-
-                <div class="instagram-grid">
-                    <!-- Instagram Post 1 -->
-                    <div class="instagram-post">
-                        <div class="insta-header">
-                            <div class="insta-avatar">👨‍🎓</div>
-                            <div class="insta-username">@arjun_studies</div>
-                        </div>
-                        <div class="insta-image">
-                            <div class="result-screenshot">
-                                <div class="screenshot-badge">🦉</div>
-                                <div class="screenshot-text">Wise Owl</div>
-                            </div>
-                        </div>
-                        <div class="insta-caption">
-                            "Yo this test is actually legit 😳 I'm an Owl apparently... explains SO much"
-                        </div>
-                        <div class="insta-likes">❤️ 247 likes</div>
-                    </div>
-
-                    <!-- Instagram Post 2 -->
-                    <div class="instagram-post">
-                        <div class="insta-header">
-                            <div class="insta-avatar">👩‍🎓</div>
-                            <div class="insta-username">@kavya.learns</div>
-                        </div>
-                        <div class="insta-image">
-                            <div class="result-screenshot">
-                                <div class="screenshot-badge">🐯</div>
-                                <div class="screenshot-text">Bold Tiger</div>
-                            </div>
-                        </div>
-                        <div class="insta-caption">
-                            "Finally makes sense why I hate slow-paced classes 🐯 Tiger gang wya?"
-                        </div>
-                        <div class="insta-likes">❤️ 189 likes</div>
-                    </div>
-
-                    <!-- Instagram Post 3 -->
-                    <div class="instagram-post">
-                        <div class="insta-header">
-                            <div class="insta-avatar">👨‍💻</div>
-                            <div class="insta-username">@tech_rohan</div>
-                        </div>
-                        <div class="insta-image">
-                            <div class="result-screenshot">
-                                <div class="screenshot-badge">🐺</div>
-                                <div class="screenshot-text">Strategic Wolf</div>
-                            </div>
-                        </div>
-                        <div class="insta-caption">
-                            "Bro this cognitive chart is WILD 📊 sharing with the squad"
-                        </div>
-                        <div class="insta-likes">❤️ 312 likes</div>
-                    </div>
-
-                    <!-- Instagram Post 4 -->
-                    <div class="instagram-post">
-                        <div class="insta-header">
-                            <div class="insta-avatar">👩‍💼</div>
-                            <div class="insta-username">@priya.creates</div>
-                        </div>
-                        <div class="insta-image">
-                            <div class="result-screenshot">
-                                <div class="screenshot-badge">🐝</div>
-                                <div class="screenshot-text">Disciplined Bee</div>
-                            </div>
-                        </div>
-                        <div class="insta-caption">
-                            "Bee personality = perfect for design?? Mind blown 🤯 link in bio"
-                        </div>
-                        <div class="insta-likes">❤️ 201 likes</div>
-                    </div>
-                </div>
-
-                <div class="instagram-cta">
-                    <p>Take the test and share YOUR result</p>
-                    <a href="${createLink(controller: 'personality', action: 'start')}" class="btn btn-primary btn-instagram">
-                        Get My Result →
-                    </a>
+                    <div class="stat-number">2,000+</div>
+                    <div class="stat-label">shared on Instagram this month</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 7. FINAL CTA - URGENT CLOSE -->
-    <section class="final-cta-section">
+
+
+    <!-- 6. FINAL CTA - GAME-STYLE URGENT -->
+    <section class="final-cta-section game-cta">
         <div class="mobile-container">
             <div class="final-cta-content">
-                <!-- Urgency Badge -->
-                <div class="final-urgency-badge">
-                    <span class="urgency-pulse-dot"></span>
-                    <span>1,247 students took this test this week</span>
+                <!-- Countdown Timer -->
+                <div class="live-activity">
+                    <span class="activity-pulse"></span>
+                    <span class="activity-text">2,000 students playing RIGHT NOW</span>
                 </div>
 
-                <!-- Direct Question Headline -->
-                <h2 class="final-headline">Still Confused About Your Stream?</h2>
+                <!-- Direct Headline -->
+                <h2 class="final-headline">Your Friends Are Already Playing</h2>
+                <p class="final-subtext">Don't Get Left Behind</p>
 
-                <!-- Empathy Line -->
-                <p class="final-empathy">
-                    You don't need to be 100% sure — just less confused than you are today.
-                </p>
-
-                <!-- Value Proposition -->
-                <p class="final-subtext">
-                    In 20 minutes, you'll have <strong>more clarity than 10 career counseling sessions.</strong>
-                </p>
-
-                <!-- Primary CTA -->
+                <!-- Giant Play Button -->
                 <a href="${createLink(controller: 'personality', action: 'start')}"
-                   class="btn btn-primary btn-final-cta">
-                    Start Test →
+                   class="btn btn-primary btn-final-play mega-button"
+                   data-track="final_play_now">
+                    <span class="mega-icon">🚀</span>
+                    <span class="mega-text">PLAY NOW</span>
                 </a>
 
-                <!-- Parent Reassurance -->
-                <p class="parent-reassurance">Includes a shareable report you can show your parents.</p>
+                <!-- Quick Reassurance -->
+                <p class="final-reassurance">
+                    Start playing in 10 seconds ⚡ • No studying needed - just be yourself
+                </p>
 
-                <!-- Trust Signals Below CTA -->
-                <div class="final-trust-signals">
-                    <div class="trust-signal-item">
-                        <span class="signal-icon">⚡</span>
-                        <span class="signal-text">Only takes 20 minutes</span>
-                    </div>
-                    <div class="trust-signal-item">
-                        <span class="signal-icon">✅</span>
-                        <span class="signal-text">100% free, no signup</span>
-                    </div>
-                    <div class="trust-signal-item">
-                        <span class="signal-icon">🔥</span>
-                        <span class="signal-text">12,847+ students tested</span>
-                    </div>
-                </div>
-
-                <!-- Risk Reversal -->
-                <div class="risk-reversal">
-                    <p>Don't like your results? <strong>Retake any test anytime.</strong> No questions asked.</p>
-                </div>
-
-                <!-- Final Objection Handler -->
-                <div class="final-objection">
-                    <p class="objection-text">
-                        "I'll do it later" = You won't. <strong>It takes 20 minutes.</strong> You've already spent 5 minutes reading this page.
-                    </p>
+                <!-- Trust Pills -->
+                <div class="trust-pills">
+                    <span class="trust-pill">✅ Free forever</span>
+                    <span class="trust-pill">⚡ 3 min to start</span>
+                    <span class="trust-pill">🔥 12,847+ played</span>
                 </div>
             </div>
         </div>
@@ -739,55 +331,71 @@
 
 /* StreamFit Color Palette - Soft Pop Mental Wellness Theme */
 :root {
-    /* BRAND PALETTE - SOFT POP */
-    --bg-warm: #FDFCF8;
-    --text-dark: #1A1825;
-    --text-grey: #8E8C9A;
+    /* BRAND PALETTE - VIBRANT GAMIFIED THEME (From Reference Image) */
+    --bg-warm: #F5F3FF;  /* Light purple background */
+    --text-dark: #2D2A45;  /* Deep purple-gray for text */
+    --text-grey: #7B7896;  /* Medium purple-gray */
 
-    /* VITAMIN COLORS - Updated for better visibility */
-    --pop-coral: #FF6B53;  /* Darker coral for better contrast */
-    --pop-purple: #9F97F3;
-    --pop-teal: #3A7CA5;  /* Ocean blue for primary buttons */
-    --pop-yellow: #FFD86D;
-    --pop-cream: #FFF4F0;
+    /* PRIMARY COLORS - Vibrant Gamified Palette */
+    --pop-purple: #8B7FE8;  /* Main purple */
+    --pop-purple-light: #A89FF3;  /* Light purple */
+    --pop-purple-lighter: #C4B5FD;  /* Lighter purple */
+    --pop-cyan: #5FE3D0;  /* Bright cyan/turquoise */
+    --pop-cyan-light: #7FDBDA;  /* Light cyan */
+    --pop-cyan-lighter: #A0E7E5;  /* Lighter cyan */
+    --pop-pink: #FFB4D6;  /* Soft pink */
+    --pop-pink-light: #FFC4E1;  /* Light pink */
+    --pop-yellow: #FFE17B;  /* Pastel yellow */
+    --pop-yellow-light: #FFEB99;  /* Light yellow */
+    --pop-coral: #FF9AB8;  /* Coral pink */
+
+    /* GRADIENT BACKGROUNDS */
+    --gradient-purple-cyan: linear-gradient(135deg, #8B7FE8 0%, #5FE3D0 100%);
+    --gradient-pink-purple: linear-gradient(135deg, #FFB4D6 0%, #A89FF3 100%);
+    --gradient-cyan-yellow: linear-gradient(135deg, #5FE3D0 0%, #FFE17B 100%);
+    --gradient-purple-pink: linear-gradient(135deg, #8B7FE8 0%, #FFB4D6 100%);
 
     /* SURFACES */
-    --card-base: #FFFFFF;
+    --card-base: rgba(255, 255, 255, 0.85);  /* Semi-transparent white */
+    --card-glass: rgba(255, 255, 255, 0.25);  /* Glassmorphism */
 
-    /* CLAYMORPHISM SHADOWS */
-    --shadow-soft: 0 12px 30px -10px rgba(28, 26, 40, 0.04);
-    --shadow-float: 0 20px 40px -12px rgba(159, 151, 243, 0.2);
+    /* GLASSMORPHISM SHADOWS */
+    --shadow-soft: 0 12px 30px -10px rgba(139, 127, 232, 0.15);
+    --shadow-float: 0 20px 40px -12px rgba(139, 127, 232, 0.25);
+    --shadow-glow-purple: 0 8px 32px rgba(139, 127, 232, 0.3);
+    --shadow-glow-cyan: 0 8px 32px rgba(95, 227, 208, 0.3);
+    --shadow-glow-pink: 0 8px 32px rgba(255, 180, 214, 0.3);
 
     /* ANIMATION */
     --ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
     --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
 
     /* Legacy mappings for compatibility */
-    --navy-blue: #9F97F3;      /* Maps to pop-purple */
-    --bright-blue: #73D2DE;    /* Maps to pop-teal */
-    --orange: #FF6B53;         /* Maps to pop-coral - darker for visibility */
-    --gold: #FFD86D;           /* Maps to pop-yellow */
+    --navy-blue: #8B7FE8;      /* Maps to pop-purple */
+    --bright-blue: #5FE3D0;    /* Maps to pop-cyan */
+    --orange: #FF9AB8;         /* Maps to pop-coral */
+    --gold: #FFE17B;           /* Maps to pop-yellow */
     --white: #FFFFFF;
-    --light-gray: #FDFCF8;     /* Maps to bg-warm */
-    --light-blue: #FFF4F0;     /* Maps to pop-cream */
-    --light-orange: #FFF4F0;   /* Maps to pop-cream */
-    --light-gold: #FFF4F0;     /* Maps to pop-cream */
-    --dark-navy: #1A1825;      /* Maps to text-dark */
-    --text-dark-navy: #1A1825; /* Maps to text-dark */
-    --text-medium-gray: #8E8C9A; /* Maps to text-grey */
-    --text-light-gray: #8E8C9A; /* Maps to text-grey */
+    --light-gray: #F5F3FF;     /* Maps to bg-warm */
+    --light-blue: #E8E4FF;     /* Light purple tint */
+    --light-orange: #FFE8F0;   /* Light pink tint */
+    --light-gold: #FFF8E8;     /* Light yellow tint */
+    --dark-navy: #2D2A45;      /* Maps to text-dark */
+    --text-dark-navy: #2D2A45; /* Maps to text-dark */
+    --text-medium-gray: #7B7896; /* Maps to text-grey */
+    --text-light-gray: #A89FF3; /* Light purple-gray */
     --text-white: #FFFFFF;
-    --border-gray: rgba(142, 140, 154, 0.2);
-    --success-green: #73D2DE;  /* Maps to pop-teal */
-    --success-green-light: rgba(115, 210, 222, 0.15);
-    --success-green-dark: #2A9BA8;
-    --success-green-bg: rgba(115, 210, 222, 0.05);
-    --error-red: #FF6B53;      /* Maps to pop-coral - darker for visibility */
-    --error-red-light: rgba(255, 107, 83, 0.15);
-    --error-red-dark: #D9534F;
-    --footer-bg: #1A1825;      /* Maps to text-dark */
-    --orange-hover: #FF5239;   /* Even darker on hover */
-    --success-dark: #2A9BA8;
+    --border-gray: rgba(139, 127, 232, 0.2);
+    --success-green: #5FE3D0;  /* Maps to pop-cyan */
+    --success-green-light: rgba(95, 227, 208, 0.15);
+    --success-green-dark: #3ABFA8;
+    --success-green-bg: rgba(95, 227, 208, 0.05);
+    --error-red: #FF9AB8;      /* Maps to pop-coral */
+    --error-red-light: rgba(255, 154, 184, 0.15);
+    --error-red-dark: #FF7BA0;
+    --footer-bg: #2D2A45;      /* Maps to text-dark */
+    --orange-hover: #FF7BA0;   /* Darker coral on hover */
+    --success-dark: #3ABFA8;
 
     /* Typography */
     --font-display: 'Plus Jakarta Sans', 'Outfit', sans-serif;
@@ -1091,7 +699,7 @@ h1, h2, h3, h4, h5, h6,
 .blob {
     position: absolute;
     filter: blur(80px);
-    opacity: 0.5;
+    opacity: 0.4;
     animation: float-blob 20s infinite ease-in-out alternate;
 }
 
@@ -1100,7 +708,7 @@ h1, h2, h3, h4, h5, h6,
     right: -5%;
     width: 600px;
     height: 600px;
-    background: var(--pop-purple);
+    background: var(--pop-purple);  /* Purple blob */
     border-radius: 40% 60% 70% 30%;
 }
 
@@ -1109,7 +717,7 @@ h1, h2, h3, h4, h5, h6,
     left: -10%;
     width: 700px;
     height: 700px;
-    background: var(--pop-teal);
+    background: var(--pop-cyan);  /* Cyan blob */
     border-radius: 60% 40% 30% 70%;
     animation-delay: -5s;
 }
@@ -1119,8 +727,8 @@ h1, h2, h3, h4, h5, h6,
     left: 40%;
     width: 400px;
     height: 400px;
-    background: var(--pop-coral);
-    opacity: 0.3;
+    background: var(--pop-pink);  /* Pink blob */
+    opacity: 0.35;
     border-radius: 30% 70%;
     animation-duration: 18s;
 }
@@ -1169,12 +777,24 @@ h1, h2, h3, h4, h5, h6,
     }
 }
 
-/* 1. HERO SECTION - PROBLEM-FIRST REDESIGN */
-.hero-section {
+/* ========================================
+   GAMIFIED LANDING PAGE STYLES
+   ======================================== */
+
+/* Particle System */
+.particle-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* 1. HERO GAME PORTAL */
+.hero-section.game-portal {
     padding: 60px 0 80px;
     text-align: center;
-    background: transparent;
     position: relative;
+    overflow: hidden;
 }
 
 .hero-content {
@@ -1182,182 +802,216 @@ h1, h2, h3, h4, h5, h6,
     margin: 0 auto;
 }
 
-/* Problem Visual */
-.problem-visual {
-    margin-bottom: 30px;
-}
-
-.confused-student {
-    display: inline-block;
-    position: relative;
-    padding: 20px;
-}
-
-.student-icon {
-    font-size: 5rem;
-    margin-bottom: 10px;
-    animation: confusedThinking 3s ease-in-out infinite;
-    transform-origin: center center;
-}
-
-/* Confusion normalizer - helper text above stream chips */
-.confusion-normalizer {
-    color: var(--text-grey);
-    font-size: 0.9rem;
-    margin-bottom: 12px;
-    font-weight: 600;
-    font-style: italic;
-}
-
-/* Enhanced emoji animation - subtle shaking with breathing effect for emotional connection */
-@keyframes confusedThinking {
-    0%, 100% {
-        transform: rotate(0deg) scale(1);
-    }
-    10% {
-        transform: rotate(-3deg) scale(1.02);
-    }
-    20% {
-        transform: rotate(3deg) scale(1.02);
-    }
-    30% {
-        transform: rotate(-2deg) scale(1.01);
-    }
-    40% {
-        transform: rotate(2deg) scale(1.01);
-    }
-    50% {
-        transform: rotate(0deg) scale(1.03); /* Slight "sweat" pulse */
-    }
-    60% {
-        transform: rotate(-1deg) scale(1);
-    }
-    70% {
-        transform: rotate(1deg) scale(1);
-    }
-    80%, 95% {
-        transform: rotate(0deg) scale(1); /* Pause for natural rhythm */
-    }
-}
-
-.stream-options {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.stream-option {
-    display: inline-block;
-    padding: 10px 20px;
-    border-radius: 25px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    background: var(--card-base);
-    border: 2px solid;
-    animation: pulse 2s ease-in-out infinite;
-    box-shadow: var(--shadow-soft);
-}
-
-.stream-option.science {
-    border-color: var(--pop-coral);
-    color: var(--pop-coral);
-    animation-delay: 0s;
-    border-width: 3px;
-}
-
-.stream-option.commerce {
-    border-color: var(--pop-yellow);
-    color: #D4A628;
-    animation-delay: 0.3s;
-    border-width: 3px;
-}
-
-.stream-option.arts {
-    border-color: var(--pop-teal);
-    color: #2A9BA8;
-    animation-delay: 0.6s;
-    border-width: 3px;
-}
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 0.8; }
-    50% { transform: scale(1.05); opacity: 1; }
-}
-
-/* Emotional Hook Headline */
-.hero-title {
-    font-size: 4.2rem;  /* Increased by 30% from 3.2rem */
-    font-weight: 900;
-    color: var(--text-dark);
-    margin-bottom: 25px;
-    line-height: 1.1;
-    letter-spacing: -0.03em;  /* Extra tight for impact */
-}
-
-/* Real Talk Sub-headline */
-.hero-subtitle {
-    font-size: 1.6rem;  /* Increased by 20% from 1.35rem */
-    color: var(--text-dark);
-    margin-bottom: 30px;
-    max-width: 850px;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: 1.7;
-    font-weight: 500;  /* Medium weight for contrast with bold headline */
-    font-family: var(--font-body);  /* Use body font for contrast */
-}
-
-.hero-subtitle strong {
-    color: var(--text-dark);
-    font-weight: 800;
-}
-
-.hero-subtitle em {
-    color: var(--text-dark);
-    font-style: normal;
-    font-weight: 600;
-}
-
-/* Time Benefit Badge */
-.time-benefit {
+/* Live Counter - Enhanced with glassmorphism */
+.live-counter {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    background: var(--card-base);
-    padding: 12px 30px;
+    background: var(--card-glass);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 2px solid rgba(139, 127, 232, 0.3);
+    padding: 10px 24px;
     border-radius: 50px;
-    margin-bottom: 30px;
-    margin-right: 5px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: var(--shadow-soft);
+    margin-bottom: 25px;
+    animation: pulse-glow 2s ease-in-out infinite;
+    box-shadow: var(--shadow-glow-purple);
 }
 
-.time-icon {
-    font-size: 1.5rem;
+.live-dot {
+    width: 10px;
+    height: 10px;
+    background: var(--pop-pink);
+    border-radius: 50%;
+    animation: pulse-dot 1.5s ease-in-out infinite;
+    box-shadow: 0 0 10px rgba(255, 180, 214, 0.6);
 }
 
-.time-text {
-    font-size: 1.1rem;
+@keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 8px 32px rgba(139, 127, 232, 0.25), 0 0 15px rgba(139, 127, 232, 0.3);
+    }
+    50% {
+        box-shadow: 0 8px 32px rgba(139, 127, 232, 0.35), 0 0 25px rgba(139, 127, 232, 0.5);
+    }
+}
+
+.live-text {
+    font-size: 1rem;
     font-weight: 700;
     color: var(--text-dark);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.btn {
-    display: inline-block;
-    padding: 12px 24px;
-    border-radius: 50px;
-    font-weight: 700;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    border: 2px solid #000000;
+/* Game Title */
+.hero-title.game-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    text-shadow: 0 2px 10px rgba(159, 151, 243, 0.2);
+}
+
+.hero-subtitle.game-subtitle {
+    font-size: 1.4rem;
+    color: var(--text-grey);
+    margin-bottom: 40px;
+    font-weight: 600;
+}
+
+/* Character Selection Cards */
+.character-selection {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 40px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.character-card {
+    background: var(--card-base);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 24px;
+    padding: 28px 18px;
+    text-align: center;
     cursor: pointer;
-    font-size: 0.95rem;
-    background: #ffffff;
-    color: #000000;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 3px solid rgba(139, 127, 232, 0.3);
+    box-shadow: var(--shadow-soft);
+    position: relative;
+    overflow: hidden;
 }
 
-/* Remove dotted outline on focus/active - Enhanced for all browsers */
+.character-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(139, 127, 232, 0.12) 0%, rgba(95, 227, 208, 0.12) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.character-card:hover::before {
+    opacity: 1;
+}
+
+.character-card:hover {
+    transform: translateY(-14px) scale(1.08);
+    border-color: rgba(139, 127, 232, 0.6);
+    box-shadow: var(--shadow-glow-purple);
+}
+
+.character-icon {
+    font-size: 4.2rem;
+    margin-bottom: 14px;
+    display: block;
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.12));
+    position: relative;
+    z-index: 1;
+}
+
+.character-image {
+    width: 100%;
+    max-width: 120px;
+    border-radius: 50%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    object-fit: contain;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.character-card:hover .character-image {
+    transform: scale(1.1);
+}
+
+.bounce-hover {
+    animation: float-gentle 3s ease-in-out infinite;
+}
+
+@keyframes float-gentle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+.character-card:nth-child(1) .bounce-hover { animation-delay: 0s; }
+.character-card:nth-child(2) .bounce-hover { animation-delay: 0.25s; }
+.character-card:nth-child(3) .bounce-hover { animation-delay: 0.5s; }
+.character-card:nth-child(4) .bounce-hover { animation-delay: 0.75s; }
+
+.character-name {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+    position: relative;
+    z-index: 1;
+}
+
+.character-trait {
+    font-size: 0.9rem;
+    color: var(--text-grey);
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+}
+
+/* Giant Play Now Button - Enhanced */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 20px 45px;
+    border-radius: 50px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: none;
+    cursor: pointer;
+    font-size: 1.3rem;
+    background: var(--gradient-purple-cyan);
+    color: #FFFFFF;
+    box-shadow: var(--shadow-glow-purple), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    position: relative;
+    overflow: hidden;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.6s ease;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn:hover {
+    transform: translateY(-6px) scale(1.06);
+    box-shadow: var(--shadow-glow-cyan), 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+}
+
 .btn:focus,
 .btn:active,
 .btn-primary:focus,
@@ -1367,71 +1021,694 @@ a:active,
 button:focus,
 button:active {
     outline: none !important;
-    outline-style: none !important;
-    outline-width: 0 !important;
-    outline-color: transparent !important;
-    -moz-outline-style: none !important;
     -webkit-tap-highlight-color: transparent !important;
-    box-shadow: none !important;
-}
-
-/* Specifically target mobile webkit browsers */
-.btn:focus-visible,
-.btn-primary:focus-visible,
-a:focus-visible,
-button:focus-visible {
-    outline: none !important;
 }
 
 .btn-primary {
-    background: #ffffff;
-    color: #000000;
-    border: 2px solid #000000;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    font-weight: 700;
+    background: var(--gradient-purple-cyan);
+    color: #FFFFFF;
+    border: none;
 }
 
 .btn-primary:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-    background: #f5f5f5;
-    border-color: #000000;
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: var(--shadow-glow-purple);
 }
 
 .btn-primary:active {
-    transform: translateY(-1px) scale(1.01);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px) scale(1.02);
 }
 
-/* Primary CTA Button */
-.btn-hero-cta {
-    padding: 14px 28px;
-    font-size: 1rem;
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 15px;
-    animation: gentlePulse 3s ease-in-out infinite;
+/* Play Now Button Specific */
+.btn-play-now {
+    padding: 20px 50px;
+    font-size: 1.4rem;
+    margin-bottom: 20px;
 }
 
-@keyframes gentlePulse {
+.pulse-animation {
+    animation: pulse-scale 2s ease-in-out infinite;
+}
+
+@keyframes pulse-scale {
     0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.03); }
+    50% { transform: scale(1.05); }
 }
 
-/* CTA Empathy line - emotional relief */
-.cta-empathy {
-    color: var(--text-grey);
+.btn-icon {
+    font-size: 1.6rem;
+}
+
+.btn-text {
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+/* Quick Trust Signals */
+.quick-trust {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
     font-size: 0.95rem;
-    margin-top: 15px;
+    color: var(--text-grey);
+}
+
+.trust-item {
+    font-weight: 600;
+}
+
+.trust-divider {
+    color: var(--text-grey);
+    opacity: 0.5;
+}
+
+/* ========================================
+   2. MINI-GAME DEMO SECTION
+   ======================================== */
+
+.mini-game-section {
+    padding: 60px 0;
+    background: transparent;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.section-title.game-title {
+    background: var(--gradient-purple-cyan);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.section-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-grey);
+    text-align: center;
     margin-bottom: 40px;
     font-weight: 600;
-    font-style: italic;
-    max-width: 500px;
+}
+
+.demo-question-card {
+    background: var(--card-base);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 32px;
+    padding: 45px;
+    max-width: 720px;
+    margin: 0 auto;
+    box-shadow: var(--shadow-glow-purple), 0 0 0 1px rgba(139, 127, 232, 0.1);
+    border: 3px solid rgba(139, 127, 232, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.demo-question-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(139, 127, 232, 0.08) 0%, rgba(95, 227, 208, 0.08) 100%);
+    pointer-events: none;
+}
+
+.demo-question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.demo-badge {
+    background: var(--pop-yellow);
+    color: var(--text-dark);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 800;
+}
+
+.demo-timer {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--pop-coral);
+}
+
+.demo-question-text {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.demo-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.demo-option {
+    background: var(--card-glass);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 3px solid rgba(139, 127, 232, 0.3);
+    border-radius: 24px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+}
+
+.demo-option:hover {
+    transform: translateY(-8px) scale(1.08);
+    border-color: rgba(95, 227, 208, 0.6);
+    background: var(--card-base);
+    box-shadow: var(--shadow-glow-cyan);
+}
+
+.demo-emoji {
+    font-size: 3.5rem;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
+.demo-label {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    text-align: center;
+    letter-spacing: -0.01em;
+}
+
+.demo-result {
+    margin-top: 20px;
+    padding: 30px;
+    background: linear-gradient(135deg, rgba(139, 127, 232, 0.15), rgba(95, 227, 208, 0.15));
+    border-radius: 20px;
+    text-align: center;
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.demo-result-icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+}
+
+.demo-result-image {
+    width: 120px;
+    height: auto;
+    display: block;
+    margin: 0 auto 15px;
+    filter: drop-shadow(0 8px 16px rgba(139, 127, 232, 0.4));
+    animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.demo-result-text {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+}
+
+.btn-demo-cta {
+    margin-top: 10px;
+}
+
+/* ========================================
+   3. RESULTS SHOWCASE SECTION
+   ======================================== */
+
+.results-showcase-section {
+    padding: 60px 0;
+    background: transparent;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.benefit-card {
+    background: var(--card-base);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 24px;
+    padding: 30px 22px;
+    text-align: center;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 2px solid rgba(139, 127, 232, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.benefit-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(139, 127, 232, 0.1) 0%, rgba(255, 180, 214, 0.1) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.benefit-card:hover::before {
+    opacity: 1;
+}
+
+.benefit-card:hover {
+    transform: translateY(-12px) scale(1.05);
+    border-color: rgba(139, 127, 232, 0.5);
+    box-shadow: var(--shadow-glow-purple);
+}
+
+.benefit-icon {
+    font-size: 3.5rem;
+    margin-bottom: 18px;
+    display: block;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+    position: relative;
+    z-index: 1;
+}
+
+.benefit-text {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    line-height: 1.5;
+    position: relative;
+    z-index: 1;
+}
+
+/* ========================================
+   4. GAME LEVELS SECTION
+   ======================================== */
+
+.game-levels-section {
+    padding: 60px 0;
+    background: transparent;
+}
+
+.game-levels {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.game-level {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.88) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 28px;
+    padding: 28px 35px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 3px solid rgba(255, 255, 255, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+.game-level::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(58, 124, 165, 0.08) 0%, rgba(115, 210, 222, 0.08) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.game-level:hover::before {
+    opacity: 1;
+}
+
+.game-level.level-unlocked {
+    border-color: rgba(58, 124, 165, 0.4);
+}
+
+.game-level.level-unlocked::before {
+    opacity: 1;
+}
+
+.game-level.level-locked {
+    opacity: 0.65;
+    border-color: rgba(0, 0, 0, 0.15);
+}
+
+.game-level:hover {
+    transform: translateX(12px) scale(1.02);
+    box-shadow: 0 14px 40px rgba(58, 124, 165, 0.25);
+}
+
+.level-number {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 120px;
+}
+
+.level-badge {
+    background: var(--pop-purple);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-align: center;
+}
+
+.level-status {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.level-status.unlocked {
+    color: var(--pop-teal);
+}
+
+.level-status.locked {
+    color: var(--text-grey);
+}
+
+.level-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.level-icon {
+    font-size: 3rem;
+}
+
+.level-title {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 5px;
+}
+
+.level-desc {
+    font-size: 0.95rem;
+    color: var(--text-grey);
+    font-weight: 600;
+}
+
+.time-reframe {
+    text-align: center;
+    margin-top: 40px;
+    padding: 25px;
+    background: var(--pop-cream);
+    border-radius: 20px;
+    max-width: 600px;
     margin-left: auto;
     margin-right: auto;
 }
+
+.time-text {
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+.time-highlight {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--pop-coral);
+}
+
+/* ========================================
+   5. SOCIAL PROOF SECTION
+   ======================================== */
+
+.social-proof-section {
+    padding: 60px 0;
+    background: transparent;
+}
+
+.achievement-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.social-feed {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto 40px;
+}
+
+.feed-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.88) 100%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+.feed-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 107, 83, 0.08) 0%, rgba(159, 151, 243, 0.08) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.feed-card:hover::before {
+    opacity: 1;
+}
+
+.feed-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    border-color: rgba(159, 151, 243, 0.5);
+    box-shadow: 0 16px 40px rgba(159, 151, 243, 0.35);
+}
+
+.feed-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.feed-avatar {
+    font-size: 2.5rem;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--pop-cream);
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.feed-avatar-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    padding: 5px;
+}
+
+.feed-info {
+    flex: 1;
+}
+
+.feed-name {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text-dark);
+}
+
+.feed-time {
+    font-size: 0.85rem;
+    color: var(--text-grey);
+    font-weight: 600;
+}
+
+.feed-quote {
+    font-size: 1rem;
+    color: var(--text-dark);
+    line-height: 1.5;
+    font-weight: 600;
+}
+
+.quick-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.stat-item {
+    background: var(--card-base);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: var(--shadow-soft);
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--pop-coral);
+    margin-bottom: 10px;
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: var(--text-dark);
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+/* ========================================
+   6. FINAL CTA SECTION
+   ======================================== */
+
+.final-cta-section.game-cta {
+    padding: 80px 0;
+    background: linear-gradient(135deg, rgba(139, 127, 232, 0.12), rgba(255, 180, 214, 0.12));
+    text-align: center;
+}
+
+.final-cta-content {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.live-activity {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 107, 83, 0.15);
+    border: 2px solid var(--pop-coral);
+    padding: 10px 25px;
+    border-radius: 50px;
+    margin-bottom: 25px;
+}
+
+.activity-pulse {
+    width: 10px;
+    height: 10px;
+    background: var(--pop-coral);
+    border-radius: 50%;
+    animation: pulse-dot 1.5s ease-in-out infinite;
+}
+
+.activity-text {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.final-headline {
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+    line-height: 1.2;
+}
+
+.final-subtext {
+    font-size: 1.3rem;
+    color: var(--text-grey);
+    margin-bottom: 40px;
+    font-weight: 700;
+}
+
+.btn-final-play.mega-button {
+    padding: 25px 60px;
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    box-shadow: 0 15px 40px rgba(255, 107, 83, 0.4);
+}
+
+.mega-icon {
+    font-size: 2rem;
+}
+
+.mega-text {
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+.final-reassurance {
+    font-size: 1rem;
+    color: var(--text-grey);
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+.trust-pills {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.trust-pill {
+    background: var(--card-base);
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    box-shadow: var(--shadow-soft);
+}
+
+
 
 /* Trust Badges - Prominent Design */
 .trust-badges {
@@ -1583,52 +1860,80 @@ button:focus-visible {
 }
 
 .outcome-card {
-    background: var(--card-base);
-    border-radius: 24px;
-    padding: 24px 20px 20px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.88) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 28px;
+    padding: 28px 24px 24px;
     text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    transition: all 0.3s var(--ease-elastic);
-    box-shadow: var(--shadow-soft);
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
     position: relative;
+    overflow: hidden;
+}
+
+.outcome-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 107, 83, 0.1) 0%, rgba(159, 151, 243, 0.1) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.outcome-card:hover::before {
+    opacity: 1;
 }
 
 .outcome-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-float);
+    transform: translateY(-14px) scale(1.05);
+    box-shadow: 0 20px 50px rgba(159, 151, 243, 0.3);
+    border-color: rgba(159, 151, 243, 0.5);
 }
 
 .discover-icon {
-    font-size: 3rem;
-    margin-bottom: 12px;
+    font-size: 3.5rem;
+    margin-bottom: 16px;
     display: inline-block;
-    animation: iconBounce 2s ease-in-out infinite;
+    animation: iconBounce 2.5s ease-in-out infinite;
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.12));
+    position: relative;
+    z-index: 1;
 }
 
 @keyframes iconBounce {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
+    50% { transform: translateY(-10px); }
 }
 
 .outcome-card:nth-child(1) .discover-icon { animation-delay: 0s; }
-.outcome-card:nth-child(2) .discover-icon { animation-delay: 0.2s; }
-.outcome-card:nth-child(3) .discover-icon { animation-delay: 0.4s; }
-.outcome-card:nth-child(4) .discover-icon { animation-delay: 0.6s; }
+.outcome-card:nth-child(2) .discover-icon { animation-delay: 0.25s; }
+.outcome-card:nth-child(3) .discover-icon { animation-delay: 0.5s; }
+.outcome-card:nth-child(4) .discover-icon { animation-delay: 0.75s; }
 
 .outcome-card h3 {
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     color: var(--text-dark);
-    margin-bottom: 10px;
-    font-weight: 800;
+    margin-bottom: 12px;
+    font-weight: 900;
     line-height: 1.3;
+    letter-spacing: -0.01em;
+    position: relative;
+    z-index: 1;
 }
 
 .outcome-card p {
     color: var(--text-dark);
-    font-size: 0.95rem;
-    line-height: 1.5;
-    margin-bottom: 12px;
-    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 14px;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
 }
 
 .outcome-card p strong {
@@ -1643,13 +1948,13 @@ button:focus-visible {
 
 .benefit-tag {
     display: inline-block;
-    background: linear-gradient(135deg, #FF6B53 0%, #FF8F7D 100%);
-    color: var(--card-base);
+    background: var(--gradient-pink-purple);
+    color: #FFFFFF;
     padding: 6px 16px;
     border-radius: 20px;
     font-size: 0.8rem;
     font-weight: 700;
-    box-shadow: 0 4px 12px rgba(255, 107, 83, 0.4);
+    box-shadow: var(--shadow-glow-pink);
 }
 
 /* 3. PROGRESSIVE REVEAL - GAMIFIED JOURNEY */
@@ -1659,31 +1964,45 @@ button:focus-visible {
 }
 
 .journey-step {
-    background: var(--card-base);
-    border-radius: 32px;
-    padding: 40px;
-    margin-bottom: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: var(--shadow-soft);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.92) 100%);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 36px;
+    padding: 45px;
+    margin-bottom: 35px;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.1);
     position: relative;
-    transition: all 0.3s var(--ease-elastic);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    overflow: hidden;
+}
+
+.journey-step::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.5;
+    pointer-events: none;
 }
 
 .journey-step:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-float);
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 20px 55px rgba(0, 0, 0, 0.15);
 }
 
-.step-primary {
-    background: linear-gradient(135deg, #ffffff 0%, rgba(115, 210, 222, 0.05) 100%);
+.step-primary::before {
+    background: linear-gradient(135deg, rgba(115, 210, 222, 0.08) 0%, transparent 100%);
 }
 
-.step-secondary {
-    background: linear-gradient(135deg, #ffffff 0%, rgba(159, 151, 243, 0.05) 100%);
+.step-secondary::before {
+    background: linear-gradient(135deg, rgba(159, 151, 243, 0.08) 0%, transparent 100%);
 }
 
-.step-reward {
-    background: linear-gradient(135deg, #ffffff 0%, rgba(255, 216, 109, 0.1) 100%);
+.step-reward::before {
+    background: linear-gradient(135deg, rgba(255, 216, 109, 0.12) 0%, transparent 100%);
 }
 
 .step-badge {
@@ -2151,55 +2470,78 @@ button:focus-visible {
 
 .results-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: 1fr;
     gap: 20px;
     margin-bottom: 30px;
-    max-width: 1400px;
+    max-width: 800px;
     margin-left: auto;
     margin-right: auto;
+    justify-content: center;
 }
 
-/* Desktop: Make testimonial cards smaller and aligned */
+/* Desktop: 3 cards centered */
 @media (min-width: 1024px) {
     .results-grid {
-        grid-template-columns: repeat(5, 1fr);
-        max-width: 1200px;
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 800px;
     }
 }
 
 @media (min-width: 769px) and (max-width: 1023px) {
     .results-grid {
         grid-template-columns: repeat(3, 1fr);
-        max-width: 900px;
+        max-width: 750px;
     }
 }
 
-/* Testimonial Card - Clean Design */
+/* Testimonial Card - Enhanced Design */
 .testimonial-card {
-    background: var(--card-base);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.92) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-radius: 24px;
     padding: 24px 20px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    transition: all 0.3s var(--ease-elastic);
-    box-shadow: var(--shadow-soft);
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
     position: relative;
+    max-width: 290px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.testimonial-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(58, 124, 165, 0.08) 0%, rgba(159, 151, 243, 0.08) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.testimonial-card:hover::before {
+    opacity: 1;
 }
 
 .testimonial-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-float);
+    transform: translateY(-12px) scale(1.05);
+    box-shadow: 0 18px 45px rgba(58, 124, 165, 0.25);
+    border-color: rgba(58, 124, 165, 0.4);
 }
 
 .testimonial-avatar {
     position: relative;
-    width: 50px;
-    height: 50px;
-    margin-bottom: 12px;
+    width: 45px;
+    height: 45px;
+    margin-bottom: 10px;
 }
 
 .testimonial-avatar img {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     border: 2px solid var(--light-blue-bg);
 }
@@ -2222,18 +2564,18 @@ button:focus-visible {
 }
 
 .testimonial-header-info {
-    margin-bottom: 15px;
+    margin-bottom: 12px;
 }
 
 .testimonial-name {
-    font-size: 1.05rem;
+    font-size: 0.95rem;
     font-weight: 700;
     color: var(--charcoal-teal);
     margin-bottom: 4px;
 }
 
 .testimonial-type {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 600;
     color: var(--ocean-blue);
     text-transform: uppercase;
@@ -2241,16 +2583,23 @@ button:focus-visible {
 }
 
 .testimonial-text {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     color: var(--soft-text);
-    line-height: 1.6;
+    line-height: 1.5;
     text-align: left;
+    margin-bottom: 10px;
+}
+
+.testimonial-location {
+    font-size: 0.75rem;
+    color: var(--soft-text);
+    font-style: italic;
 }
 
 /* 6. CREDIBLE SOCIAL PROOF WITH URGENCY */
 .social-proof-section {
     padding: 80px 0;
-    background: var(--light-blue-bg);
+    background: transparent;
 }
 
 .stats-bar {
@@ -2746,11 +3095,11 @@ button:focus-visible {
     font-weight: 800;
 }
 
-/* 7. FINAL CTA - URGENT CLOSE */
+/* 7. FINAL CTA - Enhanced Urgent Close */
 .final-cta-section {
-    padding: 80px 0;
+    padding: 100px 0;
     text-align: center;
-    background: var(--pop-cream);
+    background: transparent;
     position: relative;
     overflow: hidden;
 }
@@ -2763,9 +3112,15 @@ button:focus-visible {
     right: 0;
     bottom: 0;
     background:
-            radial-gradient(circle at 20% 50%, rgba(255, 107, 83, 0.1) 0%, transparent 50%),
-            radial-gradient(circle at 80% 50%, rgba(159, 151, 243, 0.1) 0%, transparent 50%);
+            radial-gradient(circle at 20% 50%, rgba(255, 107, 83, 0.15) 0%, transparent 60%),
+            radial-gradient(circle at 80% 50%, rgba(159, 151, 243, 0.15) 0%, transparent 60%);
     pointer-events: none;
+    animation: pulse-bg 8s ease-in-out infinite;
+}
+
+@keyframes pulse-bg {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
 }
 
 .final-cta-content {
@@ -2778,14 +3133,14 @@ button:focus-visible {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    background: linear-gradient(135deg, #FF6B53 0%, #FF8F7D 100%);
-    color: var(--card-base);
+    background: var(--gradient-pink-purple);
+    color: #FFFFFF;
     padding: 12px 25px;
     border-radius: 50px;
     font-size: 0.95rem;
     font-weight: 700;
     margin-bottom: 30px;
-    box-shadow: 0 4px 20px rgba(255, 107, 83, 0.5);
+    box-shadow: var(--shadow-glow-pink);
 }
 
 .urgency-pulse-dot {
@@ -2840,27 +3195,48 @@ button:focus-visible {
     font-weight: 600;
 }
 
-/* Primary CTA Button */
+/* Primary CTA Button - Enhanced */
 .btn-final-cta {
-    padding: 14px 28px;
-    font-size: 1rem;
-    font-weight: 700;
-    background: #ffffff;
-    color: #000000;
-    border: 2px solid #000000;
+    padding: 18px 45px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    background: var(--gradient-purple-cyan);
+    color: #FFFFFF;
+    border: none;
     border-radius: 50px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s var(--ease-elastic);
+    box-shadow: var(--shadow-glow-purple), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     display: inline-block;
     text-decoration: none;
     animation: gentlePulse 3s ease-in-out infinite;
+    position: relative;
+    overflow: hidden;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.btn-final-cta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s ease;
+}
+
+.btn-final-cta:hover::before {
+    left: 100%;
 }
 
 .btn-final-cta:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-    background: #f5f5f5;
-    border-color: #000000;
+    transform: translateY(-6px) scale(1.08);
+    box-shadow: var(--shadow-glow-cyan), 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+}
+
+@keyframes gentlePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.03); }
 }
 
 /* Trust Signals Below CTA */
@@ -3199,6 +3575,202 @@ button:focus-visible {
         grid-template-columns: 1fr;
     }
 
+
+    /* ========================================
+       GAMIFIED SECTIONS - MOBILE RESPONSIVE
+       ======================================== */
+
+    /* Hero Game Portal - Mobile */
+    .hero-title.game-title {
+        font-size: 2rem;
+        line-height: 1.2;
+    }
+
+    .hero-subtitle.game-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .character-selection {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .character-icon {
+        font-size: 2.5rem;
+    }
+
+    .character-image {
+        max-width: 80px;
+    }
+
+    .character-name {
+        font-size: 0.9rem;
+    }
+
+    .character-trait {
+        font-size: 0.75rem;
+    }
+
+    .btn-play-now {
+        padding: 16px 35px;
+        font-size: 1.1rem;
+    }
+
+    .live-counter {
+        padding: 6px 16px;
+        font-size: 0.85rem;
+    }
+
+    .quick-trust {
+        font-size: 0.85rem;
+        gap: 8px;
+    }
+
+    /* Mini-Game Demo - Mobile */
+    .section-title {
+        font-size: 1.8rem;
+    }
+
+    .section-subtitle {
+        font-size: 1rem;
+    }
+
+    .demo-question-card {
+        padding: 25px 20px;
+    }
+
+    .demo-question-text {
+        font-size: 1.3rem;
+    }
+
+    .demo-options {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .demo-emoji {
+        font-size: 2.5rem;
+    }
+
+    .demo-label {
+        font-size: 0.9rem;
+    }
+
+    .demo-result-icon {
+        font-size: 3rem;
+    }
+
+    .demo-result-image {
+        width: 90px;
+    }
+
+    .demo-result-text {
+        font-size: 1.1rem;
+    }
+
+    /* Benefits Grid - Mobile */
+    .benefits-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .benefit-icon {
+        font-size: 2.5rem;
+    }
+
+    .benefit-text {
+        font-size: 0.9rem;
+    }
+
+    /* Game Levels - Mobile */
+    .game-level {
+        flex-direction: column;
+        padding: 20px;
+        gap: 15px;
+    }
+
+    .level-number {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .level-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .level-title {
+        font-size: 1.1rem;
+    }
+
+    .level-desc {
+        font-size: 0.85rem;
+    }
+
+    .time-reframe {
+        padding: 20px;
+    }
+
+    .time-text {
+        font-size: 1rem;
+    }
+
+    .time-highlight {
+        font-size: 1.1rem;
+    }
+
+    /* Social Feed - Mobile */
+    .social-feed {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .feed-card {
+        padding: 18px;
+    }
+
+    .quick-stats {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+    }
+
+    /* Final CTA - Mobile */
+    .final-headline {
+        font-size: 2rem;
+        line-height: 1.2;
+    }
+
+    .final-subtext {
+        font-size: 1.1rem;
+    }
+
+    .btn-final-play.mega-button {
+        padding: 18px 40px;
+        font-size: 1.2rem;
+    }
+
+    .mega-icon {
+        font-size: 1.5rem;
+    }
+
+    .trust-pills {
+        gap: 10px;
+    }
+
+    .trust-pill {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+
     /* Social Proof - Mobile */
     .stat-item {
         padding: 25px 20px;
@@ -3476,7 +4048,9 @@ button:focus-visible {
 
     /* Results Section - Mobile */
     .results-grid {
+        grid-template-columns: 1fr;
         gap: 25px;
+        padding: 0 20px;
     }
 
     /* Testimonials - Mobile */
@@ -3488,6 +4062,7 @@ button:focus-visible {
 
     .testimonial-card {
         padding: 25px 20px;
+        max-width: 100%;
     }
 
     .testimonial-name {
@@ -3706,6 +4281,7 @@ button:focus-visible {
 
     .testimonial-card {
         padding: 20px 18px;
+        max-width: 100%;
     }
 
     .testimonial-avatar img {
@@ -4086,6 +4662,61 @@ button:focus-visible {
             behavior: 'smooth'
         });
     });
+
+    // Demo Question Interaction
+    const demoOptions = document.querySelectorAll('.demo-option');
+    const demoResult = document.getElementById('demoResult');
+    const demoResultIcon = document.getElementById('demoResultIcon');
+    const demoResultText = document.getElementById('demoResultText');
+
+    const resultData = {
+        wolf: { image: '${assetPath(src: "wolf.png")}', text: 'Hmm... you might be a Strategic Wolf!' },
+        tiger: { image: '${assetPath(src: "tiger.png")}', text: 'Hmm... you might be a Bold Tiger!' },
+        owl: { image: '${assetPath(src: "owl.png")}', text: 'Hmm... you might be a Wise Owl!' },
+        bee: { image: '${assetPath(src: "bee.png")}', text: 'Hmm... you might be a Disciplined Bee!' }
+    };
+
+    demoOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            const result = this.dataset.result;
+            const data = resultData[result];
+
+            // Update result content with image
+            demoResultIcon.innerHTML = '<img src="' + data.image + '" alt="' + result + '" class="demo-result-image" />';
+            demoResultText.textContent = data.text;
+
+            // Show result with animation
+            demoResult.style.display = 'block';
+
+            // Add confetti effect (simple version)
+            createConfetti();
+        });
+    });
+
+    function createConfetti() {
+        const colors = ['#FF6B53', '#9F97F3', '#3A7CA5', '#FFD86D'];
+        for (let i = 0; i < 30; i++) {
+            const confetti = document.createElement('div');
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            const randomLeft = Math.random() * 100;
+            confetti.style.cssText = 'position: fixed; width: 10px; height: 10px; background: ' + randomColor + '; left: ' + randomLeft + '%; top: -10px; opacity: 1; pointer-events: none; z-index: 9999; border-radius: 50%;';
+            document.body.appendChild(confetti);
+
+            const duration = Math.random() * 3 + 2;
+            const xMovement = (Math.random() - 0.5) * 200;
+            const randomRotation = Math.random() * 360;
+
+            confetti.animate([
+                { transform: 'translateY(0) translateX(0) rotate(0deg)', opacity: 1 },
+                { transform: 'translateY(100vh) translateX(' + xMovement + 'px) rotate(' + randomRotation + 'deg)', opacity: 0 }
+            ], {
+                duration: duration * 1000,
+                easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+            });
+
+            setTimeout(function() { confetti.remove(); }, duration * 1000);
+        }
+    }
 </script>
 </body>
 </html>
