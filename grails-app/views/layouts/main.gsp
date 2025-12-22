@@ -317,12 +317,33 @@
     /* RESPONSIVE */
     @media (max-width: 768px) {
         .nav-logo img {
-            height: 90px;
+            height: 70px;
         }
 
         .nav-cta {
-            font-size: 0.7rem;
-            padding: 6px 12px;
+            background: linear-gradient(
+                    135deg,
+                    #7FE8D8 0%,
+                    #9AF0E4 100%
+            );
+            color: #2D2A45;
+
+            border: 1.5px solid rgba(255, 255, 255, 0.6);
+
+            box-shadow:
+                    0 2px 0 #4FCFB8,
+                    0 6px 12px rgba(95, 227, 208, 0.25);
+
+            border-radius: 999px;
+            font-weight: 700;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-1px);
+            box-shadow:
+                0 4px 0 #3ABFA8,
+                0 6px 12px rgba(95, 227, 208, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
         }
 
         /* Footer Mobile */
@@ -347,18 +368,30 @@
 
     @media (max-width: 480px) {
         .nav-container {
-            padding: 6px 12px;
+            padding: 8px 16px;
         }
 
         .nav-logo img {
-            height: 75px;
+            height: 55px;
         }
 
         .nav-cta {
             font-size: 0.65rem;
-            padding: 5px 10px;
+            padding: 6px 12px;
+
         }
     }
+    /* ===== MOBILE NAV CTA FIX ===== */
+    @media (max-width: 768px) {
+        .main-nav .nav-cta {
+            font-size: 0.68rem;        /* smaller text */
+            padding: 6px 14px;         /* reduce height */
+            line-height: 1;
+            min-height: unset;
+        }
+    }
+
+
     </style>
 </head>
 
@@ -373,7 +406,7 @@
 
         <a href="${createLink(controller: 'personality', action: 'start')}"
            class="btn btn-primary nav-cta">
-            Get Clarity →
+            🚀 Play Now
         </a>
     </div>
 </nav>
