@@ -59,6 +59,80 @@
     <title>${pageTitle}</title>
 </head>
 <body>
+<!-- Enhanced Background Wrapper - Game-like Visual Layers -->
+<div class="enhanced-background-wrapper">
+    <!-- Layer 1: Enhanced Gradient Mesh with Soft Blobs -->
+    <div class="gradient-blobs">
+        <div class="blob-shape blob-blue"></div>
+        <div class="blob-shape blob-mint"></div>
+        <div class="blob-shape blob-peach"></div>
+        <div class="blob-shape blob-lavender"></div>
+    </div>
+
+    <!-- Layer 2: Floating Star/Sparkle Decorations -->
+    <div class="star-decorations">
+        <span class="star star-1">⭐</span>
+        <span class="star star-2">✨</span>
+        <span class="star star-3">💫</span>
+        <span class="star star-4">⭐</span>
+        <span class="star star-5">✨</span>
+        <span class="star star-6">💫</span>
+        <span class="star star-7">⭐</span>
+        <span class="star star-8">✨</span>
+    </div>
+
+    <!-- Layer 3: Floating Educational Icons -->
+    <div class="floating-icons">
+        <span class="float-icon icon-1">🧠</span>
+        <span class="float-icon icon-2">⚡</span>
+        <span class="float-icon icon-3">🎯</span>
+        <span class="float-icon icon-4">💡</span>
+        <span class="float-icon icon-5">🧠</span>
+        <span class="float-icon icon-6">⚡</span>
+        <span class="float-icon icon-7">💡</span>
+        <span class="float-icon icon-8">🏆</span>
+        <span class="float-icon icon-9">📚</span>
+        <span class="float-icon icon-10">🚀</span>
+    </div>
+
+    <!-- Layer 4: Character Illustrations in Corners -->
+    <div class="character-corners">
+        <div class="corner-character corner-owl">🦉</div>
+        <div class="corner-character corner-wolf">🐺</div>
+    </div>
+
+    <!-- Layer 5: Tiny Particle Effects -->
+    <div class="particle-system">
+        <span class="particle p-1"></span>
+        <span class="particle p-2"></span>
+        <span class="particle p-3"></span>
+        <span class="particle p-4"></span>
+        <span class="particle p-5"></span>
+        <span class="particle p-6"></span>
+        <span class="particle p-7"></span>
+        <span class="particle p-8"></span>
+        <span class="particle p-9"></span>
+        <span class="particle p-10"></span>
+        <span class="particle p-11"></span>
+        <span class="particle p-12"></span>
+        <span class="particle p-13"></span>
+        <span class="particle p-14"></span>
+        <span class="particle p-15"></span>
+        <span class="particle p-16"></span>
+        <span class="particle p-17"></span>
+        <span class="particle p-18"></span>
+        <span class="particle p-19"></span>
+        <span class="particle p-20"></span>
+    </div>
+</div>
+
+<!-- Ambient Background Layer - Enhanced with Neon Glow -->
+<div class="scenery-layer">
+    <div class="blob b-1"></div>
+    <div class="blob b-2"></div>
+    <div class="blob b-3"></div>
+    <div class="particle-container" id="particles"></div>
+</div>
 
 <div class="faq-page">
     <!-- FAQ Section -->
@@ -298,6 +372,530 @@
 </div>
 
 <style>
+/* Import Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+/* StreamFit Color Palette - Duolingo-Style Gamified Theme */
+:root {
+    /* BRAND PALETTE - DUOLINGO-INSPIRED VIBRANT THEME */
+    --bg-gradient-top: #A8B5FF;      /* Sky blue at top */
+    --bg-gradient-purple: #C5A8FF;   /* Light purple */
+    --bg-gradient-lavender: #E8B5FF; /* Lavender purple */
+    --bg-gradient-pink: #FFB8E8;     /* Pink purple */
+    --bg-gradient-coral: #FFC4B8;    /* Coral pink */
+    --bg-gradient-peach: #FFD8A8;    /* Soft peach/yellow */
+
+    --text-dark: #2D2A45;  /* Deep purple-gray for text */
+    --text-grey: #7B7896;  /* Medium purple-gray */
+    --text-white: #FFFFFF;  /* White text */
+
+    /* PRIMARY COLORS - Duolingo-Style Vibrant Palette */
+    --pop-purple: #8B7FE8;  /* Main purple */
+    --pop-purple-light: #A89FF3;  /* Light purple */
+    --pop-purple-lighter: #C4B5FD;  /* Lighter purple */
+    --pop-cyan: #5FE3D0;  /* Bright cyan/turquoise */
+    --pop-cyan-light: #7FDBDA;  /* Light cyan */
+    --pop-cyan-lighter: #A0E7E5;  /* Lighter cyan */
+    --pop-pink: #FFB4D6;  /* Soft pink */
+    --pop-pink-light: #FFC4E1;  /* Light pink */
+    --pop-yellow: #FFE17B;  /* Pastel yellow */
+    --pop-yellow-light: #FFEB99;  /* Light yellow */
+    --pop-coral: #FF9AB8;  /* Coral pink */
+    --pop-green: #58CC02;  /* Duolingo green */
+    --pop-orange: #FF9600;  /* Duolingo orange */
+
+    /* GRADIENT BACKGROUNDS */
+    --gradient-purple-cyan: linear-gradient(135deg, #8B7FE8 0%, #5FE3D0 100%);
+    --gradient-pink-purple: linear-gradient(135deg, #FFB4D6 0%, #A89FF3 100%);
+    --gradient-cyan-yellow: linear-gradient(135deg, #5FE3D0 0%, #FFE17B 100%);
+    --gradient-purple-pink: linear-gradient(135deg, #8B7FE8 0%, #FFB4D6 100%);
+
+    /* SURFACES */
+    --card-base: rgba(255, 255, 255, 0.85);  /* Semi-transparent white */
+    --card-glass: rgba(255, 255, 255, 0.25);  /* Glassmorphism */
+
+    /* GLASSMORPHISM SHADOWS */
+    --shadow-soft: 0 12px 30px -10px rgba(139, 127, 232, 0.15);
+    --shadow-float: 0 20px 40px -12px rgba(139, 127, 232, 0.25);
+    --shadow-glow-purple: 0 8px 32px rgba(139, 127, 232, 0.3);
+    --shadow-glow-cyan: 0 8px 32px rgba(95, 227, 208, 0.3);
+    --shadow-glow-pink: 0 8px 32px rgba(255, 180, 214, 0.3);
+
+    /* ANIMATION */
+    --ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+
+    /* Legacy mappings for compatibility */
+    --navy-blue: #8B7FE8;      /* Maps to pop-purple */
+    --bright-blue: #5FE3D0;    /* Maps to pop-cyan */
+    --orange: #FF9AB8;         /* Maps to pop-coral */
+    --gold: #FFE17B;           /* Maps to pop-yellow */
+    --white: #FFFFFF;
+    --light-gray: #F5F3FF;     /* Maps to bg-warm */
+    --light-blue: #E8E4FF;     /* Light purple tint */
+    --light-orange: #FFE8F0;   /* Light pink tint */
+    --light-gold: #FFF8E8;     /* Light yellow tint */
+    --dark-navy: #2D2A45;      /* Maps to text-dark */
+    --text-dark-navy: #2D2A45; /* Maps to text-dark */
+    --text-medium-gray: #7B7896; /* Maps to text-grey */
+    --text-light-gray: #A89FF3; /* Light purple-gray */
+    --text-white: #FFFFFF;
+    --border-gray: rgba(139, 127, 232, 0.2);
+    --success-green: #5FE3D0;  /* Maps to pop-cyan */
+    --success-green-light: rgba(95, 227, 208, 0.15);
+    --success-green-dark: #3ABFA8;
+    --success-green-bg: rgba(95, 227, 208, 0.05);
+    --error-red: #FF9AB8;      /* Maps to pop-coral */
+    --error-red-light: rgba(255, 154, 184, 0.15);
+    --error-red-dark: #FF7BA0;
+    --footer-bg: #2D2A45;      /* Maps to text-dark */
+    --orange-hover: #FF7BA0;   /* Darker coral on hover */
+    --success-dark: #3ABFA8;
+
+    /* Typography */
+    --font-display: 'Plus Jakarta Sans', 'Outfit', sans-serif;
+    --font-body: 'Plus Jakarta Sans', 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+    /* Legacy color mappings for FAQ page */
+    --ocean-blue: #8B7FE8;
+    --soft-teal-blue: #5FE3D0;
+    --sky-blue: #A0E7E5;
+    --pure-white: #FFFFFF;
+    --charcoal-teal: #2D2A45;
+    --soft-text: #7B7896;
+    --light-blue-bg: rgba(232, 228, 255, 0.3);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body);
+    line-height: 1.6;
+    color: var(--text-dark);
+    background: transparent;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Apply Display Font to All Headlines */
+h1, h2, h3, h4, h5, h6,
+.section-title,
+.faq-question {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+/* --- AMBIENT BACKGROUND - DUOLINGO STYLE --- */
+.scenery-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    background: linear-gradient(180deg,
+        #A8B5FF 0%,           /* Sky blue at top */
+        #C5A8FF 20%,          /* Light purple */
+        #E8B5FF 40%,          /* Lavender purple */
+        #FFB8E8 60%,          /* Pink purple */
+        #FFC4B8 80%,          /* Coral pink */
+        #FFD8A8 100%          /* Soft peach/yellow at bottom */
+    );
+}
+
+.blob {
+    position: absolute;
+    filter: blur(120px);
+    opacity: 0.15;
+    animation: float-blob 30s infinite ease-in-out alternate;
+    pointer-events: none;
+}
+
+.b-1 {
+    top: -20%;
+    right: -15%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(168, 181, 255, 0.4) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.b-2 {
+    bottom: -20%;
+    left: -15%;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(255, 196, 184, 0.4) 0%, transparent 70%);
+    border-radius: 50%;
+    animation-delay: -10s;
+}
+
+.b-3 {
+    top: 35%;
+    left: 50%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(232, 181, 255, 0.3) 0%, transparent 70%);
+    opacity: 0.12;
+    border-radius: 50%;
+    animation-duration: 25s;
+    animation-delay: -5s;
+}
+
+@keyframes float-blob {
+    0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+    33% {
+        transform: translate(40px, -40px) scale(1.15) rotate(120deg);
+    }
+    66% {
+        transform: translate(-30px, 30px) scale(0.9) rotate(240deg);
+    }
+    100% {
+        transform: translate(0, 0) scale(1) rotate(360deg);
+    }
+}
+
+/* ========================================
+   ENHANCED BACKGROUND LAYERS - GAME-LIKE DEPTH
+   ======================================== */
+
+.enhanced-background-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: -100;
+}
+
+/* Layer 1: Enhanced Gradient Mesh with Soft Blobs */
+.gradient-blobs {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -90;
+}
+
+.blob-shape {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+    will-change: transform;
+}
+
+.blob-blue {
+    top: 10%;
+    right: 5%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(224, 244, 255, 0.25) 0%, transparent 70%);
+    animation: float-blob-slow 45s ease-in-out infinite;
+}
+
+.blob-mint {
+    bottom: 15%;
+    left: 8%;
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, rgba(230, 255, 245, 0.2) 0%, transparent 70%);
+    animation: float-blob-slow 50s ease-in-out infinite;
+    animation-delay: -15s;
+}
+
+.blob-peach {
+    top: 40%;
+    right: 10%;
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(255, 230, 213, 0.22) 0%, transparent 70%);
+    animation: float-blob-slow 40s ease-in-out infinite;
+    animation-delay: -25s;
+}
+
+.blob-lavender {
+    top: 60%;
+    left: 15%;
+    width: 380px;
+    height: 380px;
+    background: radial-gradient(circle, rgba(240, 230, 255, 0.18) 0%, transparent 70%);
+    animation: float-blob-slow 55s ease-in-out infinite;
+    animation-delay: -35s;
+}
+
+@keyframes float-blob-slow {
+    0%, 100% {
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+    25% {
+        transform: translate3d(30px, -30px, 0) scale(1.1);
+    }
+    50% {
+        transform: translate3d(-20px, 40px, 0) scale(0.95);
+    }
+    75% {
+        transform: translate3d(25px, 20px, 0) scale(1.05);
+    }
+}
+
+/* Layer 2: Floating Star/Sparkle Decorations */
+.star-decorations {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -75;
+}
+
+.star {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.25;
+    filter: drop-shadow(0 2px 4px rgba(255, 225, 123, 0.3));
+    will-change: transform;
+    animation: float-star 7s ease-in-out infinite;
+}
+
+.star-1 { top: 8%; left: 12%; animation-delay: 0s; }
+.star-2 { top: 15%; right: 18%; font-size: 1.8rem; animation-delay: 0.5s; }
+.star-3 { top: 25%; left: 8%; font-size: 2.2rem; animation-delay: 1s; }
+.star-4 { top: 45%; right: 10%; animation-delay: 1.5s; }
+.star-5 { top: 60%; left: 15%; font-size: 1.9rem; animation-delay: 2s; }
+.star-6 { top: 75%; right: 12%; animation-delay: 2.5s; }
+.star-7 { bottom: 10%; left: 20%; font-size: 2.1rem; animation-delay: 3s; }
+.star-8 { bottom: 20%; right: 8%; animation-delay: 3.5s; }
+
+@keyframes float-star {
+    0%, 100% {
+        transform: translate3d(0, 0, 0) rotate(0deg);
+        opacity: 0.25;
+    }
+    50% {
+        transform: translate3d(0, -20px, 0) rotate(180deg);
+        opacity: 0.35;
+    }
+}
+
+/* Layer 3: Floating Educational Icons */
+.floating-icons {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -80;
+}
+
+.float-icon {
+    position: absolute;
+    font-size: 2.5rem;
+    opacity: 0.2;
+    filter: drop-shadow(0 2px 6px rgba(139, 127, 232, 0.2));
+    will-change: transform;
+    animation: float-icon-vertical 6s ease-in-out infinite;
+}
+
+.icon-1 { top: 12%; left: 5%; font-size: 3rem; animation-delay: 0s; }
+.icon-2 { top: 18%; right: 8%; font-size: 2.8rem; animation-delay: 0.7s; }
+.icon-3 { top: 30%; left: 10%; animation-delay: 1.4s; }
+.icon-4 { top: 38%; right: 6%; font-size: 2.6rem; animation-delay: 2.1s; }
+.icon-5 { top: 52%; left: 7%; font-size: 2.9rem; animation-delay: 2.8s; }
+.icon-6 { top: 65%; right: 12%; animation-delay: 3.5s; }
+.icon-7 { top: 72%; left: 14%; font-size: 2.7rem; animation-delay: 4.2s; }
+.icon-8 { bottom: 15%; right: 10%; animation-delay: 4.9s; }
+.icon-9 { bottom: 25%; left: 8%; font-size: 2.4rem; animation-delay: 5.6s; }
+.icon-10 { bottom: 8%; right: 15%; font-size: 2.8rem; animation-delay: 0.3s; }
+
+@keyframes float-icon-vertical {
+    0%, 100% {
+        transform: translate3d(0, 0, 0);
+        opacity: 0.2;
+    }
+    50% {
+        transform: translate3d(0, -25px, 0);
+        opacity: 0.28;
+    }
+}
+
+/* Layer 4: Character Illustrations in Corners */
+.character-corners {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -85;
+}
+
+.corner-character {
+    position: fixed;
+    font-size: 7rem;
+    opacity: 0.4;
+    filter: drop-shadow(0 4px 12px rgba(139, 127, 232, 0.3));
+    will-change: transform;
+}
+
+.corner-owl {
+    top: 5%;
+    left: -2%;
+    animation: peek-idle-left 4s ease-in-out infinite;
+}
+
+.corner-wolf {
+    bottom: 8%;
+    right: -2%;
+    animation: peek-idle-right 5s ease-in-out infinite;
+}
+
+@keyframes peek-idle-left {
+    0%, 100% {
+        transform: translate3d(0, 0, 0) rotate(-5deg);
+    }
+    50% {
+        transform: translate3d(5px, -8px, 0) rotate(-3deg);
+    }
+}
+
+@keyframes peek-idle-right {
+    0%, 100% {
+        transform: translate3d(0, 0, 0) rotate(5deg);
+    }
+    50% {
+        transform: translate3d(-5px, -8px, 0) rotate(3deg);
+    }
+}
+
+/* Layer 5: Tiny Particle Effects */
+.particle-system {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -70;
+}
+
+.particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    opacity: 0;
+    will-change: transform, opacity;
+    animation: particle-rise 12s linear infinite;
+}
+
+.particle:nth-child(odd) {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.particle:nth-child(even) {
+    background: rgba(255, 217, 61, 0.7);
+}
+
+.particle:nth-child(3n) {
+    background: rgba(168, 181, 255, 0.6);
+}
+
+/* Position particles randomly across bottom */
+.p-1 { left: 5%; animation-delay: 0s; }
+.p-2 { left: 12%; animation-delay: 1s; }
+.p-3 { left: 18%; animation-delay: 2s; }
+.p-4 { left: 25%; animation-delay: 3s; }
+.p-5 { left: 32%; animation-delay: 4s; }
+.p-6 { left: 38%; animation-delay: 5s; }
+.p-7 { left: 45%; animation-delay: 6s; }
+.p-8 { left: 52%; animation-delay: 7s; }
+.p-9 { left: 58%; animation-delay: 8s; }
+.p-10 { left: 65%; animation-delay: 9s; }
+.p-11 { left: 72%; animation-delay: 10s; }
+.p-12 { left: 78%; animation-delay: 11s; }
+.p-13 { left: 85%; animation-delay: 0.5s; }
+.p-14 { left: 92%; animation-delay: 1.5s; }
+.p-15 { left: 8%; animation-delay: 2.5s; }
+.p-16 { left: 15%; animation-delay: 3.5s; }
+.p-17 { left: 48%; animation-delay: 4.5s; }
+.p-18 { left: 55%; animation-delay: 5.5s; }
+.p-19 { left: 68%; animation-delay: 6.5s; }
+.p-20 { left: 95%; animation-delay: 7.5s; }
+
+@keyframes particle-rise {
+    0% {
+        bottom: 0;
+        opacity: 0;
+        transform: translate3d(0, 0, 0);
+    }
+    10% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 0.6;
+        transform: translate3d(15px, -50vh, 0);
+    }
+    90% {
+        opacity: 0.3;
+    }
+    100% {
+        bottom: 100vh;
+        opacity: 0;
+        transform: translate3d(-20px, -100vh, 0);
+    }
+}
+
+/* Mobile Optimization - Reduce decorative elements */
+@media (max-width: 768px) {
+    .blob-shape {
+        filter: blur(50px);
+    }
+
+    .blob-blue,
+    .blob-mint,
+    .blob-peach,
+    .blob-lavender {
+        width: 250px;
+        height: 250px;
+    }
+
+    .star {
+        font-size: 1.5rem;
+    }
+
+    .float-icon {
+        font-size: 2rem;
+    }
+
+    .icon-9,
+    .icon-10 {
+        display: none;
+    }
+
+    .corner-character {
+        font-size: 5rem;
+    }
+
+    .particle:nth-child(n+16) {
+        display: none;
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    .enhanced-background-wrapper * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+
+    .blob-shape,
+    .star,
+    .float-icon,
+    .corner-character,
+    .particle {
+        animation: none !important;
+        opacity: 0.15 !important;
+    }
+}
+
 /* Mobile Container */
 .mobile-container {
     max-width: 1200px;
@@ -314,22 +912,27 @@
 .section-title {
     font-size: 2.5rem;
     font-weight: 800;
-    color: var(--ocean-blue);
+    color: var(--text-dark);
     text-align: center;
     margin-bottom: 15px;
+    text-shadow:
+        0 3px 6px rgba(139, 127, 232, 0.15),
+        0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .faq-subtitle {
     font-size: 1.2rem;
-    color: var(--soft-text);
-    font-weight: 500;
+    color: var(--text-grey);
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 /* FAQ Page Wrapper */
 .faq-page {
     padding: 60px 0;
-    background: var(--light-blue-bg);
+    background: transparent;
     min-height: calc(100vh - 200px);
+    position: relative;
 }
 
 /* Search Bar */
@@ -355,22 +958,26 @@
 .faq-search {
     width: 100%;
     padding: 16px 55px 16px 52px;
-    border: 2px solid var(--sky-blue);
+    border: 3px solid rgba(139, 127, 232, 0.3);
     border-radius: 50px;
     font-size: 1rem;
-    background: var(--pure-white);
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     transition: all 0.3s ease;
     outline: none;
+    box-shadow: 0 4px 12px rgba(139, 127, 232, 0.1);
 }
 
 .faq-search:focus {
-    border-color: var(--ocean-blue);
-    box-shadow: 0 4px 20px rgba(168, 218, 220, 0.3);
+    border-color: var(--pop-purple);
+    box-shadow: 0 8px 32px rgba(139, 127, 232, 0.25);
     transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.95);
 }
 
 .faq-search::placeholder {
-    color: var(--soft-text);
+    color: var(--text-grey);
 }
 
 .search-clear {
@@ -389,7 +996,7 @@
 }
 
 .search-clear:hover {
-    color: var(--ocean-blue);
+    color: var(--pop-purple);
     transform: scale(1.2);
 }
 
@@ -407,27 +1014,31 @@
     align-items: center;
     gap: 8px;
     padding: 12px 20px;
-    border: 2px solid var(--sky-blue);
-    background: var(--pure-white);
+    border: 3px solid rgba(139, 127, 232, 0.3);
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 50px;
     font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--charcoal-teal);
+    font-weight: 700;
+    color: var(--text-dark);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 12px rgba(139, 127, 232, 0.1);
 }
 
 .category-btn:hover {
-    border-color: var(--ocean-blue);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(168, 218, 220, 0.2);
+    border-color: var(--pop-purple);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 6px 20px rgba(139, 127, 232, 0.2);
 }
 
 .category-btn.active {
-    background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--soft-teal-blue) 100%);
-    color: var(--pure-white);
-    border-color: var(--ocean-blue);
-    box-shadow: 0 4px 16px rgba(58, 109, 137, 0.3);
+    background: linear-gradient(135deg, #8B7FE8 0%, #5FE3D0 100%);
+    color: var(--text-white);
+    border-color: var(--pop-purple);
+    box-shadow: 0 6px 24px rgba(139, 127, 232, 0.35);
+    transform: translateY(-2px);
 }
 
 .category-icon {
@@ -449,19 +1060,24 @@
     align-items: center;
     gap: 6px;
     padding: 10px 18px;
-    border: 2px solid var(--sky-blue);
-    background: var(--pure-white);
+    border: 3px solid rgba(139, 127, 232, 0.3);
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 50px;
     font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--ocean-blue);
+    font-weight: 700;
+    color: var(--pop-purple);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 12px rgba(139, 127, 232, 0.1);
 }
 
 .control-btn:hover {
-    background: var(--light-blue-bg);
-    transform: translateY(-2px);
+    background: rgba(139, 127, 232, 0.1);
+    transform: translateY(-2px) scale(1.02);
+    border-color: var(--pop-purple);
+    box-shadow: 0 6px 16px rgba(139, 127, 232, 0.2);
 }
 
 .control-icon {
@@ -470,18 +1086,22 @@
 
 .faq-count {
     font-size: 0.9rem;
-    color: var(--soft-text);
-    font-weight: 600;
+    color: var(--text-grey);
+    font-weight: 700;
     padding: 10px 18px;
-    background: var(--pure-white);
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 50px;
-    border: 2px solid var(--sky-blue);
+    border: 3px solid rgba(139, 127, 232, 0.3);
+    box-shadow: 0 4px 12px rgba(139, 127, 232, 0.1);
 }
 
 /* FAQ SECTION */
 .faq-section {
     padding: 80px 0;
-    background: var(--light-blue-bg);
+    background: transparent;
+    position: relative;
 }
 
 .faq-accordion {
@@ -517,14 +1137,17 @@
 }
 
 .faq-item {
-    background: var(--pure-white);
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 20px;
     margin-bottom: 15px;
-    border: 2px solid var(--sky-blue);
+    border: 3px solid rgba(139, 127, 232, 0.3);
     overflow: hidden;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 1;
     transform: translateY(0);
+    box-shadow: 0 4px 16px rgba(139, 127, 232, 0.1);
 }
 
 .faq-item.hidden {
@@ -553,29 +1176,33 @@
 
 @keyframes highlightPulse {
     0%, 100% {
-        background: var(--pure-white);
+        background: rgba(255, 255, 255, 0.9);
     }
     50% {
-        background: rgba(168, 218, 220, 0.2);
+        background: rgba(139, 127, 232, 0.15);
     }
 }
 
 .faq-item:hover {
-    border-color: var(--ocean-blue);
-    box-shadow: 0 6px 24px rgba(168, 218, 220, 0.3);
-    transform: translateY(-3px);
+    border-color: var(--pop-purple);
+    box-shadow: 0 8px 32px rgba(139, 127, 232, 0.25);
+    transform: translateY(-4px) scale(1.01);
 }
 
 .faq-item.active {
-    border-color: var(--ocean-blue);
-    box-shadow: 0 8px 32px rgba(168, 218, 220, 0.4);
+    border-color: var(--pop-purple);
+    box-shadow: 0 12px 40px rgba(139, 127, 232, 0.3);
+    background: rgba(255, 255, 255, 0.95);
 }
 
 /* Critical FAQ Items - Stand Out */
 .critical-faq {
-    border-color: #FF9800;
-    background: linear-gradient(135deg, #ffffff 0%, #FFF8F0 100%);
+    border-color: var(--pop-orange);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 235, 205, 0.9) 100%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     position: relative;
+    box-shadow: 0 6px 20px rgba(255, 150, 0, 0.2);
 }
 
 .critical-faq::before {
@@ -584,11 +1211,13 @@
     top: 20px;
     left: -5px;
     font-size: 1.5rem;
+    filter: drop-shadow(0 2px 4px rgba(255, 150, 0, 0.3));
 }
 
 .critical-faq:hover {
     border-color: #FF6F00;
-    box-shadow: 0 6px 20px rgba(255, 152, 0, 0.25);
+    box-shadow: 0 10px 32px rgba(255, 152, 0, 0.35);
+    transform: translateY(-4px) scale(1.01);
 }
 
 .faq-question {
@@ -628,18 +1257,18 @@
 }
 
 .faq-question:hover {
-    background: var(--light-blue-bg);
+    background: rgba(139, 127, 232, 0.08);
 }
 
 .critical-faq .faq-question:hover {
-    background: #FFF3E0;
+    background: rgba(255, 150, 0, 0.08);
 }
 
 .faq-icon {
     font-size: 1.5rem;
-    color: var(--ocean-blue);
+    color: var(--pop-purple);
     font-weight: 700;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .critical-faq .faq-icon {
@@ -670,7 +1299,7 @@
 }
 
 .faq-answer p strong {
-    color: var(--ocean-blue);
+    color: var(--pop-purple);
     font-weight: 700;
 }
 
@@ -680,31 +1309,34 @@
 
 .faq-answer p em {
     font-style: italic;
-    color: var(--charcoal-teal);
+    color: var(--text-dark);
     display: block;
     margin-top: 10px;
     padding-left: 15px;
-    border-left: 3px solid var(--sky-blue);
+    border-left: 3px solid var(--pop-purple-light);
+    background: rgba(139, 127, 232, 0.05);
+    padding: 10px 15px;
+    border-radius: 8px;
 }
 
 /* Scroll to Top Button */
 .scroll-to-top {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
+    bottom: 100px;
+    right: 20px;
     width: 50px;
     height: 50px;
-    background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--soft-teal-blue) 100%);
-    color: var(--pure-white);
+    background: linear-gradient(135deg, #8B7FE8 0%, #5FE3D0 100%);
+    color: var(--text-white);
     border: none;
     border-radius: 50%;
     font-size: 1.5rem;
     cursor: pointer;
-    box-shadow: 0 4px 16px rgba(58, 109, 137, 0.3);
+    box-shadow: 0 6px 20px rgba(139, 127, 232, 0.3);
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s ease;
-    z-index: 1000;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 999;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -716,12 +1348,12 @@
 }
 
 .scroll-to-top:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 24px rgba(58, 109, 137, 0.4);
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 8px 32px rgba(139, 127, 232, 0.4);
 }
 
 .scroll-to-top:active {
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.05);
 }
 
 /* Responsive */

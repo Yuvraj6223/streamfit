@@ -181,71 +181,131 @@
         </div>
     </section>
 
-    <!-- 4. GAME LEVELS - HOW IT WORKS -->
-    <section class="game-levels-section">
+    <!-- 4. SNEAK PEEK - GAME LEVEL PREVIEW -->
+    <section class="sneak-peek-section">
         <div class="mobile-container">
-            <h2 class="section-title">3 Levels to Your Superpower 🎮</h2>
-
-            <div class="game-levels">
-                <!-- Level 1 -->
-                <div class="game-level level-unlocked">
-                    <div class="level-number">
-                        <span class="level-badge">
-                            <span class="level-number-badge">1</span>
-                            LEVEL 1
-                        </span>
-                        <span class="level-status unlocked">🔓 UNLOCKED</span>
-                    </div>
-                    <div class="level-content">
-                        <div class="level-icon">🦉</div>
-                        <div>
-                            <h3 class="level-title">Find Your Animal</h3>
-                            <p class="level-desc">3 min • Instant results</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Level 2 -->
-                <div class="game-level level-locked">
-                    <div class="level-number">
-                        <span class="level-badge">
-                            <span class="level-number-badge">2</span>
-                            LEVEL 2
-                        </span>
-                        <span class="level-status locked">🔒 UNLOCK NEXT</span>
-                    </div>
-                    <div class="level-content">
-                        <div class="level-icon">🧠</div>
-                        <div>
-                            <h3 class="level-title">Brain Superpowers</h3>
-                            <p class="level-desc">+8 mini-games (optional)</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Level 3 -->
-                <div class="game-level level-locked">
-                    <div class="level-number">
-                        <span class="level-badge level-badge-boss">
-                            <span class="level-number-badge">👑</span>
-                            BOSS LEVEL
-                        </span>
-                        <span class="level-status locked">🏆 FINAL REWARD</span>
-                    </div>
-                    <div class="level-content">
-                        <div class="level-icon">📊</div>
-                        <div>
-                            <h3 class="level-title">Your Complete Profile</h3>
-                            <p class="level-desc">Stream match + career paths</p>
-                        </div>
-                    </div>
-                </div>
+            <!-- Section Header -->
+            <div class="sneak-peek-header">
+                <h2 class="section-title">What's Inside? 🎮</h2>
+                <p class="section-subtitle">Unlock your profile one game at a time</p>
             </div>
 
-            <!-- Time Reframe -->
-            <div class="time-reframe">
-                <p class="time-text">
-                    Most students stop after 2-3 tests and that's totally fine! 😊
+            <!-- Game Map - Vertical Progression -->
+            <div class="game-map">
+
+                <!-- LEVEL 1 - UNLOCKED (Visible & Friendly) -->
+                <div class="game-map-level level-unlocked" data-level="1">
+                    <div class="level-checkpoint">
+                        <div class="checkpoint-circle unlocked-checkpoint">
+                            <span class="checkpoint-icon">🦉</span>
+                        </div>
+                        <div class="checkpoint-badge unlocked-badge">UNLOCKED</div>
+                    </div>
+
+                    <div class="level-card unlocked-card">
+                        <div class="level-card-header">
+                            <div class="level-card-icon">🦉</div>
+                            <div class="level-card-title-group">
+                                <h3 class="level-card-title">Find Your Animal</h3>
+                                <p class="level-card-subtitle">A few quick choices — no thinking required</p>
+                            </div>
+                        </div>
+                        <div class="level-card-footer">
+                            <span class="level-card-time">⚡ Less than 3 min</span>
+                            <span class="level-card-status">Ready to play!</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LEVEL 2 - LOCKED (Teased) -->
+                <div class="game-map-level level-locked" data-level="2">
+                    <div class="level-checkpoint">
+                        <div class="checkpoint-circle locked-checkpoint">
+                            <span class="checkpoint-icon">🧠</span>
+                            <span class="checkpoint-lock">🔒</span>
+                        </div>
+                        <div class="checkpoint-badge locked-badge">UNLOCK NEXT</div>
+                    </div>
+
+                    <div class="level-card locked-card">
+                        <div class="level-card-header">
+                            <div class="level-card-icon blurred-icon">🧠</div>
+                            <div class="level-card-title-group">
+                                <h3 class="level-card-title">Brain Superpowers</h3>
+                                <p class="level-card-subtitle">Tiny games that reveal what you're naturally good at</p>
+                            </div>
+                        </div>
+                        <div class="level-card-footer">
+                            <span class="level-card-hint">🎯 Unlock after Level 1</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LEVEL 3 - LOCKED (Teased) -->
+                <div class="game-map-level level-locked" data-level="3">
+                    <div class="level-checkpoint">
+                        <div class="checkpoint-circle locked-checkpoint">
+                            <span class="checkpoint-icon">⚡</span>
+                            <span class="checkpoint-lock">🔒</span>
+                        </div>
+                        <div class="checkpoint-badge locked-badge">LOCKED</div>
+                    </div>
+
+                    <div class="level-card locked-card">
+                        <div class="level-card-header">
+                            <div class="level-card-icon blurred-icon">⚡</div>
+                            <div class="level-card-title-group">
+                                <h3 class="level-card-title">Focus & Pressure</h3>
+                                <p class="level-card-subtitle">See how your brain reacts when it gets hard</p>
+                            </div>
+                        </div>
+                        <div class="level-card-footer">
+                            <span class="level-card-hint">🔥 More games unlock as you play</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOSS LEVEL - HIDDEN (Mystery) -->
+                <div class="game-map-level level-boss" data-level="boss">
+                    <div class="level-checkpoint">
+                        <div class="checkpoint-circle boss-checkpoint">
+                            <span class="checkpoint-icon">🏆</span>
+                            <span class="checkpoint-lock">🔒</span>
+                        </div>
+                        <div class="checkpoint-badge boss-badge">BOSS LEVEL</div>
+                    </div>
+
+                    <div class="level-card boss-card">
+                        <div class="level-card-header">
+                            <div class="level-card-icon mystery-icon">🏆</div>
+                            <div class="level-card-title-group">
+                                <h3 class="level-card-title">Final Reveal</h3>
+                                <p class="level-card-subtitle">Your complete learning profile</p>
+                            </div>
+                        </div>
+                        <div class="level-card-footer">
+                            <span class="level-card-mystery">✨ Mystery reward awaits...</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Single CTA -->
+            <div class="sneak-peek-cta">
+                <a href="${createLink(controller: 'personality', action: 'start')}"
+                   class="btn-primary-unified pulse-animation"
+                   data-track="sneak_peek_play_now">
+                    <span class="btn-icon">🚀</span>
+                    <span class="btn-text">Play the First Game</span>
+                </a>
+                <p class="cta-subtext">Takes less than 3 minutes</p>
+            </div>
+
+            <!-- Reassurance Message -->
+            <div class="sneak-peek-reassurance">
+                <p class="reassurance-text">
+                    💡 You don't need to do everything — just start with the first one!
                 </p>
             </div>
         </div>
@@ -1461,11 +1521,11 @@ h1, h2, h3, h4, h5, h6,
 @keyframes twinkle {
     0%, 100% {
         opacity: 0.4;
-        transform: scale(1) rotate(0deg);
+        transform: scale(1);
     }
     50% {
         opacity: 1;
-        transform: scale(1.2) rotate(180deg);
+        transform: scale(1.2);
     }
 }
 
@@ -2270,195 +2330,159 @@ button:active {
 }
 
 /* ========================================
-   4. GAME LEVELS SECTION
+   4. SNEAK PEEK SECTION - GAME LEVEL PREVIEW
    ======================================== */
 
-.game-levels-section {
+.sneak-peek-section {
     padding: 100px 0 120px;
     background: transparent;
+    position: relative;
 }
 
-.game-levels-section::before {
-    content: '⭐ ⭐ ⭐';
-    display: block;
+/* Section Header */
+.sneak-peek-header {
     text-align: center;
-    font-size: 1.5rem;
-    opacity: 0.3;
-    margin-bottom: 40px;
-    letter-spacing: 20px;
+    margin-bottom: 60px;
 }
 
-.game-levels {
-    max-width: 700px;
+.sneak-peek-header .section-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-grey);
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+/* Game Map Container */
+.game-map {
+    max-width: 750px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 30px;
     position: relative;
+    padding: 20px 0;
 }
 
-/* Vertical progression line */
-.game-levels::before {
+/* Vertical Progression Line - Centered through checkpoints */
+.game-map::before {
     content: '';
     position: absolute;
-    left: 60px;
-    top: 60px;
-    bottom: 60px;
-    width: 4px;
+    left: 42.5px;  /* (90px checkpoint width / 2) - (5px line width / 2) = 42.5px */
+    top: 80px;
+    bottom: 80px;
+    width: 5px;
     background: linear-gradient(180deg,
         #5FE3D0 0%,
-        #A0E7E5 33%,
-        #D1D5DB 33%,
+        #5FE3D0 25%,
+        #D1D5DB 25%,
         #D1D5DB 100%
     );
-    border-radius: 2px;
+    border-radius: 3px;
     z-index: 0;
 }
 
-.game-level {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.88) 100%);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-radius: 28px;
-    padding: 28px 35px;
+/* Individual Game Map Level */
+.game-map-level {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Checkpoint Circle (Left Side) */
+.level-checkpoint {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 90px;
+    flex-shrink: 0;
+}
+
+.checkpoint-circle {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
-    gap: 28px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    justify-content: center;
+    position: relative;
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    border: 3px solid rgba(255, 255, 255, 0.5);
-    position: relative;
-    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
-.game-level::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(58, 124, 165, 0.08) 0%, rgba(115, 210, 222, 0.08) 100%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
+/* Unlocked Checkpoint */
+.unlocked-checkpoint {
+    background: linear-gradient(135deg, #5FE3D0 0%, #7FDBDA 100%);
+    border: 5px solid rgba(255, 255, 255, 0.8);
+    animation: glow-pulse-unlocked 3s infinite;
 }
 
-.game-level:hover::before {
-    opacity: 1;
+@keyframes glow-pulse-unlocked {
+    0%, 100% {
+        box-shadow: 0 8px 20px rgba(95, 227, 208, 0.4),
+                    0 0 30px rgba(95, 227, 208, 0.3);
+    }
+    50% {
+        box-shadow: 0 8px 30px rgba(95, 227, 208, 0.6),
+                    0 0 50px rgba(95, 227, 208, 0.5);
+    }
 }
 
-.game-level.level-unlocked {
-    border-color: rgba(58, 124, 165, 0.4);
+/* Locked Checkpoint */
+.locked-checkpoint {
+    background: linear-gradient(135deg, #D1D5DB 0%, #9CA3AF 100%);
+    border: 5px solid rgba(255, 255, 255, 0.6);
+    opacity: 0.7;
 }
 
-.game-level.level-unlocked::before {
-    opacity: 1;
+/* Boss Checkpoint */
+.boss-checkpoint {
+    background: linear-gradient(135deg, #FFD86D 0%, #FFA500 100%);
+    border: 5px solid rgba(255, 255, 255, 0.8);
+    opacity: 0.5;
+    filter: blur(2px);
 }
 
-.game-level.level-locked {
-    opacity: 0.65;
-    border-color: rgba(0, 0, 0, 0.15);
+.checkpoint-icon {
+    font-size: 3rem;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
 }
 
-.game-level.level-locked .level-icon {
-    filter: grayscale(100%);
-    opacity: 0.4;
-    position: relative;
-}
-
-.game-level.level-locked .level-icon::after {
-    content: '🔒';
+.checkpoint-lock {
     position: absolute;
     bottom: -5px;
     right: -5px;
-    font-size: 1.2rem;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)) grayscale(0%);
-}
-
-.game-level:hover {
-    transform: translateX(12px) scale(1.02);
-    box-shadow: 0 14px 40px rgba(58, 124, 165, 0.25);
-}
-
-/* Unlocked level glow and tap affordance */
-.game-level.level-unlocked {
-    position: relative;
-    animation: glow-pulse 3s infinite;
-}
-
-@keyframes glow-pulse {
-    0%, 100% {
-        box-shadow: 0 10px 30px rgba(95, 227, 208, 0.2);
-    }
-    50% {
-        box-shadow: 0 10px 40px rgba(95, 227, 208, 0.4),
-                    0 0 20px rgba(95, 227, 208, 0.3);
-    }
-}
-
-.game-level.level-unlocked::after {
-    content: '👆 Tap to start';
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--pop-cyan);
-    animation: pulse-fade 2s infinite;
-}
-
-@keyframes pulse-fade {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
-}
-
-/* Sparkle decoration on unlocked level */
-.game-level.level-unlocked::before {
-    content: '✨';
-    position: absolute;
-    top: -10px;
-    right: -10px;
     font-size: 1.5rem;
-    animation: twinkle 2s infinite;
-    z-index: 10;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
-.level-number {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    min-width: 120px;
-}
-
-.level-badge {
-    background: var(--pop-purple);
-    color: white;
-    padding: 6px 12px;
-    border-radius: 15px;
+/* Checkpoint Badges */
+.checkpoint-badge {
     font-size: 0.75rem;
     font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 6px 14px;
+    border-radius: 20px;
     text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
 }
 
-.level-number-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    font-weight: 900;
-    font-size: 0.7rem;
+.unlocked-badge {
+    background: var(--pop-cyan);
+    color: #2D2A45;
+    box-shadow: 0 4px 12px rgba(95, 227, 208, 0.4);
 }
 
-.level-badge-boss {
+.locked-badge {
+    background: rgba(209, 213, 219, 0.8);
+    color: var(--text-grey);
+}
+
+.boss-badge {
     background: linear-gradient(135deg, #FFD86D, #FFA500);
+    color: #2D2A45;
     animation: pulse-glow-boss 2s infinite;
 }
 
@@ -2471,65 +2495,186 @@ button:active {
     }
 }
 
-.level-status {
-    font-size: 0.85rem;
-    font-weight: 700;
-    text-align: center;
-}
-
-.level-status.unlocked {
-    color: var(--pop-teal);
-}
-
-.level-status.locked {
-    color: var(--text-grey);
-}
-
-.level-content {
+/* Level Cards (Right Side) */
+.level-card {
     flex: 1;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.88) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 24px;
+    padding: 24px 28px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 3px solid rgba(255, 255, 255, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Unlocked Card */
+.unlocked-card {
+    border-color: rgba(95, 227, 208, 0.5);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(224, 255, 250, 0.9) 100%);
+}
+
+.unlocked-card::before {
+    content: '✨';
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    font-size: 1.8rem;
+    animation: twinkle 2s infinite;
+    z-index: 10;
+}
+
+.unlocked-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 16px 40px rgba(95, 227, 208, 0.3);
+    border-color: rgba(95, 227, 208, 0.7);
+}
+
+/* Locked Card */
+.locked-card {
+    opacity: 0.75;
+    border-color: rgba(209, 213, 219, 0.5);
+}
+
+.locked-card:hover {
+    transform: translateY(-4px);
+    opacity: 0.85;
+}
+
+/* Boss Card */
+.boss-card {
+    opacity: 0.6;
+    border-color: rgba(255, 165, 0, 0.3);
+    filter: blur(1px);
+}
+
+.boss-card:hover {
+    opacity: 0.7;
+    filter: blur(0.5px);
+}
+
+/* Level Card Header */
+.level-card-header {
     display: flex;
-    align-items: center;
-    gap: 20px;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 18px;
 }
 
-.level-icon {
-    font-size: 3rem;
+.level-card-icon {
+    font-size: 3.5rem;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+    flex-shrink: 0;
 }
 
-.level-title {
-    font-size: 1.3rem;
+.blurred-icon {
+    filter: grayscale(80%) blur(1px) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+    opacity: 0.6;
+}
+
+.mystery-icon {
+    filter: grayscale(100%) blur(3px) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+    opacity: 0.4;
+}
+
+.level-card-title-group {
+    flex: 1;
+}
+
+.level-card-title {
+    font-size: 1.4rem;
     font-weight: 800;
     color: var(--text-dark);
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    line-height: 1.2;
 }
 
-.level-desc {
-    font-size: 0.95rem;
+.level-card-subtitle {
+    font-size: 1rem;
     color: var(--text-grey);
     font-weight: 600;
+    line-height: 1.5;
 }
 
-.time-reframe {
+/* Level Card Footer */
+.level-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 12px;
+    border-top: 2px solid rgba(0, 0, 0, 0.05);
+}
+
+.level-card-time {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--pop-cyan);
+}
+
+.level-card-status {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--pop-purple);
+    background: rgba(139, 127, 232, 0.1);
+    padding: 6px 14px;
+    border-radius: 15px;
+}
+
+.level-card-hint {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-grey);
+}
+
+.level-card-mystery {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--pop-yellow);
+    font-style: italic;
+}
+
+/* Sneak Peek CTA */
+.sneak-peek-cta {
+    text-align: center;
+    margin-top: 60px;
+}
+
+.sneak-peek-cta .btn-primary-unified {
+    padding: 22px 50px;
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+}
+
+.cta-subtext {
+    font-size: 1rem;
+    color: var(--text-grey);
+    font-weight: 600;
+    margin-top: 12px;
+}
+
+/* Reassurance Message */
+.sneak-peek-reassurance {
     text-align: center;
     margin-top: 40px;
-    padding: 25px;
-    background: var(--pop-cream);
+    padding: 20px 30px;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 20px;
-    max-width: 600px;
+    max-width: 650px;
     margin-left: auto;
     margin-right: auto;
+    border: 2px solid rgba(255, 255, 255, 0.6);
 }
 
-.time-text {
-    font-size: 1.1rem;
+.reassurance-text {
+    font-size: 1.05rem;
     color: var(--text-dark);
+    font-weight: 600;
     line-height: 1.6;
-}
-
-.time-highlight {
-    font-size: 1.3rem;
-    font-weight: 800;
-    color: var(--pop-coral);
 }
 
 /* ========================================
@@ -4408,11 +4553,6 @@ button:active {
         padding: 12px;
     }
 
-    .game-level {
-        padding: 20px;
-        min-height: 80px;
-    }
-
     /* Reduce hero padding */
     .hero-section.game-portal {
         padding: 30px 0 50px;
@@ -4423,7 +4563,7 @@ button:active {
         padding: 50px 0;
     }
 
-    .game-levels-section {
+    .sneak-peek-section {
         padding: 50px 0;
     }
 
@@ -4492,14 +4632,61 @@ button:active {
         display: none;
     }
 
-    /* Hide "Tap to start" text on mobile (icon is enough) */
-    .game-level.level-unlocked::after {
-        display: none;
+    /* Sneak Peek Mobile Adjustments */
+    .game-map::before {
+        left: 32.5px;  /* (70px checkpoint width / 2) - (5px line width / 2) = 32.5px */
     }
 
-    /* Adjust progression line for mobile */
-    .game-levels::before {
-        left: 30px;
+    .game-map-level {
+        gap: 20px;
+    }
+
+    .level-checkpoint {
+        width: 70px;
+    }
+
+    .checkpoint-circle {
+        width: 70px;
+        height: 70px;
+    }
+
+    .checkpoint-icon {
+        font-size: 2.2rem;
+    }
+
+    .checkpoint-lock {
+        font-size: 1.2rem;
+    }
+
+    .level-card {
+        padding: 18px 20px;
+    }
+
+    .level-card-icon {
+        font-size: 2.8rem;
+    }
+
+    .level-card-title {
+        font-size: 1.2rem;
+    }
+
+    .level-card-subtitle {
+        font-size: 0.9rem;
+    }
+
+    .level-card-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .sneak-peek-cta .btn-primary-unified {
+        padding: 18px 40px;
+        font-size: 1.2rem;
+    }
+
+    .reassurance-text {
+        font-size: 0.95rem;
     }
 
     /* Adjust scroll-to-top button position on mobile to avoid sticky CTA */
@@ -4856,22 +5043,22 @@ button:active {
         font-size: 0.9rem;
     }
 
-    /* Game Levels - Mobile */
-    .game-level {
-        flex-direction: column;
-        padding: 20px;
+    /* Sneak Peek Section - Mobile Specific */
+    .game-map-level {
         gap: 15px;
     }
 
-    .level-number {
-        width: 100%;
-        flex-direction: row;
-        justify-content: space-between;
+    .level-checkpoint {
+        min-width: 70px;
     }
 
-    .level-content {
-        flex-direction: column;
-        text-align: center;
+    .checkpoint-badge {
+        font-size: 0.65rem;
+        padding: 4px 10px;
+    }
+
+    .level-card-header {
+        gap: 12px;
     }
 
     .level-title {

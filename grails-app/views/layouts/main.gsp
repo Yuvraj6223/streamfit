@@ -119,42 +119,75 @@
         min-height: 100vh;
     }
 
-    /* NAVIGATION */
+    /* NAVIGATION - MATCHING FOOTER GLASSMORPHISM STYLE */
     .main-nav {
-        background: var(--pure-white);
+        /* Same frosted glass effect as footer */
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+
         position: sticky;
         top: 0;
         z-index: 1000;
-        border-bottom: 2px solid var(--sky-blue);
-        box-shadow: 0 2px 12px rgba(168, 218, 220, 0.2);
+
+        /* Rounded bottom edges like footer corners */
+        border-radius: 0 0 32px 32px;
+
+        /* Same border style as footer */
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        border-top: none;
+
+        /* Same soft shadow as footer */
+        box-shadow: 0 12px 30px -10px rgba(28, 26, 40, 0.04);
+
+        /* Smooth transition for scroll effects */
+        transition: opacity 0.3s ease;
+
+        /* Subtle overflow handling like footer */
+        position: relative;
+        overflow: hidden;
     }
 
     .nav-container {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 8px 20px;
+        padding: 12px 32px;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        gap: 20px;
     }
 
     .nav-logo {
         text-decoration: none;
         display: flex;
         align-items: center;
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .nav-logo img {
-        height: 120px;
+        height: 140px;
         width: auto;
-        transition: transform 0.3s ease;
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        filter: drop-shadow(0 2px 4px rgba(139, 127, 232, 0.1));
+    }
+
+    .nav-logo:hover {
+        transform: scale(1.03);
     }
 
     .nav-logo img:hover {
-        transform: scale(1.05);
+        transform: scale(1.05) rotate(-2deg);
     }
 
-    /* BUTTON SYSTEM */
+    /* GAME-STYLE CTA BUTTON */
+    .nav-cta-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 4px;
+    }
+
     .btn {
         padding: 8px 16px;
         border-radius: 12px;
@@ -162,30 +195,59 @@
         font-weight: 700;
         cursor: pointer;
         text-decoration: none;
-        display: inline-block;
-        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         font-size: 0.85rem;
+        position: relative;
     }
 
     .btn-primary {
-        background: linear-gradient(135deg, var(--ocean-blue), var(--soft-teal-blue));
-        color: var(--pure-white);
-        border-radius: 50px;
-        box-shadow: 0 4px 12px rgba(43, 95, 126, 0.25);
+        /* Playful gradient matching page theme */
+        background: linear-gradient(135deg, #8B7FE8 0%, #A89FF3 50%, #C4B5FD 100%);
+        color: #FFFFFF;
+
+        /* Pill-shaped for game feel */
+        border-radius: 999px;
+
+        /* Soft glow effect */
+        box-shadow:
+            0 4px 0 #7B6FD8,
+            0 6px 16px rgba(139, 127, 232, 0.35),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+
+        /* Slightly larger for emphasis */
+        font-size: 0.9rem;
+        font-weight: 800;
+        padding: 10px 20px;
+
+        /* Prevent text selection */
+        user-select: none;
+        -webkit-user-select: none;
     }
 
     .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(43, 95, 126, 0.35);
+        transform: translateY(-2px) scale(1.02);
+        box-shadow:
+            0 6px 0 #7B6FD8,
+            0 8px 24px rgba(139, 127, 232, 0.45),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4);
     }
+
+    .btn-primary:active {
+        transform: translateY(2px) scale(0.98);
+        box-shadow:
+            0 2px 0 #7B6FD8,
+            0 4px 12px rgba(139, 127, 232, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+
 
     /* ✅ FIXED NAV CTA (KEY CHANGE) */
     .nav-cta {
-        font-size: 0.75rem;
-        padding: 6px 14px;        /* overrides .btn */
-        font-weight: 600;
         white-space: nowrap;
-        border-radius: 999px;
     }
 
     /* FOOTER */
@@ -314,36 +376,45 @@
         color: var(--pop-purple, #9F97F3);
     }
 
-    /* RESPONSIVE */
+    /* RESPONSIVE - MOBILE GAME HUD */
     @media (max-width: 768px) {
+        .main-nav {
+            /* Keep same frosted glass on mobile */
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 0 0 24px 24px;
+        }
+
+        .nav-container {
+            padding: 8px 16px;
+        }
+
         .nav-logo img {
-            height: 70px;
+            height: 80px;
         }
 
-        .nav-cta {
-            background: linear-gradient(
-                    135deg,
-                    #7FE8D8 0%,
-                    #9AF0E4 100%
-            );
-            color: #2D2A45;
-
-            border: 1.5px solid rgba(255, 255, 255, 0.6);
-
+        .btn-primary {
+            font-size: 0.7rem;
+            padding: 6px 12px;
             box-shadow:
-                    0 2px 0 #4FCFB8,
-                    0 6px 12px rgba(95, 227, 208, 0.25);
-
-            border-radius: 999px;
-            font-weight: 700;
+                0 2px 0 #7B6FD8,
+                0 4px 12px rgba(139, 127, 232, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
         }
 
-        .nav-cta:hover {
-            transform: translateY(-1px);
+        .btn-primary:hover {
+            transform: translateY(-1px) scale(1.01);
             box-shadow:
-                0 4px 0 #3ABFA8,
-                0 6px 12px rgba(95, 227, 208, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+                0 3px 0 #7B6FD8,
+                0 5px 16px rgba(139, 127, 232, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(1px) scale(0.99);
+        }
+
+        .nav-helper-text {
+            font-size: 0.6rem;
         }
 
         /* Footer Mobile */
@@ -367,47 +438,69 @@
     }
 
     @media (max-width: 480px) {
+        .main-nav {
+            border-radius: 0 0 20px 20px;
+        }
+
         .nav-container {
-            padding: 8px 16px;
+            padding: 6px 14px;
         }
 
         .nav-logo img {
-            height: 55px;
+            height: 70px;
         }
 
-        .nav-cta {
+        .btn-primary {
             font-size: 0.65rem;
-            padding: 6px 12px;
-
+            padding: 5px 10px;
         }
-    }
-    /* ===== MOBILE NAV CTA FIX ===== */
-    @media (max-width: 768px) {
-        .main-nav .nav-cta {
-            font-size: 0.68rem;        /* smaller text */
-            padding: 6px 14px;         /* reduce height */
-            line-height: 1;
-            min-height: unset;
+
+        .nav-helper-text {
+            font-size: 0.55rem;
         }
     }
 
 
     </style>
+
+    <script>
+    // Optional: Subtle nav scroll behavior for game HUD feel
+    document.addEventListener('DOMContentLoaded', function() {
+        const nav = document.querySelector('.main-nav');
+        let lastScroll = 0;
+
+        window.addEventListener('scroll', function() {
+            const currentScroll = window.pageYOffset;
+
+            // Slightly reduce opacity when scrolling down (keeps focus on content)
+            if (currentScroll > 100) {
+                nav.style.opacity = '0.95';
+            } else {
+                nav.style.opacity = '1';
+            }
+
+            lastScroll = currentScroll;
+        });
+    });
+    </script>
 </head>
 
 <body>
 
-<!-- NAV -->
+<!-- NAV - GAME HUD OVERLAY -->
 <nav class="main-nav">
     <div class="nav-container">
         <a href="${createLink(uri: '/')}" class="nav-logo">
             <img src="${assetPath(src: 'logo1.png')}" alt="LearnerDNA - Free Student Aptitude Test" width="120" height="120"/>
         </a>
 
-        <a href="${createLink(controller: 'personality', action: 'start')}"
-           class="btn btn-primary nav-cta">
-            🚀 Play Now
-        </a>
+        <div class="nav-cta-wrapper">
+            <a href="${createLink(controller: 'personality', action: 'start')}"
+               class="btn btn-primary nav-cta">
+                <span>▶</span>
+                <span>Start Playing</span>
+            </a>
+        </div>
     </div>
 </nav>
 
