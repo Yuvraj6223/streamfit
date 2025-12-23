@@ -51,9 +51,9 @@ class ChallengeDriverService {
         if (!test) {
             test = new DiagnosticTest(
                 testId: 'CHALLENGE_DRIVER',
-                testName: 'Challenge Driver',
+                testName: 'Motivation Game',
                 testType: 'CAREER',
-                description: 'Identifies your core motivational pattern',
+                description: '',
                 questionCount: 5,
                 estimatedMinutes: 2,
                 isActive: true
@@ -65,20 +65,20 @@ class ChallengeDriverService {
             return
         }
         
-        createQuestion(test, 1, 'When you win, what\'s most satisfying?',
-            ['Being better than others', 'Conquering a hard problem', 'Being praised or awarded', 'Making a difference'])
-        
-        createQuestion(test, 2, 'You join a team project. You want...',
-            ['To outperform peers', 'To solve the core issue', 'To be seen as valuable', 'To do something meaningful'])
-        
-        createQuestion(test, 3, 'You\'re told a task is really hard. Your first reaction?',
-            ['"I\'ll still beat them."', '"Bring it on."', '"Can I showcase it later?"', '"Is it worth doing?"'])
-        
-        createQuestion(test, 4, 'You\'re given a platform...',
-            ['You want to win debates', 'You want problem-solving games', 'You want spotlight and approval', 'You want to speak for others'])
-        
-        createQuestion(test, 5, 'Motivation lasts longest when...',
-            ['There\'s rivalry', 'It\'s intellectually hard', 'There\'s recognition', 'The outcome matters to people'])
+        createQuestion(test, 1, 'Your biggest win moment feels like this',
+            ['🏆 Beat other people', '🧩 Solve hard problem', '⭐ Get praised publicly', '🌍 Make real difference'])
+
+        createQuestion(test, 2, 'You are in a team project right now',
+            ['🏆 Want to outperform', '🧩 Solve the core', '⭐ Be most valuable', '🌍 Do meaningful work'])
+
+        createQuestion(test, 3, 'A really hard task appears suddenly',
+            ['🏆 Want to beat them', '🧩 Bring it on', '⭐ Showcase it later', '🌍 Worth doing this'])
+
+        createQuestion(test, 4, 'You are given a platform right now',
+            ['🏆 Win the debates', '🧩 Solve the games', '⭐ Get the spotlight', '🌍 Speak for others'])
+
+        createQuestion(test, 5, 'Your motivation lasts when the task is',
+            ['🏆 Competitive rivalry', '🧩 Intellectually very hard', '⭐ Gets you recognition', '🌍 Matters to real people'])
         
         log.info "Challenge Driver questions initialized"
     }

@@ -1010,27 +1010,27 @@
             </div>
             
             <div class="result-section">
-                <h3>📊 Your Profile</h3>
+                <h3>📊 About You</h3>
                 <p id="result-profile"></p>
             </div>
-            
+
             <div class="result-section">
-                <h3>💪 Your Strengths</h3>
+                <h3>💪 What You're Good At</h3>
                 <p id="result-strengths"></p>
             </div>
-            
+
             <div class="result-section" id="traps-section">
-                <h3>⚠️ Watch Out For</h3>
+                <h3>⚠️ Things to Watch Out For</h3>
                 <p id="result-traps"></p>
             </div>
-            
+
             <div class="result-section">
-                <h3>🎯 AI Roadmap</h3>
+                <h3>🎯 How We'll Help You</h3>
                 <p id="result-roadmap"></p>
             </div>
-            
+
             <div class="result-section" id="matches-section">
-                <h3>🎓 Best Matches</h3>
+                <h3>🎓 Good Fit For You</h3>
                 <p id="result-matches"></p>
             </div>
 
@@ -1090,7 +1090,7 @@
                 </button>
 
                 <a href="/personality/types" class="btn btn-secondary" style="text-decoration: none;">
-                    Take Another Test
+                    🎮 Play Another Game
                 </a>
             </div>
         </div>

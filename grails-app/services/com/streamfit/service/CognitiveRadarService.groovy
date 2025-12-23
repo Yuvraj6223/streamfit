@@ -104,9 +104,9 @@ class CognitiveRadarService {
         if (!test) {
             test = new DiagnosticTest(
                 testId: 'COGNITIVE_RADAR',
-                testName: 'Cognitive Strength Radar',
+                testName: 'Brain Power Game',
                 testType: 'EXAM',
-                description: 'Discover your natural cognitive peaks and ideal exam strategy',
+                description: '',
                 questionCount: 6,
                 estimatedMinutes: 10,
                 isActive: true
@@ -122,54 +122,54 @@ class CognitiveRadarService {
         
         // Logic Pillar - Question 1
         createQuestion(test, 1, 'LOGIC',
-            'If a "Glimp" is always larger than a "Glump", and a "Glump" is always larger than a "Glamp", is a "Glamp" ever larger than a "Glimp"?',
+            'If Glimp is always bigger than Glump',
             [
-                [text: 'Yes', value: 'YES', correct: false],
-                [text: 'No', value: 'NO', correct: true]
+                [text: '✅ Glamp bigger than Glimp', value: 'YES', correct: false],
+                [text: '❌ Can never tell', value: 'NO', correct: true]
             ]
         )
-        
+
         // Logic Pillar - Question 2
         createQuestion(test, 2, 'LOGIC',
-            'Complete the sequence: 2, 6, 12, 20, 30, ___?',
+            'You see a pattern forming what comes next',
             [
                 [text: '40', value: '40', correct: false],
                 [text: '42', value: '42', correct: true]
             ]
         )
-        
+
         // Verbal Pillar - Question 3
         createQuestion(test, 3, 'VERBAL',
-            'Select the word that most nearly means the opposite of "STAGNANT":',
+            'What is the opposite word of STAGNANT',
             [
-                [text: 'Calm', value: 'CALM', correct: false],
-                [text: 'Flowing', value: 'FLOWING', correct: true],
-                [text: 'Silent', value: 'SILENT', correct: false]
+                [text: '😐 Calm', value: 'CALM', correct: false],
+                [text: '🌊 Flowing', value: 'FLOWING', correct: true],
+                [text: '🤫 Silent', value: 'SILENT', correct: false]
             ]
         )
-        
+
         // Verbal Pillar - Question 4
         createQuestion(test, 4, 'VERBAL',
-            'The scientist\'s theory was so _____ that even her critics found it difficult to _____.',
+            'Theory is so blank that critics cannot blank',
             [
-                [text: 'Simple... Understand', value: 'SIMPLE_UNDERSTAND', correct: false],
-                [text: 'Compelling... Refute', value: 'COMPELLING_REFUTE', correct: true]
+                [text: '😐 Simple... Understand', value: 'SIMPLE_UNDERSTAND', correct: false],
+                [text: '🔥 Compelling... Refute', value: 'COMPELLING_REFUTE', correct: true]
             ]
         )
-        
+
         // Spatial Pillar - Question 5
         createQuestion(test, 5, 'SPATIAL',
-            'Imagine a cube. If you rotate it 90 degrees to the right, then flip it upside down, where is the original "top" face now?',
+            'A cube rotates right and then flips down',
             [
-                [text: 'On the Bottom', value: 'BOTTOM', correct: true],
-                [text: 'On the Right', value: 'RIGHT', correct: false],
-                [text: 'On the Front', value: 'FRONT', correct: false]
+                [text: '⬇️ Bottom face', value: 'BOTTOM', correct: true],
+                [text: '➡️ Right face', value: 'RIGHT', correct: false],
+                [text: '⏩ Front face', value: 'FRONT', correct: false]
             ]
         )
-        
+
         // Speed Pillar - Question 6 (Timed)
         createQuestion(test, 6, 'SPEED',
-            'How many times does the letter "E" appear in this string: "EXCELLENCE IN EXECUTION"?',
+            'Count how many times letter E appears',
             [
                 [text: '4', value: '4', correct: false],
                 [text: '5', value: '5', correct: false],

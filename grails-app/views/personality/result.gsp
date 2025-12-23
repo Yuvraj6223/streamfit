@@ -190,8 +190,8 @@
                 <a href="${session.profileUrl}" target="_blank" class="btn btn-outline btn-block">
                     View Full Profile on 16Personalities.com
                 </a>
-                <a href="${createLink(action: 'index')}" class="btn btn-secondary btn-block">
-                    Take Test Again
+                <a href="/personality/types" class="btn btn-secondary btn-block">
+                    🎮 Play Another Game
                 </a>
             </div>
         </div>

@@ -51,9 +51,9 @@ class ModalityMapService {
         if (!test) {
             test = new DiagnosticTest(
                 testId: 'MODALITY_MAP',
-                testName: 'Modality Map',
+                testName: 'Learning Style Game',
                 testType: 'CAREER',
-                description: 'Identifies your preferred learning input modality',
+                description: '',
                 questionCount: 6,
                 estimatedMinutes: 3,
                 isActive: true
@@ -65,23 +65,23 @@ class ModalityMapService {
             return
         }
         
-        createQuestion(test, 1, 'Best way to learn a new concept?',
-            ['Diagrams or flowcharts', 'Lecture or podcast', 'Hands-on practice', 'Real-world analogy'])
-        
-        createQuestion(test, 2, 'Most memorable classes?',
-            ['Ones with board work and charts', 'Teachers who spoke clearly', 'Labs and demos', 'Abstract discussions'])
-        
-        createQuestion(test, 3, 'Best way to revise?',
-            ['Mind maps', 'Reciting aloud', 'Solving problems again', 'Explain it to someone'])
-        
-        createQuestion(test, 4, 'How do you take notes?',
-            ['Sketches and bullets', 'Verbatim or summary audio', 'Rough scribbles while doing', 'Structure + meaning'])
-        
-        createQuestion(test, 5, 'Most annoying?',
-            ['No visuals in textbook', 'Teacher who doesn\'t speak clearly', 'Just reading without action', 'Rote memorization'])
-        
-        createQuestion(test, 6, 'If you miss a class?',
-            ['Request diagrams or slides', 'Ask someone to explain aloud', 'Find practice questions', 'Read summaries and reason it out'])
+        createQuestion(test, 1, 'You don\'t understand this topic clearly',
+            ['👁️ Need to see diagrams', '👂 Need to hear lecture', '✋ Need to do practice', '🧠 Need an analogy'])
+
+        createQuestion(test, 2, 'Your most memorable class felt like this',
+            ['👁️ Charts on board', '👂 Clear speaker talking', '✋ Labs and demos', '🧠 Abstract deep talk'])
+
+        createQuestion(test, 3, 'When you revise material it works best',
+            ['👁️ Draw mind maps', '👂 Recite out loud', '✋ Solve problems again', '🧠 Explain to yourself'])
+
+        createQuestion(test, 4, 'You take notes during class like this',
+            ['👁️ Sketches and bullets', '👂 Audio summary recording', '✋ Scribble while doing', '🧠 Structure the meaning'])
+
+        createQuestion(test, 5, 'Most annoying thing when you are learning',
+            ['👁️ No visuals shown', '👂 Unclear speaker voice', '✋ Just reading only', '🧠 Rote memory boring'])
+
+        createQuestion(test, 6, 'You missed class and need to catch up',
+            ['👁️ Get the slides', '👂 Hear explanation friend', '✋ Practice the questions', '🧠 Read the summaries'])
         
         log.info "Modality Map questions initialized"
     }

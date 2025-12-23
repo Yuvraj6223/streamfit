@@ -82,9 +82,9 @@ class GuessworkQuotientService {
         if (!test) {
             test = new DiagnosticTest(
                 testId: 'GUESSWORK_QUOTIENT',
-                testName: 'Guesswork Quotient (Risk Profile)',
+                testName: 'Smart Guess Game',
                 testType: 'EXAM',
-                description: 'Analyze how you handle uncertainty and calculate your risk-reward ratio',
+                description: '',
                 questionCount: 10,
                 estimatedMinutes: 8,
                 isActive: true
@@ -99,70 +99,70 @@ class GuessworkQuotientService {
         }
         
         // Sample trivia questions with betting mechanism
-        createBettingQuestion(test, 1, 'Which of these elements has the highest atomic number?',
+        createBettingQuestion(test, 1, 'Which of these elements has the highest atomic number',
             [
-                [text: 'Gold', value: 'GOLD', correct: false],
-                [text: 'Silver', value: 'SILVER', correct: false],
-                [text: 'Platinum', value: 'PLATINUM', correct: true],
-                [text: 'Mercury', value: 'MERCURY', correct: false]
+                [text: '🥇 Gold', value: 'GOLD', correct: false],
+                [text: '🥈 Silver', value: 'SILVER', correct: false],
+                [text: '⚪ Platinum', value: 'PLATINUM', correct: true],
+                [text: '💧 Mercury', value: 'MERCURY', correct: false]
             ]
         )
-        
-        createBettingQuestion(test, 2, 'What is the capital of Australia?',
+
+        createBettingQuestion(test, 2, 'What is the capital city of Australia',
             [
-                [text: 'Sydney', value: 'SYDNEY', correct: false],
-                [text: 'Melbourne', value: 'MELBOURNE', correct: false],
-                [text: 'Canberra', value: 'CANBERRA', correct: true],
-                [text: 'Brisbane', value: 'BRISBANE', correct: false]
+                [text: '🌊 Sydney', value: 'SYDNEY', correct: false],
+                [text: '🏙️ Melbourne', value: 'MELBOURNE', correct: false],
+                [text: '🏛️ Canberra', value: 'CANBERRA', correct: true],
+                [text: '🌴 Brisbane', value: 'BRISBANE', correct: false]
             ]
         )
-        
-        createBettingQuestion(test, 3, 'Which planet has the most moons?',
+
+        createBettingQuestion(test, 3, 'Which planet has the most moons orbiting it',
             [
-                [text: 'Jupiter', value: 'JUPITER', correct: false],
-                [text: 'Saturn', value: 'SATURN', correct: true],
-                [text: 'Uranus', value: 'URANUS', correct: false],
-                [text: 'Neptune', value: 'NEPTUNE', correct: false]
+                [text: '🪐 Jupiter', value: 'JUPITER', correct: false],
+                [text: '💍 Saturn', value: 'SATURN', correct: true],
+                [text: '🔵 Uranus', value: 'URANUS', correct: false],
+                [text: '🌀 Neptune', value: 'NEPTUNE', correct: false]
             ]
         )
-        
-        createBettingQuestion(test, 4, 'Who wrote "1984"?',
+
+        createBettingQuestion(test, 4, 'Which author wrote the famous book 1984',
             [
-                [text: 'Aldous Huxley', value: 'HUXLEY', correct: false],
-                [text: 'George Orwell', value: 'ORWELL', correct: true],
-                [text: 'Ray Bradbury', value: 'BRADBURY', correct: false],
-                [text: 'H.G. Wells', value: 'WELLS', correct: false]
+                [text: '📚 Huxley', value: 'HUXLEY', correct: false],
+                [text: '📖 Orwell', value: 'ORWELL', correct: true],
+                [text: '📕 Bradbury', value: 'BRADBURY', correct: false],
+                [text: '📗 Wells', value: 'WELLS', correct: false]
             ]
         )
-        
-        createBettingQuestion(test, 5, 'What is the speed of light?',
+
+        createBettingQuestion(test, 5, 'What is the speed of light in kilometers per second',
             [
-                [text: '299,792 km/s', value: '299792', correct: true],
-                [text: '300,000 km/s', value: '300000', correct: false],
-                [text: '299,000 km/s', value: '299000', correct: false],
-                [text: '298,792 km/s', value: '298792', correct: false]
+                [text: '⚡ 299,792', value: '299792', correct: true],
+                [text: '💫 300,000', value: '300000', correct: false],
+                [text: '✨ 299,000', value: '299000', correct: false],
+                [text: '🌟 298,792', value: '298792', correct: false]
             ]
         )
-        
-        createBettingQuestion(test, 6, 'Which programming language was created first?',
+
+        createBettingQuestion(test, 6, 'What was the first programming language ever created',
             [
-                [text: 'C', value: 'C', correct: false],
-                [text: 'FORTRAN', value: 'FORTRAN', correct: true],
-                [text: 'BASIC', value: 'BASIC', correct: false],
-                [text: 'Pascal', value: 'PASCAL', correct: false]
+                [text: '💻 C', value: 'C', correct: false],
+                [text: '🔢 FORTRAN', value: 'FORTRAN', correct: true],
+                [text: '📊 BASIC', value: 'BASIC', correct: false],
+                [text: '🖥️ Pascal', value: 'PASCAL', correct: false]
             ]
         )
-        
-        createBettingQuestion(test, 7, 'What is the largest ocean on Earth?',
+
+        createBettingQuestion(test, 7, 'What is the largest ocean on planet Earth',
             [
-                [text: 'Atlantic', value: 'ATLANTIC', correct: false],
-                [text: 'Indian', value: 'INDIAN', correct: false],
-                [text: 'Pacific', value: 'PACIFIC', correct: true],
-                [text: 'Arctic', value: 'ARCTIC', correct: false]
+                [text: '🌊 Atlantic', value: 'ATLANTIC', correct: false],
+                [text: '🏖️ Indian', value: 'INDIAN', correct: false],
+                [text: '🌏 Pacific', value: 'PACIFIC', correct: true],
+                [text: '❄️ Arctic', value: 'ARCTIC', correct: false]
             ]
         )
-        
-        createBettingQuestion(test, 8, 'How many bones are in the adult human body?',
+
+        createBettingQuestion(test, 8, 'How many bones are in an adult human body',
             [
                 [text: '196', value: '196', correct: false],
                 [text: '206', value: '206', correct: true],
@@ -170,22 +170,22 @@ class GuessworkQuotientService {
                 [text: '226', value: '226', correct: false]
             ]
         )
-        
-        createBettingQuestion(test, 9, 'What is the chemical symbol for gold?',
+
+        createBettingQuestion(test, 9, 'What is the chemical symbol for gold element',
             [
                 [text: 'Go', value: 'GO', correct: false],
                 [text: 'Gd', value: 'GD', correct: false],
-                [text: 'Au', value: 'AU', correct: true],
+                [text: '⚡ Au', value: 'AU', correct: true],
                 [text: 'Ag', value: 'AG', correct: false]
             ]
         )
-        
-        createBettingQuestion(test, 10, 'Which country has the longest coastline?',
+
+        createBettingQuestion(test, 10, 'Which country has the longest coastline in the world',
             [
-                [text: 'Russia', value: 'RUSSIA', correct: false],
-                [text: 'Canada', value: 'CANADA', correct: true],
-                [text: 'USA', value: 'USA', correct: false],
-                [text: 'Indonesia', value: 'INDONESIA', correct: false]
+                [text: '🇷🇺 Russia', value: 'RUSSIA', correct: false],
+                [text: '🇨🇦 Canada', value: 'CANADA', correct: true],
+                [text: '🇺🇸 USA', value: 'USA', correct: false],
+                [text: '🇮🇩 Indonesia', value: 'INDONESIA', correct: false]
             ]
         )
         

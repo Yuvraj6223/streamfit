@@ -61,9 +61,9 @@ class WorkModeService {
         if (!test) {
             test = new DiagnosticTest(
                 testId: 'WORK_MODE',
-                testName: 'Work Mode Preference',
+                testName: 'Work Style Game',
                 testType: 'CAREER',
-                description: 'Maps your preferred work environment',
+                description: '',
                 questionCount: 5,
                 estimatedMinutes: 2,
                 isActive: true
@@ -75,20 +75,20 @@ class WorkModeService {
             return
         }
         
-        createQuestion(test, 1, 'SOLO_VS_TEAM', 'Do you prefer...',
-            ['Working alone', 'Working in teams'])
-        
-        createQuestion(test, 2, 'STRUCTURED_VS_FLEXIBLE', 'How do you start tasks?',
-            ['With a fixed plan', 'Organically, as ideas evolve'])
-        
-        createQuestion(test, 3, 'SOLO_VS_TEAM', 'Best kind of assignment?',
-            ['Individual, structured', 'Group, brainstorming-based'])
-        
-        createQuestion(test, 4, 'SOLO_VS_TEAM', 'If stuck...',
-            ['You persist quietly', 'You talk it out with others'])
-        
-        createQuestion(test, 5, 'STRUCTURED_VS_FLEXIBLE', 'Ideal study session...',
-            ['Timed and pre-planned', 'Spontaneous with flow'])
+        createQuestion(test, 1, 'SOLO_VS_TEAM', 'You get a group assignment suddenly',
+            ['👤 Work alone better', '🤝 Work with team'])
+
+        createQuestion(test, 2, 'STRUCTURED_VS_FLEXIBLE', 'When you start tasks you prefer to',
+            ['📋 Make fixed plan', '🌊 Go with flow'])
+
+        createQuestion(test, 3, 'SOLO_VS_TEAM', 'Your best assignment would feel like this',
+            ['👤 Individual work only', '🤝 Group brainstorm together'])
+
+        createQuestion(test, 4, 'SOLO_VS_TEAM', 'You are stuck on a hard problem',
+            ['🤐 Keep trying quietly', '💬 Talk it out'])
+
+        createQuestion(test, 5, 'STRUCTURED_VS_FLEXIBLE', 'Your study session works best when it is',
+            ['⏰ Timed and planned', '🌊 Spontaneous and flowing'])
         
         log.info "Work Mode questions initialized"
     }

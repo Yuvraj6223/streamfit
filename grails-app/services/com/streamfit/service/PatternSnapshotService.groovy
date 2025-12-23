@@ -50,9 +50,9 @@ class PatternSnapshotService {
         if (!test) {
             test = new DiagnosticTest(
                 testId: 'PATTERN_SNAPSHOT',
-                testName: 'Pattern Snapshot',
+                testName: 'Pattern Rush Game',
                 testType: 'CAREER',
-                description: 'Quick-fire aptitude mapping through timed logic games',
+                description: 'Solve fun pattern puzzles and test your logic skills',
                 questionCount: 6,
                 estimatedMinutes: 3,
                 isActive: true
@@ -65,47 +65,47 @@ class PatternSnapshotService {
         }
         
         // Visual Pattern 1
-        createQuestion(test, 1, 'VISUAL', 'Which shape completes the pattern? (Circle, Square, Triangle, Circle, Square, ___)',
+        createQuestion(test, 1, 'VISUAL', 'You almost see the pattern what comes next',
             [
-                [text: 'Circle', value: 'CIRCLE', correct: false],
-                [text: 'Square', value: 'SQUARE', correct: false],
-                [text: 'Triangle', value: 'TRIANGLE', correct: true],
-                [text: 'Pentagon', value: 'PENTAGON', correct: false]
+                [text: '⭕ Circle', value: 'CIRCLE', correct: false],
+                [text: '🔲 Square', value: 'SQUARE', correct: false],
+                [text: '🔺 Triangle', value: 'TRIANGLE', correct: true],
+                [text: '⬟ Pentagon', value: 'PENTAGON', correct: false]
             ]
         )
-        
+
         // Visual Pattern 2
-        createQuestion(test, 2, 'VISUAL', 'If you fold a square paper in half twice and cut a corner, how many holes when unfolded?',
+        createQuestion(test, 2, 'VISUAL', 'Fold paper twice and cut corner how many holes',
             [
-                [text: '1', value: '1', correct: false],
-                [text: '2', value: '2', correct: false],
-                [text: '4', value: '4', correct: true],
-                [text: '8', value: '8', correct: false]
+                [text: '1 hole', value: '1', correct: false],
+                [text: '2 holes', value: '2', correct: false],
+                [text: '4 holes', value: '4', correct: true],
+                [text: '8 holes', value: '8', correct: false]
             ]
         )
-        
+
         // Verbal Analogy 1
-        createQuestion(test, 3, 'VERBAL', 'Book : Read :: Knife : ?',
+        createQuestion(test, 3, 'VERBAL', 'Book is to Read as Knife is to',
             [
-                [text: 'Sharp', value: 'SHARP', correct: false],
-                [text: 'Cut', value: 'CUT', correct: true],
-                [text: 'Metal', value: 'METAL', correct: false],
-                [text: 'Spoon', value: 'SPOON', correct: false]
+                [text: '⚡ Sharp', value: 'SHARP', correct: false],
+                [text: '✂️ Cut', value: 'CUT', correct: true],
+                [text: '🔩 Metal', value: 'METAL', correct: false],
+                [text: '🥄 Spoon', value: 'SPOON', correct: false]
             ]
         )
-        
+
         // Verbal Analogy 2
-        createQuestion(test, 4, 'VERBAL', 'Hot : Cold :: Day : ?',
+        createQuestion(test, 4, 'VERBAL', 'Hot is to Cold as Day is to',
             [
-                [text: 'Sun', value: 'SUN', correct: false],
-                [text: 'Night', value: 'NIGHT', correct: true],
-                [text: 'Moon', value: 'MOON', correct: false],
-                [text: 'Dark', value: 'DARK', correct: false]
+                [text: '☀️ Sun', value: 'SUN', correct: false],
+                [text: '🌙 Night', value: 'NIGHT', correct: true],
+                [text: '🌕 Moon', value: 'MOON', correct: false],
+                [text: '🌑 Dark', value: 'DARK', correct: false]
             ]
         )
-        
+
         // Numeric/Logic 1
-        createQuestion(test, 5, 'NUMERIC', 'What\'s next in: 2, 4, 8, 16, ?',
+        createQuestion(test, 5, 'NUMERIC', 'You see a pattern forming what is next',
             [
                 [text: '18', value: '18', correct: false],
                 [text: '24', value: '24', correct: false],
@@ -113,11 +113,11 @@ class PatternSnapshotService {
                 [text: '36', value: '36', correct: false]
             ]
         )
-        
+
         // Numeric/Logic 2
-        createQuestion(test, 6, 'NUMERIC', 'If 5 machines make 5 widgets in 5 minutes, how long for 100 machines to make 100 widgets?',
+        createQuestion(test, 6, 'NUMERIC', 'Five machines make five widgets in five minutes',
             [
-                [text: '5 minutes', value: '5', correct: true],
+                [text: '⚡ 5 minutes', value: '5', correct: true],
                 [text: '20 minutes', value: '20', correct: false],
                 [text: '100 minutes', value: '100', correct: false],
                 [text: '500 minutes', value: '500', correct: false]

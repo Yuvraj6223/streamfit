@@ -97,9 +97,9 @@ class SpiritAnimalService {
         if (!test) {
             test = new DiagnosticTest(
                 testId: 'SPIRIT_ANIMAL',
-                testName: 'Exam Spirit Animal',
+                testName: ' Spirit Animal Game',
                 testType: 'EXAM',
-                description: 'Discover your exam personality and learning style',
+                description: '',
                 questionCount: 12,
                 estimatedMinutes: 5,
                 isActive: true
@@ -116,109 +116,109 @@ class SpiritAnimalService {
         
         // Question 1
         createQuestion(test, 1, 'PROCESS_VS_INTUITION',
-            'A new, difficult chapter is assigned. Your first move is:',
+            'You see a new tough chapter you need to learn',
             [
-                [text: 'Read the entire theory and derivations from the textbook first.', value: 'A'],
-                [text: 'Jump straight into the practice questions to see how they are asked.', value: 'B']
+                [text: '📖 Read theory first', value: 'A'],
+                [text: '⚡ Jump to practice', value: 'B']
             ]
         )
-        
+
         // Question 2
         createQuestion(test, 2, 'ACCURACY_VS_SPEED',
-            'You are 70% through a 3-hour mock exam. How do you feel?',
+            'You are 70% done and feel tired',
             [
-                [text: 'Mentally exhausted; you\'ve put deep energy into every single question.', value: 'A'],
-                [text: 'Restless; you are ready to be done and see your final score.', value: 'B']
+                [text: '😵‍💫 Feel drained', value: 'A'],
+                [text: '🏃 Rush to finish', value: 'B']
             ]
         )
-        
+
         // Question 3
         createQuestion(test, 3, 'PROCESS_VS_INTUITION',
-            'When you get a question wrong, what is your immediate thought?',
+            'You got it wrong and trying to figure out why',
             [
-                [text: 'I must have missed a fundamental step in the concept.', value: 'A'],
-                [text: 'I probably made a silly calculation error or misread it.', value: 'B']
+                [text: '🧠 Concept not clear', value: 'A'],
+                [text: '😅 Silly mistake only', value: 'B']
             ]
         )
-        
+
         // Question 4
         createQuestion(test, 4, 'PROCESS_VS_INTUITION',
-            'Your favorite type of teacher is one who:',
+            'Which teacher style works best for you',
             [
-                [text: 'Explains exactly how a formula was derived from scratch.', value: 'A'],
-                [text: 'Shows you three different "hacks" to solve the same problem in 10 seconds.', value: 'B']
+                [text: '📚 Deep explanations', value: 'A'],
+                [text: '⚡ Quick tricks tips', value: 'B']
             ]
         )
-        
+
         // Question 5
         createQuestion(test, 5, 'ACCURACY_VS_SPEED',
-            'In a high-pressure exam hall, silence is:',
+            'During exam you need complete silence to focus',
             [
-                [text: 'Essential. Any background noise breaks your train of thought.', value: 'A'],
-                [text: 'Boring. You actually prefer a little bit of ambient "buzz" to stay alert.', value: 'B']
+                [text: '🔇 Yes need it', value: 'A'],
+                [text: '😐 Don\'t care much', value: 'B']
             ]
         )
-        
+
         // Question 6
         createQuestion(test, 6, 'PROCESS_VS_INTUITION',
-            'What do your study notes look like?',
+            'Your class notes usually look like this',
             [
-                [text: 'Highly organized, color-coded, and following a clear structure.', value: 'A'],
-                [text: 'Rough scribbles, diagrams, and "shortcuts" only you can decode.', value: 'B']
+                [text: '✨ Very organized', value: 'A'],
+                [text: '📝 Messy scribbles', value: 'B']
             ]
         )
-        
+
         // Question 7
         createQuestion(test, 7, 'ACCURACY_VS_SPEED',
-            'When you are unsure of an answer and have to guess:',
+            'You are not sure but must answer now',
             [
-                [text: 'You\'d rather leave it blank than risk a negative mark.', value: 'A'],
-                [text: 'You eliminate two options and "go with your gut" on the rest.', value: 'B']
+                [text: '❌ Leave it blank', value: 'A'],
+                [text: '🎯 Trust gut feeling', value: 'B']
             ]
         )
-        
+
         // Question 8
         createQuestion(test, 8, 'PROCESS_VS_INTUITION',
-            'The night before a major exam, you can be found:',
+            'Night before exam you are still studying',
             [
-                [text: 'Revising your "weakest" topics one last time for total coverage.', value: 'A'],
-                [text: 'Relaxing or sleeping; you trust your brain will "switch on" tomorrow.', value: 'B']
+                [text: '📚 Study weak topics', value: 'A'],
+                [text: '😴 Sleep and trust', value: 'B']
             ]
         )
-        
+
         // Question 9
         createQuestion(test, 9, 'PROCESS_VS_INTUITION',
-            'How do you feel about "Rote Memorization" (dates, formulas, lists)?',
+            'Memorizing formulas and facts feels like this',
             [
-                [text: 'It\'s fine; it\'s a necessary part of the system.', value: 'A'],
-                [text: 'It\'s painful; you\'d much rather "figure it out" using logic.', value: 'B']
+                [text: '✅ Important part', value: 'A'],
+                [text: '😑 Boring just skip', value: 'B']
             ]
         )
-        
+
         // Question 10
         createQuestion(test, 10, 'ACCURACY_VS_SPEED',
-            'What is your biggest fear during an exam?',
+            'Your biggest fear during exam is this',
             [
-                [text: 'Forgetting a crucial step in a complex problem.', value: 'A'],
-                [text: 'Running out of time before you\'ve seen every question.', value: 'B']
+                [text: '😰 Forget the steps', value: 'A'],
+                [text: '⏰ Run out time', value: 'B']
             ]
         )
-        
+
         // Question 11
         createQuestion(test, 11, 'ACCURACY_VS_SPEED',
-            'If you finish a practice task early, you:',
+            'You finished early and have time left',
             [
-                [text: 'Go back to the very beginning and re-check every calculation.', value: 'A'],
-                [text: 'Close the book immediately and move on to something else.', value: 'B']
+                [text: '🔍 Check all answers', value: 'A'],
+                [text: '✅ Done just relax', value: 'B']
             ]
         )
-        
+
         // Question 12
         createQuestion(test, 12, 'PROCESS_VS_INTUITION',
-            'In a group study session, you are typically the one who:',
+            'Group study session is happening right now',
             [
-                [text: 'Keeps the group on the syllabus and ensures no one skips steps.', value: 'A'],
-                [text: 'Challenges the group with "What if they change the question to this?"', value: 'B']
+                [text: '📋 Follow the syllabus', value: 'A'],
+                [text: '💭 Ask what if questions', value: 'B']
             ]
         )
         
@@ -269,34 +269,34 @@ class SpiritAnimalService {
         
         // Wise Owl
         createResult(test, 'WISE_OWL', '🦉', 'The Wise Owl', 'PROCESS', 'ACCURACY',
-            'You are a "Bottom-Up" learner who refuses to build on shaky foundations. You won\'t move to Chapter 2 until you\'ve mastered Chapter 1.',
-            'Incredible precision and deep conceptual understanding.',
-            'You get into "ego battles" with hard questions, refusing to skip them, which kills your time management.',
-            'We will focus on "Skip-Logic" training and time-boxed sprints to speed up your execution.'
+            'You like to understand everything deeply before moving forward. You won\'t start Chapter 2 until you\'ve completely mastered Chapter 1.',
+            'You understand concepts really well and are super careful with details.',
+            'You spend too much time on hard questions and don\'t want to skip them, which can mess up your time.',
+            'We\'ll teach you when to skip questions and how to manage your time better during exams.'
         )
-        
+
         // Strategic Wolf
         createResult(test, 'STRATEGIC_WOLF', '🐺', 'The Strategic Wolf', 'INTUITION', 'ACCURACY',
-            'You have a "nose" for the right answer. You are excellent at eliminating wrong options and using logic to bypass long calculations.',
-            'High efficiency and great "exam-room" intuition.',
-            'You lose "easy" marks due to over-confidence and missing small details in the question text.',
-            'Our AI will serve you "Trap Questions" designed to catch your silly mistakes and sharpen your attention to detail.'
+            'You have a good sense for finding the right answer. You\'re great at eliminating wrong options and using smart shortcuts.',
+            'You work efficiently and have strong exam instincts.',
+            'You sometimes lose easy marks because you\'re overconfident and miss small details in questions.',
+            'We\'ll give you tricky questions to help you catch silly mistakes and pay better attention to details.'
         )
-        
+
         // Disciplined Bee
         createResult(test, 'DISCIPLINED_BEE', '🐝', 'The Disciplined Bee', 'PROCESS', 'SPEED',
-            'You thrive on structure. You believe in the 1% improvement rule and have the highest stamina for long-term study.',
-            'High consistency and mastery of standard procedures/rote learning.',
-            'You struggle when the exam "goes off-script" with questions that don\'t look like your practice books.',
-            'We will use "Chaos Simulation" to give you unfamiliar question formats, building your mental flexibility.'
+            'You love structure and routine. You believe in steady improvement and can study consistently for long periods.',
+            'You\'re super consistent and great at following standard methods and memorizing.',
+            'You struggle when exam questions look different from what you practiced.',
+            'We\'ll give you different types of questions to help you become more flexible in your thinking.'
         )
-        
+
         // Bold Tiger
         createResult(test, 'BOLD_TIGER', '🐯', 'The Bold Tiger', 'INTUITION', 'SPEED',
-            'You are a high-pressure performer who loves the leaderboard. You are fast, aggressive, and highly competitive.',
-            'You can "blitz" through papers and perform better in the actual exam than in practice.',
-            'You get bored with easy subjects and struggle with long-term memory of boring facts.',
-            'We will gamify your learning with "Active Recall" pings throughout the day to ensure you don\'t forget what you learned a week ago.'
+            'You perform best under pressure and love competition. You\'re fast, bold, and thrive on challenges.',
+            'You can finish exams quickly and often do better in real exams than in practice.',
+            'You get bored with easy topics and forget things you learned a while ago.',
+            'We\'ll make learning fun like a game and send you quick reminders to help you remember what you studied.'
         )
         
         log.info "Spirit Animal results initialized successfully"

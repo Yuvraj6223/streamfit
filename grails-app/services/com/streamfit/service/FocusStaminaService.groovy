@@ -110,9 +110,9 @@ class FocusStaminaService {
         if (!test) {
             test = new DiagnosticTest(
                 testId: 'FOCUS_STAMINA',
-                testName: 'Focus Stamina & Stress Test',
+                testName: 'Focus Power Game',
                 testType: 'EXAM',
-                description: 'Measure your cognitive endurance and stress response',
+                description: '',
                 questionCount: 2,
                 estimatedMinutes: 5,
                 isActive: true
@@ -130,43 +130,43 @@ class FocusStaminaService {
         def question1 = new DiagnosticQuestion(
             test: test,
             questionId: 'FOCUS_STAMINA_ATTENTION',
-            questionText: 'Click only when you see a PRIME NUMBER. This test lasts 3 minutes.',
+            questionText: 'Your mind keeps getting distracted',
             questionNumber: 1,
             questionType: 'INTERACTIVE',
             scoringDimension: 'ATTENTION_SUSTAIN',
             timeLimit: 180
         )
         question1.save(flush: true)
-        
+
         // Phase B: Impossible Problem (Stress Response)
         def question2 = new DiagnosticQuestion(
             test: test,
             questionId: 'FOCUS_STAMINA_STRESS',
-            questionText: 'Solve this complex logical puzzle. Take your time.',
+            questionText: 'This puzzle feels impossible right now',
             questionNumber: 2,
             questionType: 'INTERACTIVE',
             scoringDimension: 'STRESS_RESPONSE'
         )
         question2.save(flush: true)
-        
+
         // Add options for stress response
         new DiagnosticQuestionOption(
             question: question2,
-            optionText: 'Give Up',
+            optionText: '😵 Give up now',
             optionValue: 'GIVE_UP',
             displayOrder: 1
         ).save(flush: true)
-        
+
         new DiagnosticQuestionOption(
             question: question2,
-            optionText: 'Show Hint',
+            optionText: '💡 Show me hint',
             optionValue: 'SHOW_HINT',
             displayOrder: 2
         ).save(flush: true)
-        
+
         new DiagnosticQuestionOption(
             question: question2,
-            optionText: 'Submit Answer',
+            optionText: '🔥 Submit my answer',
             optionValue: 'SUBMIT',
             displayOrder: 3
         ).save(flush: true)

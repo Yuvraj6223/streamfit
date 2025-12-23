@@ -1,7 +1,8 @@
 package com.streamfit.controller
 
-import com.streamfit.service.PersonalityService
+
 import com.streamfit.service.UserService
+import com.streamfit.service.PersonalityService
 import grails.converters.JSON
 
 class PersonalityController {

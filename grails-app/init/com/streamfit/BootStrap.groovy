@@ -1,6 +1,6 @@
 package com.streamfit
 
-import com.streamfit.service.PersonalityService
+
 import com.streamfit.service.SpiritAnimalService
 import com.streamfit.service.CognitiveRadarService
 import com.streamfit.service.FocusStaminaService
@@ -14,7 +14,7 @@ import com.streamfit.service.RewardService
 
 class BootStrap {
 
-    PersonalityService personalityService
+
     SpiritAnimalService spiritAnimalService
     CognitiveRadarService cognitiveRadarService
     FocusStaminaService focusStaminaService

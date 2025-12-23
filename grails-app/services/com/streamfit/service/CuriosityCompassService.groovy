@@ -78,9 +78,9 @@ class CuriosityCompassService {
         if (!test) {
             test = new DiagnosticTest(
                 testId: 'CURIOSITY_COMPASS',
-                testName: 'Curiosity Compass',
+                testName: 'Curiosity Game',
                 testType: 'CAREER',
-                description: 'Identifies your cognitive orientation and interest type',
+                description: '',
                 questionCount: 6,
                 estimatedMinutes: 3,
                 isActive: true
@@ -93,58 +93,58 @@ class CuriosityCompassService {
             log.info "Curiosity Compass questions already exist"
             return
         }
-        
-        createQuestion(test, 1, 'You watch a documentary about ancient civilizations. What excites you most?',
+
+        createQuestion(test, 1, 'You see a documentary about ancient civilizations',
             [
-                [text: 'Understanding the evolution of societies', value: 'A'],
-                [text: 'Rebuilding the tools they used', value: 'B'],
-                [text: 'Imagining how people emotionally lived', value: 'C'],
-                [text: 'Questioning how true it really is', value: 'D']
+                [text: '🧠 How society evolved', value: 'A'],
+                [text: '🔨 How they built', value: 'B'],
+                [text: '❤️ How they felt', value: 'C'],
+                [text: '🤔 Is it true', value: 'D']
             ]
         )
-        
-        createQuestion(test, 2, 'You\'re given a science experiment. What would you focus on?',
+
+        createQuestion(test, 2, 'You hear about a new science experiment',
             [
-                [text: 'Why it works', value: 'A'],
-                [text: 'How to replicate or improve it', value: 'B'],
-                [text: 'Who it might benefit', value: 'C'],
-                [text: 'What assumptions it makes', value: 'D']
+                [text: '🧠 Why it works', value: 'A'],
+                [text: '🔧 How to improve', value: 'B'],
+                [text: '🌍 Who it helps', value: 'C'],
+                [text: '❓ What they assumed', value: 'D']
             ]
         )
-        
-        createQuestion(test, 3, 'When reading an article...',
+
+        createQuestion(test, 3, 'You are reading an article right now',
             [
-                [text: 'You trace the logic', value: 'A'],
-                [text: 'You want to apply it', value: 'B'],
-                [text: 'You think about impact', value: 'C'],
-                [text: 'You look for counterarguments', value: 'D']
+                [text: '🧩 Trace the logic', value: 'A'],
+                [text: '⚡ How to apply', value: 'B'],
+                [text: '🌍 Think about impact', value: 'C'],
+                [text: '💭 Find the flaws', value: 'D']
             ]
         )
-        
-        createQuestion(test, 4, 'In a debate...',
+
+        createQuestion(test, 4, 'You are in a debate right now',
             [
-                [text: 'You clarify core concepts', value: 'A'],
-                [text: 'You suggest new models', value: 'B'],
-                [text: 'You talk about real-world consequences', value: 'C'],
-                [text: 'You challenge flaws directly', value: 'D']
+                [text: '📚 Clarify the concepts', value: 'A'],
+                [text: '💡 Suggest better models', value: 'B'],
+                [text: '🌍 Real world consequences', value: 'C'],
+                [text: '⚔️ Challenge the flaws', value: 'D']
             ]
         )
-        
-        createQuestion(test, 5, 'You prefer a teacher who...',
+
+        createQuestion(test, 5, 'Which teacher style works best for you',
             [
-                [text: 'Gives conceptual depth', value: 'A'],
-                [text: 'Gives practical tools', value: 'B'],
-                [text: 'Connects emotionally', value: 'C'],
-                [text: 'Provokes critical thinking', value: 'D']
+                [text: '🧠 Deep concepts', value: 'A'],
+                [text: '🔧 Practical tools', value: 'B'],
+                [text: '❤️ Emotional connection', value: 'C'],
+                [text: '💭 Critical thinking', value: 'D']
             ]
         )
-        
-        createQuestion(test, 6, 'What frustrates you most?',
+
+        createQuestion(test, 6, 'Most frustrating thing when you are learning',
             [
-                [text: 'Shallow arguments', value: 'A'],
-                [text: 'Inefficient systems', value: 'B'],
-                [text: 'Indifference to suffering', value: 'C'],
-                [text: 'Over-simplified truths', value: 'D']
+                [text: '😑 Shallow arguments', value: 'A'],
+                [text: '🐌 Inefficient systems', value: 'B'],
+                [text: '💔 People not caring', value: 'C'],
+                [text: '🤦 Over simplified stuff', value: 'D']
             ]
         )
         
