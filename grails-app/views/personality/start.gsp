@@ -377,55 +377,25 @@
         display: none;
     }
 
-    /* --- PROGRESS BAR - Duolingo Style --- */
+    /* --- PROGRESS BAR - REMOVED --- */
     .progress-container {
-        position: relative;
-        padding: 16px 20px;
-        margin: 0;
-        z-index: 10;
-        background: transparent;
-        flex-shrink: 0;
+        display: none !important; /* Completely hidden */
     }
 
     .progress-bar {
-        position: relative;
-        height: 32px;
-        background: transparent;
-        border-radius: 50px;
-        border: 3px solid rgba(139, 127, 232, 0.3);
-        overflow: hidden;
-        box-shadow: none;
+        display: none !important;
     }
 
     .progress-fill {
-        height: 100%;
-        background: linear-gradient(90deg, #8B7FE8 0%, #A89FF3 100%);
-        border-radius: 50px;
-        width: 0%;
-        transition: width 0.6s var(--ease-elastic);
-        position: relative;
-        box-shadow: 0 0 10px rgba(139, 127, 232, 0.4);
+        display: none !important;
     }
 
     .progress-fill::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 50%;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, transparent 100%);
-        border-radius: 50px 50px 0 0;
+        display: none !important;
     }
 
     .progress-text {
-        text-align: center;
-        font-size: 0.9rem;
-        font-weight: 800;
-        color: var(--text-dark);
-        margin-top: 12px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+        display: none !important;
     }
 
     /* --- STEP CONTAINERS --- */
@@ -479,16 +449,14 @@
 
     .test-card {
         background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
         border-radius: 28px;
         padding: 32px 28px;
-        border: 4px solid rgba(139, 127, 232, 0.2);
+        border: 3px solid rgba(139, 127, 232, 0.2);
         transition: all 0.4s var(--ease-elastic);
         cursor: pointer;
-        box-shadow:
-            0 8px 24px rgba(139, 127, 232, 0.12),
-            0 4px 12px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 8px 24px rgba(139, 127, 232, 0.15);
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -497,46 +465,31 @@
     }
 
     .test-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, rgba(139, 127, 232, 0.03) 0%, rgba(95, 227, 208, 0.03) 100%);
-        pointer-events: none;
-        opacity: 0;
-        transition: opacity 0.3s ease;
+        display: none;
     }
 
     .test-card:hover::before {
-        opacity: 1;
+        display: none;
     }
 
     .test-card:hover {
-        transform: translateY(-8px) scale(1.02);
-        box-shadow:
-            0 16px 40px rgba(139, 127, 232, 0.2),
-            0 8px 20px rgba(0, 0, 0, 0.12);
-        border-color: rgba(95, 227, 208, 0.5);
+        transform: translateY(-8px) scale(1.05);
+        box-shadow: 0 16px 40px rgba(95, 227, 208, 0.3);
+        border-color: var(--pop-cyan);
     }
 
     .test-card.selected {
-        background: linear-gradient(135deg, rgba(139, 127, 232, 0.15) 0%, rgba(95, 227, 208, 0.15) 100%);
+        background: rgba(255, 255, 255, 0.98);
         border-color: var(--pop-cyan);
-        box-shadow:
-            0 12px 32px rgba(95, 227, 208, 0.3),
-            0 6px 16px rgba(0, 0, 0, 0.1),
-            0 0 0 2px rgba(95, 227, 208, 0.2);
-        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 12px 32px rgba(95, 227, 208, 0.4);
+        transform: translateY(-4px) scale(1.05);
     }
 
     .test-icon {
-        font-size: 5.5rem;
+        font-size: 3rem;
         margin-bottom: 16px;
         text-align: center;
         filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
-        animation: float-icon-vertical 3s ease-in-out infinite;
         font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
         line-height: 1;
         display: block;
@@ -545,7 +498,7 @@
     .test-start-btn {
         margin-top: 20px;
         padding: 16px 32px;
-        background: linear-gradient(135deg, #5FE3D0 0%, #7FDBDA 50%, #A0E7E5 100%);
+        background: #5FE3D0;
         color: #2D2A45;
         border: 3px solid rgba(255, 255, 255, 0.6);
         border-radius: 20px;
@@ -613,36 +566,7 @@
             inset 0 1px 0 rgba(255, 255, 255, 0.4);
     }
 
-    .test-badge {
-        padding: 8px 16px;
-        border-radius: 12px;
-        font-size: 0.7rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        display: inline-block;
-        margin-bottom: 16px;
-        width: fit-content;
-        border: 2px solid;
-    }
 
-    .test-badge.diagnostic {
-        background: rgba(139, 127, 232, 0.15);
-        color: var(--pop-purple);
-        border-color: rgba(139, 127, 232, 0.3);
-    }
-
-    .test-badge.exam {
-        background: rgba(95, 227, 208, 0.15);
-        color: var(--pop-cyan);
-        border-color: rgba(95, 227, 208, 0.3);
-    }
-
-    .test-badge.career {
-        background: rgba(255, 154, 184, 0.15);
-        color: var(--pop-coral);
-        border-color: rgba(255, 154, 184, 0.3);
-    }
 
     .test-card h3 {
         font-weight: 800;
@@ -666,7 +590,7 @@
         opacity: 1;
         transform: translateY(0);
         transition: all 0.5s var(--ease-smooth);
-        padding: 20px 20px 0 20px;
+        padding: 0 20px 0 20px;
         flex: 1;
         overflow-y: hidden;
         display: flex;
@@ -682,16 +606,17 @@
 
     /* Game Moment Screen - Centered, Short Context */
     .question-text {
-        font-size: clamp(1.5rem, 4vw, 2.2rem);
+        font-size: clamp(1.8rem, 5vw, 2.8rem);
         font-weight: 900;
         color: var(--text-dark);
-        margin: 0 0 20px 0;
+        margin: 0 0 30px 0;
         line-height: 1.25;
         text-align: center;
         letter-spacing: -0.03em;
         text-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         padding: 0 20px;
         flex-shrink: 0;
+        font-family: "Plus Jakarta Sans";
     }
 
     /* Countdown/Tension Phase */
@@ -780,18 +705,18 @@
         backdrop-filter: blur(10px);
         border: 3px solid rgba(139, 127, 232, 0.3);
         border-radius: 24px;
-        padding: 18px 24px;
+        padding: 22px 28px;
         cursor: pointer;
         transition: all 0.3s var(--ease-elastic);
         font-weight: 700;
         color: var(--text-dark);
-        font-size: 1.1rem;
+        font-size: 1.3rem;
         text-align: center;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 12px;
-        min-height: 64px;
+        min-height: 72px;
         box-shadow: 0 8px 24px rgba(139, 127, 232, 0.15);
         position: relative;
         overflow: hidden;
@@ -890,7 +815,7 @@
     .game-title-top {
         text-align: center;
         padding: 20px 20px 0 20px;
-        margin: 0;
+        margin: 0 0 40px 0;
         background: transparent;
         border-radius: 0;
         box-shadow: none;
@@ -917,6 +842,7 @@
         color: #000000;
         margin: 0;
         line-height: 1.1;
+        font-family: "Plus Jakarta Sans";
     }
 
     /* --- NAVIGATION ARROWS --- */
@@ -926,7 +852,7 @@
         align-items: center;
         justify-content: flex-start;
         gap: 8px;
-        margin: 0 16px 0 16px;
+        margin: 0 16px 20px 16px;
         padding: 0;
         flex-shrink: 0;
     }
@@ -1020,7 +946,7 @@
         }
 
         .test-icon {
-            font-size: 3.5rem;
+            font-size: 2.5rem;
         }
 
         .step-container h2 {
@@ -1096,7 +1022,7 @@
         }
 
         .test-icon {
-            font-size: 3.2rem;
+            font-size: 2.2rem;
             margin-bottom: 12px;
         }
 
@@ -1115,12 +1041,6 @@
         .test-card p:last-of-type {
             font-size: 0.75rem !important;
             margin-bottom: 0;
-        }
-
-        .test-badge {
-            font-size: 0.65rem;
-            padding: 6px 12px;
-            margin-bottom: 12px;
         }
 
         .test-start-btn {
@@ -1168,8 +1088,8 @@
         }
 
         .question-text {
-            font-size: 1.05rem;
-            margin: 0 0 16px 0;
+            font-size: 1.4rem;
+            margin: 0 0 20px 0;
             text-align: center;
             padding: 0 8px;
             line-height: 1.3;
@@ -1196,12 +1116,13 @@
         }
 
         .option {
-            padding: 16px 20px;
-            font-size: 0.95rem;
-            min-height: 58px;
+            padding: 18px 22px;
+            font-size: 1.1rem;
+            min-height: 64px;
             text-align: center;
             border-width: 2px;
             line-height: 1.3;
+            font-family: "Plus Jakarta Sans";
         }
 
         .game-progress-meter {
@@ -1279,7 +1200,7 @@
         }
 
         .test-icon {
-            font-size: 2.8rem;
+            font-size: 2rem;
             margin-bottom: 10px;
         }
 
@@ -1299,12 +1220,6 @@
             font-size: 0.7rem !important;
         }
 
-        .test-badge {
-            font-size: 0.6rem;
-            padding: 5px 10px;
-            margin-bottom: 8px;
-        }
-
         .test-start-btn {
             padding: 10px 16px;
             font-size: 0.85rem;
@@ -1316,6 +1231,7 @@
             padding: 10px 12px 0 12px;
             margin: 0;
             background: transparent;
+            margin-bottom: 20px;
         }
 
         .game-title-emoji {
@@ -1334,9 +1250,9 @@
         }
 
         .question-text {
-            font-size: 0.95rem;
+            font-size: 1.2rem;
             padding: 0 8px;
-            margin: 0 0 12px 0;
+            margin: 0 0 16px 0;
             line-height: 1.25;
         }
 
@@ -1361,9 +1277,9 @@
         }
 
         .option {
-            padding: 14px 16px;
-            font-size: 0.85rem;
-            min-height: 52px;
+            padding: 16px 18px;
+            font-size: 1rem;
+            min-height: 58px;
             line-height: 1.25;
         }
 
@@ -1524,8 +1440,8 @@
                 <h2 class="game-title-text" id="gameTitleText"></h2>
             </div>
 
-            <!-- Progress Bar -->
-            <div class="progress-container">
+            <!-- Progress Bar - REMOVED -->
+            <div class="progress-container" style="display: none;">
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressBar"></div>
                 </div>
@@ -1701,9 +1617,9 @@
             renderTests();
         }
 
-        // Test emoji mapping
+        // Test emoji mapping - using specific icons for each game
         const testEmojis = {
-            'SPIRIT_ANIMAL': '🎯',
+            'SPIRIT_ANIMAL': '🦉',  // Owl - one of the spirit animals
             'COGNITIVE_RADAR': '🧠',
             'FOCUS_STAMINA': '⚡',
             'GUESSWORK_QUOTIENT': '🎲',
@@ -1721,7 +1637,6 @@
                 const emoji = testEmojis[test.testId] || '📝';
                 return '<div class="test-card" data-test-id="' + test.testId + '" onclick="selectTest(\'' + test.testId + '\')">' +
                     '<div class="test-icon">' + emoji + '</div>' +
-                    '<div class="test-badge ' + ((test.testType || 'DIAGNOSTIC').toString().toLowerCase()) + '">' + (test.testType || 'DIAGNOSTIC') + '</div>' +
                     '<h3>' + test.testName + '</h3>' +
                     '<p>' + (test.description || '') + '</p>' +
                     '<p style="font-size: 0.9rem; color: #999; margin-bottom: 0;">' +

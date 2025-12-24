@@ -155,39 +155,19 @@
     }
 
     .progress-container {
-        position: sticky;
-        top: 0;
-        background: var(--bg-warm);
-        padding: 16px 0;
-        margin: 0 0 20px;
-        z-index: 100;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        display: none !important;
     }
 
     .progress-bar {
-        background: #F0F0F3;
-        height: 12px;
-        border-radius: 100px;
-        margin: 0 24px;
-        overflow: hidden;
-        position: relative;
+        display: none !important;
     }
 
     .progress-fill {
-        background: linear-gradient(90deg, var(--pop-teal), var(--pop-purple));
-        height: 100%;
-        transition: width 0.5s var(--ease-smooth);
-        border-radius: 100px;
+        display: none !important;
     }
 
     .progress-text {
-        text-align: center;
-        font-size: 0.85rem;
-        font-weight: 700;
-        color: var(--text-grey);
-        margin-top: 8px;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
+        display: none !important;
     }
 
     .question-card {
@@ -547,7 +527,7 @@
             </div>
         </div>
 
-        <div class="progress-container">
+        <div class="progress-container" style="display: none;">
             <div class="progress-bar">
                 <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
             </div>

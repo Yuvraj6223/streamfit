@@ -2,8 +2,13 @@
 <html lang="en-IN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, minimum-scale=1.0, maximum-scale=5.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Critical Performance Optimizations for Android -->
+    <meta name="format-detection" content="telephone=no">
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
 
     <!-- SEO Meta Tags -->
     <title><g:layoutTitle default="Free Student Aptitude Test India | Discover Your Learning DNA | LearnerDNA"/></title>
@@ -52,13 +57,26 @@
     <!-- Preconnect for Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
 
-    <asset:stylesheet src="application.css"/>
-    <asset:stylesheet src="personality-test.css"/>
-    <asset:stylesheet src="mobile.css"/>
-    <asset:javascript src="application.js"/>
-    <asset:javascript src="mobile-enhancements.js"/>
-    <asset:javascript src="mobile-share.js"/>
+    <!-- Critical CSS inline for faster rendering -->
+    <style>
+        /* Critical above-the-fold styles */
+        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; }
+        .main-nav { position: sticky; top: 0; z-index: 1000; background: rgba(255, 255, 255, 0.5); }
+        img { max-width: 100%; height: auto; }
+    </style>
+
+    <!-- Load CSS with media attribute for non-blocking -->
+    <asset:stylesheet src="application.css" media="all"/>
+    <asset:stylesheet src="personality-test.css" media="all"/>
+    <asset:stylesheet src="mobile.css" media="all"/>
+
+    <!-- Defer non-critical JavaScript -->
+    <asset:javascript src="application.js" defer="true"/>
+    <asset:javascript src="mobile-enhancements.js" defer="true"/>
+    <asset:javascript src="mobile-share.js" defer="true"/>
 
     <g:layoutHead/>
 
@@ -117,6 +135,22 @@
                 var(--soft-cream) 100%
         );
         min-height: 100vh;
+        /* Performance optimizations */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeSpeed;
+    }
+
+    /* Critical performance optimizations for all elements */
+    * {
+        /* Prevent layout thrashing */
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Optimize images globally */
+    img {
+        content-visibility: auto;
+        image-rendering: -webkit-optimize-contrast;
     }
 
     /* NAVIGATION - MATCHING FOOTER GLASSMORPHISM STYLE */
@@ -146,6 +180,12 @@
         /* Subtle overflow handling like footer */
         position: relative;
         overflow: hidden;
+
+        /* Performance optimizations */
+        contain: layout style;
+        will-change: opacity;
+        transform: translateZ(0);
+        backface-visibility: hidden;
     }
 
     .nav-container {
@@ -464,12 +504,15 @@
     </style>
 
     <script>
-    // Optional: Subtle nav scroll behavior for game HUD feel
-    document.addEventListener('DOMContentLoaded', function() {
-        const nav = document.querySelector('.main-nav');
+    // Performance-optimized nav scroll behavior
+    (function() {
+        let ticking = false;
         let lastScroll = 0;
 
-        window.addEventListener('scroll', function() {
+        function updateNav() {
+            const nav = document.querySelector('.main-nav');
+            if (!nav) return;
+
             const currentScroll = window.pageYOffset;
 
             // Slightly reduce opacity when scrolling down (keeps focus on content)
@@ -480,9 +523,190 @@
             }
 
             lastScroll = currentScroll;
-        });
-    });
+            ticking = false;
+        }
+
+        function requestTick() {
+            if (!ticking) {
+                window.requestAnimationFrame(updateNav);
+                ticking = true;
+            }
+        }
+
+        // Use passive listener for better scroll performance
+        window.addEventListener('scroll', requestTick, { passive: true });
+    })();
     </script>
+
+    <style>
+        /* Continue Game Modal */
+        .continue-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .continue-modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .continue-modal-content {
+            position: relative;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.95) 100%);
+            border-radius: 32px;
+            padding: 48px 40px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 3px solid rgba(139, 127, 232, 0.3);
+            text-align: center;
+            animation: modalSlideIn 0.4s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .continue-modal-title {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #2D2A45;
+            margin: 0 0 16px 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .continue-modal-text {
+            font-size: 1.1rem;
+            color: #7B7896;
+            margin: 0 0 32px 0;
+            font-weight: 600;
+        }
+
+        .continue-modal-game-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: rgba(139, 127, 232, 0.1);
+            border-radius: 20px;
+            padding: 16px 24px;
+            margin: 0 0 32px 0;
+        }
+
+        .continue-game-emoji {
+            font-size: 2.5rem;
+        }
+
+        .continue-game-name {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #2D2A45;
+        }
+
+        .continue-modal-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .btn-continue, .btn-new-game {
+            padding: 18px 32px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            border: 3px solid;
+        }
+
+        .btn-continue {
+            background: #5FE3D0;
+            color: #2D2A45;
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 6px 0 #3ABFA8, 0 8px 16px rgba(95, 227, 208, 0.4);
+        }
+
+        .btn-continue:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 0 #3ABFA8, 0 12px 24px rgba(95, 227, 208, 0.5);
+        }
+
+        .btn-new-game {
+            background: rgba(139, 127, 232, 0.15);
+            color: #2D2A45;
+            border-color: rgba(139, 127, 232, 0.3);
+            box-shadow: 0 4px 12px rgba(139, 127, 232, 0.2);
+        }
+
+        .btn-new-game:hover {
+            background: rgba(139, 127, 232, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(139, 127, 232, 0.3);
+        }
+
+        .continue-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(139, 127, 232, 0.1);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #7B7896;
+        }
+
+        .continue-modal-close:hover {
+            background: rgba(139, 127, 232, 0.2);
+            transform: rotate(90deg);
+        }
+
+        @media (max-width: 768px) {
+            .continue-modal-content {
+                padding: 36px 28px;
+            }
+
+            .continue-modal-title {
+                font-size: 1.6rem;
+            }
+
+            .continue-modal-text {
+                font-size: 1rem;
+            }
+
+            .btn-continue, .btn-new-game {
+                padding: 16px 28px;
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -495,7 +719,7 @@
         </a>
 
         <div class="nav-cta-wrapper">
-            <a href="${createLink(controller: 'personality', action: 'start')}"
+            <a href="#" id="navStartPlaying"
                class="btn btn-primary nav-cta">
                 <span>▶</span>
                 <span>Start Playing</span>
@@ -564,6 +788,138 @@
         </div>
     </div>
 </footer>
+
+<!-- Continue Game Modal -->
+<div id="continueGameModal" class="continue-modal" style="display: none;">
+    <div class="continue-modal-overlay"></div>
+    <div class="continue-modal-content">
+        <h2 class="continue-modal-title">Welcome Back! 🎮</h2>
+        <p class="continue-modal-text">You have an unfinished game. What would you like to do?</p>
+        <div class="continue-modal-game-info">
+            <span class="continue-game-emoji" id="continueGameEmoji">🦉</span>
+            <span class="continue-game-name" id="continueGameName">Spirit Animal Game</span>
+        </div>
+        <div class="continue-modal-buttons">
+            <a href="${createLink(controller: 'personality', action: 'start')}"
+               class="btn-continue" id="continueGameBtn">
+                <span>▶️</span> Continue Game
+            </a>
+            <a href="${createLink(controller: 'personality', action: 'start')}"
+               class="btn-new-game" id="newGameBtn">
+                <span>🎯</span> Start New Game
+            </a>
+        </div>
+        <button class="continue-modal-close" id="closeModalBtn">✕</button>
+    </div>
+</div>
+
+<script>
+    // Continue Game Modal Logic - Global for all pages
+    (function() {
+        const navStartPlaying = document.getElementById('navStartPlaying');
+        const continueModal = document.getElementById('continueGameModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const continueGameBtn = document.getElementById('continueGameBtn');
+        const newGameBtn = document.getElementById('newGameBtn');
+        const continueGameEmoji = document.getElementById('continueGameEmoji');
+        const continueGameName = document.getElementById('continueGameName');
+
+        const testEmojis = {
+            'SPIRIT_ANIMAL': '🦉',
+            'COGNITIVE_RADAR': '🧠',
+            'FOCUS_STAMINA': '⚡',
+            'GUESSWORK_QUOTIENT': '🎲',
+            'CURIOSITY_COMPASS': '🧭',
+            'MODALITY_MAP': '🎨',
+            'CHALLENGE_DRIVER': '🏆',
+            'WORK_MODE': '🤝',
+            'PATTERN_SNAPSHOT': '🧩'
+        };
+
+        // Check if user has an unfinished game
+        function checkUnfinishedGame() {
+            try {
+                const savedState = localStorage.getItem('personality_start_state');
+                if (!savedState) return null;
+
+                const state = JSON.parse(savedState);
+
+                // Only show if less than 24 hours old
+                if (Date.now() - state.timestamp > 86400000) {
+                    localStorage.removeItem('personality_start_state');
+                    return null;
+                }
+
+                // Check if there's a valid session
+                if (state.sessionId && state.selectedTest) {
+                    return state;
+                }
+
+                return null;
+            } catch (error) {
+                console.error('Error checking unfinished game:', error);
+                return null;
+            }
+        }
+
+        // Handle nav Start Playing button click
+        if (navStartPlaying) {
+            navStartPlaying.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const unfinishedGame = checkUnfinishedGame();
+
+                if (unfinishedGame && unfinishedGame.selectedTest) {
+                    // Show modal with game info
+                    const testName = unfinishedGame.selectedTest.testName || 'Spirit Animal Game';
+                    const testId = unfinishedGame.selectedTest.testId || 'SPIRIT_ANIMAL';
+                    const emoji = testEmojis[testId] || '🎮';
+
+                    continueGameEmoji.textContent = emoji;
+                    continueGameName.textContent = testName;
+                    continueModal.style.display = 'flex';
+                } else {
+                    // No unfinished game, go directly to start page
+                    window.location.href = '${createLink(controller: 'personality', action: 'start')}';
+                }
+            });
+        }
+
+        // Handle Continue Game button
+        if (continueGameBtn) {
+            continueGameBtn.addEventListener('click', function(e) {
+                // Let the link work normally - it will restore state from localStorage
+            });
+        }
+
+        // Handle New Game button
+        if (newGameBtn) {
+            newGameBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Clear the saved state
+                localStorage.removeItem('personality_start_state');
+                // Go to start page
+                window.location.href = '${createLink(controller: 'personality', action: 'start')}';
+            });
+        }
+
+        // Handle Close button
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', function() {
+                continueModal.style.display = 'none';
+            });
+        }
+
+        // Handle clicking outside modal
+        if (continueModal) {
+            continueModal.addEventListener('click', function(e) {
+                if (e.target === continueModal || e.target.classList.contains('continue-modal-overlay')) {
+                    continueModal.style.display = 'none';
+                }
+            });
+        }
+    })();
+</script>
 
 </body>
 </html>

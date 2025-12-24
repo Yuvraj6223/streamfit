@@ -3,6 +3,201 @@
 <head>
     <meta name="layout" content="main"/>
     <title>What's Your Learning Superpower? 🎮 | StreamFit</title>
+
+    <!-- Critical resource hints for performance -->
+    <link rel="preload" as="image" href="${assetPath(src: 'owl.png')}" fetchpriority="high">
+    <link rel="preload" as="image" href="${assetPath(src: 'wolf.png')}" fetchpriority="high">
+    <link rel="preload" as="image" href="${assetPath(src: 'tiger.png')}" fetchpriority="high">
+    <link rel="preload" as="image" href="${assetPath(src: 'bee.png')}" fetchpriority="high">
+
+    <!-- Preconnect to critical origins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Critical inline CSS for instant rendering -->
+    <style>
+        /* Prevent layout shift during load */
+        .hero-section { min-height: 100vh; }
+        .character-selection { display: grid; gap: 20px; }
+        .enhanced-background-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+
+        /* Loading optimization */
+        body { overflow-x: hidden; }
+
+        /* Android-specific instant optimizations */
+        @media (max-width: 768px) {
+            * { -webkit-tap-highlight-color: transparent; }
+            img { will-change: auto; }
+        }
+
+        /* Continue Game Modal */
+        .continue-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .continue-modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .continue-modal-content {
+            position: relative;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.95) 100%);
+            border-radius: 32px;
+            padding: 48px 40px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 3px solid rgba(139, 127, 232, 0.3);
+            text-align: center;
+            animation: modalSlideIn 0.4s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .continue-modal-title {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #2D2A45;
+            margin: 0 0 16px 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .continue-modal-text {
+            font-size: 1.1rem;
+            color: #7B7896;
+            margin: 0 0 32px 0;
+            font-weight: 600;
+        }
+
+        .continue-modal-game-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: rgba(139, 127, 232, 0.1);
+            border-radius: 20px;
+            padding: 16px 24px;
+            margin: 0 0 32px 0;
+        }
+
+        .continue-game-emoji {
+            font-size: 2.5rem;
+        }
+
+        .continue-game-name {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #2D2A45;
+        }
+
+        .continue-modal-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .btn-continue, .btn-new-game {
+            padding: 18px 32px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            border: 3px solid;
+        }
+
+        .btn-continue {
+            background: #5FE3D0;
+            color: #2D2A45;
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 6px 0 #3ABFA8, 0 8px 16px rgba(95, 227, 208, 0.4);
+        }
+
+        .btn-continue:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 0 #3ABFA8, 0 12px 24px rgba(95, 227, 208, 0.5);
+        }
+
+        .btn-new-game {
+            background: rgba(139, 127, 232, 0.15);
+            color: #2D2A45;
+            border-color: rgba(139, 127, 232, 0.3);
+            box-shadow: 0 4px 12px rgba(139, 127, 232, 0.2);
+        }
+
+        .btn-new-game:hover {
+            background: rgba(139, 127, 232, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(139, 127, 232, 0.3);
+        }
+
+        .continue-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(139, 127, 232, 0.1);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #7B7896;
+        }
+
+        .continue-modal-close:hover {
+            background: rgba(139, 127, 232, 0.2);
+            transform: rotate(90deg);
+        }
+
+        @media (max-width: 768px) {
+            .continue-modal-content {
+                padding: 36px 28px;
+            }
+
+            .continue-modal-title {
+                font-size: 1.6rem;
+            }
+
+            .continue-modal-text {
+                font-size: 1rem;
+            }
+
+            .btn-continue, .btn-new-game {
+                padding: 16px 28px;
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
 <!-- Enhanced Background Wrapper - Game-like Visual Layers -->
@@ -108,28 +303,28 @@
                 <div class="character-selection">
                     <div class="character-card" data-character="owl">
                         <div class="character-icon bounce-hover">
-                            <img src="${assetPath(src: 'owl.png')}" alt="Wise Owl" class="character-image"/>
+                            <img src="${assetPath(src: 'owl.png')}" alt="Wise Owl" class="character-image" loading="eager" decoding="async"/>
                         </div>
                         <div class="character-name">Wise Owl</div>
                         <div class="character-trait">Deep Thinker</div>
                     </div>
                     <div class="character-card" data-character="wolf">
                         <div class="character-icon bounce-hover">
-                            <img src="${assetPath(src: 'wolf.png')}" alt="Strategic Wolf" class="character-image"/>
+                            <img src="${assetPath(src: 'wolf.png')}" alt="Strategic Wolf" class="character-image" loading="eager" decoding="async"/>
                         </div>
                         <div class="character-name">Strategic Wolf</div>
                         <div class="character-trait">Quick Decider</div>
                     </div>
                     <div class="character-card" data-character="tiger">
                         <div class="character-icon bounce-hover">
-                            <img src="${assetPath(src: 'tiger.png')}" alt="Bold Tiger" class="character-image"/>
+                            <img src="${assetPath(src: 'tiger.png')}" alt="Bold Tiger" class="character-image" loading="eager" decoding="async"/>
                         </div>
                         <div class="character-name">Bold Tiger</div>
                         <div class="character-trait">Creative Sprinter</div>
                     </div>
                     <div class="character-card" data-character="bee">
                         <div class="character-icon bounce-hover">
-                            <img src="${assetPath(src: 'bee.png')}" alt="Disciplined Bee" class="character-image"/>
+                            <img src="${assetPath(src: 'bee.png')}" alt="Disciplined Bee" class="character-image" loading="eager" decoding="async"/>
                         </div>
                         <div class="character-name">Disciplined Bee</div>
                         <div class="character-trait">Steady Builder</div>
@@ -137,7 +332,7 @@
                 </div>
 
                 <!-- Giant Play Now Button -->
-                <a href="${createLink(controller: 'personality', action: 'start')}"
+                <a href="#" id="playNowBtn"
                    class="btn-primary-unified pulse-animation"
                    data-track="hero_play_now">
                     <span class="btn-icon">🚀</span>
@@ -293,8 +488,7 @@
 
             <!-- Single CTA -->
             <div class="sneak-peek-cta">
-                <a href="${createLink(controller: 'personality', action: 'start')}"
-                   class="btn-primary-unified pulse-animation"
+                <a href="#" class="btn-primary-unified pulse-animation play-now-trigger"
                    data-track="sneak_peek_play_now">
                     <span class="btn-icon">🚀</span>
                     <span class="btn-text">Play the First Game</span>
@@ -323,7 +517,7 @@
                 <div class="feed-card">
                     <div class="feed-header">
                         <div class="feed-avatar">
-                            <img src="${assetPath(src: 'wolf.png')}" alt="Wolf" class="feed-avatar-image"/>
+                            <img src="${assetPath(src: 'wolf.png')}" alt="Wolf" class="feed-avatar-image" loading="lazy" decoding="async"/>
                         </div>
                         <div class="feed-info">
                             <div class="feed-name">Rohan</div>
@@ -336,7 +530,7 @@
                 <div class="feed-card">
                     <div class="feed-header">
                         <div class="feed-avatar">
-                            <img src="${assetPath(src: 'tiger.png')}" alt="Tiger" class="feed-avatar-image"/>
+                            <img src="${assetPath(src: 'tiger.png')}" alt="Tiger" class="feed-avatar-image" loading="lazy" decoding="async"/>
                         </div>
                         <div class="feed-info">
                             <div class="feed-name">Kavya</div>
@@ -349,7 +543,7 @@
                 <div class="feed-card">
                     <div class="feed-header">
                         <div class="feed-avatar">
-                            <img src="${assetPath(src: 'owl.png')}" alt="Owl" class="feed-avatar-image"/>
+                            <img src="${assetPath(src: 'owl.png')}" alt="Owl" class="feed-avatar-image" loading="lazy" decoding="async"/>
                         </div>
                         <div class="feed-info">
                             <div class="feed-name">Aditya</div>
@@ -378,8 +572,7 @@
 
     <!-- Mobile Sticky CTA Bar -->
     <div class="mobile-sticky-cta" id="mobileCTA" style="display: none;">
-        <a href="${createLink(controller: 'personality', action: 'start')}"
-           class="btn-primary-unified"
+        <a href="#" class="btn-primary-unified play-now-trigger"
            data-track="mobile_sticky_cta">
             <span class="btn-icon">🚀</span>
             <span class="btn-text">Play Now (3 min)</span>
@@ -401,8 +594,7 @@
                 <p class="final-subtext">Don't Get Left Behind</p>
 
                 <!-- Giant Play Button -->
-                <a href="${createLink(controller: 'personality', action: 'start')}"
-                   class="btn-primary-unified btn-final-play mega-button pulse-animation"
+                <a href="#" class="btn-primary-unified btn-final-play mega-button pulse-animation play-now-trigger"
                    data-track="final_play_now">
                     <span class="mega-icon">🚀</span>
                     <span class="mega-text">Play Now (3 min)</span>
@@ -424,14 +616,54 @@
 
 </div>
 
+<!-- Continue Game Modal -->
+<div id="continueGameModal" class="continue-modal" style="display: none;">
+    <div class="continue-modal-overlay"></div>
+    <div class="continue-modal-content">
+        <h2 class="continue-modal-title">Welcome Back! 🎮</h2>
+        <p class="continue-modal-text">You have an unfinished game. What would you like to do?</p>
+        <div class="continue-modal-game-info">
+            <span class="continue-game-emoji" id="continueGameEmoji">🦉</span>
+            <span class="continue-game-name" id="continueGameName">Spirit Animal Game</span>
+        </div>
+        <div class="continue-modal-buttons">
+            <a href="${createLink(controller: 'personality', action: 'start')}"
+               class="btn-continue" id="continueGameBtn">
+                <span>▶️</span> Continue Game
+            </a>
+            <a href="${createLink(controller: 'personality', action: 'start')}"
+               class="btn-new-game" id="newGameBtn">
+                <span>🎯</span> Start New Game
+            </a>
+        </div>
+        <button class="continue-modal-close" id="closeModalBtn">✕</button>
+    </div>
+</div>
+
 <!-- Scroll to Top Button -->
 <button class="scroll-to-top" id="scrollToTop" title="Back to top">
     <span>↑</span>
 </button>
 
 <style>
-/* Import Fonts */
+/* Import Fonts with optimized loading */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+/* Ensure fonts load with fallback */
+@font-face {
+    font-family: 'Plus Jakarta Sans';
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Space Grotesk';
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Outfit';
+    font-display: swap;
+}
 
 /* StreamFit Color Palette - Duolingo-Style Gamified Theme */
 :root {
@@ -830,6 +1062,9 @@ h1, h2, h3, h4, h5, h6,
     opacity: 0.15;
     animation: float-blob 30s infinite ease-in-out alternate;
     pointer-events: none;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    will-change: transform;
 }
 
 .b-1 {
@@ -891,6 +1126,11 @@ h1, h2, h3, h4, h5, h6,
     pointer-events: none;
     overflow: hidden;
     z-index: -100;
+    /* Critical performance optimizations */
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    contain: strict;
 }
 
 /* Layer 1: Enhanced Gradient Mesh with Soft Blobs */
@@ -906,6 +1146,9 @@ h1, h2, h3, h4, h5, h6,
     border-radius: 50%;
     filter: blur(70px);
     will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
 }
 
 .blob-blue {
@@ -977,6 +1220,8 @@ h1, h2, h3, h4, h5, h6,
     filter: drop-shadow(0 2px 4px rgba(255, 225, 123, 0.3));
     will-change: transform;
     animation: float-star 7s ease-in-out infinite;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 
 .star-1 { top: 8%; left: 12%; animation-delay: 0s; }
@@ -1014,6 +1259,8 @@ h1, h2, h3, h4, h5, h6,
     filter: drop-shadow(0 2px 6px rgba(139, 127, 232, 0.2));
     will-change: transform;
     animation: float-icon-vertical 6s ease-in-out infinite;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 
 .icon-1 { top: 12%; left: 5%; font-size: 3rem; animation-delay: 0s; }
@@ -1161,37 +1408,89 @@ h1, h2, h3, h4, h5, h6,
 
 /* Mobile Optimization - Reduce decorative elements */
 @media (max-width: 768px) {
+    /* Significantly reduce blur for better performance on mobile */
     .blob-shape {
-        filter: blur(50px);
+        filter: blur(30px);
     }
 
     .blob-blue,
     .blob-mint,
     .blob-peach,
     .blob-lavender {
-        width: 250px;
-        height: 250px;
+        width: 200px;
+        height: 200px;
     }
 
     .star {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
+        opacity: 0.15;
     }
 
     .float-icon {
-        font-size: 2rem;
+        font-size: 1.5rem;
+        opacity: 0.12;
     }
 
+    /* Hide more decorative elements on mobile */
+    .icon-7,
+    .icon-8,
     .icon-9,
     .icon-10 {
         display: none;
     }
 
     .corner-character {
-        font-size: 5rem;
+        font-size: 4rem;
+        opacity: 0.25;
     }
 
-    .particle:nth-child(n+16) {
+    /* Reduce particles significantly */
+    .particle:nth-child(n+11) {
         display: none;
+    }
+
+    /* Simplify blob animations on mobile */
+    .blob-shape {
+        animation-duration: 60s !important;
+    }
+}
+
+/* Android-specific optimizations */
+@supports (-webkit-appearance: none) {
+    @media (max-width: 768px) {
+        /* Disable expensive animations on Android */
+        .enhanced-background-wrapper {
+            will-change: auto;
+        }
+
+        .blob-shape,
+        .star,
+        .float-icon,
+        .particle {
+            will-change: auto;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+
+        /* Reduce animation complexity */
+        .blob-shape {
+            animation-timing-function: linear !important;
+        }
+
+        /* Hide particles entirely on Android for better performance */
+        .particle-system {
+            display: none;
+        }
+
+        /* Simplify star animations */
+        .star {
+            animation-duration: 10s !important;
+        }
+
+        /* Reduce floating icon animations */
+        .float-icon {
+            animation-duration: 8s !important;
+        }
     }
 }
 
@@ -1209,6 +1508,58 @@ h1, h2, h3, h4, h5, h6,
     .particle {
         animation: none !important;
         opacity: 0.15 !important;
+    }
+}
+
+/* Performance optimization for low-end devices */
+@media (max-width: 768px) and (max-height: 812px) {
+    /* Likely a mobile device - optimize aggressively */
+    .enhanced-background-wrapper {
+        opacity: 0.7;
+    }
+
+    /* Hide half of the decorative elements */
+    .star:nth-child(even),
+    .float-icon:nth-child(even) {
+        display: none;
+    }
+
+    /* Reduce blob count */
+    .blob-peach,
+    .blob-lavender {
+        display: none;
+    }
+
+    /* Simplify remaining animations */
+    @keyframes float-blob-slow {
+        0%, 100% {
+            transform: translate3d(0, 0, 0) scale(1);
+        }
+        50% {
+            transform: translate3d(15px, -15px, 0) scale(1.05);
+        }
+    }
+
+    @keyframes float-star {
+        0%, 100% {
+            transform: translate3d(0, 0, 0);
+            opacity: 0.15;
+        }
+        50% {
+            transform: translate3d(0, -10px, 0);
+            opacity: 0.2;
+        }
+    }
+
+    @keyframes float-icon-vertical {
+        0%, 100% {
+            transform: translate3d(0, 0, 0);
+            opacity: 0.12;
+        }
+        50% {
+            transform: translate3d(0, -12px, 0);
+            opacity: 0.18;
+        }
     }
 }
 
@@ -1406,6 +1757,9 @@ h1, h2, h3, h4, h5, h6,
     text-align: center;
     position: relative;
     overflow: visible;
+    /* Performance optimizations */
+    contain: layout style;
+    content-visibility: auto;
 }
 
 .hero-content {
@@ -3026,6 +3380,9 @@ button:active {
 .discover-section {
     padding: 80px 0;
     background: transparent;
+    /* Performance optimizations */
+    contain: layout style;
+    content-visibility: auto;
 }
 
 .section-title {
@@ -3179,6 +3536,9 @@ button:active {
 .tests-section {
     padding: 80px 0;
     background: transparent;
+    /* Performance optimizations */
+    contain: layout style;
+    content-visibility: auto;
 }
 
 .journey-step {
@@ -3432,6 +3792,9 @@ button:active {
 .story-section {
     padding: 80px 0;
     background: transparent;
+    /* Performance optimizations */
+    contain: layout style;
+    content-visibility: auto;
 }
 
 .story-header {
@@ -3657,6 +4020,9 @@ button:active {
 .results-section {
     padding: 80px 0;
     background: transparent;
+    /* Performance optimizations */
+    contain: layout style;
+    content-visibility: auto;
 }
 
 .testimonials-header {
@@ -5940,8 +6306,126 @@ button:active {
 </style>
 
 <script>
-    // Scroll Navigation for Discover Section
-    document.addEventListener('DOMContentLoaded', function() {
+    // Critical Performance Optimization - Immediate execution
+    (function() {
+        const isAndroid = /Android/i.test(navigator.userAgent);
+        const isLowEndDevice = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
+
+        // Immediately add performance class before any rendering
+        if (isAndroid || isLowEndDevice) {
+            document.documentElement.classList.add('android-device', 'performance-mode');
+        }
+
+        if (isAndroid || isLowEndDevice) {
+            // Add class to body for Android-specific optimizations
+            document.documentElement.classList.add('android-device');
+
+            // Create performance-optimized stylesheet
+            const style = document.createElement('style');
+            style.textContent = `
+                /* Android Performance Optimizations */
+                .android-device .enhanced-background-wrapper {
+                    opacity: 0.5;
+                }
+
+                /* Disable expensive blur effects on Android */
+                .android-device .blob-shape {
+                    filter: blur(20px) !important;
+                    opacity: 0.08 !important;
+                }
+
+                /* Hide particles on Android */
+                .android-device .particle-system,
+                .android-device .particle-container {
+                    display: none !important;
+                }
+
+                /* Reduce decorative elements */
+                .android-device .star:nth-child(n+5),
+                .android-device .float-icon:nth-child(n+6) {
+                    display: none !important;
+                }
+
+                /* Simplify character animations */
+                .android-device .corner-character {
+                    animation: none !important;
+                    opacity: 0.2 !important;
+                }
+
+                /* Optimize button animations */
+                .android-device .pulse-animation {
+                    animation: none !important;
+                }
+
+                /* Reduce animation complexity */
+                .android-device * {
+                    animation-duration: 0.3s !important;
+                }
+
+                /* Disable transform animations on scroll */
+                .android-device .character-card:hover {
+                    transform: translateY(-5px) scale(1.02) !important;
+                }
+
+                /* Optimize images */
+                .android-device img {
+                    image-rendering: -webkit-optimize-contrast;
+                }
+
+                /* Pause animations when not visible */
+                .android-device .paused-animations * {
+                    animation-play-state: paused !important;
+                }
+
+                /* Critical: Reduce initial render complexity */
+                .android-device .enhanced-background-wrapper {
+                    visibility: hidden;
+                }
+
+                /* Show background after page load */
+                .android-device.loaded .enhanced-background-wrapper {
+                    visibility: visible;
+                    transition: opacity 0.5s ease-in;
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Show background after initial render
+            window.addEventListener('load', function() {
+                document.documentElement.classList.add('loaded');
+            }, { once: true, passive: true });
+
+            // Disable smooth scrolling on Android for better performance
+            document.documentElement.style.scrollBehavior = 'auto';
+
+            // Use Intersection Observer to pause animations when not visible
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.remove('paused-animations');
+                        } else {
+                            entry.target.classList.add('paused-animations');
+                        }
+                    });
+                }, {
+                    rootMargin: '50px'
+                });
+
+                // Observe sections with animations
+                setTimeout(function() {
+                    const animatedSections = document.querySelectorAll('.enhanced-background-wrapper, .scenery-layer');
+                    animatedSections.forEach(function(section) {
+                        observer.observe(section);
+                    });
+                }, 100);
+            }
+        }
+    })();
+
+    // Optimized Scroll Navigation for Discover Section
+    // Use requestIdleCallback for non-critical initialization
+    function initDiscoverSection() {
         const discoverGrid = document.querySelector('.discover-grid');
         const scrollDots = document.querySelectorAll('.scroll-dot');
         const leftArrow = document.querySelector('.scroll-arrow-left');
@@ -5999,12 +6483,20 @@ button:active {
             });
         });
 
-        // Update dots on scroll
-        discoverGrid.addEventListener('scroll', updateActiveDot);
+        // Update dots on scroll with passive listener
+        discoverGrid.addEventListener('scroll', updateActiveDot, { passive: true });
 
         // Initial update
         updateActiveDot();
-    });
+    }
+
+    // Initialize after page load using requestIdleCallback for better performance
+    if ('requestIdleCallback' in window) {
+        requestIdleCallback(initDiscoverSection, { timeout: 2000 });
+    } else {
+        // Fallback for browsers without requestIdleCallback
+        setTimeout(initDiscoverSection, 100);
+    }
 
     // Scroll to Top Button functionality
     const scrollToTopBtn = document.getElementById('scrollToTop');
@@ -6024,26 +6516,33 @@ button:active {
         });
     });
 
-    // Demo Question Interaction
-    const demoOptions = document.querySelectorAll('.demo-option');
-    const demoResult = document.getElementById('demoResult');
-    const demoResultIcon = document.getElementById('demoResultIcon');
-    const demoResultText = document.getElementById('demoResultText');
+    // Demo Question Interaction - Optimized with event delegation
+    (function() {
+        const demoResult = document.getElementById('demoResult');
+        const demoResultIcon = document.getElementById('demoResultIcon');
+        const demoResultText = document.getElementById('demoResultText');
 
-    const resultData = {
-        wolf: { image: '${assetPath(src: "wolf.png")}', text: 'Hmm... you might be a Strategic Wolf!' },
-        tiger: { image: '${assetPath(src: "tiger.png")}', text: 'Hmm... you might be a Bold Tiger!' },
-        owl: { image: '${assetPath(src: "owl.png")}', text: 'Hmm... you might be a Wise Owl!' },
-        bee: { image: '${assetPath(src: "bee.png")}', text: 'Hmm... you might be a Disciplined Bee!' }
-    };
+        if (!demoResult || !demoResultIcon || !demoResultText) return;
 
-    demoOptions.forEach(option => {
-        option.addEventListener('click', function() {
-            const result = this.dataset.result;
+        const resultData = {
+            wolf: { image: '${assetPath(src: "wolf.png")}', text: 'Hmm... you might be a Strategic Wolf!' },
+            tiger: { image: '${assetPath(src: "tiger.png")}', text: 'Hmm... you might be a Bold Tiger!' },
+            owl: { image: '${assetPath(src: "owl.png")}', text: 'Hmm... you might be a Wise Owl!' },
+            bee: { image: '${assetPath(src: "bee.png")}', text: 'Hmm... you might be a Disciplined Bee!' }
+        };
+
+        // Use event delegation for better performance
+        document.addEventListener('click', function(e) {
+            const demoOption = e.target.closest('.demo-option');
+            if (!demoOption) return;
+
+            const result = demoOption.dataset.result;
             const data = resultData[result];
 
+            if (!data) return;
+
             // Update result content with image
-            demoResultIcon.innerHTML = '<img src="' + data.image + '" alt="' + result + '" class="demo-result-image" />';
+            demoResultIcon.innerHTML = '<img src="' + data.image + '" alt="' + result + '" class="demo-result-image" loading="lazy" decoding="async" />';
             demoResultText.textContent = data.text;
 
             // Show result with animation
@@ -6051,12 +6550,15 @@ button:active {
 
             // Add confetti effect (simple version)
             createConfetti();
-        });
-    });
+        }, { passive: false });
+    })();
 
     function createConfetti() {
+        const isAndroid = /Android/i.test(navigator.userAgent);
+        const confettiCount = isAndroid ? 15 : 30; // Reduce confetti on Android
         const colors = ['#FF6B53', '#9F97F3', '#3A7CA5', '#FFD86D'];
-        for (let i = 0; i < 30; i++) {
+
+        for (let i = 0; i < confettiCount; i++) {
             const confetti = document.createElement('div');
             const randomColor = colors[Math.floor(Math.random() * colors.length)];
             const randomLeft = Math.random() * 100;
@@ -6064,7 +6566,7 @@ button:active {
             document.body.appendChild(confetti);
 
             const duration = Math.random() * 3 + 2;
-            const xMovement = (Math.random() - 0.5) * 200;
+            const xMovement = (Math.random() - 0.5) * (isAndroid ? 100 : 200); // Reduce movement on Android
             const randomRotation = Math.random() * 360;
 
             confetti.animate([
@@ -6072,41 +6574,56 @@ button:active {
                 { transform: 'translateY(100vh) translateX(' + xMovement + 'px) rotate(' + randomRotation + 'deg)', opacity: 0 }
             ], {
                 duration: duration * 1000,
-                easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                easing: isAndroid ? 'linear' : 'cubic-bezier(0.25, 0.46, 0.45, 0.94)' // Simpler easing on Android
             });
 
             setTimeout(function() { confetti.remove(); }, duration * 1000);
         }
     }
 
-    // Mobile Sticky CTA - Show after scrolling past hero
-    window.addEventListener('scroll', function() {
-        const heroSection = document.querySelector('.hero-section');
-        const mobileCTA = document.getElementById('mobileCTA');
+    // Optimized scroll handler with debouncing and passive listeners
+    let scrollTimeout;
+    let ticking = false;
 
-        if (heroSection && mobileCTA) {
-            const heroHeight = heroSection.offsetHeight;
+    function handleScroll() {
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                const heroSection = document.querySelector('.hero-section');
+                const mobileCTA = document.getElementById('mobileCTA');
+                const scrollToTopBtn = document.getElementById('scrollToTop');
+                const scrollY = window.scrollY;
 
-            if (window.scrollY > heroHeight && window.innerWidth <= 768) {
-                mobileCTA.style.display = 'block';
-            } else {
-                mobileCTA.style.display = 'none';
-            }
+                // Mobile Sticky CTA
+                if (heroSection && mobileCTA) {
+                    const heroHeight = heroSection.offsetHeight;
+                    if (scrollY > heroHeight && window.innerWidth <= 768) {
+                        mobileCTA.style.display = 'block';
+                    } else {
+                        mobileCTA.style.display = 'none';
+                    }
+                }
+
+                // Scroll to Top Button
+                if (scrollToTopBtn) {
+                    if (scrollY > 300) {
+                        scrollToTopBtn.classList.add('visible');
+                    } else {
+                        scrollToTopBtn.classList.remove('visible');
+                    }
+                }
+
+                ticking = false;
+            });
+            ticking = true;
         }
-    });
+    }
 
-    // Scroll to Top Button
+    // Use passive listener for better scroll performance
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Scroll to Top Button click handler
     const scrollToTopBtn = document.getElementById('scrollToTop');
-
     if (scrollToTopBtn) {
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > 300) {
-                scrollToTopBtn.classList.add('visible');
-            } else {
-                scrollToTopBtn.classList.remove('visible');
-            }
-        });
-
         scrollToTopBtn.addEventListener('click', function() {
             window.scrollTo({
                 top: 0,
@@ -6114,6 +6631,115 @@ button:active {
             });
         });
     }
+
+    // Continue Game Modal Logic
+    (function() {
+        const continueModal = document.getElementById('continueGameModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const continueGameBtn = document.getElementById('continueGameBtn');
+        const newGameBtn = document.getElementById('newGameBtn');
+        const continueGameEmoji = document.getElementById('continueGameEmoji');
+        const continueGameName = document.getElementById('continueGameName');
+
+        const testEmojis = {
+            'SPIRIT_ANIMAL': '🦉',
+            'COGNITIVE_RADAR': '🧠',
+            'FOCUS_STAMINA': '⚡',
+            'GUESSWORK_QUOTIENT': '🎲',
+            'CURIOSITY_COMPASS': '🧭',
+            'MODALITY_MAP': '🎨',
+            'CHALLENGE_DRIVER': '🏆',
+            'WORK_MODE': '🤝',
+            'PATTERN_SNAPSHOT': '🧩'
+        };
+
+        // Check if user has an unfinished game
+        function checkUnfinishedGame() {
+            try {
+                const savedState = localStorage.getItem('personality_start_state');
+                if (!savedState) return null;
+
+                const state = JSON.parse(savedState);
+
+                // Only show if less than 24 hours old
+                if (Date.now() - state.timestamp > 86400000) {
+                    localStorage.removeItem('personality_start_state');
+                    return null;
+                }
+
+                // Check if there's a valid session
+                if (state.sessionId && state.selectedTest) {
+                    return state;
+                }
+
+                return null;
+            } catch (error) {
+                console.error('Error checking unfinished game:', error);
+                return null;
+            }
+        }
+
+        // Handle all Play Now button clicks
+        function handlePlayNowClick(e) {
+            e.preventDefault();
+
+            const unfinishedGame = checkUnfinishedGame();
+
+            if (unfinishedGame && unfinishedGame.selectedTest) {
+                // Show modal with game info
+                const testName = unfinishedGame.selectedTest.testName || 'Spirit Animal Game';
+                const testId = unfinishedGame.selectedTest.testId || 'SPIRIT_ANIMAL';
+                const emoji = testEmojis[testId] || '🎮';
+
+                continueGameEmoji.textContent = emoji;
+                continueGameName.textContent = testName;
+                continueModal.style.display = 'flex';
+            } else {
+                // No unfinished game, go directly to start page
+                window.location.href = '${createLink(controller: 'personality', action: 'start')}';
+            }
+        }
+
+        // Attach event listeners to all play now buttons
+        const playNowButtons = document.querySelectorAll('#playNowBtn, .play-now-trigger');
+        playNowButtons.forEach(function(btn) {
+            btn.addEventListener('click', handlePlayNowClick);
+        });
+
+        // Handle Continue Game button
+        if (continueGameBtn) {
+            continueGameBtn.addEventListener('click', function(e) {
+                // Let the link work normally - it will restore state from localStorage
+            });
+        }
+
+        // Handle New Game button
+        if (newGameBtn) {
+            newGameBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Clear the saved state
+                localStorage.removeItem('personality_start_state');
+                // Go to start page
+                window.location.href = '${createLink(controller: 'personality', action: 'start')}';
+            });
+        }
+
+        // Handle Close button
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', function() {
+                continueModal.style.display = 'none';
+            });
+        }
+
+        // Handle clicking outside modal
+        if (continueModal) {
+            continueModal.addEventListener('click', function(e) {
+                if (e.target === continueModal || e.target.classList.contains('continue-modal-overlay')) {
+                    continueModal.style.display = 'none';
+                }
+            });
+        }
+    })();
 </script>
 </body>
 </html>
