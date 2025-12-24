@@ -146,7 +146,7 @@
             <!-- Search Bar -->
             <div class="faq-search-container">
                 <div class="search-wrapper">
-                    <span class="search-icon">🔍</span>
+%{--                    <span class="search-icon">🔍</span>--}%
                     <input type="text" id="faqSearch" class="faq-search" placeholder="Search for answers...">
                     <span class="search-clear" id="clearSearch">✕</span>
                 </div>

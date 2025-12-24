@@ -4902,7 +4902,7 @@ button:active {
 
     /* Add bottom padding to prevent content hiding behind sticky CTA */
     .landing-page {
-        padding-bottom: 80px;
+        padding-bottom: 40px;
     }
 
     /* ===== MOBILE UX IMPROVEMENTS ===== */
@@ -4938,7 +4938,7 @@ button:active {
     }
 
     .final-cta-section.game-cta {
-        padding: 60px 0;
+        padding: 40px 0;
     }
 
     /* Reduce hero title size */

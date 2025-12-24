@@ -68,6 +68,13 @@
         img { max-width: 100%; height: auto; }
     </style>
 
+    <asset:stylesheet src="application.css"/>
+    <asset:stylesheet src="personality-test.css"/>
+    <asset:stylesheet src="mobile.css"/>
+    <asset:javascript src="application.js"/>
+    <asset:javascript src="mobile-enhancements.js"/>
+    <asset:javascript src="mobile-share.js"/>
+    <asset:javascript src="dynamic-nav.js"/>
     <!-- Load CSS with media attribute for non-blocking -->
     <asset:stylesheet src="application.css" media="all"/>
     <asset:stylesheet src="personality-test.css" media="all"/>
@@ -174,12 +181,35 @@
         /* Same soft shadow as footer */
         box-shadow: 0 12px 30px -10px rgba(28, 26, 40, 0.04);
 
-        /* Smooth transition for scroll effects */
-        transition: opacity 0.3s ease;
+        /* Smooth fade in/fade out transition */
+        transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
         /* Subtle overflow handling like footer */
         position: relative;
         overflow: hidden;
+
+        /* Will be controlled by JavaScript */
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* Hidden state for nav (when CTA is visible) */
+    .main-nav[aria-hidden="true"] {
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-10px);
+    }
+
+    /* Respect user's motion preferences */
+    @media (prefers-reduced-motion: reduce) {
+        .main-nav {
+            transition: opacity 0.2s ease;
+        }
+
+        .main-nav[aria-hidden="true"] {
+            transform: none;
+        }
 
         /* Performance optimizations */
         contain: layout style;
@@ -206,7 +236,7 @@
     }
 
     .nav-logo img {
-        height: 140px;
+        height: 50px;
         width: auto;
         transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         filter: drop-shadow(0 2px 4px rgba(139, 127, 232, 0.1));
@@ -286,8 +316,16 @@
 
 
     /* ✅ FIXED NAV CTA (KEY CHANGE) */
+    /* Update around Line 1056 in main.gsp */
     .nav-cta {
         white-space: nowrap;
+
+        /* OVERRIDE: Make the nav button smaller than hero buttons */
+        padding: 8px 18px !important;
+        font-size: 0.85rem !important;
+
+        /* Optional: reduce the border radius slightly to match the smaller size */
+        border-radius: 20px;
     }
 
     /* FOOTER */
@@ -429,7 +467,7 @@
         }
 
         .nav-logo img {
-            height: 80px;
+            height: 45px;
         }
 
         .btn-primary {
@@ -487,16 +525,13 @@
         }
 
         .nav-logo img {
-            height: 70px;
+            height: 40px;
+            width: 130px;
         }
 
         .btn-primary {
             font-size: 0.65rem;
             padding: 5px 10px;
-        }
-
-        .nav-helper-text {
-            font-size: 0.55rem;
         }
     }
 
@@ -735,7 +770,7 @@
 <footer class="main-footer">
     <!-- Brand Col -->
     <div class="footer-brand">
-        <h2>StreamFit</h2>
+        <h2>learnerDNA</h2>
         <p>Unlock your cognitive potential with adaptive learning paths designed for your unique brain.</p>
         <div class="social-row">
             <a href="#" class="social-btn" aria-label="Twitter">
@@ -752,7 +787,7 @@
 
     <!-- Links Col 1 -->
     <div class="footer-col">
-        <h3>STREAMFIT</h3>
+        <h3>learnerDNA</h3>
         <ul class="footer-link-list">
             <li><a href="${createLink(uri: '/')}">Home</a></li>
             <li><a href="${createLink(controller: 'personality', action: 'start')}">Take the Test</a></li>
@@ -780,7 +815,7 @@
     </div>
 
     <div class="footer-bottom">
-        <div>© 2025 StreamFit. All rights reserved.</div>
+        <div>© 2025 learnerDNA. All rights reserved.</div>
         <div class="footer-links">
             <a href="${createLink(uri: '/terms')}">Terms</a>
             <a href="${createLink(uri: '/privacy')}">Privacy</a>
