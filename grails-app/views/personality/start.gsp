@@ -748,7 +748,7 @@
         display: flex;
         flex-direction: column;
         gap: 14px;
-        margin: 0;
+        margin: 0 0 16px 0;
         opacity: 0;
         transform: translateY(20px);
         flex: 0 0 auto;
@@ -821,10 +821,10 @@
     }
 
     .option.selected {
-        background: linear-gradient(135deg, #5FE3D0 0%, #7FDBDA 100%);
-        border-color: var(--pop-cyan);
-        box-shadow: 0 12px 32px rgba(95, 227, 208, 0.4);
-        color: #2D2A45;
+        background: linear-gradient(135deg, #58CC02 0%, #6DD604 100%);
+        border-color: #58CC02;
+        box-shadow: 0 12px 32px rgba(88, 204, 2, 0.4);
+        color: white;
         font-weight: 800;
         transform: translateY(-4px) scale(1.02);
         position: relative;
@@ -832,15 +832,8 @@
     }
 
     .option.selected::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        height: 6px;
-        background: rgba(255, 255, 255, 0.8);
-        width: 0%;
-        animation: autoAdvanceProgress 2s linear forwards;
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+        content: none;
+        display: none;
     }
 
     @keyframes autoAdvanceProgress {
@@ -863,7 +856,7 @@
         align-items: center;
         justify-content: center;
         gap: 8px;
-        margin: 20px 0 0 0;
+        margin: 0;
         flex-shrink: 0;
     }
 
@@ -921,64 +914,25 @@
     .game-title-text {
         font-size: 4rem;
         font-weight: 900;
-        color: var(--text-dark);
+        color: #000000;
         margin: 0;
         line-height: 1.1;
-        background: linear-gradient(135deg, var(--pop-purple) 0%, var(--pop-cyan) 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
     }
 
     /* --- NAVIGATION ARROWS --- */
     .navigation-progress-container {
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: center;
-        gap: 16px;
-        margin: auto 16px;
-        padding: 20px 0 20px 0;
+        justify-content: flex-start;
+        gap: 8px;
+        margin: 0 16px 0 16px;
+        padding: 0;
         flex-shrink: 0;
     }
 
     .nav-arrow {
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        border: 2px solid var(--pop-purple);
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-        color: var(--pop-purple);
-        font-size: 1.5rem;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.3s var(--ease-smooth);
-        box-shadow: 0 4px 12px rgba(139, 127, 232, 0.2);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-    }
-
-    .nav-arrow:hover {
-        background: linear-gradient(135deg, var(--pop-purple) 0%, var(--pop-purple-light) 100%);
-        color: white;
-        transform: scale(1.1);
-        box-shadow: 0 6px 20px rgba(139, 127, 232, 0.4);
-    }
-
-    .nav-arrow:active {
-        transform: scale(0.95);
-    }
-
-    .nav-arrow:disabled {
-        opacity: 0.3;
-        cursor: not-allowed;
-        pointer-events: none;
-    }
-
-    .nav-arrow span {
-        line-height: 1;
-        display: block;
+        display: none !important;
     }
 
     /* --- TABLET --- */
@@ -1209,15 +1163,8 @@
         /* Navigation and Progress */
         .navigation-progress-container {
             gap: 12px;
-            margin: auto 16px;
-            padding: 16px 0 16px 0;
-        }
-
-        .nav-arrow {
-            width: 36px;
-            height: 36px;
-            font-size: 1.2rem;
-            border-width: 2px;
+            margin: 0 16px 0 16px;
+            padding: 0;
         }
 
         .question-text {
@@ -1244,7 +1191,7 @@
 
         .options-container {
             gap: 12px;
-            margin: 0;
+            margin: 0 0 16px 0;
             padding: 0 8px;
         }
 
@@ -1258,7 +1205,7 @@
         }
 
         .game-progress-meter {
-            margin: 16px 0 0 0;
+            margin: 0;
             padding: 0;
         }
 
@@ -1386,12 +1333,6 @@
             gap: 0;
         }
 
-        .nav-arrow {
-            width: 32px;
-            height: 32px;
-            font-size: 1rem;
-        }
-
         .question-text {
             font-size: 0.95rem;
             padding: 0 8px;
@@ -1416,7 +1357,7 @@
         .options-container {
             gap: 10px;
             padding: 0 8px;
-            margin: 0;
+            margin: 0 0 16px 0;
         }
 
         .option {
@@ -1427,7 +1368,7 @@
         }
 
         .game-progress-meter {
-            margin: 14px 0 0 0;
+            margin: 0;
             padding: 0;
         }
 
@@ -1437,8 +1378,8 @@
         }
 
         .navigation-progress-container {
-            padding: 14px 0 14px 0;
-            margin: auto 10px;
+            padding: 0;
+            margin: 0 10px 0 10px;
         }
 
         .progress-container {
@@ -1623,20 +1564,10 @@
 
                 <!-- Navigation and Progress Container -->
                 <div class="navigation-progress-container">
-                    <!-- Navigation Arrows -->
-                    <button id="prevBtn" class="nav-arrow nav-arrow-prev" onclick="navigatePrevious()" style="display: none;">
-                        <span>←</span>
-                    </button>
-
                     <!-- Game Progress Dots (NOT question numbers) -->
                     <div class="game-progress-meter" id="gameProgressMeter">
                         <!-- Progress dots will be dynamically inserted here -->
                     </div>
-
-                    <!-- Next Arrow -->
-                    <button id="nextBtn" class="nav-arrow nav-arrow-next" onclick="navigateNext()" style="display: none;">
-                        <span>→</span>
-                    </button>
                 </div>
             </div>
         </div>
@@ -1650,6 +1581,18 @@
         let answers = [];
         let sessionId = null;
         let autoAdvanceTimer = null;
+
+        // Fallback tests to show if API is unavailable or returns no data
+        const defaultTests = [
+            {
+                testId: 'SPIRIT_ANIMAL',
+                testName: 'Spirit Animal Game',
+                testType: 'DIAGNOSTIC',
+                description: 'Quick mindset snapshot to find your spirit animal profile.',
+                questionCount: 12,
+                estimatedMinutes: 3
+            }
+        ];
 
         // Save page state to localStorage
         function savePageState() {
@@ -1737,23 +1680,25 @@
         // Load all diagnostic tests
         async function loadTests() {
             try {
-                const response = await fetch('/api/diagnostic/tests');
+                const response = await fetch('/api/diagnostic/tests', { headers: { 'Accept': 'application/json' } });
                 if (!response.ok) throw new Error('Failed to load tests');
 
-                allTests = await response.json();
-
-                // Sort tests to put SPIRIT_ANIMAL first
-                allTests.sort((a, b) => {
-                    if (a.testId === 'SPIRIT_ANIMAL') return -1;
-                    if (b.testId === 'SPIRIT_ANIMAL') return 1;
-                    return 0;
-                });
-
-                renderTests();
+                const data = await response.json();
+                allTests = Array.isArray(data) && data.length > 0 ? data : defaultTests;
             } catch (error) {
                 console.error('Error loading tests:', error);
-                alert('Failed to load tests. Please try again.');
+                // Use fallback to ensure UI is not empty
+                allTests = defaultTests;
             }
+
+            // Sort tests to put SPIRIT_ANIMAL first
+            allTests.sort((a, b) => {
+                if (a.testId === 'SPIRIT_ANIMAL') return -1;
+                if (b.testId === 'SPIRIT_ANIMAL') return 1;
+                return 0;
+            });
+
+            renderTests();
         }
 
         // Test emoji mapping
@@ -1776,7 +1721,7 @@
                 const emoji = testEmojis[test.testId] || '📝';
                 return '<div class="test-card" data-test-id="' + test.testId + '" onclick="selectTest(\'' + test.testId + '\')">' +
                     '<div class="test-icon">' + emoji + '</div>' +
-                    '<div class="test-badge ' + test.testType.toLowerCase() + '">' + test.testType + '</div>' +
+                    '<div class="test-badge ' + ((test.testType || 'DIAGNOSTIC').toString().toLowerCase()) + '">' + (test.testType || 'DIAGNOSTIC') + '</div>' +
                     '<h3>' + test.testName + '</h3>' +
                     '<p>' + (test.description || '') + '</p>' +
                     '<p style="font-size: 0.9rem; color: #999; margin-bottom: 0;">' +
@@ -1801,6 +1746,11 @@
         // Start the test
         async function startTest() {
             try {
+                // Ensure a test is selected; fallback to first available
+                if (!selectedTest && allTests && allTests.length > 0) {
+                    selectedTest = allTests[0];
+                }
+
                 // Start test session
                 const response = await fetch('/api/diagnostic/start', {
                     method: 'POST',
@@ -1871,59 +1821,44 @@
             optionsContainer.classList.remove('show');
             optionsContainer.innerHTML = '';
 
-            // Hide navigation buttons during countdown
-            document.getElementById('prevBtn').style.display = 'none';
-            document.getElementById('nextBtn').style.display = 'none';
-
-            // Show countdown phase
+            // Disable countdown: hide instantly
             const countdownContainer = document.getElementById('countdownContainer');
-            countdownContainer.style.display = 'flex';
+            countdownContainer.style.display = 'none';
 
-            // Reset countdown animation
-            const countdownFill = countdownContainer.querySelector('.countdown-fill');
-            countdownFill.style.animation = 'none';
-            void countdownFill.offsetWidth; // Trigger reflow
-            countdownFill.style.animation = 'countdownPulse 2s ease-in-out forwards';
+            // Show question text immediately
+            questionText.style.transition = 'opacity 0.3s ease';
+            questionText.style.opacity = '1';
 
-            // Fade in question text
-            setTimeout(() => {
-                questionText.style.transition = 'opacity 0.5s ease';
-                questionText.style.opacity = '1';
-            }, 100);
+            // Render action buttons immediately
+            
+            // Render action buttons
+            question.options.forEach(option => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.dataset.value = option.optionValue;
 
-            // After countdown (2 seconds), show reaction options
-            setTimeout(() => {
-                countdownContainer.style.display = 'none';
+                // Add emoji if option text doesn't have one
+                const hasEmoji = /[\u{1F300}-\u{1F9FF}]/u.test(option.optionText);
+                optionDiv.textContent = option.optionText;
 
-                // Render action buttons
-                question.options.forEach(option => {
-                    const optionDiv = document.createElement('div');
-                    optionDiv.className = 'option';
-                    optionDiv.dataset.value = option.optionValue;
+                // Check if this option was previously selected
+                if (answers[index] === option.optionValue) {
+                    optionDiv.classList.add('selected');
+                }
 
-                    // Add emoji if option text doesn't have one
-                    const hasEmoji = /[\u{1F300}-\u{1F9FF}]/u.test(option.optionText);
-                    optionDiv.textContent = option.optionText;
-
-                    // Check if this option was previously selected
-                    if (answers[index] === option.optionValue) {
-                        optionDiv.classList.add('selected');
-                    }
-
-                    optionDiv.addEventListener('click', function() {
-                        selectOption(option.optionValue);
-                    });
-
-                    optionsContainer.appendChild(optionDiv);
+                optionDiv.addEventListener('click', function() {
+                    selectOption(option.optionValue);
                 });
 
-                // Show options with animation
-                optionsContainer.classList.add('show');
+                optionsContainer.appendChild(optionDiv);
+            });
 
-                // Update progress dots and navigation buttons
-                updateGameProgressDots();
-                updateNavigationButtons();
-            }, 2000);
+            // Show options with animation
+            optionsContainer.classList.add('show');
+
+            // Update progress dots and navigation buttons
+            updateGameProgressDots();
+            updateNavigationButtons();
         }
 
         // Select option - Instant Reaction
@@ -1958,26 +1893,14 @@
             // Update navigation buttons after selection
             updateNavigationButtons();
 
-            // Auto-advance after 2 seconds (faster game pace)
-            autoAdvanceTimer = setTimeout(() => {
+            // Show green feedback briefly before advancing
+            setTimeout(() => {
                 if (currentQuestionIndex < questions.length - 1) {
-                    // Fade out current screen
-                    const questionContainer = document.getElementById('questionContainer');
-                    questionContainer.style.opacity = '0';
-                    questionContainer.style.transform = 'translateY(-20px)';
-
-                    setTimeout(() => {
-                        questionContainer.style.opacity = '1';
-                        questionContainer.style.transform = 'translateY(0)';
-                        showQuestion(currentQuestionIndex + 1);
-                    }, 300);
+                    showQuestion(currentQuestionIndex + 1);
                 } else {
-                    // Last question - auto-submit after showing selection
-                    setTimeout(() => {
-                        submitTest();
-                    }, 1000);
+                    submitTest();
                 }
-            }, 2000);
+            }, 400); // 400ms delay to show green selection
         }
 
         // Update Game Progress Dots (NOT question numbers)
@@ -2014,37 +1937,11 @@
 
         // Update navigation button visibility
         function updateNavigationButtons() {
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-
-            // Show prev button if not on first question
-            if (currentQuestionIndex > 0) {
-                prevBtn.style.display = 'flex';
-            } else {
-                prevBtn.style.display = 'none';
-            }
-
-            // Show next button if there's a next question and current is answered
-            if (currentQuestionIndex < questions.length - 1 && answers[currentQuestionIndex] !== null) {
-                nextBtn.style.display = 'flex';
-            } else {
-                nextBtn.style.display = 'none';
-            }
-        }
-
-        // Navigate to previous question
-        function navigatePrevious() {
-            if (currentQuestionIndex > 0) {
-                showQuestion(currentQuestionIndex - 1);
-            }
+            // Previous button removed - no navigation needed
         }
 
         // Navigate to next question
-        function navigateNext() {
-            if (currentQuestionIndex < questions.length - 1 && answers[currentQuestionIndex] !== null) {
-                showQuestion(currentQuestionIndex + 1);
-            }
-        }
+        
 
         // Update progress
         function updateProgress(percentage, text) {
