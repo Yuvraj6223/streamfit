@@ -11,6 +11,7 @@ import com.streamfit.service.ChallengeDriverService
 import com.streamfit.service.WorkModeService
 import com.streamfit.service.PatternSnapshotService
 import com.streamfit.service.RewardService
+import com.streamfit.service.PersonalityService
 
 class BootStrap {
 
@@ -25,6 +26,7 @@ class BootStrap {
     WorkModeService workModeService
     PatternSnapshotService patternSnapshotService
     RewardService rewardService
+    PersonalityService personalityService
 
     def init = { servletContext ->
         // Initialize personality test questions

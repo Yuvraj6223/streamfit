@@ -606,7 +606,7 @@
 
     /* Game Moment Screen - Centered, Short Context */
     .question-text {
-        font-size: clamp(1.8rem, 5vw, 2.8rem);
+        font-size: clamp(1.8 rem, 5vw, 2.8rem);
         font-weight: 900;
         color: var(--text-dark);
         margin: 0 0 30px 0;
@@ -1072,7 +1072,7 @@
         /* Question Container - Compact for mobile to fit in one screen */
         #questionContainer {
             padding: 12px 16px 0 16px;
-            max-height: 100%;
+            max-height: fit-content;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -1250,7 +1250,7 @@
         }
 
         .question-text {
-            font-size: 1.2rem;
+            font-size: 2rem;
             padding: 0 8px;
             margin: 0 0 16px 0;
             line-height: 1.25;
