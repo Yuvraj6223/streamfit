@@ -476,7 +476,7 @@
         <section class="hero-section animate-in">
             <div class="hero-content">
                 <h1 class="hero-headline">🧠 Not all students learn the same way. That’s why most study plans fail.</h1>
-                <p class="hero-subheading">StreamFit helps you discover how your brain actually works — so your effort finally turns into results.</p>
+                <p class="hero-subheading">learnerDNA helps you discover how your brain actually works — so your effort finally turns into results.</p>
                 <a href="#" class="cta-button">🔍 Discover Your Learning DNA</a>
             </div>
             <div class="hero-visual">
@@ -525,7 +525,7 @@
 
         <!-- SECTION 4: WHAT STREAMFIT DOES -->
         <section class="how-it-works-section animate-in d-3">
-            <h2 class="section-heading">🎯 StreamFit helps you understand how you learn, perform, and decide</h2>
+            <h2 class="section-heading">🎯 learnerDNA helps you understand how you learn, perform, and decide</h2>
             <div class="steps">
                 <div class="step">
                     <div class="step-icon">🧠</div>
@@ -558,7 +558,7 @@
                     </ul>
                 </div>
                 <div class="column streamfit-approach">
-                    <h3>✅ StreamFit Approach</h3>
+                    <h3>✅ learnerDNA Approach</h3>
                     <ul>
                         <li>Reveals learning patterns</li>
                         <li>Adapts to how your brain works</li>
@@ -570,7 +570,7 @@
 
         <!-- SECTION 6: WHO STREAMFIT IS FOR -->
         <section class="who-is-it-for-section animate-in d-2">
-            <h2 class="section-heading">👥 Who StreamFit is built for</h2>
+            <h2 class="section-heading">👥 Who learnerDNA is built for</h2>
             <div class="card-grid">
                 <div class="card">
                     <h4>🎓 School students (Classes 9–12)</h4>
@@ -595,13 +595,16 @@
                 Before coaching.<br>
                 Before AI tutors.<br><br>
                 Students deserve to understand how their brain works.<br><br>
-                StreamFit is the foundation for smarter learning systems, personalized coaching, and better career decisions.
+                learnerDNA is the foundation for smarter learning systems, personalized coaching, and better career decisions.
             </p>
         </section>
 
         <!-- SECTION 8: FINAL CTA -->
         <section class="final-cta-section animate-in d-1">
-            <p>You don’t need more motivation.<br>You need clarity.</p>
+            <p>
+                Discover how your brain actually learns.<br>
+                <strong>Start your 3-minute Learning DNA test.</strong>
+            </p>
             <a href="#" class="cta-button">🔍 Start with your Learning DNA</a>
         </section>
     </div>

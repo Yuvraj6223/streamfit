@@ -146,7 +146,6 @@
             <!-- Search Bar -->
             <div class="faq-search-container">
                 <div class="search-wrapper">
-%{--                    <span class="search-icon">🔍</span>--}%
                     <input type="text" id="faqSearch" class="faq-search" placeholder="Search for answers...">
                     <span class="search-clear" id="clearSearch">✕</span>
                 </div>
@@ -191,6 +190,7 @@
                     <button class="faq-question">
                         <span class="question-icon">🔬</span>
                         <span class="question-text">Is this scientifically validated?</span>
+                        <span class="faq-badge">POPULAR</span>
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
@@ -202,6 +202,7 @@
                     <button class="faq-question">
                         <span class="question-icon">🧪</span>
                         <span class="question-text">Is this just another personality test?</span>
+                        <span class="faq-badge">POPULAR</span>
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
@@ -213,6 +214,7 @@
                     <button class="faq-question">
                         <span class="question-icon">👨‍👩‍👧</span>
                         <span class="question-text">Will this help me convince my parents?</span>
+                        <span class="faq-badge">POPULAR</span>
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
@@ -225,6 +227,7 @@
                     <button class="faq-question">
                         <span class="question-icon">⏱️</span>
                         <span class="question-text">How long does it take?</span>
+                        <span class="faq-badge">POPULAR</span>
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
@@ -236,6 +239,7 @@
                     <button class="faq-question">
                         <span class="question-icon">💰</span>
                         <span class="question-text">Is it really free?</span>
+                        <span class="faq-badge">POPULAR</span>
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
@@ -247,6 +251,7 @@
                     <button class="faq-question">
                         <span class="question-icon">🎁</span>
                         <span class="question-text">What do I get?</span>
+                        <span class="faq-badge">POPULAR</span>
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
@@ -258,6 +263,7 @@
                     <button class="faq-question">
                         <span class="question-icon">📱</span>
                         <span class="question-text">Can I share my results?</span>
+                        <span class="faq-badge">POPULAR</span>
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
@@ -269,6 +275,7 @@
                     <button class="faq-question">
                         <span class="question-icon">✅</span>
                         <span class="question-text">Do I need to complete all tests?</span>
+                        <span class="faq-badge">POPULAR</span>
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
@@ -281,6 +288,7 @@
                     <button class="faq-question">
                         <span class="question-icon">👪</span>
                         <span class="question-text">What if my parents disagree with my results?</span>
+                        <span class="faq-badge">POPULAR</span>
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
@@ -292,6 +300,7 @@
                     <button class="faq-question">
                         <span class="question-icon">🎓</span>
                         <span class="question-text">Is this better than school career counseling?</span>
+                        <span class="faq-badge">POPULAR</span>
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
@@ -303,6 +312,7 @@
                     <button class="faq-question">
                         <span class="question-icon">🤔</span>
                         <span class="question-text">What if I disagree with my results?</span>
+                        <span class="faq-badge">POPULAR</span>
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
@@ -314,6 +324,7 @@
                     <button class="faq-question">
                         <span class="question-icon">🔄</span>
                         <span class="question-text">Can I retake the test?</span>
+                        <span class="faq-badge">POPULAR</span>
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
@@ -325,6 +336,7 @@
                     <button class="faq-question">
                         <span class="question-icon">🔓</span>
                         <span class="question-text">Do I need to sign up before starting?</span>
+                        <span class="faq-badge">POPULAR</span>
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
@@ -336,6 +348,7 @@
                     <button class="faq-question">
                         <span class="question-icon">🎯</span>
                         <span class="question-text">What if I'm stuck between two streams?</span>
+                        <span class="faq-badge">POPULAR</span>
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
@@ -347,6 +360,7 @@
                     <button class="faq-question">
                         <span class="question-icon">🔀</span>
                         <span class="question-text">Can I change my stream choice after this?</span>
+                        <span class="faq-badge">POPULAR</span>
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
@@ -1459,6 +1473,70 @@ h1, h2, h3, h4, h5, h6,
         justify-content: center;
     }
 }
+/* ===============================
+   GAME UI ENHANCEMENTS (FAQ)
+   =============================== */
+
+/* XP Glow Effect */
+.faq-item::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    background: radial-gradient(circle at top left,
+    rgba(255,255,255,0.35),
+    transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.faq-item:hover::after {
+    opacity: 1;
+}
+
+/* Game-like hover */
+.faq-item:hover {
+    transform: translateY(-6px) scale(1.01);
+}
+
+/* Active = Mission Open */
+.faq-item.active {
+    box-shadow:
+            0 0 0 2px rgba(95, 227, 208, 0.5),
+            0 0 30px rgba(95, 227, 208, 0.4);
+}
+
+/* Badge style */
+.faq-badge {
+    background: linear-gradient(135deg, #FFD54F, #FF9800);
+    color: #2D2A45;
+    font-size: 0.7rem;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4);
+}
+
+/* Smooth expand animation */
+.faq-answer {
+    transition:
+            max-height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+            opacity 0.4s ease,
+            transform 0.3s ease;
+}
+
+/* XP pulse on open */
+.faq-item.active {
+    animation: xpPulse 0.5s ease;
+}
+
+@keyframes xpPulse {
+    0% { transform: scale(0.98); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
 </style>
 
 <script>
@@ -1631,6 +1709,19 @@ h1, h2, h3, h4, h5, h6,
             });
         });
     });
+    // Game-style interaction feedback
+    document.querySelectorAll('.faq-question').forEach(q => {
+        q.addEventListener('click', () => {
+            const card = q.closest('.faq-item');
+
+            card.classList.add('completed');
+
+            setTimeout(() => {
+                card.classList.remove('completed');
+            }, 500);
+        });
+    });
+
 </script>
 
 </body>

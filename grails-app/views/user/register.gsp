@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="main"/>
-    <title>Get Started - StreamFit</title>
+    <title>Get Started - learnerDNA</title>
 </head>
 <body>
     <div class="register-page">

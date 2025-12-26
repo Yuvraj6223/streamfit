@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="main"/>
-    <title>Page Not Found - StreamFit</title>
+    <title>Page Not Found - learnerDNA</title>
 </head>
 <body>
     <div class="error-page">

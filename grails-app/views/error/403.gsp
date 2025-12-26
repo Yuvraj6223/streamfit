@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="main"/>
-    <title>Access Denied - StreamFit</title>
+    <title>Access Denied - learnerDNA</title>
 </head>
 <body>
     <div class="error-page">

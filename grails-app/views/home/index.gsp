@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="main"/>
-    <title>What's Your Learning Superpower? 🎮 | StreamFit</title>
+    <title>What's Your Learning Superpower? 🎮 | learnerDNA</title>
 
     <!-- Critical resource hints for performance -->
     <link rel="preload" as="image" href="${assetPath(src: 'owl.png')}" fetchpriority="high">
@@ -332,7 +332,7 @@
                 </div>
 
                 <!-- Giant Play Now Button -->
-                <a href="#" id="playNowBtn"
+                <a href="${createLink(controller: 'personality', action: 'start')}" id="playNowBtn"
                    class="btn-primary-unified pulse-animation"
                    data-track="hero_play_now">
                     <span class="btn-icon">🚀</span>
@@ -488,7 +488,7 @@
 
             <!-- Single CTA -->
             <div class="sneak-peek-cta">
-                <a href="#" class="btn-primary-unified pulse-animation play-now-trigger"
+                <a href="${createLink(controller: 'personality', action: 'start')}" class="btn-primary-unified pulse-animation play-now-trigger"
                    data-track="sneak_peek_play_now">
                     <span class="btn-icon">🚀</span>
                     <span class="btn-text">Play the First Game</span>
@@ -572,7 +572,7 @@
 
     <!-- Mobile Sticky CTA Bar -->
     <div class="mobile-sticky-cta" id="mobileCTA" style="display: none;">
-        <a href="#" class="btn-primary-unified play-now-trigger"
+        <a href="${createLink(controller: 'personality', action: 'start')}" class="btn-primary-unified play-now-trigger"
            data-track="mobile_sticky_cta">
             <span class="btn-icon">🚀</span>
             <span class="btn-text">Play Now (3 min)</span>
@@ -594,7 +594,7 @@
                 <p class="final-subtext">Don't Get Left Behind</p>
 
                 <!-- Giant Play Button -->
-                <a href="#" class="btn-primary-unified btn-final-play mega-button pulse-animation play-now-trigger"
+                <a href="${createLink(controller: 'personality', action: 'start')}" class="btn-primary-unified btn-final-play mega-button pulse-animation play-now-trigger"
                    data-track="final_play_now">
                     <span class="mega-icon">🚀</span>
                     <span class="mega-text">Play Now (3 min)</span>

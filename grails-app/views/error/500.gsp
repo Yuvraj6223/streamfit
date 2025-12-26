@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="main"/>
-    <title>Server Error - StreamFit</title>
+    <title>Server Error - learnerDNA</title>
 </head>
 <body>
     <div class="error-page">

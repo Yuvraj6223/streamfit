@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="main"/>
-    <title>Sign Up - StreamFit</title>
+    <title>Sign Up - learnerDNA</title>
     <style>
         .auth-container {
             max-width: 450px;

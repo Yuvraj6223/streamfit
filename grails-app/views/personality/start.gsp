@@ -4,7 +4,7 @@
     <meta name="layout" content="main"/>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Choose Your Game - StreamFit</title>
+    <title>Choose Your Game - learnerDNA</title>
 
     <!-- Import Fonts with optimized loading -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
