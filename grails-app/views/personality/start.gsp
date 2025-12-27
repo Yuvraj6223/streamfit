@@ -72,7 +72,6 @@
         margin: 0;
         padding: 0;
         min-height: 100vh;
-        height: 100vh;
         overflow-x: hidden;
         -webkit-font-smoothing: antialiased;
     }
@@ -101,7 +100,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: -1;
+        z-index: -100; /* keep background behind decorative layers */
         overflow: hidden;
         background: linear-gradient(180deg,
             #A8B5FF 0%,           /* Sky blue at top */
@@ -111,6 +110,7 @@
             #FFC4B8 80%,          /* Coral pink */
             #FFD8A8 100%          /* Soft peach/yellow at bottom */
         );
+        pointer-events: none; /* safety: never block clicks */
     }
 
     .blob {
@@ -180,9 +180,9 @@
         left: 0;
         width: 100%;
         height: 100%;
-        pointer-events: none;
+        pointer-events: none; /* decorative only */
         overflow: hidden;
-        z-index: -100;
+        z-index: 0; /* global background layer: above gradient, below content */
         will-change: transform;
         transform: translateZ(0);
         backface-visibility: hidden;
@@ -267,6 +267,7 @@
         width: 100%;
         height: 100%;
         z-index: -75;
+        pointer-events: none; /* never block interactions */
     }
 
     .star {
@@ -347,16 +348,19 @@
         margin: 0;
         padding: 0;
         position: relative;
-        z-index: 1;
+        z-index: 10; /* content above global background */
         min-height: 100vh;
         display: flex;
         align-items: stretch;
         justify-content: center;
-        overflow: hidden;
+        overflow-x: hidden;
+        overflow-y: auto;
+        padding-bottom: 80px; /* safe bottom spacing for gestures */
+        background: transparent; /* remove any white background */
     }
 
     .mobile-container {
-        background: transparent;
+        background: transparent; /* ensure no white background */
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
         border-radius: 0;
@@ -367,10 +371,11 @@
         width: 100%;
         max-width: 100%;
         position: relative;
-        overflow-y: hidden;
+        overflow-y: visible;
         overflow-x: hidden;
         display: flex;
         flex-direction: column;
+        z-index: 10; /* ensure above backgrounds for clickability */
     }
 
     .mobile-container::before {
@@ -406,11 +411,12 @@
         display: flex;
         flex-direction: column;
         position: relative;
-        z-index: 1;
-        padding: 20px 20px 0 20px;
+        z-index: 20; /* ensure above background layers */
+        padding: 40px 20px 0 20px; /* add breathable top gap under navbar */
         flex: 1;
         overflow-y: auto;
         min-height: 0;
+        background: transparent; /* no white fill */
     }
 
     .step-container.hidden {
@@ -437,106 +443,141 @@
         text-align: center;
     }
 
-    /* --- TEST GRID - Duolingo Style --- */
+    /* --- TEST GRID - GAME LOBBY MODE CARDS --- */
     .test-grid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 24px;
-        margin-bottom: 0;
-        max-height: none;
-        overflow: visible;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 32px;
+        margin-bottom: 12px;
+        align-items: stretch;
     }
 
+    /* Mode cards (tall portrait): hero top, divider band, text bottom */
     .test-card {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-radius: 28px;
-        padding: 32px 28px;
-        border: 3px solid rgba(139, 127, 232, 0.2);
-        transition: all 0.4s var(--ease-elastic);
-        cursor: pointer;
-        box-shadow: 0 8px 24px rgba(139, 127, 232, 0.15);
-        height: 100%;
-        display: flex;
-        flex-direction: column;
         position: relative;
+        display: grid;
+        grid-template-rows: 1fr 56px auto; /* hero | divider | text */
+        grid-template-columns: 1fr;
+        align-items: end;
+        justify-items: center;
+        width: 100%;
+        min-height: 320px;
+        padding: 16px 16px 18px 16px;
+        border-radius: 20px;
+        border: 0;
+        cursor: pointer;
         overflow: hidden;
+        color: #fff;
+        background: linear-gradient(135deg, #8B7FE8, #FF74C8); /* default gradient */
+        box-shadow: 0 18px 40px rgba(20, 12, 62, 0.30);
+        transition: transform 0.35s var(--ease-elastic), box-shadow 0.35s var(--ease-elastic), outline-color 0.25s ease;
+        isolation: isolate;
+        z-index: 10; /* ensure clickable over backgrounds */
     }
+
+    /* Per-card gradient accents using data-test-id */
+    .test-card[data-test-id="SPIRIT_ANIMAL"] { background: linear-gradient(135deg, #7B5CFF, #FF64B4); }
+    .test-card[data-test-id="COGNITIVE_RADAR"] { background: linear-gradient(135deg, #3A8DFF, #28E7FF); }
+    .test-card[data-test-id="FOCUS_STAMINA"] { background: linear-gradient(135deg, #00C2A8, #6DFF8C); }
+    .test-card[data-test-id="GUESSWORK_QUOTIENT"] { background: linear-gradient(135deg, #FF8A3D, #FFD24A); }
+    .test-card[data-test-id="CURIOSITY_COMPASS"] { background: linear-gradient(135deg, #5C8EFF, #60F3EB); }
+    .test-card[data-test-id="MODALITY_MAP"] { background: linear-gradient(135deg, #7E5BFF, #FF86E6); }
+    .test-card[data-test-id="CHALLENGE_DRIVER"] { background: linear-gradient(135deg, #FF7043, #FFD54F); }
+    .test-card[data-test-id="WORK_MODE"] { background: linear-gradient(135deg, #00BFA6, #76FF03); }
+    .test-card[data-test-id="PATTERN_SNAPSHOT"] { background: linear-gradient(135deg, #5E35B1, #00E5FF); }
 
     .test-card::before {
-        display: none;
-    }
-
-    .test-card:hover::before {
-        display: none;
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(1200px 400px at 80% 30%, rgba(255,255,255,0.18), transparent 50%),
+                    radial-gradient(800px 300px at 20% 120%, rgba(255,255,255,0.12), transparent 60%);
+        pointer-events: none;
+        mix-blend-mode: soft-light;
+        opacity: 0.9;
+        z-index: 0;
     }
 
     .test-card:hover {
-        transform: translateY(-8px) scale(1.05);
-        box-shadow: 0 16px 40px rgba(95, 227, 208, 0.3);
-        border-color: var(--pop-cyan);
+        transform: translateY(-6px) scale(1.02);
+        box-shadow: 0 26px 60px rgba(20, 12, 62, 0.40);
+    }
+
+    .test-card:active {
+        transform: translateY(0) scale(0.98);
+        box-shadow: 0 12px 28px rgba(20, 12, 62, 0.30);
     }
 
     .test-card.selected {
-        background: rgba(255, 255, 255, 0.98);
-        border-color: var(--pop-cyan);
-        box-shadow: 0 12px 32px rgba(95, 227, 208, 0.4);
-        transform: translateY(-4px) scale(1.05);
+        outline: 3px solid rgba(255, 255, 255, 0.75);
+        transform: translateY(-2px) scale(1.015);
+        box-shadow: 0 32px 70px rgba(20, 12, 62, 0.45);
     }
 
+    /* Internal placement in portrait grid */
+    .test-card h3, .test-card p { color: #fff; grid-row: 3; grid-column: 1; z-index: 1; text-align: center; }
+    .test-start-btn { grid-row: 3; grid-column: 1; justify-self: center; }
+
     .test-icon {
-        font-size: 3rem;
-        margin-bottom: 16px;
-        text-align: center;
-        filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
-        font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
+        grid-row: 1;
+        grid-column: 1;
+        font-size: 5rem;
         line-height: 1;
-        display: block;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        transform: none;
+        filter: drop-shadow(0 10px 22px rgba(0,0,0,0.25));
+        z-index: 1;
+        margin: 0;
+        pointer-events: none;
+    }
+
+    /* Divider band between hero and text */
+    .test-card::after {
+        content: '';
+        position: absolute;
+        left: -10%;
+        right: -10%;
+        top: 55%;
+        height: 56px;
+        transform: translateY(-50%);
+        background: linear-gradient(90deg, rgba(255,255,255,0.22), rgba(255,255,255,0.10));
+        opacity: 0.35;
+        filter: blur(6px);
+        border-radius: 100px;
+        z-index: 0;
     }
 
     .test-start-btn {
-        margin-top: 20px;
-        padding: 16px 32px;
-        background: #5FE3D0;
-        color: #2D2A45;
-        border: 3px solid rgba(255, 255, 255, 0.6);
-        border-radius: 20px;
-        font-weight: 800;
-        font-size: 1rem;
+        margin-top: 16px;
+        padding: 14px 22px;
+        background: #FFD24A;
+        color: #3a2e6e;
+        border: 0;
+        border-radius: 999px;
+        font-weight: 900;
+        font-size: 0.95rem;
         cursor: pointer;
-        transition: all 0.3s var(--ease-elastic);
+        transition: transform 0.15s var(--ease-smooth), filter 0.2s ease, background 0.2s ease;
         font-family: inherit;
-        width: 100%;
+        width: fit-content;
         display: none;
-        box-shadow:
-            0 6px 0 #3ABFA8,
-            0 8px 16px rgba(95, 227, 208, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.4);
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+        box-shadow: 0 8px 0 rgba(180, 134, 0, 0.55), 0 14px 30px rgba(0,0,0,0.25);
+        text-transform: none;
+        letter-spacing: 0.2px;
         position: relative;
-        overflow: hidden;
+        z-index: 1;
     }
 
-    .test-start-btn::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-        transition: left 0.5s ease;
-    }
-
-    .test-start-btn:hover::before {
-        left: 100%;
-    }
+    .test-start-btn:hover { transform: translateY(-2px); filter: brightness(0.97); }
+    .test-start-btn:active { transform: translateY(1px) scale(0.98); }
 
     .test-card.selected .test-start-btn {
-        display: block;
-        animation: slideIn 0.4s ease-out;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        animation: slideIn 0.35s ease-out;
     }
 
     @keyframes slideIn {
@@ -569,21 +610,26 @@
 
 
     .test-card h3 {
-        font-weight: 800;
-        color: var(--text-dark);
-        margin: 0 0 12px 0;
-        font-size: 1.4rem;
+        font-weight: 900;
+        color: rgba(255, 255, 255, 0.98);
+        margin: 10px 8px 6px 8px;
+        font-size: 1.45rem;
         letter-spacing: -0.02em;
-        line-height: 1.3;
+        line-height: 1.2;
+        text-align: center;
     }
 
     .test-card p {
-        color: var(--text-grey);
+        color: rgba(255, 255, 255, 0.9);
         font-weight: 600;
         line-height: 1.6;
-        margin: 0 0 10px 0;
-        font-size: 1rem;
+        margin: 0 10px 8px 10px;
+        font-size: 0.95rem;
+        text-align: center;
     }
+
+    /* Force inline-styled meta line to be light on gradients */
+    .test-card p[style] { color: rgba(255, 255, 255, 0.9) !important; }
 
     /* --- GAME MOMENT CONTAINER (NOT A QUESTION) --- */
     .question-container {
@@ -891,7 +937,7 @@
         }
 
         .test-grid {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
         }
 
@@ -943,6 +989,8 @@
 
         .test-card {
             padding: 24px 20px;
+            min-height: 300px;
+            grid-template-rows: 1fr 48px auto;
         }
 
         .test-icon {
@@ -961,14 +1009,18 @@
     /* --- MOBILE --- */
     @media (max-width: 768px) {
         body {
-            overflow: hidden;
-            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            min-height: 100vh;
         }
 
         .test-page {
-            padding: 0;
+            padding: 24px 0 0 0; /* breathing space under navbar on mobile */
             max-width: 100%;
-            height: 100vh;
+            min-height: 100vh;
+            overflow-y: auto;
+            padding-bottom: 80px;
+            background: transparent;
         }
 
         .mobile-container {
@@ -978,7 +1030,8 @@
             width: 100%;
             max-width: 100%;
             border-width: 0;
-            height: 100vh;
+            min-height: 100vh;
+            overflow-y: visible;
         }
 
         .step-container {
@@ -1016,20 +1069,28 @@
         }
 
         .test-card {
-            padding: 20px 16px;
+            padding: 14px 12px 16px 12px;
             border-radius: 20px;
-            border-width: 3px;
+            border-width: 0;
+            min-height: 220px;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr 40px auto;
+            align-items: end;
+            padding-right: 12px;
         }
 
         .test-icon {
-            font-size: 2.2rem;
-            margin-bottom: 12px;
+            position: static;
+            font-size: 3rem;
+            margin: 0;
+            transform: none;
+            justify-content: center;
         }
 
         .test-card h3 {
-            font-size: 1.05rem;
-            margin-bottom: 8px;
-            line-height: 1.3;
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+            line-height: 1.25;
         }
 
         .test-card p {
@@ -1044,10 +1105,11 @@
         }
 
         .test-start-btn {
-            padding: 12px 20px;
-            font-size: 0.9rem;
-            margin-top: 12px;
-            border-width: 3px;
+            padding: 10px 14px;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            border-width: 0;
+            width: auto;
         }
 
         /* Big Game Title at Top - Mobile */
@@ -1162,19 +1224,23 @@
     /* --- EXTRA SMALL MOBILE --- */
     @media (max-width: 480px) {
         body {
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
 
         .test-page {
             padding: 0;
-            height: 100vh;
+            min-height: 100vh;
+            overflow-y: auto;
+            padding-bottom: 80px;
         }
 
         .mobile-container {
             padding: 0;
             border-radius: 0;
-            height: 100vh;
+            min-height: 100vh;
+            overflow-y: visible;
         }
 
         .step-container {
@@ -1195,19 +1261,27 @@
         }
 
         .test-card {
-            padding: 16px 12px;
+            padding: 12px 10px 14px 10px;
             border-radius: 18px;
+            min-height: 200px;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr 36px auto;
+            align-items: end;
+            padding-right: 10px;
         }
 
         .test-icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
+            position: static;
+            font-size: 2.6rem;
+            margin: 0;
+            transform: none;
+            justify-content: center;
         }
 
         .test-card h3 {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             margin-bottom: 6px;
-            line-height: 1.3;
+            line-height: 1.2;
         }
 
         .test-card p {
@@ -1221,9 +1295,10 @@
         }
 
         .test-start-btn {
-            padding: 10px 16px;
-            font-size: 0.85rem;
-            margin-top: 10px;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            margin-top: 8px;
+            width: auto;
         }
 
         /* Extra compact for very small screens */
@@ -1384,6 +1459,29 @@
             transform: translateY(0);
         }
     }
+    /* Subtle motion polish: parallax + reactive cards */
+    .star-decorations { will-change: transform; }
+    .test-card { will-change: transform; transform-style: preserve-3d; }
+
+    /* Hover lift/tilt (desktop only). Keep very subtle. */
+    @media (hover: hover) and (pointer: fine) {
+        .test-card:hover {
+            transform: translateY(-6px) scale(1.01) rotateX(0.5deg) rotateY(-0.5deg);
+        }
+    }
+
+    /* Micro scroll translation on mobile to feel alive (1-2px). */
+    @media (max-width: 768px) {
+        .test-card {
+            transition: transform 0.25s var(--ease-smooth), box-shadow 0.25s var(--ease-smooth);
+        }
+    }
+
+    /* Reduced motion: disable extra transforms */
+    @media (prefers-reduced-motion: reduce) {
+        .star-decorations, .test-card { transition: none !important; transform: none !important; }
+        .test-card:hover { transform: none !important; }
+    }
     </style>
 </head>
 <body>
@@ -1426,7 +1524,7 @@
 </div>
 
 <!-- Ambient Background Layer -->
-<div class="scenery-layer">
+<div class="scenery-layer" style="pointer-events: none; z-index: -100;">
     <div class="blob b-1"></div>
     <div class="blob b-2"></div>
     <div class="blob b-3"></div>
@@ -1490,6 +1588,65 @@
     </div>
 
     <script>
+        // Motion polish: safe parallax for stars + reactive cards.
+        (function() {
+            const root = document.documentElement;
+            const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (prefersReduced) return; // Respect reduced motion
+
+            let ticking = false;
+            const starLayer = document.querySelector('.star-decorations');
+
+            // Cache cards once. Use IntersectionObserver to apply micro-translation only when in view (mobile mostly)
+            const cards = Array.from(document.querySelectorAll('.test-card'));
+
+            // Parallax factors (very small). Stars move slower than content.
+            const STAR_FACTOR = 0.06; // 6% of scroll offset
+
+            // Mobile micro parallax factor for cards
+            const CARD_FACTOR = window.innerWidth <= 768 ? 0.02 : 0; // up to ~1-2px depending on scroll
+
+            function onScrollHandler() {
+                if (ticking) return;
+                window.requestAnimationFrame(applyMotion);
+                ticking = true;
+            }
+
+            function applyMotion() {
+                const y = window.scrollY || window.pageYOffset || 0;
+
+                // Background star parallax (translateY only, GPU-friendly)
+                if (starLayer) {
+                    const starY = Math.round(y * STAR_FACTOR);
+                    starLayer.style.transform = 'translate3d(0,' + starY + 'px,0)';
+                }
+
+                // Micro scroll translation for cards on mobile
+                if (CARD_FACTOR > 0 && cards.length) {
+                    const cardShift = Math.max(-2, Math.min(2, Math.round(y * CARD_FACTOR))); // clamp to [-2, 2] px
+                    for (let i = 0; i < cards.length; i++) {
+                        const c = cards[i];
+                        // Keep existing hover transforms intact by composing translateZ(0) + translateY
+                        c.style.transform = 'translate3d(0,' + cardShift + 'px,0)';
+                    }
+                }
+
+                ticking = false;
+            }
+
+            // Lightweight scroll listener (passive)
+            window.addEventListener('scroll', onScrollHandler, { passive: true });
+            // Initial run
+            applyMotion();
+
+            // Cleanup on page hide (optional safety)
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden && starLayer) {
+                    starLayer.style.transform = 'translate3d(0,0,0)';
+                }
+            }, { passive: true });
+        })();
+
         let selectedTest = null;
         let allTests = [];
         let questions = [];
