@@ -951,7 +951,7 @@
 <nav class="main-nav">
     <div class="nav-container">
         <g:link uri="/" class="nav-logo">
-            <asset:image src="logo.png" alt="LearnerDNA - Free Student Aptitude Test" onerror="this.src='https://placehold.co/150x40?text=LearnerDNA'" />
+            <asset:image src="logo1.png" alt="LearnerDNA - Free Student Aptitude Test" onerror="this.src='https://placehold.co/150x40?text=LearnerDNA'" />
         </g:link>
     </div>
 </nav>
@@ -1074,7 +1074,7 @@
         </div>
 
         <div class="results-deck anim-pop d-3">
-            <div class="panel-label">StreamFit Suggestions (Top 3)</div>
+            <div class="panel-label">learnerDNA Suggestions (Top 3)</div>
             <div class="cards-scroller" id="stream-cards">
 
                 <div class="stream-card hero-card">

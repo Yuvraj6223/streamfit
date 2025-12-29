@@ -14,7 +14,7 @@
         /* BRAND PALETTE - SOFT POP */
         --bg-warm: #FDFCF8;
         --text-dark: #1A1825;
-        --text-grey: #8E8C9A;
+        --text-grey: #505050;
 
         /* VITAMIN COLORS */
         --pop-coral: #FF8F7D;
@@ -42,16 +42,24 @@
         min-height: 100vh;
         overflow-x: hidden;
         -webkit-font-smoothing: antialiased;
+
     }
 
     /* --- AMBIENT BACKGROUND --- */
     .scenery-layer {
         position: fixed;
-        top: 0; left: 0; width: 100%; height: 100%;
+        inset: 0;
         z-index: -1;
-        overflow: hidden;
-        background: var(--bg-warm);
+        background:
+                radial-gradient(circle at 20% 20%, rgba(255,255,255,0.25), transparent 40%),
+                linear-gradient(
+                        180deg,
+                        #9C86FF 0%,
+                        #C7A3EB 45%,
+                        #FFB085 100%
+                );
     }
+
     .blob {
         position: absolute;
         filter: blur(80px);
@@ -80,11 +88,13 @@
 
     /* --- SECTION STYLES --- */
     section {
-        margin-bottom: 80px;
+        margin-bottom: 48px; /* reduced from 64–80px */
+        padding-top: 16px;
         opacity: 0;
         transform: translateY(20px);
-        transition: all 0.8s var(--ease-smooth);
+        transition: all 0.6s var(--ease-smooth);
     }
+
 
     section.visible {
         opacity: 1;
@@ -112,11 +122,12 @@
     .hero-section {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 40px;
+        gap: 32px;
         align-items: center;
-        margin-bottom: 100px;
-        padding: 60px 0;
+        padding: 40px 0;
+        min-height: auto;
     }
+
 
     .hero-headline {
         font-size: clamp(2.5rem, 5vw, 4rem);
@@ -169,12 +180,10 @@
     .card {
         background: var(--card-base);
         border-radius: 28px;
-        padding: 32px;
+        padding: 26px;
         box-shadow: var(--shadow-soft);
         border: 1px solid rgba(255,255,255,0.5);
         transition: all 0.3s var(--ease-elastic);
-        opacity: 0;
-        transform: translateY(20px);
     }
 
     .card.visible {
@@ -386,7 +395,7 @@
     /* --- FINAL CTA SECTION --- */
     .final-cta-section {
         text-align: center;
-        padding: 80px 40px;
+        padding: 40px 24px;
         background: white;
         border-radius: 32px;
         box-shadow: var(--shadow-float);
@@ -416,6 +425,21 @@
             grid-template-columns: 1fr;
         }
     }
+    @media (max-width: 768px) {
+        .hero-section {
+            grid-template-columns: 1fr;
+            text-align: center;
+            padding: 24px 0;
+        }
+
+        .hero-headline {
+            font-size: 2.1rem;
+        }
+
+        .hero-subheading {
+            font-size: 1rem;
+        }
+    }
 
     @media (max-width: 480px) {
         .about-container {
@@ -423,11 +447,22 @@
         }
 
         section {
-            margin-bottom: 60px;
+            margin-bottom: 36px;
+            padding-top: 8px;
         }
 
         .hero-section {
-            padding: 40px 0;
+            padding: 20px 0;
+        }
+
+        .hero-headline {
+            font-size: 1.9rem;
+            line-height: 1.2;
+        }
+
+        .hero-subheading {
+            font-size: 1rem;
+            line-height: 1.5;
         }
 
         .problem-cards {
@@ -438,6 +473,18 @@
         .steps {
             grid-template-columns: 1fr;
             gap: 20px;
+        }
+
+        .card {
+            padding: 20px;
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+        }
+
+        .card p {
+            font-size: 0.95rem;
         }
 
         .card-grid {
@@ -453,7 +500,7 @@
         }
 
         .final-cta-section {
-            padding: 60px 24px;
+            padding: 32px 20px;
         }
     }
 
@@ -461,9 +508,25 @@
     .animate-in { opacity: 0; animation: reveal 0.8s var(--ease-smooth) forwards; }
     @keyframes reveal { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     .d-1 { animation-delay: 0.1s; } .d-2 { animation-delay: 0.2s; } .d-3 { animation-delay: 0.3s; }
+
+    .hero-visual img {
+        max-width: 100%;
+        height: auto;
+        max-height: 320px;
+        object-fit: contain;
+    }
+    .compact-section {
+        margin-bottom: 48px !important;
+    }
+
+    .section-header {
+        margin-bottom: 24px;
+    }
+
     </style>
 </head>
 <body>
+
 
 <div class="scenery-layer">
     <div class="blob b-1"></div>
@@ -472,216 +535,252 @@
 </div>
 
 <div class="about-container">
-        <!-- SECTION 1: HERO -->
-        <section class="hero-section animate-in">
-            <div class="hero-content">
-                <h1 class="hero-headline">🧠 Not all students learn the same way. That’s why most study plans fail.</h1>
-                <p class="hero-subheading">learnerDNA helps you discover how your brain actually works — so your effort finally turns into results.</p>
-                <a href="#" class="cta-button">🔍 Discover Your Learning DNA</a>
-            </div>
-            <div class="hero-visual">
-                <!-- Placeholder for animation -->
-                <img src="https://placehold.co/600x400?text=Animation" alt="Learning Animation">
-            </div>
-        </section>
 
-        <!-- SECTION 2: THE PROBLEM -->
-        <section class="problem-section animate-in d-1">
-            <h2 class="section-heading">😓 Students today work harder than ever — but results don’t match the effort.</h2>
-            <p class="section-paragraph">Long study hours. Endless mock tests. Constant pressure. Yet many students still feel stuck, confused, or burnt out.</p>
-            <div class="problem-cards">
-                <div class="card">
-                    <h3>📚 Studying more, remembering less</h3>
-                    <p>You revise again and again, but concepts don’t stick in the exam.</p>
-                </div>
-                <div class="card">
-                    <h3>⏱️ Running out of time</h3>
-                    <p>You know the answers — but the clock beats you.</p>
-                </div>
-                <div class="card">
-                    <h3>🤯 Confused despite preparation</h3>
-                    <p>You prepare sincerely, yet your scores fluctuate unpredictably.</p>
-                </div>
-            </div>
-        </section>
+    <!-- HERO -->
+    <section class="hero-section animate-in">
+        <div class="hero-content">
+            <h1 class="hero-headline">
+                🧠 Not all students learn the same way.
+            </h1>
+            <p class="hero-subheading">
+                learnerDNA helps you understand how your brain actually works —
+                so your effort finally turns into results.
+            </p>
 
-        <!-- SECTION 3: THE CORE INSIGHT -->
-        <section class="insight-section animate-in d-2">
-            <div class="insight-content">
-                <h2 class="section-heading">🧬 Every student has a different Learning DNA</h2>
-                <p class="section-paragraph">
-                    Some students are fast but careless.<br>
-                    Some are accurate but slow.<br>
-                    Some perform best under pressure.<br>
-                    Some need calm and structure.<br><br>
-                    Traditional education treats everyone the same.<br>
-                    That’s the real problem.
-                </p>
-            </div>
-            <div class="insight-visual">
-                <img src="https://placehold.co/600x400?text=DNA+Visual" alt="Learning DNA">
-            </div>
-        </section>
+            <a href="${createLink(controller: 'personality', action: 'start')}" class="cta-button">
+                🚀 Discover Your Learning DNA
+            </a>
 
-        <!-- SECTION 4: WHAT STREAMFIT DOES -->
-        <section class="how-it-works-section animate-in d-3">
-            <h2 class="section-heading">🎯 learnerDNA helps you understand how you learn, perform, and decide</h2>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-icon">🧠</div>
-                    <h3>Short, gamified diagnostics</h3>
-                    <p>Quick tests that feel like games — not exams.</p>
-                </div>
-                <div class="step">
-                    <div class="step-icon">📊</div>
-                    <h3>Smart scoring & pattern mapping</h3>
-                    <p>Your responses reveal how your brain processes information.</p>
-                </div>
-                <div class="step">
-                    <div class="step-icon">🧬</div>
-                    <h3>Your Learning DNA dashboard</h3>
-                    <p>A clear, visual snapshot of your learning style, strengths, and blind spots.</p>
-                </div>
-            </div>
-        </section>
+            <p style="margin-top:12px;color:#777;font-weight:600;">
+                Used by 10,000+ students • Takes just 3 minutes
+            </p>
+        </div>
 
-        <!-- SECTION 5: WHAT MAKES STREAMFIT DIFFERENT -->
-        <section class="comparison-section animate-in d-1">
-            <h2 class="section-heading">✅ Not another personality quiz. Not another coaching app.</h2>
-            <div class="comparison-columns">
-                <div class="column traditional-approach">
-                    <h3>❌ Traditional Approach</h3>
-                    <ul>
-                        <li>Labels students as “smart” or “weak”</li>
-                        <li>Same advice for everyone</li>
-                        <li>Focuses only on marks</li>
-                    </ul>
-                </div>
-                <div class="column streamfit-approach">
-                    <h3>✅ learnerDNA Approach</h3>
-                    <ul>
-                        <li>Reveals learning patterns</li>
-                        <li>Adapts to how your brain works</li>
-                        <li>Focuses on why scores change</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
+        <div class="hero-visual">
+            <asset:image
+                    src="about.png"
+                    alt="LearnerDNA Learning Experience Illustration"
+                    class="avatar-img"
+                    onerror="this.src='https://placehold.co/600x400?text=Learning+Experience'"
+            />
 
-        <!-- SECTION 6: WHO STREAMFIT IS FOR -->
-        <section class="who-is-it-for-section animate-in d-2">
-            <h2 class="section-heading">👥 Who learnerDNA is built for</h2>
-            <div class="card-grid">
-                <div class="card">
-                    <h4>🎓 School students (Classes 9–12)</h4>
-                </div>
-                <div class="card">
-                    <h4>📝 Competitive exam aspirants</h4>
-                </div>
-                <div class="card">
-                    <h4>🤔 Students confused about stream or career</h4>
-                </div>
-                <div class="card">
-                    <h4>👨‍👩‍👧 Parents seeking objective clarity</h4>
-                </div>
-            </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- SECTION 7: THE VISION -->
-        <section class="vision-section animate-in d-3">
-            <h2 class="section-heading">🌱 Our belief is simple</h2>
+    <!-- WHY SECTION -->
+    <section class="problem-section animate-in compact-section">
+        <h2 class="section-heading section-header">💡 Why learnerDNA exists</h2>
+        <p class="section-paragraph">
+            Students today work harder than ever — yet feel more confused, stressed, and unsure.
+            Not because they lack effort, but because they were never taught how they actually learn.
+            <br><br>
+            learnerDNA was built to fix that.
+        </p>
+    </section>
+
+    <!-- PROBLEM -->
+    <section class="problem-section animate-in compact-section">
+        <h2 class="section-heading section-header">😓 The real problem with learning today</h2>
+        <div class="problem-cards">
+            <div class="card">
+                <h3>📚 Studying more, retaining less</h3>
+                <p>Students revise repeatedly, yet concepts don’t stick.</p>
+            </div>
+            <div class="card">
+                <h3>⏱️ Time pressure</h3>
+                <p>Knowing answers but running out of time in exams.</p>
+            </div>
+            <div class="card">
+                <h3>🤯 No clarity</h3>
+                <p>Hard work without understanding what’s going wrong.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CORE INSIGHT -->
+    <section class="insight-section animate-in compact-section">
+        <div>
+            <h2 class="section-heading section-header">🧬 Every student has a unique Learning DNA</h2>
             <p class="section-paragraph">
-                Before study plans.<br>
-                Before coaching.<br>
-                Before AI tutors.<br><br>
-                Students deserve to understand how their brain works.<br><br>
-                learnerDNA is the foundation for smarter learning systems, personalized coaching, and better career decisions.
+                Some students think fast but make mistakes.<br>
+                Some are accurate but slow.<br>
+                Some perform best under pressure.<br>
+                Others need calm and structure.<br><br>
+                Traditional education treats everyone the same — and that’s the real problem.
             </p>
-        </section>
+        </div>
+        <div class="insight-visual">
+            <asset:image
+                    src="about.png"
+                    alt="Learning DNA"
+                    class="avatar-img"
+                    onerror="this.src='https://placehold.co/600x400?text=Learning+Experience'"
+            />
+        </div>
+    </section>
 
-        <!-- SECTION 8: FINAL CTA -->
-        <section class="final-cta-section animate-in d-1">
-            <p>
-                Discover how your brain actually learns.<br>
-                <strong>Start your 3-minute Learning DNA test.</strong>
-            </p>
-            <a href="#" class="cta-button">🔍 Start with your Learning DNA</a>
-        </section>
-    </div>
+    <!-- HOW IT WORKS -->
+    <section class="how-it-works-section animate-in">
+        <h2 class="section-heading section-header">🎯 How learnerDNA works</h2>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const observerOptions = {
-                root: null,
-                rootMargin: "0px",
-                threshold: 0.1
-            };
+        <div class="steps">
+            <div class="step">
+                <div class="step-icon">🧠</div>
+                <h3>Play short games</h3>
+                <p>Quick activities designed to reveal how your brain works.</p>
+            </div>
 
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
+            <div class="step">
+                <div class="step-icon">📊</div>
+                <h3>Get pattern insights</h3>
+                <p>Your decisions reveal learning and thinking patterns.</p>
+            </div>
 
-                        // Stagger cards in problem section
-                        if (entry.target.classList.contains('problem-section')) {
-                            const cards = entry.target.querySelectorAll('.card');
-                            cards.forEach((card, index) => {
-                                setTimeout(() => {
-                                    card.classList.add('visible');
-                                }, index * 200);
-                            });
-                        }
+            <div class="step">
+                <div class="step-icon">🧬</div>
+                <h3>Understand your Learning DNA</h3>
+                <p>A clear breakdown of strengths, blind spots, and learning style.</p>
+            </div>
+        </div>
+    </section>
 
-                        // Stagger cards in who-is-it-for section
-                        if (entry.target.classList.contains('who-is-it-for-section')) {
-                            const cards = entry.target.querySelectorAll('.card');
-                            cards.forEach((card, index) => {
-                                setTimeout(() => {
-                                    card.classList.add('visible');
-                                }, index * 150);
-                            });
-                        }
+    <!-- COMPARISON -->
+    <section class="comparison-section animate-in">
+        <h2 class="section-heading section-header">Not another personality test</h2>
 
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, observerOptions);
+        <div class="comparison-columns">
+            <div class="column traditional-approach">
+                <h3>❌ Traditional Approach</h3>
+                <ul>
+                    <li>One-size-fits-all learning</li>
+                    <li>Focus on marks</li>
+                    <li>No learning insight</li>
+                </ul>
+            </div>
 
-            const sections = document.querySelectorAll('section');
-            sections.forEach(section => {
-                observer.observe(section);
-            });
+            <div class="column streamfit-approach">
+                <h3>✅ learnerDNA Approach</h3>
+                <ul>
+                    <li>Personal learning patterns</li>
+                    <li>Focus on how you think</li>
+                    <li>Clarity before preparation</li>
+                </ul>
+            </div>
+        </div>
+    </section>
 
-            // Special handling for step scaling on hover
-            const stepObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, { threshold: 0.3 });
+    <!-- WHO IT’S FOR -->
+    <section class="who-is-it-for-section animate-in">
+        <h2 class="section-heading section-header">👥 Who learnerDNA is for</h2>
+        <div class="card-grid">
+            <div class="card"><p>🎓 School students (Classes 9–12)</p></div>
+            <div class="card"><p>📝 Competitive exam aspirants</p></div>
+            <div class="card"><p>🤔 Confused about career choices</p></div>
+            <div class="card"><p>👨‍👩‍👧 Parents seeking clarity</p></div>
+        </div>
+    </section>
 
-            const steps = document.querySelectorAll('.step');
-            steps.forEach((step, index) => {
-                step.style.opacity = '0';
-                step.style.transform = 'translateY(20px)';
-                var delay = (index * 0.15) + 's';
-                step.style.transition = 'all 0.6s var(--ease-smooth) ' + delay;
-                stepObserver.observe(step);
-            });
+    <!-- VISION -->
+    <section class="vision-section animate-in">
+        <h2 class="section-heading section-header">🌱 Our belief</h2>
+        <p class="section-paragraph">
+            Before study plans.
+            Before coaching.
+            Before career choices.
+            <br><br>
+            Every student deserves to understand how their mind works.
+            <br><br>
+            learnerDNA exists to make learning personal, confident, and clear.
+        </p>
+    </section>
 
-            // Final CTA button pulse animation
-            const ctaButton = document.querySelector('.final-cta-section .cta-button');
-            if (ctaButton) {
-                setInterval(() => {
-                    ctaButton.style.transform = 'scale(1.1)';
-                    setTimeout(() => {
-                        ctaButton.style.transform = 'scale(1)';
-                    }, 200);
-                }, 3000);
-            }
-        });
-    </script>
+    <!-- FINAL CTA -->
+    <section class="final-cta-section animate-in">
+        <p>
+            Discover how your brain actually learns.<br>
+            <strong>Start your 3-minute Learning DNA test.</strong>
+        </p>
+        <a href="${createLink(controller: 'personality', action: 'start')}" class="cta-button">🚀 Start Now</a>
+
+        <p style="font-size:0.9rem;color:#777;margin-top:12px;">
+            No sign-up required • Free • Takes 3 minutes
+        </p>
+    </section>
+
+</div>
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const observerOptions = {
+            root: null,
+            rootMargin: "0px",
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+
+                    // Stagger cards in problem section
+                    if (entry.target.classList.contains('problem-section')) {
+                        const cards = entry.target.querySelectorAll('.card');
+                        cards.forEach((card, index) => {
+                            setTimeout(() => {
+                                card.classList.add('visible');
+                            }, index * 200);
+                        });
+                    }
+
+                    // Stagger cards in who-is-it-for section
+                    if (entry.target.classList.contains('who-is-it-for-section')) {
+                        const cards = entry.target.querySelectorAll('.card');
+                        cards.forEach((card, index) => {
+                            setTimeout(() => {
+                                card.classList.add('visible');
+                            }, index * 150);
+                        });
+                    }
+
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        const sections = document.querySelectorAll('section');
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Special handling for step scaling on hover
+        const stepObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.3 });
+
+        const steps = document.querySelectorAll('.step');
+        steps.forEach((step, index) => {
+            step.style.opacity = '0';
+            step.style.transform = 'translateY(20px)';
+            var delay = (index * 0.15) + 's';
+            step.style.transition = 'all 0.6s var(--ease-smooth) ' + delay;
+            stepObserver.observe(step);
+        });
+
+        // Final CTA button pulse animation
+        const ctaButton = document.querySelector('.final-cta-section .cta-button');
+        if (ctaButton) {
+            setInterval(() => {
+                ctaButton.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    ctaButton.style.transform = 'scale(1)';
+                }, 200);
+            }, 3000);
+        }
+    });
+</script>
 </html>

@@ -769,92 +769,12 @@ h1, h2, h3, h4, h5, h6,
 .discover-card h3,
 .journey-step h3,
 .story-card h3,
-.testimonial-name,
-.faq-question,
-.transformation-title,
-.instagram-title {
+ {
     font-family: var(--font-display);
     font-weight: 800;
     letter-spacing: -0.02em;  /* Tighter tracking for display font */
 }
 
-/* ========================================
-           UNIFIED ICON SYSTEM - Design Guidelines
-           ========================================
-
-           PROBLEM: Mixed emoji styles (animal emojis vs flat icons) create visual inconsistency
-
-           SOLUTION: Standardized icon categories with consistent visual treatment
-
-           ICON CATEGORIES:
-           1. Learning Animals (Primary Brand Icons)
-              - 🦉 Owl (Wise/Analytical)
-              - 🐺 Wolf (Strategic/Intuitive)
-              - 🐝 Bee (Collaborative/Systematic)
-              - 🐯 Tiger (Bold/Creative)
-
-           2. Action Icons (Geometric/Abstract)
-              - 🎯 Target (Goals/Precision)
-              - 💎 Diamond (Value/Quality)
-              - 🚀 Rocket (Growth/Speed)
-              - ⚡ Lightning (Energy/Quick)
-              - 🔥 Fire (Hot/Trending)
-              - ✅ Checkmark (Success/Complete)
-
-           3. Emotion Icons (Faces/Expressions)
-              - 😰 Anxious Face (Problem state)
-              - 🎯 Focused (Solution state)
-              - 💡 Lightbulb (Insight/Idea)
-
-           4. Social Proof Icons
-              - ⭐ Star (Rating)
-              - 📱 Phone (Social/Mobile)
-              - 👨‍🎓 Student (User persona)
-
-           FUTURE: Replace with custom SVG icon set for full brand control
-           (Recommended: Duotone style with brand colors)
-        ======================================== */
-
-.icon-emoji {
-    font-style: normal;
-    font-weight: normal;
-    display: inline-block;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));  /* Subtle depth for all icons */
-}
-
-/* Icon sizing system */
-.icon-sm { font-size: 1.5rem; }
-.icon-md { font-size: 2.5rem; }
-.icon-lg { font-size: 4rem; }
-.icon-xl { font-size: 5rem; }
-
-/* Ensure all emojis render consistently across browsers */
-.student-icon,
-.result-badge,
-.big-icon,
-.chest-icon,
-.result-icon,
-.story-emoji,
-.transform-emoji,
-.screenshot-badge,
-.insta-avatar {
-    font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', sans-serif;
-}
-
-/* ========================================
-           MOBILE-FIRST OPTIMIZATIONS
-           ========================================
-
-           THUMB-FRIENDLY TARGETS:
-           - Minimum 56px height for all CTAs (Apple/Google guidelines)
-           - Minimum 48px for secondary buttons
-           - Adequate spacing between tappable elements
-
-           PERFORMANCE:
-           - Horizontal scroll for card grids (reduce vertical scroll fatigue)
-           - Sticky bottom CTA bar (always visible conversion path)
-           - Reduced section padding (less scrolling)
-        ======================================== */
 
 /* Sticky Mobile CTA Bar - Always visible on mobile */
 .mobile-sticky-cta {
@@ -958,84 +878,12 @@ h1, h2, h3, h4, h5, h6,
     transform: translateY(-2px);
 }
 
-/* Horizontal Scroll Hint - Shows on mobile to indicate swipeable cards */
-.scroll-hint {
-    display: none;
-    text-align: center;
-    color: var(--text-light-gray);
-    font-size: 0.9rem;
-    margin-top: 10px;
-    font-weight: 500;
-}
-
-.scroll-hint::after {
-    content: ' 👉';
-    animation: swipeHint 1.5s ease-in-out infinite;
-}
 
 @keyframes swipeHint {
     0%, 100% { transform: translateX(0); }
     50% { transform: translateX(10px); }
 }
 
-/* Scroll Navigation - Dots and Arrows */
-.scroll-navigation {
-    display: none;  /* Hidden by default, shown on mobile */
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 30px;
-    margin-bottom: 10px;
-}
-
-.scroll-dots {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.scroll-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #D1D5DB;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.scroll-dot.active {
-    background: var(--ocean-blue);
-    width: 12px;
-    height: 12px;
-}
-
-.scroll-arrow {
-    background: transparent;
-    border: none;
-    font-size: 2rem;
-    color: #9CA3AF;
-    cursor: pointer;
-    padding: 5px 10px;
-    transition: all 0.3s ease;
-    line-height: 1;
-}
-
-.scroll-arrow:hover {
-    color: var(--ocean-blue);
-    transform: scale(1.2);
-}
-
-.scroll-arrow:active {
-    transform: scale(0.95);
-}
-
-.scroll-arrow-left {
-    margin-right: 5px;
-}
-
-.scroll-arrow-right {
-    margin-left: 5px;
-}
 
 /* --- AMBIENT BACKGROUND - DUOLINGO STYLE --- */
 .scenery-layer {
@@ -1703,52 +1551,6 @@ h1, h2, h3, h4, h5, h6,
         transform: translate(-25px, -40px) rotate(360deg) scale(1.2);
         opacity: 0.8;
     }
-}
-
-/* Duolingo-Style Top Navigation Tabs */
-.game-nav-tabs {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
-    padding: 25px 20px 15px;
-    background: transparent;
-    position: relative;
-    z-index: 10;
-}
-
-.game-nav-tab {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--text-grey);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    padding: 8px 16px;
-    border-radius: 12px;
-    position: relative;
-}
-
-.game-nav-tab:hover {
-    color: var(--pop-purple);
-    background: rgba(139, 127, 232, 0.1);
-}
-
-.game-nav-tab.active {
-    color: var(--pop-purple);
-}
-
-.game-nav-tab.active::after {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60%;
-    height: 3px;
-    background: var(--pop-purple);
-    border-radius: 2px;
 }
 
 /* 1. HERO GAME PORTAL */
@@ -5078,24 +4880,6 @@ button:active {
         gap: 8px;
         width: 100%;
         max-width: 100%;
-    }
-
-    /* Nav CTA should NOT be full width */
-    .nav-cta {
-        width: auto;
-        max-width: none;
-        display: inline-flex;
-    }
-
-    .btn-primary,
-    .btn-secondary {
-        min-height: 48px;
-    }
-
-    .btn-hero-cta,
-    .btn-final-cta {
-        font-size: 0.95rem;
-        padding: 12px 24px;
     }
 
     /* Reduce vertical spacing between sections */
