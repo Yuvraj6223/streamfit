@@ -19,6 +19,7 @@
         --bg-gradient-pink: #FFB8E8;     /* Pink purple */
         --bg-gradient-coral: #FFC4B8;    /* Coral pink */
         --bg-gradient-peach: #FFD8A8;    /* Soft peach/yellow */
+        --card-white: #FFFFFF;
 
         --text-dark: #2D2A45;  /* Deep purple-gray for text */
         --text-grey: #7B7896;  /* Medium purple-gray */
@@ -443,131 +444,233 @@
         text-align: center;
     }
 
-    /* --- TEST GRID - GAME LOBBY MODE CARDS --- */
+    /* --- TEST GRID - 3x3 GAME GRID --- */
     .test-grid {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 32px;
-        margin-bottom: 12px;
-        align-items: stretch;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 36px;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 40px;
     }
 
-    /* Mode cards (tall portrait): hero top, divider band, text bottom */
+    /* GAME CARD - Trading Card Style with 3D Effects */
     .test-card {
         position: relative;
-        display: grid;
-        grid-template-rows: 1fr 56px auto; /* hero | divider | text */
-        grid-template-columns: 1fr;
-        align-items: end;
-        justify-items: center;
-        width: 100%;
-        min-height: 320px;
-        padding: 16px 16px 18px 16px;
+        min-height: 420px;
+        padding: 0;
+        background: linear-gradient(135deg, #ffffff 0%, #f8f8ff 100%);
         border-radius: 20px;
-        border: 0;
         cursor: pointer;
+        transform-style: preserve-3d;
+        transition: all 0.4s var(--ease-elastic);
+        box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        border: 3px solid rgba(255, 255, 255, 0.5);
         overflow: hidden;
-        color: #fff;
-        background: linear-gradient(135deg, #8B7FE8, #FF74C8); /* default gradient */
-        box-shadow: 0 18px 40px rgba(20, 12, 62, 0.30);
-        transition: transform 0.35s var(--ease-elastic), box-shadow 0.35s var(--ease-elastic), outline-color 0.25s ease;
-        isolation: isolate;
-        z-index: 10; /* ensure clickable over backgrounds */
     }
 
-    /* Per-card gradient accents using data-test-id */
-    .test-card[data-test-id="SPIRIT_ANIMAL"] { background: linear-gradient(135deg, #7B5CFF, #FF64B4); }
-    .test-card[data-test-id="COGNITIVE_RADAR"] { background: linear-gradient(135deg, #3A8DFF, #28E7FF); }
-    .test-card[data-test-id="FOCUS_STAMINA"] { background: linear-gradient(135deg, #00C2A8, #6DFF8C); }
-    .test-card[data-test-id="GUESSWORK_QUOTIENT"] { background: linear-gradient(135deg, #FF8A3D, #FFD24A); }
-    .test-card[data-test-id="CURIOSITY_COMPASS"] { background: linear-gradient(135deg, #5C8EFF, #60F3EB); }
-    .test-card[data-test-id="MODALITY_MAP"] { background: linear-gradient(135deg, #7E5BFF, #FF86E6); }
-    .test-card[data-test-id="CHALLENGE_DRIVER"] { background: linear-gradient(135deg, #FF7043, #FFD54F); }
-    .test-card[data-test-id="WORK_MODE"] { background: linear-gradient(135deg, #00BFA6, #76FF03); }
-    .test-card[data-test-id="PATTERN_SNAPSHOT"] { background: linear-gradient(135deg, #5E35B1, #00E5FF); }
-
+    /* Holographic Foil Effect */
     .test-card::before {
         content: '';
         position: absolute;
         inset: 0;
-        background: radial-gradient(1200px 400px at 80% 30%, rgba(255,255,255,0.18), transparent 50%),
-                    radial-gradient(800px 300px at 20% 120%, rgba(255,255,255,0.12), transparent 60%);
+        background: linear-gradient(
+                125deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.4) 20%,
+                transparent 40%,
+                rgba(139, 127, 232, 0.2) 60%,
+                transparent 80%
+        );
+        opacity: 0;
+        transition: opacity 0.4s ease;
         pointer-events: none;
-        mix-blend-mode: soft-light;
-        opacity: 0.9;
-        z-index: 0;
+        z-index: 5;
     }
 
-    .test-card:hover {
-        transform: translateY(-6px) scale(1.02);
-        box-shadow: 0 26px 60px rgba(20, 12, 62, 0.40);
+    .test-card:hover::before {
+        opacity: 1;
+        animation: shimmer 2s linear infinite;
     }
 
-    .test-card:active {
-        transform: translateY(0) scale(0.98);
-        box-shadow: 0 12px 28px rgba(20, 12, 62, 0.30);
+    @keyframes shimmer {
+        0% {
+            transform: translateX(-100%) rotate(45deg);
+        }
+        100% {
+            transform: translateX(200%) rotate(45deg);
+        }
     }
 
-    .test-card.selected {
-        outline: 3px solid rgba(255, 255, 255, 0.75);
-        transform: translateY(-2px) scale(1.015);
-        box-shadow: 0 32px 70px rgba(20, 12, 62, 0.45);
-    }
-
-    /* Internal placement in portrait grid */
-    .test-card h3, .test-card p { color: #fff; grid-row: 3; grid-column: 1; z-index: 1; text-align: center; }
-    .test-start-btn { grid-row: 3; grid-column: 1; justify-self: center; }
-
-    .test-icon {
-        grid-row: 1;
-        grid-column: 1;
-        font-size: 5rem;
-        line-height: 1;
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
-        transform: none;
-        filter: drop-shadow(0 10px 22px rgba(0,0,0,0.25));
-        z-index: 1;
-        margin: 0;
-        pointer-events: none;
-    }
-
-    /* Divider band between hero and text */
+    /* Card Border Glow */
     .test-card::after {
         content: '';
         position: absolute;
-        left: -10%;
-        right: -10%;
-        top: 55%;
-        height: 56px;
-        transform: translateY(-50%);
-        background: linear-gradient(90deg, rgba(255,255,255,0.22), rgba(255,255,255,0.10));
-        opacity: 0.35;
-        filter: blur(6px);
-        border-radius: 100px;
-        z-index: 0;
+        inset: -3px;
+        background: linear-gradient(45deg,
+        #FF6B9D, #C239B3, #8B7FE8, #5FE3D0,
+        #FFE17B, #FF9AB8, #C239B3, #8B7FE8
+        );
+        border-radius: 20px;
+        opacity: 0;
+        z-index: -1;
+        transition: opacity 0.3s ease;
+        filter: blur(10px);
+        animation: rotate-gradient 3s linear infinite;
+        background-size: 200% 200%;
+    }
+
+    @keyframes rotate-gradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .test-card:hover::after {
+        opacity: 0.6;
+    }
+
+    .test-card:hover {
+        transform: translateY(-15px) scale(1.05) rotateX(5deg);
+        box-shadow:
+                0 25px 60px rgba(139, 127, 232, 0.4),
+                0 0 40px rgba(139, 127, 232, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 1);
+    }
+
+    .test-card:active {
+        transform: translateY(-10px) scale(1.02);
+    }
+
+    /* Selected State - Epic Glow */
+    .test-card.selected {
+        transform: translateY(-20px) scale(1.08);
+        border-color: #8B7FE8;
+        box-shadow:
+                0 30px 70px rgba(139, 127, 232, 0.6),
+                0 0 60px rgba(139, 127, 232, 0.5),
+                inset 0 0 30px rgba(139, 127, 232, 0.2);
+        animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+        0%, 100% {
+            box-shadow:
+                    0 30px 70px rgba(139, 127, 232, 0.6),
+                    0 0 60px rgba(139, 127, 232, 0.5),
+                    inset 0 0 30px rgba(139, 127, 232, 0.2);
+        }
+        50% {
+            box-shadow:
+                    0 35px 80px rgba(139, 127, 232, 0.8),
+                    0 0 80px rgba(139, 127, 232, 0.7),
+                    inset 0 0 40px rgba(139, 127, 232, 0.3);
+        }
+    }
+
+
+    /* Icon with floating animation */
+    .test-icon {
+        font-size: 4.5rem;
+        filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+        animation: float-icon 3s ease-in-out infinite;
+        position: relative;
+        z-index: 3;
+        line-height: 1;
+        display: block;
+    }
+
+    @keyframes float-icon {
+        0%, 100% { transform: translateY(0px) rotate(-5deg); }
+        50% { transform: translateY(-10px) rotate(5deg); }
+    }
+
+    .test-card:hover .test-icon {
+        animation: bounce-icon 0.6s ease-in-out infinite;
+    }
+
+    @keyframes bounce-icon {
+        0%, 100% { transform: translateY(0px) scale(1); }
+        50% { transform: translateY(-15px) scale(1.1); }
     }
 
     .test-start-btn {
-        margin-top: 16px;
-        padding: 14px 22px;
-        background: #FFD24A;
-        color: #3a2e6e;
-        border: 0;
-        border-radius: 999px;
-        font-weight: 900;
-        font-size: 0.95rem;
-        cursor: pointer;
-        transition: transform 0.15s var(--ease-smooth), filter 0.2s ease, background 0.2s ease;
-        font-family: inherit;
-        width: fit-content;
-        display: none;
-        box-shadow: 0 8px 0 rgba(180, 134, 0, 0.55), 0 14px 30px rgba(0,0,0,0.25);
-        text-transform: none;
-        letter-spacing: 0.2px;
+        display: none; /* Hidden by default, shown when selected */
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 14px 28px;
+        margin-top: 10px;
         position: relative;
-        z-index: 1;
+        z-index: 10;
+
+        /* Shape & Border */
+        border-radius: 25px;
+        border: 4px solid rgba(255, 255, 255, 0.5);
+
+        /* Color & Gradient */
+        background: linear-gradient(135deg, #5FE3D0 0%, #7FDBDA 50%, #A0E7E5 100%);
+        color: #2D2A45;
+
+        /* Typography */
+        font-family: inherit;
+        font-weight: 800;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+        text-decoration: none;
+
+        /* 3D Shadows */
+        box-shadow:
+                0 6px 0 #3ABFA8,
+                0 12px 24px rgba(95, 227, 208, 0.4),
+                inset 0 2px 0 rgba(255, 255, 255, 0.4);
+
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        overflow: hidden;
+    }
+
+    /* Selected State - Reveal Animation */
+    .test-card.selected .test-start-btn {
+        display: inline-flex;
+        animation: pop-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes pop-in {
+        0% {
+            opacity: 0;
+            transform: scale(0.5) translateY(20px);
+        }
+        70% {
+            transform: scale(1.1) translateY(-5px);
+        }
+        100% {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
+
+    /* Hover State - Lift Up */
+    .test-start-btn:hover {
+        transform: translateY(-4px) scale(1.02);
+        filter: brightness(1.02);
+        box-shadow:
+                0 10px 0 #3ABFA8,
+                0 16px 32px rgba(95, 227, 208, 0.5),
+                inset 0 2px 0 rgba(255, 255, 255, 0.6);
+    }
+
+    /* Active State - Press Down */
+    .test-start-btn:active {
+        transform: translateY(2px) scale(0.98);
+        box-shadow:
+                0 2px 0 #3ABFA8,
+                0 6px 12px rgba(95, 227, 208, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
     }
 
     .test-start-btn:hover { transform: translateY(-2px); filter: brightness(0.97); }
@@ -610,26 +713,93 @@
 
 
     .test-card h3 {
-        font-weight: 900;
-        color: rgba(255, 255, 255, 0.98);
-        margin: 10px 8px 6px 8px;
-        font-size: 1.45rem;
-        letter-spacing: -0.02em;
-        line-height: 1.2;
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: var(--text-dark);
         text-align: center;
+        margin-bottom: 10px;
+        line-height: 1.2;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
 
     .test-card p {
-        color: rgba(255, 255, 255, 0.9);
-        font-weight: 600;
-        line-height: 1.6;
-        margin: 0 10px 8px 10px;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
+        color: var(--text-grey);
         text-align: center;
+        line-height: 1.5;
+        margin-bottom: 10px;
     }
 
-    /* Force inline-styled meta line to be light on gradients */
-    .test-card p[style] { color: rgba(255, 255, 255, 0.9) !important; }
+    .test-card p:last-of-type {
+        font-size: 0.85rem;
+        color: #A0A0B0;
+        font-weight: 600;
+        text-align: center;
+        padding: 8px 16px;
+        background: rgba(139, 127, 232, 0.1);
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        margin-top: 10px;
+    }
+
+    /* Card Header - Color Band */
+    .card-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 120px;
+        background: linear-gradient(135deg, #8B7FE8 0%, #C239B3 100%);
+        clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+    }
+
+    /* Different colors for each card type */
+    .test-card[data-test-id="SPIRIT_ANIMAL"] .card-header {
+        background: linear-gradient(135deg, #7B5CFF 0%, #FF64B4 100%);
+    }
+    .test-card[data-test-id="CHALLENGE_DRIVER"] .card-header {
+        background: linear-gradient(135deg, #FF7043 0%, #FFD54F 100%);
+    }
+    .test-card[data-test-id="COGNITIVE_RADAR"] .card-header {
+        background: linear-gradient(135deg, #3A8DFF 0%, #28E7FF 100%);
+    }
+    .test-card[data-test-id="CURIOSITY_COMPASS"] .card-header {
+        background: linear-gradient(135deg, #5C8EFF 0%, #60F3EB 100%);
+    }
+    .test-card[data-test-id="FOCUS_STAMINA"] .card-header {
+        background: linear-gradient(135deg, #00C2A8 0%, #6DFF8C 100%);
+    }
+    .test-card[data-test-id="GUESSWORK_QUOTIENT"] .card-header {
+        background: linear-gradient(135deg, #FF8A3D 0%, #FFD24A 100%);
+    }
+    .test-card[data-test-id="MODALITY_MAP"] .card-header {
+        background: linear-gradient(135deg, #7E5BFF 0%, #FF86E6 100%);
+    }
+    .test-card[data-test-id="WORK_MODE"] .card-header {
+        background: linear-gradient(135deg, #00BFA6 0%, #76FF03 100%);
+    }
+    .test-card[data-test-id="PATTERN_SNAPSHOT"] .card-header {
+        background: linear-gradient(135deg, #5E35B1 0%, #00E5FF 100%);
+    }
+
+    /* Card Body */
+    .card-body {
+        position: absolute;
+        top: 110px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 1;
+    }
 
     /* --- GAME MOMENT CONTAINER (NOT A QUESTION) --- */
     .question-container {
@@ -939,6 +1109,7 @@
         .test-grid {
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
+            max-width: 100%;
         }
 
         .options-container {
@@ -1065,38 +1236,38 @@
 
         .test-grid {
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            gap: 16px;
+            padding: 0 12px;
+        }
+        .card-header {
+            height: 100px;
+        }
+
+        .card-body {
+            top: 90px;
+            padding: 16px;
         }
 
         .test-card {
-            padding: 14px 12px 16px 12px;
-            border-radius: 20px;
-            border-width: 0;
-            min-height: 220px;
-            grid-template-columns: 1fr;
-            grid-template-rows: 1fr 40px auto;
-            align-items: end;
-            padding-right: 12px;
+            padding: 20px 16px;
+            border-radius: 16px;
+            min-height: 240px;
+        }
+
+        .test-card:hover {
+            transform: translateY(-10px) scale(1.03);
         }
 
         .test-icon {
-            position: static;
-            font-size: 3rem;
-            margin: 0;
-            transform: none;
-            justify-content: center;
+            font-size: 3.5rem;
         }
 
         .test-card h3 {
-            font-size: 0.95rem;
-            margin-bottom: 6px;
-            line-height: 1.25;
+            font-size: 1.1rem;
         }
 
         .test-card p {
             font-size: 0.85rem;
-            margin-bottom: 6px;
-            line-height: 1.5;
         }
 
         .test-card p:last-of-type {
@@ -1258,24 +1429,22 @@
         .test-grid {
             grid-template-columns: repeat(2, 1fr);
             gap: 10px;
+            padding: 0 10px;
         }
 
         .test-card {
-            padding: 12px 10px 14px 10px;
-            border-radius: 18px;
-            min-height: 200px;
-            grid-template-columns: 1fr;
-            grid-template-rows: 1fr 36px auto;
-            align-items: end;
-            padding-right: 10px;
+            padding: 16px 12px;
+            border-radius: 14px;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .test-icon {
-            position: static;
-            font-size: 2.6rem;
-            margin: 0;
-            transform: none;
-            justify-content: center;
+            font-size: 3rem;
+            margin-bottom: 10px;
         }
 
         .test-card h3 {
@@ -1482,6 +1651,133 @@
         .star-decorations, .test-card { transition: none !important; transform: none !important; }
         .test-card:hover { transform: none !important; }
     }
+    .sparkle {
+        position: absolute;
+        font-size: 1.5rem;
+        opacity: 0;
+        animation: sparkle 3s ease-in-out infinite;
+    }
+
+    .sparkle-1 { top: 15%; left: 25%; animation-delay: 0s; }
+    .sparkle-2 { top: 45%; right: 20%; animation-delay: 1s; }
+    .sparkle-3 { bottom: 30%; left: 35%; animation-delay: 2s; }
+    .sparkle-4 { top: 70%; right: 30%; animation-delay: 1.5s; }
+
+    @keyframes sparkle {
+        0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+        50% { opacity: 0.3; transform: scale(1) rotate(180deg); }
+    }
+    @media (min-width: 1024px) {
+        .test-icon {
+            font-size: 5.5rem;
+        }
+
+        .test-card h3 {
+            font-size: 1.5rem;
+        }
+
+        .test-card p {
+            font-size: 1rem;
+        }
+    }
+    @media (max-width: 768px) {
+        .test-grid {
+            grid-template-columns: repeat(2, minmax(160px, 1fr));
+            gap: 14px;
+            padding: 0 12px;
+        }
+
+        .test-card {
+            min-height: 240px;
+            padding: 14px 12px;
+            border-radius: 16px;
+        }
+
+        .card-body {
+            justify-content: flex-start;
+            gap: 10px;
+        }
+
+        .test-icon {
+            font-size: 2.6rem;
+        }
+
+        .test-card h3 {
+            font-size: 1rem;
+            line-height: 1.2;
+        }
+
+        .test-card p {
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+    }
+    /* --- MOBILE LAYOUT FIX --- */
+    @media (max-width: 768px) {
+        /* 1. Make the card a Flex container so it grows vertically */
+        .test-card {
+            display: flex !important;
+            flex-direction: column !important;
+            height: auto !important; /* Auto height to fit content */
+            min-height: 240px;
+            padding: 0 !important;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        /* 2. Header sits naturally at the top */
+        .card-header {
+            position: relative !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100px !important;
+            flex-shrink: 0; /* Prevent header from shrinking */
+            border-radius: 16px 16px 0 0;
+        }
+
+        /* 3. Body sits naturally below header (No absolute positioning) */
+        .card-body {
+            position: relative !important;
+            top: auto !important;
+            bottom: auto !important;
+            left: auto !important;
+            right: auto !important;
+            padding: 15px 20px 20px 20px !important;
+            height: auto !important;
+
+            /* Flex setup to center content */
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center;
+
+            /* Pull body up slightly to tuck under the angled header (optional) */
+            margin-top: -15px;
+            background: transparent;
+            z-index: 5;
+        }
+
+        /* 4. Button is HIDDEN by default */
+        .test-start-btn {
+            display: none;
+            width: 100% !important;
+            margin-top: 15px;
+            padding: 12px;
+            animation: none; /* Reset desktop animations */
+        }
+
+        /* 5. Button appears ONLY when card has 'selected' class */
+        .test-card.selected .test-start-btn {
+            display: block !important; /* Make it take up space */
+            animation: expandIn 0.3s ease-out forwards;
+        }
+
+        /* Simple animation for the button appearing */
+        @keyframes expandIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    }
+
     </style>
 </head>
 <body>
@@ -1507,6 +1803,11 @@
         <span class="star star-7">⭐</span>
         <span class="star star-8">✨</span>
     </div>
+    <!-- In the HTML body, after existing decorations -->
+    <div class="sparkle sparkle-1">✨</div>
+    <div class="sparkle sparkle-2">⭐</div>
+    <div class="sparkle sparkle-3">💫</div>
+    <div class="sparkle sparkle-4">✨</div>
 
     <!-- Layer 3: Floating Educational Icons -->
     <div class="floating-icons">
@@ -1787,34 +2088,40 @@
             'PATTERN_SNAPSHOT': '🧩'
         };
 
-        // Render tests in grid
         function renderTests() {
             const testGrid = document.getElementById('testGrid');
             testGrid.innerHTML = allTests.map(test => {
                 const emoji = testEmojis[test.testId] || '📝';
                 return '<div class="test-card" data-test-id="' + test.testId + '" onclick="selectTest(\'' + test.testId + '\')">' +
+                    '<div class="card-header">' +
                     '<div class="test-icon">' + emoji + '</div>' +
+                    '</div>' +
+                    '<div class="card-body">' +
                     '<h3>' + test.testName + '</h3>' +
-                    '<p>' + (test.description || '') + '</p>' +
-                    '<p style="font-size: 0.9rem; color: #999; margin-bottom: 0;">' +
-                        test.questionCount + ' questions • ' + test.estimatedMinutes + ' min' +
+                    '<p style="color: #7B7896; flex-grow: 1; display: flex; align-items: center;">' + (test.description || '') + '</p>' +
+                    '<p style="font-size: 0.85rem; color: #A0A0B0; margin-top: 10px;">' +
+                    test.questionCount + ' questions • ' + test.estimatedMinutes + ' min' +
                     '</p>' +
                     '<button class="test-start-btn" onclick="event.stopPropagation(); startTest()">Start Game →</button>' +
-                '</div>';
+                    '</div>' +
+                    '</div>';
             }).join('');
         }
-
         // Select a test
         function selectTest(testId) {
             const testCards = document.querySelectorAll('.test-card');
             testCards.forEach(card => card.classList.remove('selected'));
 
             const selectedCard = document.querySelector('[data-test-id="' + testId + '"]');
-            selectedCard.classList.add('selected');
+            if (selectedCard) {
+                selectedCard.classList.add('selected');
+            }
 
             selectedTest = allTests.find(t => t.testId === testId);
-        }
 
+            // Save state when test is selected
+            savePageState();
+        }
         // Start the test
         async function startTest() {
             try {
@@ -2071,6 +2378,32 @@
                 document.getElementById('questionContainer').classList.remove('hidden');
                 updateProgress(66, 'Question ' + (currentQuestionIndex + 1) + ' of ' + questions.length);
             }
+        }
+        // Add 3D parallax effect on mouse move (desktop only)
+        if (window.innerWidth > 768) {
+            document.addEventListener('DOMContentLoaded', function() {
+                setTimeout(function() {
+                    document.querySelectorAll('.test-card').forEach(card => {
+                        card.addEventListener('mousemove', (e) => {
+                            const rect = card.getBoundingClientRect();
+                            const x = e.clientX - rect.left;
+                            const y = e.clientY - rect.top;
+
+                            const centerX = rect.width / 2;
+                            const centerY = rect.height / 2;
+
+                            const rotateX = (y - centerY) / 10;
+                            const rotateY = (centerX - x) / 10;
+
+                            card.style.transform = `translateY(-15px) scale(1.05) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                        });
+
+                        card.addEventListener('mouseleave', () => {
+                            card.style.transform = '';
+                        });
+                    });
+                }, 100);
+            });
         }
     </script>
 </body>
