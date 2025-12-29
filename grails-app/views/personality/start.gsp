@@ -1778,6 +1778,81 @@
         }
     }
 
+    /* Featured full-width card wrapper (uses existing card styles) */
+    .featured-container .test-card {
+        grid-column: 1 / -1;
+        width: 100%;
+        min-height: 420px;
+    }
+
+    .featured-badges {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 6;
+        pointer-events: none;
+        padding: 0 6px;
+    }
+
+    .badge-subtle {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 14px;
+        font-size: 0.8rem;
+        font-weight: 800;
+        color: var(--text-dark);
+        background: rgba(255,255,255,0.6);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        pointer-events: auto; /* allow clicks through container if needed */
+    }
+
+    .live-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        border-radius: 14px;
+        font-size: 0.8rem;
+        font-weight: 800;
+        color: var(--text-dark);
+        background: rgba(255,255,255,0.6);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+    }
+
+    .live-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--pop-green);
+        box-shadow: 0 0 0 2px rgba(88,204,2,0.25);
+        display: inline-block;
+    }
+
+    .player-count {
+        margin-top: 8px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--text-grey);
+        text-align: center;
+    }
+
+    @media (max-width: 768px) {
+        .featured-container { padding: 0 12px !important; }
+        .featured-container .test-card { min-height: 260px; }
+        .featured-badges { top: 6px; left: 6px; right: 6px; }
+        .badge-subtle, .live-indicator { font-size: 0.72rem; padding: 5px 8px; }
+        .player-count { font-size: 0.8rem; }
+    }
     </style>
 </head>
 <body>
@@ -1853,6 +1928,8 @@
             <div id="testSelection" class="step-container">
                 <h2>Choose Your Game 🎮</h2>
                 <p>Pick a game to learn more about yourself:</p>
+                <!-- Featured card container -->
+                <div id="featuredContainer" class="featured-container" style="margin: 0 auto 24px auto; width: 100%; max-width: 1400px; padding: 0 40px; display:none;"></div>
                 <div id="testGrid" class="test-grid">
                     <!-- Tests will be loaded here -->
                 </div>
@@ -1956,6 +2033,9 @@
         let sessionId = null;
         let autoAdvanceTimer = null;
 
+        // Featured game key (can be changed later easily)
+        const featuredGame = 'SPIRIT_ANIMAL';
+
         // Fallback tests to show if API is unavailable or returns no data
         const defaultTests = [
             {
@@ -1965,7 +2045,15 @@
                 description: 'Quick mindset snapshot to find your spirit animal profile.',
                 questionCount: 12,
                 estimatedMinutes: 3
-            }
+            },
+            { testId: 'COGNITIVE_RADAR', testName: 'Cognitive Radar', testType: 'DIAGNOSTIC', description: 'See how you scan and process information.', questionCount: 10, estimatedMinutes: 3 },
+            { testId: 'FOCUS_STAMINA', testName: 'Focus Stamina', testType: 'DIAGNOSTIC', description: 'Measure attention bursts over time.', questionCount: 8, estimatedMinutes: 2 },
+            { testId: 'GUESSWORK_QUOTIENT', testName: 'Guesswork Quotient', testType: 'DIAGNOSTIC', description: 'Gut vs. data decisions under pressure.', questionCount: 9, estimatedMinutes: 3 },
+            { testId: 'CURIOSITY_COMPASS', testName: 'Curiosity Compass', testType: 'DIAGNOSTIC', description: 'Where your curiosity naturally leads.', questionCount: 7, estimatedMinutes: 2 },
+            { testId: 'MODALITY_MAP', testName: 'Modality Map', testType: 'DIAGNOSTIC', description: 'Your preferred learning inputs.', questionCount: 6, estimatedMinutes: 2 },
+            { testId: 'CHALLENGE_DRIVER', testName: 'Challenge Driver', testType: 'DIAGNOSTIC', description: 'What pushes you to start and finish.', questionCount: 8, estimatedMinutes: 3 },
+            { testId: 'WORK_MODE', testName: 'Work Mode', testType: 'DIAGNOSTIC', description: 'Solo vs. collaborative tendencies.', questionCount: 6, estimatedMinutes: 2 },
+            { testId: 'PATTERN_SNAPSHOT', testName: 'Pattern Snapshot', testType: 'DIAGNOSTIC', description: 'How you spot patterns quickly.', questionCount: 7, estimatedMinutes: 2 }
         ];
 
         // Save page state to localStorage
@@ -2049,6 +2137,9 @@
             loadTests();
             // Initialize progress bar with game language
             updateProgress(0, 'Choose Your Game');
+
+            // Initialize fake live player count animation
+            initLivePlayers();
         });
 
         // Load all diagnostic tests
@@ -2065,14 +2156,19 @@
                 allTests = defaultTests;
             }
 
-            // Sort tests to put SPIRIT_ANIMAL first
-            allTests.sort((a, b) => {
-                if (a.testId === 'SPIRIT_ANIMAL') return -1;
-                if (b.testId === 'SPIRIT_ANIMAL') return 1;
-                return 0;
-            });
+            // Ensure featured game exists in list; if not add fallback
+            const hasFeatured = allTests.some(t => t.testId === featuredGame);
+            if (!hasFeatured) {
+                const fallback = defaultTests.find(t => t.testId === featuredGame);
+                if (fallback) allTests.unshift(fallback);
+            }
 
-            renderTests();
+            // Non-destructive order for non-featured; remove featured for grid
+            const featured = allTests.find(t => t.testId === featuredGame);
+            const rest = allTests.filter(t => t.testId !== featuredGame);
+
+            renderFeatured(featured);
+            renderTests(rest);
         }
 
         // Test emoji mapping - using specific icons for each game
@@ -2088,9 +2184,34 @@
             'PATTERN_SNAPSHOT': '🧩'
         };
 
-        function renderTests() {
+        function renderFeatured(test) {
+            const container = document.getElementById('featuredContainer');
+            if (!test || !container) { container.style.display = 'none'; return; }
+            const emoji = testEmojis[test.testId] || '📝';
+            container.style.display = 'block';
+            container.innerHTML = (
+                '<div class="test-card" data-test-id="' + test.testId + '" onclick="selectTest(\'' + test.testId + '\')">' +
+                    '<div class="featured-badges">' +
+                        '<span class="badge-subtle">🔥 Most Played</span>' +
+                        '<span class="live-indicator"><span class="live-dot"></span> Live now</span>' +
+                    '</div>' +
+                    '<div class="card-header">' +
+                        '<div class="test-icon">' + emoji + '</div>' +
+                    '</div>' +
+                    '<div class="card-body">' +
+                        '<h3>' + test.testName + '</h3>' +
+                        '<p style="color: #7B7896; flex-grow: 1; display: flex; align-items: center; text-align:center;">' + (test.description || '') + '</p>' +
+                        '<p class="player-count" id="livePlayerCount">👥 1,237 players playing right now</p>' +
+                        '<button class="test-start-btn" onclick="event.stopPropagation(); startTest()">Start Game →</button>' +
+                    '</div>' +
+                '</div>'
+            );
+        }
+
+        function renderTests(tests) {
             const testGrid = document.getElementById('testGrid');
-            testGrid.innerHTML = allTests.map(test => {
+            const list = Array.isArray(tests) ? tests : allTests;
+            testGrid.innerHTML = list.map(test => {
                 const emoji = testEmojis[test.testId] || '📝';
                 return '<div class="test-card" data-test-id="' + test.testId + '" onclick="selectTest(\'' + test.testId + '\')">' +
                     '<div class="card-header">' +
@@ -2379,6 +2500,27 @@
                 updateProgress(66, 'Question ' + (currentQuestionIndex + 1) + ' of ' + questions.length);
             }
         }
+        function initLivePlayers() {
+            const elId = 'livePlayerCount';
+            let base = 1237; // starting near mid-range
+            const min = 1000;
+            const maxDelta = 20;
+            const minDelta = 5;
+            function tick() {
+                const el = document.getElementById(elId);
+                if (!el) return; // not on selection screen
+                // Randomly go up or down without big jumps
+                const sign = Math.random() < 0.55 ? 1 : -1;
+                const delta = Math.floor(Math.random() * (maxDelta - minDelta + 1)) + minDelta;
+                base = Math.max(min, base + sign * delta);
+                el.textContent = '👥 ' + base.toLocaleString() + ' players playing right now';
+            }
+            // Vary interval a bit for realism
+            setInterval(tick, 2500 + Math.floor(Math.random() * 1500));
+            // Initial
+            setTimeout(tick, 600);
+        }
+
         // Add 3D parallax effect on mouse move (desktop only)
         if (window.innerWidth > 768) {
             document.addEventListener('DOMContentLoaded', function() {
