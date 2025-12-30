@@ -708,7 +708,6 @@
     </section>
 
 </div>
-</body>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const observerOptions = {
@@ -783,4 +782,5 @@
         }
     });
 </script>
+</body>
 </html>
