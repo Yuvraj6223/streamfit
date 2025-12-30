@@ -72,9 +72,27 @@
         color: var(--text-dark);
         margin: 0;
         padding: 0;
-        min-height: 100vh;
+        background: transparent !important;
+        background-color: transparent !important;
+        min-height: 100svh;
         overflow-x: hidden;
         -webkit-font-smoothing: antialiased;
+    }
+
+    html {
+        background: transparent !important;
+        background-color: transparent !important;
+    }
+
+    .test-page,
+    .mobile-container,
+    .step-container,
+    .question-container,
+    .game-play-area,
+    .game-action-zone,
+    .game-choice-zone {
+        background: transparent !important;
+        background-color: transparent !important;
     }
 
     /* Prevent scrolling on mobile when in game mode */
@@ -350,13 +368,14 @@
         padding: 0;
         position: relative;
         z-index: 10; /* content above global background */
-        min-height: 100vh;
+        min-height: 100svh;
         display: flex;
         align-items: stretch;
         justify-content: center;
         overflow-x: hidden;
         overflow-y: auto;
-        padding-bottom: 80px; /* safe bottom spacing for gestures */
+        padding-top: max(env(safe-area-inset-top), clamp(12px, 2.4svh, 22px));
+        padding-bottom: calc(max(env(safe-area-inset-bottom), 0px) + clamp(14px, 2.8svh, 28px));
         background: transparent; /* remove any white background */
     }
 
@@ -377,6 +396,7 @@
         display: flex;
         flex-direction: column;
         z-index: 10; /* ensure above backgrounds for clickability */
+        min-height: 100svh;
     }
 
     .mobile-container::before {
@@ -413,7 +433,7 @@
         flex-direction: column;
         position: relative;
         z-index: 20; /* ensure above background layers */
-        padding: 40px 20px 0 20px; /* add breathable top gap under navbar */
+        padding: clamp(16px, 3.5svh, 32px) 20px 0 20px; /* responsive top gap under navbar */
         flex: 1;
         overflow-y: auto;
         min-height: 0;
@@ -808,12 +828,365 @@
         transition: all 0.5s var(--ease-smooth);
         padding: 0 20px 0 20px;
         flex: 1;
-        overflow-y: hidden;
+        min-height: 100svh;
+        overflow: hidden;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         gap: 0;
+    }
+
+    /* Split-screen layout: fixed game zone + flexible scrollable options zone */
+    .game-play-area {
+        flex: 1 1 auto;
         min-height: 0;
+        display: flex;
+        flex-direction: column;
+        --zone-gap: clamp(10px, 2.0svh, 18px);
+        --options-gap: clamp(10px, 1.6svh, 16px);
+    }
+
+    .game-play-area.few-options {
+        --zone-gap: clamp(14px, 2.4svh, 26px);
+        --options-gap: clamp(14px, 2.2svh, 22px);
+    }
+
+    .game-play-area.many-options {
+        --zone-gap: clamp(8px, 1.4svh, 14px);
+        --options-gap: clamp(8px, 1.2svh, 12px);
+    }
+
+    .game-fixed-zone {
+        flex: 0 0 auto;
+        min-height: 0;
+        max-height: clamp(260px, 55svh, 560px);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding: clamp(10px, 2.2svh, 22px) 0;
+        overflow: hidden;
+    }
+
+    .game-options-zone {
+        flex: 1 1 auto;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: var(--zone-gap);
+        padding-top: var(--zone-gap);
+        padding-bottom: max(env(safe-area-inset-bottom), 0px);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+
+    /* --- COMPACT MODE (SMALL VIEWPORT HEIGHT) --- */
+    @media (max-height: 700px) {
+        /* CRITICAL SMALL SCREEN FIX - 2x2 GRID FOR 4 OPTIONS */
+        @supports selector(:has(*)) {
+            /* Exactly 4 options on short screens: 2×2 grid for readability */
+            .options-container:has(.option:nth-child(4)):not(:has(.option:nth-child(5))) {
+                display: grid !important;
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                grid-auto-rows: auto !important;
+                column-gap: clamp(8px, 2.0vw, 12px) !important;
+                row-gap: clamp(8px, 2.0vw, 12px) !important;
+                align-items: stretch !important;
+                padding: 0 clamp(8px, 2.6vw, 14px) !important;
+            }
+
+            .options-container:has(.option:nth-child(4)):not(:has(.option:nth-child(5))) .option {
+                padding: clamp(12px, 1.8svh, 16px) clamp(10px, 3.0vw, 14px) !important;
+                min-height: 48px !important;
+                font-size: clamp(0.95rem, 3.2vw, 1.1rem) !important;
+                align-items: center !important;
+                gap: 10px !important;
+                text-align: left !important;
+                word-break: normal !important;
+                overflow-wrap: normal !important;
+                hyphens: auto !important;
+                display: flex !important;
+                justify-content: flex-start !important;
+                flex-direction: row !important;
+            }
+
+            /* ONE EMOJI ONLY - Proper size for readability */
+            .options-container:has(.option:nth-child(4)):not(:has(.option:nth-child(5))) .option-icon {
+                width: 36px !important;
+                height: 36px !important;
+                border-radius: 14px !important;
+                font-size: 1.1rem !important;
+                opacity: 0.8 !important;
+                box-shadow: 0 6px 16px rgba(139, 127, 232, 0.08) !important;
+                flex-shrink: 0 !important;
+                margin: 0 !important;
+            }
+
+            /* READABLE TEXT - Multi-line if needed */
+            .options-container:has(.option:nth-child(4)):not(:has(.option:nth-child(5))) .option-label {
+                white-space: normal !important;
+                word-break: normal !important;
+                overflow-wrap: normal !important;
+                line-height: 1.2 !important;
+                display: -webkit-box !important;
+                -webkit-box-orient: vertical !important;
+                -webkit-line-clamp: 2 !important;
+                overflow: hidden !important;
+                flex-grow: 1 !important;
+                min-width: 0 !important;
+                font-size: clamp(0.9rem, 3.0vw, 1.05rem) !important;
+                font-weight: 700 !important;
+                text-align: left !important;
+            }
+
+            /* HIDE SECONDARY TEXT - "Tap to lock in" */
+            .options-container:has(.option:nth-child(4)):not(:has(.option:nth-child(5))) .option-sub {
+                display: none !important;
+            }
+
+            .options-container:has(.option:nth-child(4)):not(:has(.option:nth-child(5))) .option-copy {
+                min-width: 0 !important;
+                flex-grow: 1 !important;
+                display: flex !important;
+                align-items: center !important;
+                overflow: hidden !important;
+                flex-direction: row !important;
+            }
+
+            /* For 5+ options: Horizontal scroll with readable sizing */
+            .options-container:has(.option:nth-child(5)) {
+                display: flex !important;
+                flex-direction: row !important;
+                gap: clamp(6px, 1.5vw, 10px) !important;
+                padding: 0 clamp(8px, 2.6vw, 14px) !important;
+                align-items: stretch !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch !important;
+            }
+
+            .options-container:has(.option:nth-child(5)) .option {
+                flex: 0 0 auto !important;
+                min-width: clamp(90px, 24vw, 110px) !important;
+                max-width: clamp(120px, 32vw, 140px) !important;
+                padding: clamp(10px, 1.5svh, 14px) clamp(8px, 2.0vw, 12px) !important;
+                min-height: 48px !important;
+                font-size: clamp(0.85rem, 2.8vw, 0.95rem) !important;
+                align-items: center !important;
+                gap: 6px !important;
+                text-align: center !important;
+                display: flex !important;
+                justify-content: center !important;
+                flex-direction: column !important;
+            }
+
+            .options-container:has(.option:nth-child(5)) .option-icon {
+                width: 28px !important;
+                height: 28px !important;
+                border-radius: 10px !important;
+                font-size: 0.9rem !important;
+                opacity: 0.8 !important;
+                box-shadow: 0 4px 12px rgba(139, 127, 232, 0.06) !important;
+                flex-shrink: 0 !important;
+                margin: 0 0 3px 0 !important;
+            }
+
+            .options-container:has(.option:nth-child(5)) .option-label {
+                white-space: nowrap !important;
+                line-height: 1.1 !important;
+                display: block !important;
+                overflow: hidden !important;
+                text-overflow: clip !important;
+                font-size: clamp(0.8rem, 2.6vw, 0.9rem) !important;
+                font-weight: 700 !important;
+                text-align: center !important;
+            }
+
+            .options-container:has(.option:nth-child(5)) .option-sub {
+                display: none !important;
+            }
+
+            .options-container:has(.option:nth-child(5)) .option-copy {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                overflow: hidden !important;
+                flex-direction: column !important;
+            }
+        }
+        .game-play-area {
+            --zone-gap: clamp(6px, 1.2svh, 10px);
+            --options-gap: clamp(6px, 1.0svh, 10px);
+        }
+
+        .game-fixed-zone {
+            max-height: clamp(200px, 48svh, 420px);
+            padding: clamp(6px, 1.4svh, 12px) 0;
+        }
+
+        .challenge-card {
+            padding: clamp(12px, 1.8svh, 18px) clamp(12px, 3.6vw, 18px) clamp(10px, 1.4svh, 14px) clamp(12px, 3.6vw, 18px);
+        }
+
+        .challenge-topline {
+            margin-bottom: clamp(6px, 1.0svh, 8px);
+        }
+
+        .challenge-badge {
+            padding: 6px 10px;
+            font-size: 0.7rem;
+        }
+
+        .challenge-hint {
+            font-size: 0.72rem;
+        }
+
+        .question-text {
+            font-size: clamp(1.05rem, 3.4vw, 1.25rem);
+            line-height: 1.22;
+            padding: 0 10px;
+        }
+
+        .countdown-container {
+            min-height: 52px;
+            margin: 0 0 clamp(8px, 1.4svh, 12px) 0;
+        }
+
+        .game-options-zone {
+            padding-top: var(--zone-gap);
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: auto;
+            overscroll-behavior: none;
+        }
+
+        .options-container {
+            gap: var(--options-gap);
+            padding: 0 clamp(8px, 2.6vw, 14px);
+        }
+
+        @supports selector(:has(*)) {
+            /* OLD GRID RULES REMOVED - Using horizontal row layout above */
+        }
+
+        .option {
+            padding: clamp(10px, 1.6svh, 14px) clamp(12px, 3.6vw, 16px);
+            font-size: clamp(0.98rem, 3.2vw, 1.08rem);
+            min-height: 44px;
+            line-height: 1.15;
+        }
+
+        .option-label {
+            font-size: clamp(0.98rem, 3.1vw, 1.05rem);
+            line-height: 1.1;
+        }
+
+        .option-sub {
+            margin-top: 4px;
+            font-size: clamp(0.74rem, 2.6vw, 0.82rem);
+            line-height: 1.1;
+        }
+    }
+
+    @media (max-height: 620px) {
+        .game-play-area {
+            --zone-gap: clamp(5px, 1.0svh, 8px);
+            --options-gap: clamp(5px, 0.9svh, 8px);
+        }
+
+        .game-fixed-zone {
+            max-height: clamp(180px, 44svh, 360px);
+        }
+
+        .question-text {
+            font-size: clamp(1.0rem, 3.2vw, 1.18rem);
+        }
+
+        .option {
+            padding: clamp(9px, 1.4svh, 12px) clamp(12px, 3.6vw, 16px);
+            min-height: 44px;
+        }
+    }
+
+    /* --- VERY SMALL SCREENS: HORIZONTAL BARS FOR 4 OPTIONS --- */
+    @media (max-height: 580px) {
+        @supports selector(:has(*)) {
+            /* Exactly 4 options on very short screens: full-width horizontal bars */
+            .options-container:has(.option:nth-child(4)):not(:has(.option:nth-child(5))) {
+                display: flex;
+                flex-direction: column;
+                gap: var(--options-gap);
+                padding: 0 clamp(8px, 2.6vw, 14px);
+            }
+
+            .options-container:has(.option:nth-child(4)):not(:has(.option:nth-child(5))) .option {
+                padding: clamp(8px, 1.2svh, 10px) clamp(10px, 3.0vw, 14px);
+                min-height: 44px;
+                font-size: clamp(0.95rem, 3.2vw, 1.05rem);
+                align-items: center;
+                gap: 10px;
+                text-align: left;
+                word-break: normal;
+                overflow-wrap: normal;
+                hyphens: auto;
+                width: 100%;
+                flex-shrink: 0;
+            }
+
+            .options-container:has(.option:nth-child(4)):not(:has(.option:nth-child(5))) .option-icon {
+                width: 32px;
+                height: 32px;
+                border-radius: 12px;
+                font-size: 1rem;
+                opacity: 0.7;
+                box-shadow: 0 4px 12px rgba(139, 127, 232, 0.06);
+                flex-shrink: 0;
+            }
+
+            .options-container:has(.option:nth-child(4)):not(:has(.option:nth-child(5))) .option-label {
+                white-space: nowrap;
+                word-break: normal;
+                overflow-wrap: normal;
+                line-height: 1.15;
+                display: block;
+                overflow: visible;
+                flex-grow: 1;
+            }
+
+            .options-container:has(.option:nth-child(4)):not(:has(.option:nth-child(5))) .option-sub {
+                display: none;
+            }
+
+            .options-container:has(.option:nth-child(4)):not(:has(.option:nth-child(5))) .option-copy {
+                min-width: 0;
+                flex-grow: 1;
+            }
+        }
+    }
+
+    .game-action-top-spacer,
+    .game-action-bottom-spacer {
+        flex: 1 1 auto;
+        min-height: clamp(10px, 2.2svh, 22px);
+    }
+
+    .game-action-bottom-spacer {
+        flex: 0.65 1 auto;
+        min-height: clamp(6px, 1.6svh, 16px);
+    }
+
+    /* Game-first play area framing */
+    .game-action-zone {
+        flex: 0 0 auto;
+        min-height: 0;
+        width: 100%;
+    }
+
+    .game-choice-zone {
+        flex: 1 1 auto;
+        min-height: 0;
+        width: 100%;
     }
 
     .question-container.hidden {
@@ -822,7 +1195,7 @@
 
     /* Game Moment Screen - Centered, Short Context */
     .question-text {
-        font-size: clamp(1.8 rem, 5vw, 2.8rem);
+        font-size: clamp(1.8rem, 5vw, 2.8rem);
         font-weight: 900;
         color: var(--text-dark);
         margin: 0 0 30px 0;
@@ -888,10 +1261,10 @@
     .options-container {
         display: flex;
         flex-direction: column;
-        gap: 14px;
-        margin: 0 0 16px 0;
-        opacity: 0;
-        transform: translateY(20px);
+        gap: var(--options-gap, 16px);
+        margin: 0;
+        opacity: 1; /* Always visible by default */
+        transform: translateY(0); /* No transform by default */
         flex: 0 0 auto;
         max-width: 600px;
         margin-left: auto;
@@ -913,6 +1286,12 @@
             opacity: 1;
             transform: translateY(0);
         }
+    }
+
+    /* Fallback: Ensure options are always visible */
+    .options-container:not(.show) {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
     }
 
     /* Action Buttons - NOT answer buttons */
@@ -1022,6 +1401,37 @@
         animation: currentDotPulse 1.5s ease-in-out infinite;
     }
 
+    .progress-dot {
+        position: relative;
+    }
+
+    .progress-dot::after {
+        content: '';
+        position: absolute;
+        inset: -10px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(139, 127, 232, 0.15) 0%, transparent 70%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+    }
+
+    .progress-dot.completed::after {
+        background: radial-gradient(circle, rgba(95, 227, 208, 0.3) 0%, transparent 70%);
+        opacity: 0.9;
+    }
+
+    .progress-dot.current::after {
+        background: radial-gradient(circle, rgba(255, 225, 123, 0.3) 0%, transparent 70%);
+        opacity: 1;
+        animation: dotAura 1.5s ease-in-out infinite;
+    }
+
+    @keyframes dotAura {
+        0%, 100% { transform: scale(0.9); opacity: 0.8; }
+        50% { transform: scale(1.05); opacity: 1; }
+    }
+
     @keyframes currentDotPulse {
         0%, 100% { transform: scale(1.4); opacity: 1; }
         50% { transform: scale(1.6); opacity: 0.8; }
@@ -1029,20 +1439,105 @@
 
     /* --- BIG GAME TITLE AT TOP --- */
     .game-title-top {
+        position: sticky;
+        top: 0;
+        z-index: 30;
         text-align: center;
-        padding: 20px 20px 0 20px;
-        margin: 0 0 40px 0;
-        background: transparent;
-        border-radius: 0;
-        box-shadow: none;
-        backdrop-filter: none;
-        border: none;
+        padding: 10px 14px; /* slightly smaller height */
+        margin: 0 auto 22px auto; /* breathing room below HUD */
+        background: rgba(255, 255, 255, 0.46); /* softer, lighter */
+        border-radius: 22px;
+        box-shadow: var(--shadow-soft);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 2px solid rgba(139, 127, 232, 0.18);
         flex-shrink: 0;
+        max-width: 760px;
+    }
+
+    .hud-row {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 12px;
+        align-items: center;
+        max-width: 680px;
+        margin: 0 auto;
+    }
+
+    .hud-avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 16px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.6) 100%);
+        border: 2px solid rgba(139, 127, 232, 0.18);
+        box-shadow: 0 8px 20px rgba(139, 127, 232, 0.10);
+    }
+
+    .hud-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-width: 0;
+    }
+
+    .hud-topline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .hud-level {
+        font-size: 0.9rem;
+        font-weight: 900;
+        color: var(--text-dark);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        white-space: nowrap;
+    }
+
+    .hud-title {
+        font-size: 0.95rem;
+        font-weight: 900;
+        color: var(--text-dark);
+        text-align: right;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .hud-xp-bar {
+        height: 10px;
+        width: 100%;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.4);
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .hud-xp-fill {
+        height: 100%;
+        width: 35%;
+        background: linear-gradient(90deg, #5FE3D0 0%, #7FDBDA 50%, #A0E7E5 100%);
+        border-radius: 999px;
+        box-shadow: 0 0 20px rgba(95, 227, 208, 0.3);
+        transition: width 0.4s var(--ease-smooth);
+    }
+
+    .hud-xp-sub {
+        font-size: 0.75rem;
+        font-weight: 800;
+        color: var(--text-grey);
+        text-align: left;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
     }
 
     .game-title-emoji {
-        font-size: 6rem;
-        margin-bottom: 16px;
+        font-size: 1.6rem;
+        margin-bottom: 0;
         line-height: 1;
         animation: float-gentle 3s ease-in-out infinite;
     }
@@ -1053,24 +1548,170 @@
     }
 
     .game-title-text {
-        font-size: 4rem;
+        font-size: 1rem;
         font-weight: 900;
-        color: #000000;
+        color: var(--text-dark);
         margin: 0;
         line-height: 1.1;
         font-family: "Plus Jakarta Sans";
     }
 
-    /* --- NAVIGATION ARROWS --- */
-    .navigation-progress-container {
+    .challenge-card {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.6) 100%);
+        border-radius: 26px;
+        border: 3px solid rgba(139, 127, 232, 0.25);
+        box-shadow:
+            0 14px 28px -14px rgba(45, 42, 69, 0.22),
+            0 10px 22px -16px rgba(139, 127, 232, 0.28),
+            inset 0 1px 0 rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: clamp(18px, 2.6svh, 26px) clamp(16px, 4.2vw, 22px) clamp(14px, 2.2svh, 20px) clamp(16px, 4.2vw, 22px);
+        margin: 0 auto 0 auto; /* spacing handled by zones for cleaner rhythm */
+        max-width: 720px;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+        transform: translateZ(0);
+        transition: transform 200ms ease-out, box-shadow 200ms ease-out;
+    }
+
+    .challenge-card:active {
+        transform: translateY(1px) scale(0.995);
+        box-shadow:
+            0 10px 20px -14px rgba(45, 42, 69, 0.2),
+            0 8px 18px -16px rgba(139, 127, 232, 0.26),
+            inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    .challenge-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(139, 127, 232, 0.05) 0%, rgba(95, 227, 208, 0.05) 100%);
+        opacity: 1;
+        pointer-events: none;
+    }
+
+    .challenge-topline {
         display: flex;
-        flex-direction: column;
         align-items: center;
-        justify-content: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        position: relative;
+        z-index: 2;
+        margin-bottom: 10px;
+    }
+
+    .challenge-badge {
+        display: inline-flex;
+        align-items: center;
         gap: 8px;
-        margin: 0 16px 20px 16px;
-        padding: 0;
-        flex-shrink: 0;
+        padding: 7px 12px;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 900;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-dark);
+        background: rgba(255, 255, 255, 0.6);
+        border: 2px solid rgba(139, 127, 232, 0.25);
+        box-shadow: 0 8px 24px rgba(139, 127, 232, 0.15);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+
+    .challenge-hint {
+        font-size: 0.8rem;
+        font-weight: 800;
+        color: var(--text-grey);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        white-space: nowrap;
+    }
+
+    .challenge-card .question-text {
+        position: relative;
+        z-index: 2;
+        margin: 0;
+        padding: 0 6px 6px 6px;
+    }
+
+    .option {
+        text-align: left;
+        justify-content: flex-start;
+        gap: 14px;
+        padding: 18px 20px;
+        transition: transform 200ms ease-out, box-shadow 200ms ease-out, border-color 200ms ease-out, filter 200ms ease-out;
+        box-shadow:
+            0 12px 22px -16px rgba(45, 42, 69, 0.18),
+            0 10px 22px -18px rgba(139, 127, 232, 0.22),
+            inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    }
+
+    .option:active {
+        transform: translateY(-2px) scale(0.995);
+        box-shadow:
+            0 10px 18px -16px rgba(45, 42, 69, 0.16),
+            0 8px 18px -18px rgba(139, 127, 232, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.55);
+    }
+
+    .option-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 18px;
+        display: grid;
+        place-items: center;
+        font-size: 1.4rem;
+        flex: 0 0 auto;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.6) 100%);
+        border: 2px solid rgba(139, 127, 232, 0.25);
+        box-shadow: 0 8px 24px rgba(139, 127, 232, 0.15);
+    }
+
+    .option-label {
+        display: block;
+        font-size: 1.15rem;
+        font-weight: 900;
+        color: var(--text-dark);
+        line-height: 1.2;
+    }
+
+    .option-copy {
+        display: block;
+        min-width: 0;
+    }
+
+    .option-sub {
+        display: block;
+        margin-top: 6px;
+        font-size: 0.85rem;
+        font-weight: 800;
+        color: var(--text-grey);
+        line-height: 1.2;
+    }
+
+    .option.selected .option-label,
+    .option.selected .option-sub {
+        color: var(--text-white);
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .option.selected .option-icon {
+        background: rgba(255, 255, 255, 0.25);
+        border-color: rgba(255, 255, 255, 0.5);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .option.just-selected {
+        animation: optionPop 0.4s var(--ease-elastic);
+    }
+
+    @keyframes optionPop {
+        0% { transform: translateY(-2px) scale(1.01); }
+        60% { transform: translateY(-10px) scale(1.03); }
+        100% { transform: translateY(-4px) scale(1.02); }
     }
 
     .nav-arrow {
@@ -1285,31 +1926,35 @@
 
         /* Big Game Title at Top - Mobile */
         .game-title-top {
-            padding: 12px 16px 0 16px;
-            margin: 0;
-            border-radius: 0;
-            background: transparent;
+            padding: 12px 12px;
+            margin: 0 12px 12px 12px;
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 2px solid rgba(139, 127, 232, 0.25);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .hud-row {
+            max-width: 680px;
         }
 
         .game-title-emoji {
-            font-size: 3.5rem;
-            margin-bottom: 8px;
+            font-size: 1.5rem;
+            margin-bottom: 0;
         }
 
         .game-title-text {
-            font-size: 2rem;
+            font-size: 0.95rem;
             line-height: 1.1;
             font-weight: 900;
         }
 
-        /* Question Container - Compact for mobile to fit in one screen */
+        /* Question Container - Keep viewport-based flow (avoid fit-content on tall phones) */
         #questionContainer {
             padding: 12px 16px 0 16px;
-            max-height: fit-content;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            overflow-y: auto;
+            flex: 1;
+            min-height: 0;
+            overflow-y: hidden;
             gap: 0;
         }
 
@@ -1395,14 +2040,14 @@
     /* --- EXTRA SMALL MOBILE --- */
     @media (max-width: 480px) {
         body {
-            min-height: 100vh;
+            min-height: 100svh;
             overflow-y: auto;
             overflow-x: hidden;
         }
 
         .test-page {
             padding: 0;
-            min-height: 100vh;
+            min-height: 100svh;
             overflow-y: auto;
             padding-bottom: 80px;
         }
@@ -1410,7 +2055,7 @@
         .mobile-container {
             padding: 0;
             border-radius: 0;
-            min-height: 100vh;
+            min-height: 100svh;
             overflow-y: visible;
         }
 
@@ -1472,19 +2117,21 @@
 
         /* Extra compact for very small screens */
         .game-title-top {
-            padding: 10px 12px 0 12px;
-            margin: 0;
-            background: transparent;
-            margin-bottom: 20px;
+            padding: 10px 10px;
+            margin: 0 10px 10px 10px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 22px;
+            border: 2px solid rgba(139, 127, 232, 0.25);
+            box-shadow: var(--shadow-soft);
         }
 
         .game-title-emoji {
-            font-size: 3rem;
-            margin-bottom: 8px;
+            font-size: 1.4rem;
+            margin-bottom: 0;
         }
 
         .game-title-text {
-            font-size: 1.75rem;
+            font-size: 0.9rem;
             font-weight: 900;
         }
 
@@ -1910,8 +2557,23 @@
     <div class="mobile-container animate-in">
             <!-- Big Game Title at Top (shown during game) -->
             <div id="gameTitle" class="game-title-top hidden">
-                <div class="game-title-emoji" id="gameTitleEmoji"></div>
-                <h2 class="game-title-text" id="gameTitleText"></h2>
+                <div class="hud-row">
+                    <div class="hud-avatar">
+                        <div class="game-title-emoji" id="gameTitleEmoji"></div>
+                    </div>
+                    <div class="hud-stack">
+                        <div class="hud-topline">
+                            <div class="hud-level" id="hudLevelText">Level</div>
+                            <div class="hud-title">
+                                <h2 class="game-title-text" id="gameTitleText"></h2>
+                            </div>
+                        </div>
+                        <div class="hud-xp-bar" role="progressbar" aria-label="XP">
+                            <div class="hud-xp-fill" id="hudXpFill"></div>
+                        </div>
+                        <div class="hud-xp-sub" id="hudXpSub">XP</div>
+                    </div>
+                </div>
             </div>
 
             <!-- Progress Bar - REMOVED -->
@@ -1938,27 +2600,40 @@
             <!-- Game Moment Container (NOT a question screen) -->
             <div id="questionContainer" class="question-container hidden">
 
-                <!-- Countdown/Tension Phase -->
-                <div id="countdownContainer" class="countdown-container" style="display: none;">
-                    <div class="countdown-bar">
-                        <div class="countdown-fill"></div>
+                <div class="game-play-area">
+                    <div class="game-fixed-zone game-action-zone">
+                        <!-- Countdown/Tension Phase -->
+                        <div id="countdownContainer" class="countdown-container" style="display: none;">
+                            <div class="countdown-bar">
+                                <div class="countdown-fill"></div>
+                            </div>
+                            <div class="countdown-text">Get Ready...</div>
+                        </div>
+
+                        <div class="challenge-card" id="challengeCard">
+                            <div class="challenge-topline">
+                                <div class="challenge-badge">LEVEL EVENT</div>
+                                <div class="challenge-hint" id="challengeHint">Choose an action</div>
+                            </div>
+                            <div class="question-text" id="questionText"></div>
+                        </div>
                     </div>
-                    <div class="countdown-text">Get Ready...</div>
-                </div>
 
-                <!-- Game Moment Text (NOT a question) -->
-                <div class="question-text" id="questionText"></div>
+                    <div class="game-options-zone game-choice-zone">
+                        <!-- Reaction Options (appear after countdown) -->
+                        <div class="options-container" id="optionsContainer">
+                            <!-- Action buttons will be dynamically inserted here -->
+                        </div>
 
-                <!-- Reaction Options (appear after countdown) -->
-                <div class="options-container" id="optionsContainer">
-                    <!-- Action buttons will be dynamically inserted here -->
-                </div>
+                        <div class="action-feedback" id="actionFeedback" aria-live="polite"></div>
 
-                <!-- Navigation and Progress Container -->
-                <div class="navigation-progress-container">
-                    <!-- Game Progress Dots (NOT question numbers) -->
-                    <div class="game-progress-meter" id="gameProgressMeter">
-                        <!-- Progress dots will be dynamically inserted here -->
+                        <!-- Navigation and Progress Container -->
+                        <div class="navigation-progress-container">
+                            <!-- Game Progress Dots (NOT question numbers) -->
+                            <div class="game-progress-meter" id="gameProgressMeter">
+                                <!-- Progress dots will be dynamically inserted here -->
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2032,6 +2707,17 @@
         let answers = [];
         let sessionId = null;
         let autoAdvanceTimer = null;
+
+        const actionCardIcons = ['⚡','🛡️','🎯','✨','💡','🚀','🧠','🏆'];
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/\"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
 
         // Featured game key (can be changed later easily)
         const featuredGame = 'SPIRIT_ANIMAL';
@@ -2331,34 +3017,118 @@
 
             // Render action buttons immediately
             
+            // DEBUG: Log question data
+            console.log('DEBUG: Question data:', question);
+            console.log('DEBUG: Options count:', question.options ? question.options.length : 0);
+            console.log('DEBUG: Test ID:', selectedTest ? selectedTest.testId : 'unknown');
+            
             // Render action buttons
-            question.options.forEach(option => {
-                const optionDiv = document.createElement('div');
-                optionDiv.className = 'option';
-                optionDiv.dataset.value = option.optionValue;
+            if (question.options && question.options.length > 0) {
+                question.options.forEach((option, optionIndex) => {
+                    console.log('DEBUG: Rendering option', optionIndex, option);
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'option';
+                    optionDiv.dataset.value = option.optionValue;
 
-                // Add emoji if option text doesn't have one
-                const hasEmoji = /[\u{1F300}-\u{1F9FF}]/u.test(option.optionText);
-                optionDiv.textContent = option.optionText;
+                    // Add emoji if option text doesn't have one
+                    const rawText = String(option.optionText || '');
+                    const textWithoutEmoji = rawText
+                        .replace(/[\u{1F300}-\u{1FAFF}]/gu, '')
+                        .replace(/\s{2,}/g, ' ')
+                        .trim();
+                    const safeText = escapeHtml(textWithoutEmoji);
+                    const icon = actionCardIcons[optionIndex % actionCardIcons.length];
+                    optionDiv.innerHTML = (
+                        '<span class="option-icon">' + icon + '</span>' +
+                        '<span class="option-copy">' +
+                            '<span class="option-label">' + safeText + '</span>' +
+                            '<span class="option-sub">Tap to lock in</span>' +
+                        '</span>'
+                    );
 
-                // Check if this option was previously selected
-                if (answers[index] === option.optionValue) {
-                    optionDiv.classList.add('selected');
-                }
+                    // Check if this option was previously selected
+                    if (answers[index] === option.optionValue) {
+                        optionDiv.classList.add('selected');
+                    }
 
-                optionDiv.addEventListener('click', function() {
-                    selectOption(option.optionValue);
+                    optionDiv.addEventListener('click', function() {
+                        selectOption(option.optionValue);
+                    });
+
+                    optionsContainer.appendChild(optionDiv);
                 });
-
-                optionsContainer.appendChild(optionDiv);
-            });
+            } else {
+                console.error('DEBUG: No options found in question data for test:', selectedTest?.testId);
+                
+                // Create appropriate options based on the game type
+                let gameOptions = [];
+                
+                if (selectedTest && selectedTest.testId === 'FOCUS_STAMINA') {
+                    // Focus Power Game specific options
+                    gameOptions = [
+                        { optionValue: 'FOCUS_DEEP', optionText: 'Focus Deep' },
+                        { optionValue: 'TAKE_BREAK', optionText: 'Take Break' },
+                        { optionValue: 'SWITCH_TASK', optionText: 'Switch Task' },
+                        { optionValue: 'MINDFUL_PAUSE', optionText: 'Mindful Pause' }
+                    ];
+                } else {
+                    // Generic fallback options for other games
+                    gameOptions = [
+                        { optionValue: 'option_1', optionText: 'Option 1' },
+                        { optionValue: 'option_2', optionText: 'Option 2' },
+                        { optionValue: 'option_3', optionText: 'Option 3' },
+                        { optionValue: 'option_4', optionText: 'Option 4' }
+                    ];
+                }
+                
+                console.log('DEBUG: Using game-specific options:', gameOptions);
+                
+                gameOptions.forEach((option, optionIndex) => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'option';
+                    optionDiv.dataset.value = option.optionValue;
+                    
+                    const icon = actionCardIcons[optionIndex % actionCardIcons.length];
+                    optionDiv.innerHTML = (
+                        '<span class="option-icon">' + icon + '</span>' +
+                        '<span class="option-copy">' +
+                            '<span class="option-label">' + option.optionText + '</span>' +
+                            '<span class="option-sub">Tap to lock in</span>' +
+                        '</span>'
+                    );
+                    
+                    optionDiv.addEventListener('click', function() {
+                        selectOption(option.optionValue);
+                    });
+                    
+                    optionsContainer.appendChild(optionDiv);
+                });
+            }
 
             // Show options with animation
             optionsContainer.classList.add('show');
 
+            // Adjust layout density based on rendered option count (UI-only)
+            applyOptionLayoutDensity();
+
             // Update progress dots and navigation buttons
             updateGameProgressDots();
             updateNavigationButtons();
+        }
+
+        function applyOptionLayoutDensity() {
+            const playArea = document.querySelector('#questionContainer .game-play-area');
+            const optionsContainer = document.getElementById('optionsContainer');
+            if (!playArea || !optionsContainer) return;
+
+            const optionCount = optionsContainer.children ? optionsContainer.children.length : 0;
+            playArea.classList.remove('few-options', 'many-options');
+
+            if (optionCount >= 3) {
+                playArea.classList.add('many-options');
+            } else {
+                playArea.classList.add('few-options');
+            }
         }
 
         // Select option - Instant Reaction
@@ -2387,8 +3157,22 @@
             options.forEach(opt => {
                 if (opt.dataset.value === value) {
                     opt.classList.add('selected');
+                    opt.classList.add('just-selected');
+                    setTimeout(() => {
+                        opt.classList.remove('just-selected');
+                    }, 450);
                 }
             });
+
+            const feedback = document.getElementById('actionFeedback');
+            if (feedback) {
+                const messages = ['Locked in!', 'Nice move!', 'Great choice!', 'Action confirmed!'];
+                feedback.textContent = messages[Math.floor(Math.random() * messages.length)];
+                feedback.classList.add('show');
+                setTimeout(() => {
+                    feedback.classList.remove('show');
+                }, 650);
+            }
 
             // Update navigation buttons after selection
             updateNavigationButtons();
@@ -2447,9 +3231,18 @@
         function updateProgress(percentage, text) {
             document.getElementById('progressBar').style.width = percentage + '%';
             document.getElementById('progressText').textContent = text;
+
+            const hudFill = document.getElementById('hudXpFill');
+            if (hudFill) hudFill.style.width = percentage + '%';
+
+            const hudLevel = document.getElementById('hudLevelText');
+            if (hudLevel) hudLevel.textContent = text;
+
+            const hudSub = document.getElementById('hudXpSub');
+            if (hudSub) hudSub.textContent = 'XP ' + Math.round(percentage) + '/100';
         }
 
-        // Submit test
+        // Submit test - OPTIMIZED for speed
         async function submitTest() {
             // Validate all questions answered
             const unanswered = answers.filter(a => a === null).length;
@@ -2458,7 +3251,9 @@
                 return;
             }
 
-            updateProgress(100, 'Processing results...');
+            // Show immediate loading state
+            updateProgress(100, 'Analyzing your answers...');
+            showLoadingOverlay();
 
             try {
                 // Prepare answers in the format expected by the API
@@ -2468,6 +3263,10 @@
                     timeSpent: 0
                 }));
 
+                // Add timeout to prevent hanging
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
                 const response = await fetch('/api/diagnostic/submit', {
                     method: 'POST',
                     headers: {
@@ -2476,8 +3275,11 @@
                     body: JSON.stringify({
                         sessionId: sessionId,
                         answers: formattedAnswers
-                    })
+                    }),
+                    signal: controller.signal
                 });
+
+                clearTimeout(timeoutId);
 
                 if (!response.ok) throw new Error('Failed to submit test');
 
@@ -2486,19 +3288,56 @@
                 if (result.success) {
                     // Clear saved state before redirecting
                     clearPageState();
-                    // Redirect to results page
+                    
+                    // IMMEDIATE redirect with loading state maintained
                     window.location.href = '/diagnostic/result/' + sessionId;
                 } else {
                     throw new Error(result.error || 'Failed to submit test');
                 }
             } catch (error) {
+                clearTimeout(timeoutId);
                 console.error('Error submitting test:', error);
-                alert('Failed to submit test. Please try again.');
+                
+                // Hide loading and show error
+                hideLoadingOverlay();
+                
+                if (error.name === 'AbortError') {
+                    alert('Request timed out. Please check your connection and try again.');
+                } else {
+                    alert('Failed to submit test. Please try again.');
+                }
 
                 // Restore UI
                 document.getElementById('questionContainer').classList.remove('hidden');
                 updateProgress(66, 'Question ' + (currentQuestionIndex + 1) + ' of ' + questions.length);
             }
+        }
+
+        // Fast loading overlay
+        function showLoadingOverlay() {
+            const overlay = document.createElement('div');
+            overlay.id = 'loading-overlay';
+            overlay.innerHTML = `
+                <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                           background: rgba(139, 127, 232, 0.95); z-index: 9999; 
+                           display: flex; align-items: center; justify-content: center;
+                           backdrop-filter: blur(10px);">
+                    <div style="text-align: center; color: white;">
+                        <div style="font-size: 3rem; margin-bottom: 20px; animation: spin 1s linear infinite;">⚡</div>
+                        <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 10px;">Analyzing Your DNA</h2>
+                        <p style="font-size: 1rem; opacity: 0.9;">Calculating your learning profile...</p>
+                    </div>
+                </div>
+                <style>
+                    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+                </style>
+            `;
+            document.body.appendChild(overlay);
+        }
+
+        function hideLoadingOverlay() {
+            const overlay = document.getElementById('loading-overlay');
+            if (overlay) overlay.remove();
         }
         function initLivePlayers() {
             const elId = 'livePlayerCount';
