@@ -60,10 +60,30 @@
         --font-body: 'Plus Jakarta Sans', 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
 
+    /* Performance optimizations */
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+    }
+
+    /* Enable hardware acceleration for smooth animations */
+    .test-card, .option, .blob, .star, .float-icon {
+        transform: translateZ(0);
+        backface-visibility: hidden;
+        perspective: 1000px;
+        will-change: transform;
+    }
+
+    /* Optimize images and reduce paint */
+    img {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+
+    /* Reduce layout thrashing */
+    .test-page, .mobile-container, .step-container {
+        contain: layout style paint;
     }
 
     body {
@@ -934,6 +954,7 @@
                 display: -webkit-box !important;
                 -webkit-box-orient: vertical !important;
                 -webkit-line-clamp: 2 !important;
+                line-clamp: 2 !important; /* Standard property for compatibility */
                 overflow: hidden !important;
                 flex-grow: 1 !important;
                 min-width: 0 !important;
@@ -2641,6 +2662,98 @@
     </div>
 
     <script>
+        // Global variables for the current test session
+        let currentTest = null;
+        let currentQuestionIndex = 0;
+        let answers = [];
+        let questions = [];
+        let sessionId = null;
+        let selectedTest = null;
+        let autoAdvanceTimer = null;
+        let timeoutId = null;
+
+        // Performance optimization: Global variables for memory management
+        let performanceTimer = null;
+        let animationFrameId = null;
+        let eventListeners = new Map(); // Track event listeners for cleanup
+        let domCache = new Map(); // Cache DOM elements
+
+        // Performance monitoring
+        const performance = {
+            start: (name) => {
+                if (window.performance && window.performance.mark) {
+                    window.performance.mark(`${name}-start`);
+                }
+            },
+            end: (name) => {
+                if (window.performance && window.performance.mark && window.performance.measure) {
+                    window.performance.mark(`${name}-end`);
+                    window.performance.measure(name, `${name}-start`, `${name}-end`);
+                }
+            },
+            cleanup: () => {
+                // Clear all timers
+                if (performanceTimer) {
+                    clearInterval(performanceTimer);
+                    performanceTimer = null;
+                }
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                    animationFrameId = null;
+                }
+
+                // Remove all tracked event listeners
+                eventListeners.forEach((handler, element) => {
+                    element.removeEventListener('click', handler);
+                });
+                eventListeners.clear();
+
+                // Clear DOM cache
+                domCache.clear();
+            }
+        };
+
+        // Cache DOM elements
+        function getCachedElement(id) {
+            if (!domCache.has(id)) {
+                const element = document.getElementById(id);
+                if (element) domCache.set(id, element);
+            }
+            return domCache.get(id);
+        }
+
+        // Optimized event listener management
+        function addTrackedListener(element, event, handler) {
+            if (element && !eventListeners.has(element)) {
+                element.addEventListener(event, handler, { passive: true });
+                eventListeners.set(element, handler);
+            }
+        }
+        
+        // Optimized DOM manipulation with DocumentFragment
+        function createOptionElement(option, index, totalQuestions) {
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'option';
+            optionDiv.dataset.value = option.optionValue;
+            
+            const textWithoutEmoji = String(option.optionText || '')
+                .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '')
+                .replace(/\s{2,}/g, ' ')
+                .trim();
+            const safeText = escapeHtml(textWithoutEmoji);
+            const icon = actionCardIcons[index % actionCardIcons.length];
+            
+            optionDiv.innerHTML = (
+                '<span class="option-icon">' + icon + '</span>' +
+                '<span class="option-copy">' +
+                    '<span class="option-label">' + safeText + '</span>' +
+                    '<span class="option-sub">Tap to lock in</span>' +
+                '</span>'
+            );
+            
+            return optionDiv;
+        }
+
         // Motion polish: safe parallax for stars + reactive cards.
         (function() {
             const root = document.documentElement;
@@ -2700,15 +2813,7 @@
             }, { passive: true });
         })();
 
-        let selectedTest = null;
-        let allTests = [];
-        let questions = [];
-        let currentQuestionIndex = 0;
-        let answers = [];
-        let sessionId = null;
-        let autoAdvanceTimer = null;
-
-        const actionCardIcons = ['⚡','🛡️','🎯','✨','💡','🚀','🧠','🏆'];
+        let actionCardIcons = ['⚡','🛡️','🎯','✨','💡','🚀','🧠','🏆'];
 
         function escapeHtml(str) {
             return String(str)
@@ -2816,8 +2921,30 @@
             localStorage.removeItem('personality_start_state');
         }
 
-        // Load tests on page load
+        // Add page cleanup for better memory management
+        window.addEventListener('beforeunload', () => {
+            performance.cleanup();
+        });
+        
+        // Add visibility change handling for performance
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                // Pause animations when page is not visible
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                    animationFrameId = null;
+                }
+            } else {
+                // Resume animations when page becomes visible
+                if (!animationFrameId && getCachedElement('livePlayerCount')) {
+                    initLivePlayers();
+                }
+            }
+        });
         document.addEventListener('DOMContentLoaded', function() {
+            // Clear any existing loading overlay (fix for browser back navigation)
+            hideLoadingOverlay();
+            
             // Try to restore state from localStorage
             restorePageState();
             loadTests();
@@ -2960,7 +3087,7 @@
                 document.getElementById('testSelection').classList.add('hidden');
                 document.getElementById('questionContainer').classList.remove('hidden');
                 document.body.classList.add('game-active'); // Prevent mobile scrolling
-                updateProgress(50, 'Level 1 of ' + questions.length);
+                updateProgress(0, 'Level 1 of ' + questions.length);
 
                 // Show big game title at top
                 const emoji = testEmojis[selectedTest.testId] || '📝';
@@ -2991,7 +3118,7 @@
             const question = questions[index];
 
             // Update progress bar
-            const progress = 50 + (((index + 1) / questions.length) * 50);
+            const progress = ((index + 1) / questions.length) * 100;
             updateProgress(progress, 'Level ' + (index + 1) + ' of ' + questions.length);
 
             // Reset navigation buttons immediately
@@ -3024,39 +3151,25 @@
             
             // Render action buttons
             if (question.options && question.options.length > 0) {
+                const fragment = document.createDocumentFragment();
+                
                 question.options.forEach((option, optionIndex) => {
-                    console.log('DEBUG: Rendering option', optionIndex, option);
-                    const optionDiv = document.createElement('div');
-                    optionDiv.className = 'option';
-                    optionDiv.dataset.value = option.optionValue;
-
-                    // Add emoji if option text doesn't have one
-                    const rawText = String(option.optionText || '');
-                    const textWithoutEmoji = rawText
-                        .replace(/[\u{1F300}-\u{1FAFF}]/gu, '')
-                        .replace(/\s{2,}/g, ' ')
-                        .trim();
-                    const safeText = escapeHtml(textWithoutEmoji);
-                    const icon = actionCardIcons[optionIndex % actionCardIcons.length];
-                    optionDiv.innerHTML = (
-                        '<span class="option-icon">' + icon + '</span>' +
-                        '<span class="option-copy">' +
-                            '<span class="option-label">' + safeText + '</span>' +
-                            '<span class="option-sub">Tap to lock in</span>' +
-                        '</span>'
-                    );
-
+                    const optionDiv = createOptionElement(option, optionIndex, questions.length);
+                    
                     // Check if this option was previously selected
                     if (answers[index] === option.optionValue) {
                         optionDiv.classList.add('selected');
                     }
 
-                    optionDiv.addEventListener('click', function() {
-                        selectOption(option.optionValue);
-                    });
+                    // Use optimized event listener
+                    const clickHandler = () => selectOption(option.optionValue);
+                    addTrackedListener(optionDiv, 'click', clickHandler);
 
-                    optionsContainer.appendChild(optionDiv);
+                    fragment.appendChild(optionDiv);
                 });
+                
+                // Single DOM operation
+                optionsContainer.appendChild(fragment);
             } else {
                 console.error('DEBUG: No options found in question data for test:', selectedTest?.testId);
                 
@@ -3244,6 +3357,8 @@
 
         // Submit test - OPTIMIZED for speed
         async function submitTest() {
+            let timeoutId; // Declare timeoutId in function scope
+            
             // Validate all questions answered
             const unanswered = answers.filter(a => a === null).length;
             if (unanswered > 0) {
@@ -3265,7 +3380,7 @@
 
                 // Add timeout to prevent hanging
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+                timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
                 const response = await fetch('/api/result/submit', {
                     method: 'POST',
@@ -3289,13 +3404,13 @@
                     // Clear saved state before redirecting
                     clearPageState();
                     
-                    // IMMEDIATE redirect with loading state maintained
-                    window.location.href = '/result/' + sessionId;
+                    // IMMEDIATE redirect - results are processing in background
+                    window.location.replace('/result/' + sessionId);
                 } else {
                     throw new Error(result.error || 'Failed to submit test');
                 }
             } catch (error) {
-                clearTimeout(timeoutId);
+                if (timeoutId) clearTimeout(timeoutId); // Check if timeoutId exists
                 console.error('Error submitting test:', error);
                 
                 // Hide loading and show error
@@ -3339,25 +3454,38 @@
             const overlay = document.getElementById('loading-overlay');
             if (overlay) overlay.remove();
         }
+        // Optimized live players with requestAnimationFrame and debouncing
         function initLivePlayers() {
             const elId = 'livePlayerCount';
-            let base = 1237; // starting near mid-range
+            let base = 1237;
             const min = 1000;
             const maxDelta = 20;
             const minDelta = 5;
-            function tick() {
-                const el = document.getElementById(elId);
-                if (!el) return; // not on selection screen
-                // Randomly go up or down without big jumps
-                const sign = Math.random() < 0.55 ? 1 : -1;
-                const delta = Math.floor(Math.random() * (maxDelta - minDelta + 1)) + minDelta;
-                base = Math.max(min, base + sign * delta);
-                el.textContent = '👥 ' + base.toLocaleString() + ' players playing right now';
+            let lastUpdate = 0;
+            const updateInterval = 2500 + Math.floor(Math.random() * 1500);
+            
+            function tick(timestamp) {
+                if (!lastUpdate || timestamp - lastUpdate >= updateInterval) {
+                    const el = getCachedElement(elId);
+                    if (el) {
+                        const sign = Math.random() < 0.55 ? 1 : -1;
+                        const delta = Math.floor(Math.random() * (maxDelta - minDelta + 1)) + minDelta;
+                        base = Math.max(min, base + sign * delta);
+                        el.textContent = '👥 ' + base.toLocaleString() + ' players playing right now';
+                    }
+                    lastUpdate = timestamp;
+                }
+                animationFrameId = requestAnimationFrame(tick);
             }
-            // Vary interval a bit for realism
-            setInterval(tick, 2500 + Math.floor(Math.random() * 1500));
-            // Initial
-            setTimeout(tick, 600);
+            
+            // Start animation loop
+            animationFrameId = requestAnimationFrame(tick);
+            
+            // Initial update
+            setTimeout(() => {
+                const el = getCachedElement(elId);
+                if (el) el.textContent = '👥 ' + base.toLocaleString() + ' players playing right now';
+            }, 600);
         }
 
         // Add 3D parallax effect on mouse move (desktop only)

@@ -29,9 +29,9 @@ class UrlMappings {
         "/personality/result"(controller: 'personality', action: 'result')
         "/personality/types"(controller: 'personality', action: 'types')
 
-        // Analytics
-        "/analytics"(controller: 'analytics', action: 'index')
-        "/analytics/track"(controller: 'analytics', action: 'track')
+        // Analytics - Stub endpoints in HomeController (prevents 404 errors)
+        "/analytics"(controller: 'home', action: 'analytics')
+        "/analytics/track"(controller: 'home', action: 'track')
 
         // Dashboard
         "/dashboard"(controller: 'dashboard', action: 'index')
@@ -54,6 +54,7 @@ class UrlMappings {
         "/api/result/start"(controller: 'result', action: 'start')
         "/api/result/response"(controller: 'result', action: 'submitResponse')
         "/api/result/submit"(controller: 'result', action: 'submit')
+        "/api/result/status/$sessionId"(controller: 'result', action: 'status')
         "/api/result/$sessionId"(controller: 'result', action: 'result')
         "/api/result/history"(controller: 'result', action: 'history')
 

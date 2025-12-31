@@ -157,8 +157,10 @@ class DiagnosticService {
     }
 
     /**
-     * Submit all answers and calculate results
+     * Submit all answers and calculate results (LEGACY - use AsyncResultProcessor instead)
+     * DEPRECATED: This method is slow and blocks. Use submitTestAsync for high performance.
      */
+    @Deprecated
     def submitTest(String sessionId, List answers) {
         def session = DiagnosticTestSession.findBySessionId(sessionId)
         if (!session) {
@@ -201,9 +203,9 @@ class DiagnosticService {
     }
 
     /**
-     * Calculate results based on test type and responses
+     * Calculate results based on test type (made public for async processor)
      */
-    private def calculateResults(DiagnosticTestSession session) {
+    def calculateResults(DiagnosticTestSession session) {
         def testId = session.test.testId
         
         switch (testId) {
