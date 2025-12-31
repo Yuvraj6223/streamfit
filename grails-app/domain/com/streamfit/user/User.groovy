@@ -28,7 +28,7 @@ class User {
         name nullable: true
         email nullable: true, email: true
         phoneNumber nullable: true
-        age nullable: true, min: 14, max: 20
+        age nullable: true, min: 1, max: 120
         gender nullable: true, inList: ['MALE', 'FEMALE', 'OTHER', 'PREFER_NOT_TO_SAY']
         educationLevel nullable: true
         currentStream nullable: true
@@ -38,7 +38,7 @@ class User {
     }
 
     static mapping = {
-        table 'streamfit_user'
+        table 'streamfit_user'  // ← CHANGED THIS
         version false
     }
 
@@ -46,4 +46,3 @@ class User {
         return name ?: userId
     }
 }
-

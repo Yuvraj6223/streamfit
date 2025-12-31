@@ -19,6 +19,9 @@ class UrlMappings {
         "/api/auth/signup"(controller: 'auth', action: 'doSignup')
         "/api/auth/logout"(controller: 'auth', action: 'logout')
         "/api/auth/me"(controller: 'auth', action: 'me')
+        // API endpoints for actual authentication
+        "/api/login"(controller: "auth", action: "processLogin")
+        "/api/signup"(controller: "auth", action: "processSignup")
 
         // Personality Test Pages
         "/personality"(controller: 'personality', action: 'index')
