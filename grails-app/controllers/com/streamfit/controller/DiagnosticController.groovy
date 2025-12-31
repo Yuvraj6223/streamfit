@@ -2,14 +2,12 @@ package com.streamfit.controller
 
 import com.streamfit.service.DiagnosticService
 import com.streamfit.service.UserService
-import com.streamfit.service.AuthService
 import grails.converters.JSON
 
 class DiagnosticController {
 
     DiagnosticService diagnosticService
     UserService userService
-    AuthService authService
     
     /**
      * Main diagnostic tests page
@@ -121,7 +119,7 @@ class DiagnosticController {
             }
 
             // Get or create session user
-            def user = authService.getOrCreateSessionUser()
+            def user = userService.getOrCreateAnonymousUser()
 
             def result = diagnosticService.startTestSession(user, testId)
             
@@ -244,7 +242,7 @@ class DiagnosticController {
      */
     def history() {
         try {
-            def user = authService.getOrCreateSessionUser()
+            def user = userService.getOrCreateAnonymousUser()
 
             def history = diagnosticService.getUserTestHistory(user)
             
@@ -289,7 +287,7 @@ class DiagnosticController {
         }
 
         // Check if user is authenticated
-        def isAnonymous = !authService.isAuthenticated()
+        def isAnonymous = true // Always anonymous since we removed auth
 
         [result: result, isAnonymous: isAnonymous]
     }

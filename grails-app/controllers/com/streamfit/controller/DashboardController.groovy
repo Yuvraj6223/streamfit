@@ -3,7 +3,6 @@ package com.streamfit.controller
 import com.streamfit.service.DiagnosticService
 import com.streamfit.service.UserService
 import com.streamfit.service.RewardService
-import com.streamfit.service.AuthService
 import grails.converters.JSON
 
 class DashboardController {
@@ -11,14 +10,13 @@ class DashboardController {
     DiagnosticService diagnosticService
     UserService userService
     RewardService rewardService
-    AuthService authService
     
     /**
      * Main dashboard page
      * GET /dashboard
      */
     def index() {
-        def user = authService.getOrCreateSessionUser()
+        def user = userService.getOrCreateAnonymousUser()
 
         [user: user]
     }
@@ -29,7 +27,7 @@ class DashboardController {
      */
     def data() {
         try {
-            def user = authService.getOrCreateSessionUser()
+            def user = userService.getOrCreateAnonymousUser()
             
             // Get test history
             def testHistory = diagnosticService.getUserTestHistory(user)
