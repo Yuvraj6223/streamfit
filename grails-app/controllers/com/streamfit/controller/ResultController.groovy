@@ -4,7 +4,7 @@ import com.streamfit.service.DiagnosticService
 import com.streamfit.service.UserService
 import grails.converters.JSON
 
-class DiagnosticController {
+class ResultController {
 
     DiagnosticService diagnosticService
     UserService userService
@@ -257,7 +257,7 @@ class DiagnosticController {
     
     /**
      * Test start page
-     * GET /diagnostic/test/:testId
+     * GET /result/test/:testId
      */
     def testPage() {
         def testId = params.testId
@@ -274,7 +274,7 @@ class DiagnosticController {
     
     /**
      * Result page
-     * GET /diagnostic/result/:sessionId
+     * GET /result/:sessionId
      */
     def resultPage() {
         def sessionId = params.sessionId
@@ -292,4 +292,3 @@ class DiagnosticController {
         [result: result, isAnonymous: isAnonymous]
     }
 }
-

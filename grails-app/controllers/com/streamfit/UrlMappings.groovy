@@ -39,20 +39,20 @@ class UrlMappings {
         "/api/personality/submit"(controller: 'personality', action: 'submit')
         "/api/personality/result/$sessionId"(controller: 'personality', action: 'getResult')
 
-        // Diagnostic Test Pages
-        "/diagnostic"(controller: 'diagnostic', action: 'index')
-        "/diagnostic/test/$testId"(controller: 'diagnostic', action: 'testPage')
-        "/diagnostic/result/$sessionId"(controller: 'diagnostic', action: 'resultPage')
+        // Result Test Pages
+        "/result"(controller: 'result', action: 'index')
+        "/result/test/$testId"(controller: 'result', action: 'testPage')
+        "/result/$sessionId"(controller: 'result', action: 'resultPage')
 
-        // Diagnostic API endpoints
-        "/api/diagnostic/tests"(controller: 'diagnostic', action: 'tests')
-        "/api/diagnostic/test/$testId"(controller: 'diagnostic', action: 'test')
-        "/api/diagnostic/questions/$testId"(controller: 'diagnostic', action: 'questions')
-        "/api/diagnostic/start"(controller: 'diagnostic', action: 'start')
-        "/api/diagnostic/response"(controller: 'diagnostic', action: 'submitResponse')
-        "/api/diagnostic/submit"(controller: 'diagnostic', action: 'submit')
-        "/api/diagnostic/result/$sessionId"(controller: 'diagnostic', action: 'result')
-        "/api/diagnostic/history"(controller: 'diagnostic', action: 'history')
+        // Result API endpoints
+        "/api/result/tests"(controller: 'result', action: 'tests')
+        "/api/result/test/$testId"(controller: 'result', action: 'test')
+        "/api/result/questions/$testId"(controller: 'result', action: 'questions')
+        "/api/result/start"(controller: 'result', action: 'start')
+        "/api/result/response"(controller: 'result', action: 'submitResponse')
+        "/api/result/submit"(controller: 'result', action: 'submit')
+        "/api/result/$sessionId"(controller: 'result', action: 'result')
+        "/api/result/history"(controller: 'result', action: 'history')
 
         // SEO - Sitemap and Robots
         "/sitemap.xml"(controller: 'sitemap', action: 'index')

@@ -70,19 +70,19 @@ class SitemapController {
             lastmod: formatDate(new Date())
         ]
         
-        // Diagnostic tests hub
+        // Result tests hub
         urls << [
-            loc: baseUrl + "/diagnostic",
+            loc: baseUrl + "/result",
             changefreq: "weekly",
             priority: "0.9",
             lastmod: formatDate(new Date())
         ]
         
-        // Individual diagnostic test pages
+        // Individual result test pages
         def tests = diagnosticService.getAvailableTests()
         tests.each { test ->
             urls << [
-                loc: baseUrl + "/diagnostic/test/" + test.testId,
+                loc: baseUrl + "/result/test/" + test.testId,
                 changefreq: "monthly",
                 priority: "0.8",
                 lastmod: formatDate(test.lastUpdated ?: test.dateCreated)
@@ -128,7 +128,7 @@ Disallow: /register
 Disallow: /profile
 
 # Allow important pages
-Allow: /diagnostic/
+Allow: /result/
 Allow: /personality/
 Allow: /about
 Allow: /faq

@@ -2831,7 +2831,7 @@
         // Load all diagnostic tests
         async function loadTests() {
             try {
-                const response = await fetch('/api/diagnostic/tests', { headers: { 'Accept': 'application/json' } });
+                const response = await fetch('/api/result/tests', { headers: { 'Accept': 'application/json' } });
                 if (!response.ok) throw new Error('Failed to load tests');
 
                 const data = await response.json();
@@ -2938,7 +2938,7 @@
                 }
 
                 // Start test session
-                const response = await fetch('/api/diagnostic/start', {
+                const response = await fetch('/api/result/start', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ testId: selectedTest.testId })
@@ -2950,7 +2950,7 @@
                 sessionId = result.sessionId;
 
                 // Load questions
-                const questionsResponse = await fetch('/api/diagnostic/questions/' + selectedTest.testId);
+                const questionsResponse = await fetch('/api/result/questions/' + selectedTest.testId);
                 if (!questionsResponse.ok) throw new Error('Failed to load questions');
 
                 questions = await questionsResponse.json();
@@ -3267,7 +3267,7 @@
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
-                const response = await fetch('/api/diagnostic/submit', {
+                const response = await fetch('/api/result/submit', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -3290,7 +3290,7 @@
                     clearPageState();
                     
                     // IMMEDIATE redirect with loading state maintained
-                    window.location.href = '/diagnostic/result/' + sessionId;
+                    window.location.href = '/result/' + sessionId;
                 } else {
                     throw new Error(result.error || 'Failed to submit test');
                 }
