@@ -889,55 +889,56 @@
 <script>
     // Continue Game Modal Logic - Global for all pages
     (function() {
-        const navStartPlaying = document.getElementById('navStartPlaying');
-        const continueModal = document.getElementById('continueGameModal');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const continueGameBtn = document.getElementById('continueGameBtn');
-        const newGameBtn = document.getElementById('newGameBtn');
-        const continueGameEmoji = document.getElementById('continueGameEmoji');
-        const continueGameName = document.getElementById('continueGameName');
+        // Wait for DOM to be ready
+        function initContinueGameModal() {
+            const navStartPlaying = document.getElementById('navStartPlaying');
+            const continueModal = document.getElementById('continueGameModal');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const continueGameBtn = document.getElementById('continueGameBtn');
+            const newGameBtn = document.getElementById('newGameBtn');
+            const continueGameEmoji = document.getElementById('continueGameEmoji');
+            const continueGameName = document.getElementById('continueGameName');
 
-        const testEmojis = {
-            'SPIRIT_ANIMAL': '🦉',
-            'COGNITIVE_RADAR': '🧠',
-            'FOCUS_STAMINA': '⚡',
-            'GUESSWORK_QUOTIENT': '🎲',
-            'CURIOSITY_COMPASS': '🧭',
-            'MODALITY_MAP': '🎨',
-            'CHALLENGE_DRIVER': '🏆',
-            'WORK_MODE': '🤝',
-            'PATTERN_SNAPSHOT': '🧩'
-        };
+            const testEmojis = {
+                'SPIRIT_ANIMAL': '🦉',
+                'COGNITIVE_RADAR': '🧠',
+                'FOCUS_STAMINA': '⚡',
+                'GUESSWORK_QUOTIENT': '🎲',
+                'CURIOSITY_COMPASS': '🧭',
+                'MODALITY_MAP': '🎨',
+                'CHALLENGE_DRIVER': '🏆',
+                'WORK_MODE': '🤝',
+                'PATTERN_SNAPSHOT': '🧩'
+            };
 
-        // Check if user has an unfinished game
-        function checkUnfinishedGame() {
-            try {
-                const savedState = localStorage.getItem('personality_start_state');
-                if (!savedState) return null;
+            // Check if user has an unfinished game
+            function checkUnfinishedGame() {
+                try {
+                    const savedState = localStorage.getItem('personality_start_state');
+                    if (!savedState) return null;
 
-                const state = JSON.parse(savedState);
+                    const state = JSON.parse(savedState);
 
-                // Only show if less than 24 hours old
-                if (Date.now() - state.timestamp > 86400000) {
-                    localStorage.removeItem('personality_start_state');
+                    // Only show if less than 24 hours old
+                    if (Date.now() - state.timestamp > 86400000) {
+                        localStorage.removeItem('personality_start_state');
+                        return null;
+                    }
+
+                    // Check if there's a valid session
+                    if (state.sessionId && state.selectedTest) {
+                        return state;
+                    }
+
+                    return null;
+                } catch (error) {
+                    console.error('Error checking unfinished game:', error);
                     return null;
                 }
-
-                // Check if there's a valid session
-                if (state.sessionId && state.selectedTest) {
-                    return state;
-                }
-
-                return null;
-            } catch (error) {
-                console.error('Error checking unfinished game:', error);
-                return null;
             }
-        }
 
-        // Handle nav Start Playing button click
-        if (navStartPlaying) {
-            navStartPlaying.addEventListener('click', function(e) {
+            // Handle play button clicks
+            function handlePlayNowClick(e) {
                 e.preventDefault();
 
                 const unfinishedGame = checkUnfinishedGame();
@@ -955,41 +956,61 @@
                     // No unfinished game, go directly to start page
                     window.location.href = '${createLink(controller: 'personality', action: 'start')}';
                 }
-            });
-        }
+            }
 
-        // Handle Continue Game button
-        if (continueGameBtn) {
-            continueGameBtn.addEventListener('click', function(e) {
-                // Let the link work normally - it will restore state from localStorage
-            });
-        }
+            // Attach to nav button
+            if (navStartPlaying) {
+                navStartPlaying.addEventListener('click', handlePlayNowClick);
+            }
 
-        // Handle New Game button
-        if (newGameBtn) {
-            newGameBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                // Clear the saved state
-                localStorage.removeItem('personality_start_state');
-                // Go to start page
-                window.location.href = '${createLink(controller: 'personality', action: 'start')}';
+            // Attach to ALL play now buttons on the page (for index.gsp)
+            const playNowButtons = document.querySelectorAll('.play-now-trigger, #playNowBtn');
+            console.log('Found', playNowButtons.length, 'play now buttons'); // Debug
+            playNowButtons.forEach(function(btn) {
+                btn.addEventListener('click', handlePlayNowClick);
             });
-        }
 
-        // Handle Close button
-        if (closeModalBtn) {
-            closeModalBtn.addEventListener('click', function() {
-                continueModal.style.display = 'none';
-            });
-        }
+            // Handle Continue Game button
+            if (continueGameBtn) {
+                continueGameBtn.addEventListener('click', function(e) {
+                    // Let the link work normally - it will restore state from localStorage
+                });
+            }
 
-        // Handle clicking outside modal
-        if (continueModal) {
-            continueModal.addEventListener('click', function(e) {
-                if (e.target === continueModal || e.target.classList.contains('continue-modal-overlay')) {
+            // Handle New Game button
+            if (newGameBtn) {
+                newGameBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Clear the saved state
+                    localStorage.removeItem('personality_start_state');
+                    // Go to start page
+                    window.location.href = '${createLink(controller: 'personality', action: 'start')}';
+                });
+            }
+
+            // Handle Close button
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', function() {
                     continueModal.style.display = 'none';
-                }
-            });
+                });
+            }
+
+            // Handle clicking outside modal
+            if (continueModal) {
+                continueModal.addEventListener('click', function(e) {
+                    if (e.target === continueModal || e.target.classList.contains('continue-modal-overlay')) {
+                        continueModal.style.display = 'none';
+                    }
+                });
+            }
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initContinueGameModal);
+        } else {
+            // DOM already loaded
+            initContinueGameModal();
         }
     })();
 </script>
