@@ -1,6 +1,5 @@
 package com.streamfit.controller
 
-import com.streamfit.diagnostic.DiagnosticTest
 import grails.converters.XML
 
 /**

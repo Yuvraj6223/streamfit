@@ -58,31 +58,11 @@ class UserService {
 
     def createLearningDNA(User user) {
         try {
-            if (!LearningDNA.findByUser(user)) {
-                def dna = new LearningDNA(
-                    user: user,
-                    coreTestsCompleted: 0,
-                    streamFitTestsCompleted: 0,
-                    isDashboardUnlocked: false
-                )
-
-                // Set JSON fields as strings
-                dna.cognitiveScores = JsonOutput.toJson([:])
-                dna.motivationTraits = JsonOutput.toJson([:])
-                dna.topStreamSuggestions = JsonOutput.toJson([])
-                dna.streamFitScores = JsonOutput.toJson([:])
-
-                if (!dna.save(flush: true)) {
-                    log.error "Failed to create Learning DNA: ${dna.errors}"
-                    return null
-                }
-
-                return dna
-            }
-
-            return LearningDNA.findByUser(user)
+            // Skip LearningDNA creation since the table was dropped
+            log.info "LearningDNA creation skipped - table no longer exists"
+            return null
         } catch (Exception e) {
-            log.error "Error creating Learning DNA for user ${user.userId}: ${e.message}", e
+            log.warn "Could not create Learning DNA for user ${user.userId}: ${e.message}"
             return null
         }
     }
@@ -103,19 +83,13 @@ class UserService {
     }
     
     def getUserStats(User user) {
-        def dna = null
-        try {
-            dna = LearningDNA.findByUser(user)
-        } catch (Exception e) {
-            log.warn "Could not fetch Learning DNA for user ${user.userId}: ${e.message}"
-        }
-
+        // Return default stats since LearningDNA table was dropped
         return [
-            totalTestsCompleted: (dna?.coreTestsCompleted ?: 0) + (dna?.streamFitTestsCompleted ?: 0),
-            coreTestsCompleted: dna?.coreTestsCompleted ?: 0,
-            streamFitTestsCompleted: dna?.streamFitTestsCompleted ?: 0,
-            isDashboardUnlocked: dna?.isDashboardUnlocked ?: false,
-            completionPercentage: calculateCompletionPercentage(dna)
+            totalTestsCompleted: 0,
+            coreTestsCompleted: 0,
+            streamFitTestsCompleted: 0,
+            isDashboardUnlocked: false,
+            completionPercentage: 0.0
         ]
     }
     

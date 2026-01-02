@@ -46,7 +46,7 @@ class AsyncResultProcessor {
     )
     
     DiagnosticService diagnosticService
-    RewardService rewardService
+    // RewardService rewardService // Disabled - reward system is no longer available
     
     /**
      * Fast submission - immediately returns sessionId and processes results in background
@@ -195,8 +195,8 @@ class AsyncResultProcessor {
             
             def sessionWithResults = UserSession.findBySessionId(session.sessionId)
             if (sessionWithResults?.status == 'COMPLETED') {
-                rewardService.processTestCompletionRewards(sessionWithResults.user, sessionWithResults)
-                log.debug "Processed rewards for session ${session.sessionId}"
+                // Skip reward processing - reward system is disabled
+                log.debug "Skipped reward processing for session ${session.sessionId} - reward system disabled"
             }
         } catch (Exception e) {
             log.error "Error processing rewards async: ${e.message}", e

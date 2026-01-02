@@ -183,8 +183,8 @@ class DiagnosticService {
         session.gameResults = new groovy.json.JsonBuilder(results).toString()
         session.save(flush: true)
 
-        // Process rewards for test completion
-        def rewards = rewardService.processTestCompletionRewards(session.user, session)
+        // Skip rewards since reward system is disabled
+        def rewards = [message: "Reward system is currently disabled"]
 
         return [
             success: true,
