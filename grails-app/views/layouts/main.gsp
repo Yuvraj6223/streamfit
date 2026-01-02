@@ -823,7 +823,7 @@
                     <circle cx="4" cy="4" r="2"></circle>
                 </svg>
             </g:link>
-            <g:link uri="#" class="social-btn" aria-label="Instagram">
+            <g:link uri="https://www.instagram.com/streamfit_1?igsh=MTF3ajJoZDRuOXpzdw==" class="social-btn" aria-label="Instagram">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                      stroke-linecap="round" stroke-linejoin="round">
                     <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
@@ -839,7 +839,6 @@
         <ul class="footer-link-list">
             <li><g:link uri="/">Home</g:link></li>
             <li><g:link controller="personality" action="start">Take the Test</g:link></li>
-            <li><g:link controller="personality" action="types">Learning Animals</g:link></li>
         </ul>
     </div>
 

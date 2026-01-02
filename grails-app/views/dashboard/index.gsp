@@ -1190,7 +1190,6 @@
         <ul class="footer-link-list">
             <li><g:link uri="/">Home</g:link></li>
             <li><g:link controller="personality" action="start">Take the Test</g:link></li>
-            <li><g:link controller="personality" action="types">Learning Animals</g:link></li>
         </ul>
     </div>
 

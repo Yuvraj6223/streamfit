@@ -839,7 +839,7 @@
             <button class="btn-primary btn-dashboard" id="open-dashboard-modal" style="margin-top: 30px;">
                 📊 View Your Complete Dashboard
             </button>
-            <a href="/personality/types" class="btn-outline" id="btn-next">Take next test (to know more about yourself)</a>
+            <a href="${createLink(controller: 'personality', action: 'start')}" class="btn-outline" id="btn-next">Take next test (to know more about yourself)</a>
 
             <!-- Share Results Section -->
             <div class="share-section">
@@ -929,6 +929,34 @@
         }
     };
 
+    /* ===============================
+   AUTH MESSAGE HANDLER (FINAL)
+================================ */
+
+    function clearAuthMessages() {
+        [
+            'signup-error-message',
+            'signup-success-message',
+            'login-error-message',
+            'login-success-message'
+        ].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.style.display = 'none';
+                el.textContent = '';
+            }
+        });
+    }
+
+    function showAuthMessage(type, status, message) {
+        const el = document.getElementById(`${type}-${status}-message`);
+        if (!el) return;
+
+        el.textContent = message;
+        el.style.display = 'block';
+    }
+
+
     // ========== AUTH MODAL FUNCTIONS ==========
     function openAuthModal(mode) {
         const modal = document.getElementById('auth-modal');
@@ -969,26 +997,6 @@
         openAuthModal('login');
     }
 
-    function clearAuthMessages() {
-        const messages = ['signup-error-message', 'signup-success-message', 'login-error-message', 'login-success-message'];
-        messages.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) {
-                el.style.display = 'none';
-                el.textContent = '';
-            }
-        });
-    }
-
-    function showAuthMessage(formType, messageType, text) {
-        const messageId = `${formType}-${messageType}-message`;
-        const messageEl = document.getElementById(messageId);
-
-        if (messageEl) {
-            messageEl.textContent = text;
-            messageEl.style.display = 'block';
-        }
-    }
 
     // Close modal when clicking outside
     document.getElementById('auth-modal').addEventListener('click', function(e) {
