@@ -4,6 +4,7 @@ import grails.converters.JSON
 import grails.gorm.transactions.Transactional
 import com.streamfit.user.User
 
+
 class AuthController {
 
     static namespace = null
