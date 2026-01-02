@@ -2,6 +2,7 @@ package com.streamfit.service
 
 import com.streamfit.diagnostic.*
 import com.streamfit.user.User
+import com.streamfit.service.UnifiedPersonaService
 import grails.gorm.transactions.Transactional
 import groovy.json.JsonSlurper
 import groovy.json.JsonOutput
@@ -9,31 +10,33 @@ import groovy.json.JsonOutput
 @Transactional
 class DiagnosticService {
 
-    // Inject specific test services
-    SpiritAnimalService spiritAnimalService
-    CognitiveRadarService cognitiveRadarService
-    FocusStaminaService focusStaminaService
-    GuessworkQuotientService guessworkQuotientService
-    CuriosityCompassService curiosityCompassService
-    ModalityMapService modalityMapService
-    ChallengeDriverService challengeDriverService
-    WorkModeService workModeService
-    PatternSnapshotService patternSnapshotService
+    // Use the unified persona service instead of individual services
+    UnifiedPersonaService unifiedPersonaService
     RewardService rewardService
 
     /**
-     * Get all available diagnostic tests
+     * Get all available diagnostic tests (using new unified system)
      */
     def getAvailableTests(String testType = null) {
         try {
-            def criteria = DiagnosticTest.createCriteria()
-            return criteria.list {
-                eq('isActive', true)
-                if (testType) {
-                    eq('testType', testType)
-                }
-                order('testId', 'asc')
+            // Return available game types from the new system
+            def gameTypes = [
+                [testId: 'COGNITIVE_RADAR', testName: 'Brain Power Game', testType: 'EXAM', questionCount: 6, estimatedMinutes: 10],
+                [testId: 'CURIOSITY_COMPASS', testName: 'Curiosity Game', testType: 'CAREER', questionCount: 6, estimatedMinutes: 3],
+                [testId: 'FOCUS_STAMINA', testName: 'Focus Power Game', testType: 'EXAM', questionCount: 2, estimatedMinutes: 5],
+                [testId: 'GUESSWORK_QUOTIENT', testName: 'Smart Guess Game', testType: 'EXAM', questionCount: 10, estimatedMinutes: 8],
+                [testId: 'MODALITY_MAP', testName: 'Learning Style Game', testType: 'CAREER', questionCount: 6, estimatedMinutes: 3],
+                [testId: 'PATTERN_SNAPSHOT', testName: 'Pattern Rush Game', testType: 'CAREER', questionCount: 6, estimatedMinutes: 3],
+                [testId: 'SPIRIT_ANIMAL', testName: 'Spirit Animal Game', testType: 'EXAM', questionCount: 12, estimatedMinutes: 5],
+                [testId: 'WORK_MODE', testName: 'Work Style Game', testType: 'CAREER', questionCount: 5, estimatedMinutes: 2],
+                [testId: 'PERSONALITY', testName: 'Personality Game', testType: 'CAREER', questionCount: 5, estimatedMinutes: 3]
+            ]
+            
+            if (testType) {
+                return gameTypes.findAll { it.testType == testType }
             }
+            
+            return gameTypes
         } catch (Exception e) {
             log.warn "Could not fetch available tests: ${e.message}"
             return []
@@ -41,63 +44,64 @@ class DiagnosticService {
     }
 
     /**
-     * Get a specific diagnostic test by ID
+     * Get a specific diagnostic test by ID (using new unified system)
      */
     def getTest(String testId) {
-        return DiagnosticTest.findByTestId(testId)
+        def gameTypes = getAvailableTests()
+        return gameTypes.find { it.testId == testId }
     }
 
     /**
-     * Get all questions for a diagnostic test
+     * Get all questions for a diagnostic test (using new unified system)
      */
     def getTestQuestions(String testId) {
-        def test = DiagnosticTest.findByTestId(testId)
-        if (!test) {
+        try {
+            def questions = com.streamfit.GameQuestion.findAllByGameType(testId, [sort: 'questionNumber', order: 'asc'])
+
+            return questions.collect { question ->
+                def options = com.streamfit.GameOption.findAllByQuestion(question, [sort: 'displayOrder'])
+
+                [
+                    questionId: question.questionId,
+                    questionNumber: question.questionNumber,
+                    questionText: question.questionText,
+                    questionType: question.questionType,
+                    timeLimit: question.timeLimit,
+                    scoringDimension: question.scoringDimension,
+                    options: options.collect { opt ->
+                        [
+                            optionId: opt.id,
+                            optionText: opt.optionText,
+                            optionValue: opt.optionValue,
+                            isCorrect: opt.isCorrect
+                        ]
+                    }
+                ]
+            }
+        } catch (Exception e) {
+            log.error "Could not fetch test questions for ${testId}: ${e.message}"
             return null
-        }
-
-        def questions = DiagnosticQuestion.findAllByTest(test, [sort: 'questionNumber', order: 'asc'])
-
-        return questions.collect { question ->
-            def options = DiagnosticQuestionOption.findAllByQuestion(question, [sort: 'displayOrder'])
-
-            [
-                questionId: question.questionId,
-                questionNumber: question.questionNumber,
-                questionText: question.questionText,
-                questionType: question.questionType,
-                timeLimit: question.timeLimit,
-                scoringDimension: question.scoringDimension,
-                options: options.collect { opt ->
-                    [
-                        optionText: opt.optionText,
-                        optionValue: opt.optionValue,
-                        scoreValue: opt.scoreValue
-                    ]
-                }
-            ]
         }
     }
 
     /**
-     * Start a new diagnostic test session
+     * Start a new diagnostic test session (using new unified system)
      */
     def startTestSession(User user, String testId) {
-        def test = DiagnosticTest.findByTestId(testId)
+        def test = getTest(testId)
         if (!test) {
             return [success: false, error: 'Test not found']
         }
 
-        def session = new DiagnosticTestSession(
+        def session = new com.streamfit.UserSession(
             user: user,
-            test: test,
             sessionId: UUID.randomUUID().toString(),
-            status: 'STARTED',
-            startedAt: new Date()
+            status: 'ACTIVE',
+            startTime: new Date()
         )
 
         if (!session.save(flush: true)) {
-            log.error "Failed to create diagnostic test session: ${session.errors}"
+            log.error "Failed to create user session: ${session.errors}"
             return [success: false, error: 'Failed to create test session']
         }
 
@@ -112,57 +116,49 @@ class DiagnosticService {
     }
 
     /**
-     * Submit a response to a question
+     * Submit a response to a question (using new unified system)
      */
     def submitResponse(String sessionId, String questionId, def answerValue, Integer confidenceLevel = null, Integer timeSpent = null) {
-        def session = DiagnosticTestSession.findBySessionId(sessionId)
+        def session = com.streamfit.UserSession.findBySessionId(sessionId)
         if (!session) {
             return [success: false, error: 'Session not found']
         }
 
-        def question = DiagnosticQuestion.findByQuestionId(questionId)
+        def question = com.streamfit.GameQuestion.findByQuestionId(questionId)
+        if (!question) {
+            return [success: false, error: 'Question not found']
+        }
 
         // Convert answerValue to String if it's not already
         String answerValueStr = answerValue?.toString()
 
-        def selectedOption = DiagnosticQuestionOption.findByQuestionAndOptionValue(question, answerValueStr)
+        def selectedOption = com.streamfit.GameOption.findByQuestionAndOptionValue(question, answerValueStr)
 
-        def response = new DiagnosticResponse(
-            session: session,
-            question: question,
-            selectedOption: selectedOption,
-            answerValue: answerValueStr,
-            confidenceLevel: confidenceLevel,
+        // Create engagement data entry
+        def engageData = new com.streamfit.EngageData(
+            sessionId: sessionId,
+            gameType: question.gameType,
+            questionId: questionId,
+            optionId: selectedOption?.id?.toString(),
+            timestamp: new Date(),
             timeSpent: timeSpent,
-            answeredAt: new Date()
+            confidenceLevel: confidenceLevel,
+            isCorrect: selectedOption?.isCorrect
         )
 
-        // Check if answer is correct (for questions with correct answers)
-        if (selectedOption?.isCorrect != null) {
-            response.isCorrect = selectedOption.isCorrect
-        }
-
-        if (!response.save(flush: true)) {
-            log.error "Failed to save diagnostic response: ${response.errors}"
+        if (!engageData.save(flush: true)) {
+            log.error "Failed to save engagement data: ${engageData.errors}"
             return [success: false, error: 'Failed to save response']
         }
 
-        // Update session status
-        if (session.status == 'STARTED') {
-            session.status = 'IN_PROGRESS'
-            session.save(flush: true)
-        }
-
-        return [success: true, responseId: response.id]
+        return [success: true, responseId: engageData.id]
     }
 
     /**
-     * Submit all answers and calculate results (LEGACY - use AsyncResultProcessor instead)
-     * DEPRECATED: This method is slow and blocks. Use submitTestAsync for high performance.
+     * Submit all answers and calculate results (using new unified system)
      */
-    @Deprecated
     def submitTest(String sessionId, List answers) {
-        def session = DiagnosticTestSession.findBySessionId(sessionId)
+        def session = com.streamfit.UserSession.findBySessionId(sessionId)
         if (!session) {
             return [success: false, error: 'Session not found']
         }
@@ -178,17 +174,13 @@ class DiagnosticService {
             )
         }
 
-        // Calculate results based on test type
-        def results = calculateResults(session)
+        // Calculate results using the unified persona service
+        def results = unifiedPersonaService.calculateFinalPersona(sessionId)
 
         // Update session with results
+        session.endTime = new Date()
         session.status = 'COMPLETED'
-        session.completedAt = new Date()
-        session.resultType = results.resultType
-        session.resultTitle = results.resultTitle
-        session.resultSummary = results.resultSummary
-        // Convert scoreBreakdown Map to JSON string
-        session.scoreBreakdown = results.scoreBreakdown ? (results.scoreBreakdown as grails.converters.JSON).toString() : null
+        session.gameResults = new groovy.json.JsonBuilder(results).toString()
         session.save(flush: true)
 
         // Process rewards for test completion
@@ -203,40 +195,10 @@ class DiagnosticService {
     }
 
     /**
-     * Calculate results based on test type (made public for async processor)
-     */
-    def calculateResults(DiagnosticTestSession session) {
-        def testId = session.test.testId
-        
-        switch (testId) {
-            case 'SPIRIT_ANIMAL':
-                return calculateSpiritAnimalResults(session)
-            case 'COGNITIVE_RADAR':
-                return calculateCognitiveRadarResults(session)
-            case 'FOCUS_STAMINA':
-                return calculateFocusStaminaResults(session)
-            case 'GUESSWORK_QUOTIENT':
-                return calculateGuessworkQuotientResults(session)
-            case 'CURIOSITY_COMPASS':
-                return calculateCuriosityCompassResults(session)
-            case 'MODALITY_MAP':
-                return calculateModalityMapResults(session)
-            case 'CHALLENGE_DRIVER':
-                return calculateChallengeDriverResults(session)
-            case 'WORK_MODE':
-                return calculateWorkModeResults(session)
-            case 'PATTERN_SNAPSHOT':
-                return calculatePatternSnapshotResults(session)
-            default:
-                return [resultType: 'UNKNOWN', resultTitle: 'Unknown', resultSummary: 'Unable to calculate results']
-        }
-    }
-
-    /**
-     * Get test results for a session
+     * Get test results for a session (using new unified system)
      */
     def getResults(String sessionId) {
-        def session = DiagnosticTestSession.findBySessionId(sessionId)
+        def session = com.streamfit.UserSession.findBySessionId(sessionId)
         if (!session) {
             return [success: false, error: 'Session not found']
         }
@@ -245,98 +207,44 @@ class DiagnosticService {
             return [success: false, error: 'Test not completed']
         }
 
-        def result = DiagnosticResult.findByTestAndResultId(session.test, session.resultType)
-
-        // Parse scoreBreakdown JSON string back to Map
-        def scoreBreakdownMap = null
-        if (session.scoreBreakdown) {
+        // Parse game results JSON
+        def results = null
+        if (session.gameResults) {
             try {
-                scoreBreakdownMap = grails.converters.JSON.parse(session.scoreBreakdown)
+                results = new groovy.json.JsonSlurper().parseText(session.gameResults)
             } catch (Exception e) {
-                log.error "Failed to parse scoreBreakdown JSON: ${e.message}"
+                log.error "Failed to parse game results JSON: ${e.message}"
             }
         }
 
         return [
             success: true,
             sessionId: session.sessionId,
-            testId: session.test.testId,
-            testName: session.test.testName,
-            resultType: session.resultType,
-            resultTitle: session.resultTitle,
-            resultSummary: session.resultSummary,
-            scoreBreakdown: scoreBreakdownMap,
-            completedAt: session.completedAt,
-            profile: result?.profile,
-            strengths: result?.strengths,
-            traps: result?.traps,
-            aiRoadmap: result?.aiRoadmap,
-            bestMatches: result?.bestMatches,
-            emoji: result?.emoji
+            results: results,
+            completedAt: session.endTime
         ]
     }
 
     /**
-     * Get user's test history
+     * Get user's test history (using new unified system)
      */
     def getUserTestHistory(User user) {
         try {
-            def sessions = DiagnosticTestSession.findAllByUser(user, [sort: 'dateCreated', order: 'desc'])
+            def sessions = com.streamfit.UserSession.findAllByUser(user, [sort: 'startTime', order: 'desc'])
 
             return sessions.collect { session ->
                 [
                     sessionId: session.sessionId,
-                    testId: session.test.testId,
-                    testName: session.test.testName,
-                    testType: session.test.testType,
                     status: session.status,
-                    resultType: session.resultType,
-                    resultTitle: session.resultTitle,
-                    startedAt: session.startedAt,
-                    completedAt: session.completedAt
+                    startTime: session.startTime,
+                    endTime: session.endTime,
+                    gameResults: session.gameResults ? new groovy.json.JsonSlurper().parseText(session.gameResults) : null
                 ]
             }
         } catch (Exception e) {
             log.warn "Could not fetch test history for user ${user.userId}: ${e.message}"
             return []
         }
-    }
-
-    // Calculation methods delegate to specific service classes
-    private def calculateSpiritAnimalResults(DiagnosticTestSession session) {
-        return spiritAnimalService.calculateResults(session)
-    }
-
-    private def calculateCognitiveRadarResults(DiagnosticTestSession session) {
-        return cognitiveRadarService.calculateResults(session)
-    }
-
-    private def calculateFocusStaminaResults(DiagnosticTestSession session) {
-        return focusStaminaService.calculateResults(session)
-    }
-
-    private def calculateGuessworkQuotientResults(DiagnosticTestSession session) {
-        return guessworkQuotientService.calculateResults(session)
-    }
-
-    private def calculateCuriosityCompassResults(DiagnosticTestSession session) {
-        return curiosityCompassService.calculateResults(session)
-    }
-
-    private def calculateModalityMapResults(DiagnosticTestSession session) {
-        return modalityMapService.calculateResults(session)
-    }
-
-    private def calculateChallengeDriverResults(DiagnosticTestSession session) {
-        return challengeDriverService.calculateResults(session)
-    }
-
-    private def calculateWorkModeResults(DiagnosticTestSession session) {
-        return workModeService.calculateResults(session)
-    }
-
-    private def calculatePatternSnapshotResults(DiagnosticTestSession session) {
-        return patternSnapshotService.calculateResults(session)
     }
 }
 

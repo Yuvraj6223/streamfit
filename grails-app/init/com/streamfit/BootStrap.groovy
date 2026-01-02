@@ -1,39 +1,32 @@
 package com.streamfit
 
-
-import com.streamfit.service.SpiritAnimalService
-import com.streamfit.service.CognitiveRadarService
-import com.streamfit.service.FocusStaminaService
-import com.streamfit.service.GuessworkQuotientService
-import com.streamfit.service.CuriosityCompassService
-import com.streamfit.service.ModalityMapService
-import com.streamfit.service.ChallengeDriverService
-import com.streamfit.service.WorkModeService
-import com.streamfit.service.PatternSnapshotService
+import com.streamfit.service.UnifiedPersonaService
 import com.streamfit.service.RewardService
-import com.streamfit.service.PersonalityService
 
 class BootStrap {
 
-
-    SpiritAnimalService spiritAnimalService
-    CognitiveRadarService cognitiveRadarService
-    FocusStaminaService focusStaminaService
-    GuessworkQuotientService guessworkQuotientService
-    CuriosityCompassService curiosityCompassService
-    ModalityMapService modalityMapService
-    ChallengeDriverService challengeDriverService
-    WorkModeService workModeService
-    PatternSnapshotService patternSnapshotService
+    UnifiedPersonaService unifiedPersonaService
     RewardService rewardService
-    PersonalityService personalityService
 
     def init = { servletContext ->
-        // Initialize personality test questions
-        initializePersonalityTest()
-
-        // Initialize diagnostic tests
-        initializeDiagnosticTests()
+        // Check if this is first run (no game questions exist)
+        def isFirstRun = false
+        try {
+            com.streamfit.GameQuestion.withTransaction { transaction ->
+                isFirstRun = com.streamfit.GameQuestion.count() == 0
+            }
+        } catch (Exception e) {
+            log.warn "Could not check GameQuestion count, assuming first run: ${e.message}"
+            isFirstRun = true
+        }
+        
+        // Only delete old tables on first run
+        if (isFirstRun) {
+            deleteOldTables()
+        }
+        
+        // Initialize new unified game system
+        initializeUnifiedGameSystem(isFirstRun)
 
         // Initialize reward system
         initializeRewardSystem()
@@ -41,132 +34,88 @@ class BootStrap {
 
     def destroy = {
     }
-
-
-    private void initializePersonalityTest() {
+    
+    private void deleteOldTables() {
         try {
-            // Check if personality questions already exist
-            com.streamfit.personality.PersonalityQuestion.withTransaction {
-                def questionCount = com.streamfit.personality.PersonalityQuestion.count()
+            log.info "Deleting old database tables..."
+            
+            // Delete old diagnostic tables
+            try {
+                com.streamfit.diagnostic.DiagnosticResponse.executeUpdate("DELETE FROM DiagnosticResponse")
+                com.streamfit.diagnostic.DiagnosticResult.executeUpdate("DELETE FROM DiagnosticResult") 
+                com.streamfit.diagnostic.DiagnosticQuestionOption.executeUpdate("DELETE FROM DiagnosticQuestionOption")
+                com.streamfit.diagnostic.DiagnosticQuestion.executeUpdate("DELETE FROM DiagnosticQuestion")
+                com.streamfit.diagnostic.DiagnosticTestSession.executeUpdate("DELETE FROM DiagnosticTestSession")
+                com.streamfit.diagnostic.DiagnosticTest.executeUpdate("DELETE FROM DiagnosticTest")
+                log.info "Old diagnostic tables deleted"
+            } catch (Exception e) {
+                log.warn "Some diagnostic tables may not exist: ${e.message}"
+            }
+            
+            // Delete old personality tables
+            try {
+                com.streamfit.personality.PersonalityResponse.executeUpdate("DELETE FROM PersonalityResponse")
+                com.streamfit.personality.PersonalityQuestionOption.executeUpdate("DELETE FROM PersonalityQuestionOption")
+                com.streamfit.personality.PersonalityQuestion.executeUpdate("DELETE FROM PersonalityQuestion")
+                com.streamfit.personality.PersonalityTestSession.executeUpdate("DELETE FROM PersonalityTestSession")
+                com.streamfit.personality.PersonalityTrait.executeUpdate("DELETE FROM PersonalityTrait")
+                log.info "Old personality tables deleted"
+            } catch (Exception e) {
+                log.warn "Some personality tables may not exist: ${e.message}"
+            }
+            
+            // Delete old reward tables
+            try {
+                com.streamfit.reward.UserBadge.executeUpdate("DELETE FROM UserBadge")
+                com.streamfit.reward.UserPoints.executeUpdate("DELETE FROM UserPoints")
+                com.streamfit.reward.Badge.executeUpdate("DELETE FROM Badge")
+                com.streamfit.reward.Achievement.executeUpdate("DELETE FROM Achievement")
+                log.info "Old reward tables deleted"
+            } catch (Exception e) {
+                log.warn "Some reward tables may not exist: ${e.message}"
+            }
+            
+            // Delete old dashboard tables
+            try {
+                com.streamfit.dashboard.LearningDNA.executeUpdate("DELETE FROM LearningDNA")
+                log.info "Old dashboard tables deleted"
+            } catch (Exception e) {
+                log.warn "Dashboard tables may not exist: ${e.message}"
+            }
+            
+            log.info "Old tables cleanup completed"
+            
+        } catch (Exception e) {
+            log.error "Error deleting old tables: ${e.message}", e
+        }
+    }
+
+    private void initializeUnifiedGameSystem(boolean isFirstRun) {
+        try {
+            // Check if game questions already exist
+            com.streamfit.GameQuestion.withTransaction { transaction ->
+                def questionCount = com.streamfit.GameQuestion.count()
 
                 if (questionCount == 0) {
-                    log.info "Initializing personality test questions..."
-                    personalityService.initializeDefaultQuestions()
-                    log.info "Personality test questions initialized successfully!"
+                    log.info "Initializing unified game system..."
+                    
+                    // Run the migration to populate new tables
+                    def migration = new com.streamfit.GameDataMigration()
+                    migration.migrateAllGameData()
+                    
+                    log.info "Unified game system initialized successfully!"
                 } else {
-                    log.info "Personality test questions already exist (${questionCount} questions)"
+                    log.info "Game questions already exist (${questionCount} questions) - skipping migration"
                 }
             }
         } catch (Exception e) {
-            log.error "Error initializing personality test: ${e.message}", e
+            log.error "Error initializing unified game system: ${e.message}", e
         }
-    }
-
-    private void initializeDiagnosticTests() {
-        try {
-            com.streamfit.diagnostic.DiagnosticTest.withTransaction {
-                log.info "Initializing diagnostic tests..."
-
-                // Initialize Exam Tests
-                initializeExamTests()
-
-                // Initialize Career Tests
-                initializeCareerTests()
-
-                log.info "Diagnostic tests initialization completed!"
-            }
-        } catch (Exception e) {
-            log.error "Error initializing diagnostic tests: ${e.message}", e
-        }
-    }
-
-    private void initializeExamTests() {
-        log.info "Initializing exam diagnostic tests..."
-
-        // Spirit Animal Test
-        try {
-            spiritAnimalService.initializeQuestions()
-            spiritAnimalService.initializeResults()
-        } catch (Exception e) {
-            log.error "Error initializing Spirit Animal test: ${e.message}", e
-        }
-
-        // Cognitive Radar Test
-        try {
-            cognitiveRadarService.initializeQuestions()
-            cognitiveRadarService.initializeResults()
-        } catch (Exception e) {
-            log.error "Error initializing Cognitive Radar test: ${e.message}", e
-        }
-
-        // Focus Stamina Test
-        try {
-            focusStaminaService.initializeQuestions()
-            focusStaminaService.initializeResults()
-        } catch (Exception e) {
-            log.error "Error initializing Focus Stamina test: ${e.message}", e
-        }
-
-        // Guesswork Quotient Test
-        try {
-            guessworkQuotientService.initializeQuestions()
-            guessworkQuotientService.initializeResults()
-        } catch (Exception e) {
-            log.error "Error initializing Guesswork Quotient test: ${e.message}", e
-        }
-
-        log.info "Exam diagnostic tests initialized!"
-    }
-
-    private void initializeCareerTests() {
-        log.info "Initializing career diagnostic tests..."
-
-        // Curiosity Compass Test
-        try {
-            curiosityCompassService.initializeQuestions()
-            curiosityCompassService.initializeResults()
-        } catch (Exception e) {
-            log.error "Error initializing Curiosity Compass test: ${e.message}", e
-        }
-
-        // Modality Map Test
-        try {
-            modalityMapService.initializeQuestions()
-            modalityMapService.initializeResults()
-        } catch (Exception e) {
-            log.error "Error initializing Modality Map test: ${e.message}", e
-        }
-
-        // Challenge Driver Test
-        try {
-            challengeDriverService.initializeQuestions()
-            challengeDriverService.initializeResults()
-        } catch (Exception e) {
-            log.error "Error initializing Challenge Driver test: ${e.message}", e
-        }
-
-        // Work Mode Test
-        try {
-            workModeService.initializeQuestions()
-            workModeService.initializeResults()
-        } catch (Exception e) {
-            log.error "Error initializing Work Mode test: ${e.message}", e
-        }
-
-        // Pattern Snapshot Test
-        try {
-            patternSnapshotService.initializeQuestions()
-            patternSnapshotService.initializeResults()
-        } catch (Exception e) {
-            log.error "Error initializing Pattern Snapshot test: ${e.message}", e
-        }
-
-        log.info "Career diagnostic tests initialized!"
     }
 
     private void initializeRewardSystem() {
         try {
-            com.streamfit.reward.Badge.withTransaction {
+            com.streamfit.reward.Badge.withTransaction { transaction ->
                 log.info "Initializing reward system..."
                 rewardService.initializeDefaultBadges()
                 log.info "Reward system initialized!"

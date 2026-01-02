@@ -1,9 +1,9 @@
 package com.streamfit.service
 
-import com.streamfit.diagnostic.DiagnosticTestSession
-import com.streamfit.diagnostic.DiagnosticResponse
-import com.streamfit.diagnostic.DiagnosticQuestion
-import com.streamfit.diagnostic.DiagnosticQuestionOption
+import com.streamfit.UserSession
+import com.streamfit.EngageData
+import com.streamfit.GameQuestion
+import com.streamfit.GameOption
 import grails.gorm.transactions.Transactional
 import org.springframework.stereotype.Service
 import java.util.concurrent.CompletableFuture
@@ -16,7 +16,7 @@ import java.util.concurrent.ThreadFactory
 
 /**
  * High-performance async result processor for handling test submissions
- * Optimized for millions of concurrent users
+ * Optimized for millions of concurrent users - Updated for new unified system
  */
 @Service
 class AsyncResultProcessor {
@@ -53,16 +53,26 @@ class AsyncResultProcessor {
      * REDUCES: 1-3 seconds → 50-100ms response time
      */
     def submitTestAsync(String sessionId, List answers) {
+        log.info "ASYNC_DEBUG: submitTestAsync called with sessionId: ${sessionId}, answers count: ${answers.size()}"
+        answers.each { answer ->
+            log.info "ASYNC_DEBUG: Answer - QuestionId: ${answer.questionId}, AnswerValue: ${answer.answerValue}"
+        }
+        
         try {
             // 1. Quick validation and session update (synchronous, fast)
-            def session = DiagnosticTestSession.findBySessionId(sessionId)
+            def session = UserSession.findBySessionId(sessionId)
             if (!session) {
+                log.error "ASYNC_DEBUG: Session not found: ${sessionId}"
                 return [success: false, error: 'Session not found']
             }
+            
+            log.info "ASYNC_DEBUG: Found session: ${session.sessionId}, status: ${session.status}"
             
             // 2. Mark as processing immediately (prevents duplicate submissions)
             session.status = 'PROCESSING'
             session.save(flush: false) // Don't flush - let background handle it
+            
+            log.info "ASYNC_DEBUG: Session marked as PROCESSING, starting async tasks"
             
             // 3. Save responses asynchronously (non-blocking)
             CompletableFuture.runAsync({
@@ -80,41 +90,58 @@ class AsyncResultProcessor {
             }, rewardProcessorPool)
             
             // 6. IMMEDIATE RESPONSE - user gets redirected to results page
-            return [
+            def response = [
                 success: true,
                 sessionId: sessionId,
                 processing: true,
                 estimatedTime: '2-5 seconds' // Manage user expectations
             ]
             
+            log.info "ASYNC_DEBUG: Returning immediate response: ${response}"
+            return response
+            
         } catch (Exception e) {
-            log.error "Error in async test submission: ${e.message}", e
-            return [success: false, error: 'Submission failed']
+            log.error "ASYNC_DEBUG: Error in submitTestAsync: ${e.message}", e
+            return [success: false, error: 'Submission failed: ' + e.message]
         }
     }
     
     /**
      * Save responses asynchronously with batch processing
      */
-    private void saveResponsesAsync(DiagnosticTestSession session, List answers) {
+    private void saveResponsesAsync(UserSession session, List answers) {
         try {
-            DiagnosticTestSession.withTransaction {
+            UserSession.withTransaction {
                 // Batch delete existing responses
-                DiagnosticResponse.where { session == session }.deleteAll()
+                EngageData.where { sessionId == session.sessionId }.deleteAll()
                 
                 // Batch insert new responses
                 def responses = answers.collect { answer ->
-                    def question = DiagnosticQuestion.findByQuestionId(answer.questionId)
-                    def selectedOption = DiagnosticQuestionOption.findByQuestionAndOptionValue(question, answer.answerValue?.toString())
+                    def question = GameQuestion.findByQuestionId(answer.questionId)
+                    log.info "SAVE_DEBUG: Found question: ${question?.questionId}, gameType: ${question?.gameType}"
                     
-                    new DiagnosticResponse(
-                        session: session,
-                        question: question,
-                        selectedOption: selectedOption,
-                        answerValue: answer.answerValue?.toString(),
-                        confidenceLevel: answer.confidenceLevel,
+                    def selectedOption = GameOption.findByQuestionAndOptionValue(question, answer.answerValue?.toString())
+                    log.info "SAVE_DEBUG: Looking for option with value: '${answer.answerValue}', found: ${selectedOption?.id}, optionText: ${selectedOption?.optionText}"
+                    
+                    if (!selectedOption) {
+                        log.error "SAVE_DEBUG: NO OPTION FOUND for question ${answer.questionId} with answerValue '${answer.answerValue}'"
+                        // Let's see all available options for this question
+                        def allOptions = GameOption.findAllByQuestion(question)
+                        log.error "SAVE_DEBUG: Available options for question ${answer.questionId}:"
+                        allOptions.each { opt ->
+                            log.error "SAVE_DEBUG: - Option ID: ${opt.id}, Value: '${opt.optionValue}', Text: ${opt.optionText}"
+                        }
+                    }
+                    
+                    new EngageData(
+                        sessionId: session.sessionId,
+                        gameType: question.gameType,
+                        questionId: answer.questionId,
+                        optionId: selectedOption?.id?.toString(),
+                        timestamp: new Date(),
                         timeSpent: answer.timeSpent ?: 0,
-                        answeredAt: new Date()
+                        confidenceLevel: answer.confidenceLevel,
+                        isCorrect: selectedOption?.isCorrect
                     )
                 }
                 
@@ -131,30 +158,27 @@ class AsyncResultProcessor {
     /**
      * Process results asynchronously
      */
-    private void processResultsAsync(DiagnosticTestSession session) {
+    private void processResultsAsync(UserSession session) {
         try {
-            // Calculate results (this is the heavy computation)
-            def results = diagnosticService.calculateResults(session)
+            // Calculate results using the unified persona service
+            def results = diagnosticService.unifiedPersonaService.calculateFinalPersona(session.sessionId)
             
             // Update session with results
-            DiagnosticTestSession.withTransaction {
-                def sessionToUpdate = DiagnosticTestSession.get(session.id)
+            UserSession.withTransaction {
+                def sessionToUpdate = UserSession.get(session.id)
                 sessionToUpdate.status = 'COMPLETED'
-                sessionToUpdate.completedAt = new Date()
-                sessionToUpdate.resultType = results.resultType
-                sessionToUpdate.resultTitle = results.resultTitle
-                sessionToUpdate.resultSummary = results.resultSummary
-                sessionToUpdate.scoreBreakdown = results.scoreBreakdown ? (results.scoreBreakdown as grails.converters.JSON).toString() : null
+                sessionToUpdate.endTime = new Date()
+                sessionToUpdate.gameResults = new groovy.json.JsonBuilder(results).toString()
                 sessionToUpdate.save(flush: true) // Flush here to commit results
             }
             
-            log.info "Completed result processing for session ${session.sessionId} in ${(System.currentTimeMillis() - session.startedAt.time)}ms"
+            log.info "Completed result processing for session ${session.sessionId} in ${(System.currentTimeMillis() - session.startTime.time)}ms"
             
         } catch (Exception e) {
             log.error "Error processing results async: ${e.message}", e
             // Mark as failed
-            DiagnosticTestSession.withTransaction {
-                def sessionToUpdate = DiagnosticTestSession.get(session.id)
+            UserSession.withTransaction {
+                def sessionToUpdate = UserSession.get(session.id)
                 sessionToUpdate.status = 'FAILED'
                 sessionToUpdate.save(flush: false)
             }
@@ -164,12 +188,12 @@ class AsyncResultProcessor {
     /**
      * Process rewards asynchronously (separate thread pool)
      */
-    private void processRewardsAsync(DiagnosticTestSession session) {
+    private void processRewardsAsync(UserSession session) {
         try {
             // Wait a bit for results to be processed
             Thread.sleep(1000)
             
-            def sessionWithResults = DiagnosticTestSession.findBySessionId(session.sessionId)
+            def sessionWithResults = UserSession.findBySessionId(session.sessionId)
             if (sessionWithResults?.status == 'COMPLETED') {
                 rewardService.processTestCompletionRewards(sessionWithResults.user, sessionWithResults)
                 log.debug "Processed rewards for session ${session.sessionId}"
@@ -184,7 +208,7 @@ class AsyncResultProcessor {
      */
     def getResultStatus(String sessionId) {
         try {
-            def session = DiagnosticTestSession.findBySessionId(sessionId)
+            def session = UserSession.findBySessionId(sessionId)
             if (!session) {
                 return [found: false]
             }

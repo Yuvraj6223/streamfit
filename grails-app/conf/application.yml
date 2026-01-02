@@ -96,24 +96,39 @@ dataSource:
     pooled: true
     jmxExport: true
     driverClassName: com.mysql.cj.jdbc.Driver
-    username: root
-    password: yuvrajmysql
+    username:
+    password:
     dialect: org.hibernate.dialect.MySQL8Dialect
 
 environments:
     development:
         dataSource:
-            dbCreate: create-drop
+            dbCreate: update
             url: jdbc:mysql://localhost:3306/wsuser?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
             logSql: false
             formatSql: false
             properties:
                 jmxEnabled: true
-                initialSize: 5
-                maxActive: 50
-                minIdle: 5
-                maxIdle: 25
-                maxWait: 10000
+                # Optimized for high concurrency
+                initialSize: 10
+                maxActive: 100
+                minIdle: 10
+                maxIdle: 50
+                maxWait: 5000
+                # Connection validation
+                validationQuery: SELECT 1
+                validationQueryTimeout: 3
+                testOnBorrow: true
+                testWhileIdle: true
+                testOnReturn: false
+                # Performance tuning
+                timeBetweenEvictionRunsMillis: 30000
+                minEvictableIdleTimeMillis: 60000
+                maxAge: 300000
+                # Remove slow connections
+                removeAbandoned: true
+                removeAbandonedTimeout: 300
+                logAbandoned: true
     test:
         dataSource:
             dbCreate: none
@@ -124,11 +139,12 @@ environments:
             url: jdbc:mysql://localhost:3306/wsuser?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&useSSL=true
             properties:
                 jmxEnabled: true
-                initialSize: 5
-                maxActive: 50
-                minIdle: 5
-                maxIdle: 25
-                maxWait: 10000
+                # High-performance production settings
+                initialSize: 20
+                maxActive: 200
+                minIdle: 20
+                maxIdle: 100
+                maxWait: 3000
                 maxAge: 600000
                 timeBetweenEvictionRunsMillis: 5000
                 minEvictableIdleTimeMillis: 60000
@@ -140,4 +156,14 @@ environments:
                 testOnReturn: false
                 jdbcInterceptors: ConnectionState
                 defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
+                # Performance optimizations
+                removeAbandoned: true
+                removeAbandonedTimeout: 300
+                logAbandoned: true
+                # Cache prepared statements
+                poolPreparedStatements: true
+                maxOpenPreparedStatements: 250
+    server:
+      address: 192.168.0.107
+      port: 8080
 

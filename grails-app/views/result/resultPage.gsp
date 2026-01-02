@@ -878,6 +878,9 @@
 
     // Populate results from server data
     function populateResults() {
+        console.log('POPULATE_DEBUG: Starting populateResults()');
+        console.log('POPULATE_DEBUG: resultData =', resultData);
+        
         if (!resultData) {
             console.error('No result data available');
             document.getElementById('result-title').textContent = 'Error Loading Results';
@@ -892,37 +895,117 @@
             return;
         }
 
-        // Use server data if available, otherwise fall back to ANIMAL_REPORTS
+        // Primary: build UI from server-computed game results
         var data;
+        var gameResults = (resultData.results && resultData.results.gameResults) ? resultData.results.gameResults : null;
+        
+        console.log('POPULATE_DEBUG: gameResults =', gameResults);
+        console.log('POPULATE_DEBUG: gameResults keys =', gameResults ? Object.keys(gameResults) : 'null');
+        
+        if (gameResults && Object.keys(gameResults).length > 0) {
+            const gameTypes = Object.keys(gameResults);
+            const currentGameType = gameTypes[0]; // session generally contains a single game's responses
+            
+            console.log('POPULATE_DEBUG: currentGameType =', currentGameType);
+            console.log('POPULATE_DEBUG: gameResults[currentGameType] =', gameResults[currentGameType]);
 
-        // Check if server provided complete result data
-        if (resultData.emoji && resultData.resultTitle) {
-            data = {
-                emoji: resultData.emoji || '🎯',
-                title: resultData.resultTitle || 'Your Results',
-                tagline: resultData.resultSummary || '',
-                summary: resultData.profile || '',
-                strength: resultData.strengths || '',
-                style: resultData.aiRoadmap || '',
-                loss: resultData.traps || 'Unlock to see potential challenges',
-                social: resultData.bestMatches || '',
-                reward: resultData.strengths || 'Great job!',
-                next: 'Take next test (to know more about yourself)',
-                powers: [
-                    {l: 'Core Strength', v: 85},
-                    {l: 'Learning Style', v: 90}
-                ],
-                theme: 'theme-wolf'
-            };
+            if (currentGameType === 'SPIRIT_ANIMAL') {
+                console.log('POPULATE_DEBUG: Processing SPIRIT_ANIMAL results');
+                const sa = gameResults['SPIRIT_ANIMAL'] || {};
+                const map = {
+                    'STRATEGIC_WOLF': 'wolf',
+                    'WISE_OWL': 'owl',
+                    'DISCIPLINED_BEE': 'bee',
+                    'BOLD_TIGER': 'tiger'
+                };
+                const key = map[sa.resultType] || 'wolf';
+                data = ANIMAL_REPORTS[key];
+                console.log('POPULATE_DEBUG: Using ANIMAL_REPORTS for', key);
+            } else if (currentGameType === 'PATTERN_SNAPSHOT') {
+                console.log('POPULATE_DEBUG: Processing PATTERN_SNAPSHOT results');
+                const ps = gameResults['PATTERN_SNAPSHOT'] || {};
+                const skew = ps.dominantSkew || 'VISUAL';
+                console.log('POPULATE_DEBUG: Pattern Snapshot skew =', skew);
+                console.log('POPULATE_DEBUG: Pattern Snapshot full result =', ps);
+                const PATTERN_REPORTS = {
+                    'VISUAL': {
+                        theme: 'theme-owl', emoji: '🧠', title: 'Pattern Visualizer', tagline: '"Sees Structures"',
+                        summary: 'You recognize shapes, arrangements, and visual patterns quickly.',
+                        strength: 'Visual Reasoning', style: 'Spatial',
+                        loss: 'Unlock to learn how to convert visual intuition into step-proof answers.',
+                        social: 'Most Visualizers unlock advanced visual drills.',
+                        reward: 'You spot patterns others miss',
+                        next: 'Take next test (to know more about yourself)',
+                        powers: [{l:'Visual Patterns', v:92}, {l:'Symbol Mapping', v:84}]
+                    },
+                    'VERBAL': {
+                        theme: 'theme-wolf', emoji: '💬', title: 'Pattern Communicator', tagline: '"Language Mapper"',
+                        summary: 'You detect relationships in words, analogies, and sequences.',
+                        strength: 'Verbal Reasoning', style: 'Linguistic',
+                        loss: 'Unlock strategies to avoid over-reading traps in sequence items.',
+                        social: 'Communicators often progress fast with analogy scaffolds.',
+                        reward: 'You decode word patterns rapidly',
+                        next: 'Take next test (to know more about yourself)',
+                        powers: [{l:'Analogies', v:90}, {l:'Sequence Logic', v:86}]
+                    },
+                    'NUMERIC': {
+                        theme: 'theme-bee', emoji: '🔢', title: 'Pattern Analyzer', tagline: '"Number Sense"',
+                        summary: 'You see numeric progressions and modular patterns with ease.',
+                        strength: 'Quant Patterns', style: 'Analytical',
+                        loss: 'Unlock heuristics to speed-check numeric sequences under time.',
+                        social: 'Analyzers boost speed with timed pattern drills.',
+                        reward: 'You read numbers like a language',
+                        next: 'Take next test (to know more about yourself)',
+                        powers: [{l:'Series Detection', v:93}, {l:'Rule Finding', v:88}]
+                    }
+                };
+                data = PATTERN_REPORTS[skew] || PATTERN_REPORTS['VISUAL'];
+            } else {
+                // Minimal generic presentation for other games
+                const prettyName = (currentGameType || 'Your Results')
+                    .toLowerCase().replace(/_/g, ' ')
+                    .replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+                data = {
+                    theme: 'theme-wolf', emoji: '🎯',
+                    title: prettyName, tagline: '"Summary"',
+                    summary: (resultData.results && resultData.results.summary) ? resultData.results.summary : 'Your personalized results are ready.',
+                    strength: 'Core Strength', style: 'Style',
+                    loss: 'Unlock to see deeper insights.',
+                    social: 'Learners like you continue to the next test.',
+                    reward: 'Nice progress!',
+                    next: 'Take next test (to know more about yourself)',
+                    powers: [{l:'Dimension A', v:85}, {l:'Dimension B', v:80}]
+                };
+            }
         } else {
-            // Fallback to determining from URL or local storage
-            const urlParams = new URLSearchParams(window.location.search);
-            const urlResult = urlParams.get('animal');
-            const storedResult = localStorage.getItem('exam_animal_result');
-            const keys = Object.keys(ANIMAL_REPORTS);
-            const randomResult = keys[Math.floor(Math.random() * keys.length)];
-            let resultKey = (urlResult && ANIMAL_REPORTS[urlResult]) ? urlResult : (storedResult || randomResult);
-            data = ANIMAL_REPORTS[resultKey];
+            // Legacy fallback: use ANIMAL_REPORTS with URL/localStorage hints
+            if (resultData.emoji && resultData.resultTitle) {
+                data = {
+                    emoji: resultData.emoji || '🎯',
+                    title: resultData.resultTitle || 'Your Results',
+                    tagline: resultData.resultSummary || '',
+                    summary: resultData.profile || '',
+                    strength: resultData.strengths || '',
+                    style: resultData.aiRoadmap || '',
+                    loss: resultData.traps || 'Unlock to see potential challenges',
+                    social: resultData.bestMatches || '',
+                    reward: resultData.strengths || 'Great job!',
+                    next: 'Take next test (to know more about yourself)',
+                    powers: [
+                        {l: 'Core Strength', v: 85},
+                        {l: 'Learning Style', v: 90}
+                    ],
+                    theme: 'theme-wolf'
+                };
+            } else {
+                const urlParams = new URLSearchParams(window.location.search);
+                const urlResult = urlParams.get('animal');
+                const storedResult = localStorage.getItem('exam_animal_result');
+                const keys = Object.keys(ANIMAL_REPORTS);
+                const randomResult = keys[Math.floor(Math.random() * keys.length)];
+                let resultKey = (urlResult && ANIMAL_REPORTS[urlResult]) ? urlResult : (storedResult || randomResult);
+                data = ANIMAL_REPORTS[resultKey];
+            }
         }
 
         // Update theme

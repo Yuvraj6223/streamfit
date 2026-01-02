@@ -2,7 +2,7 @@ package com.streamfit.service
 
 import com.streamfit.user.User
 import com.streamfit.reward.*
-import com.streamfit.diagnostic.DiagnosticTestSession
+import com.streamfit.UserSession
 import grails.gorm.transactions.Transactional
 
 @Transactional
@@ -55,31 +55,38 @@ class RewardService {
         // Check if user already has this badge
         def existingBadge = UserBadge.findByUserAndBadge(user, badge)
         if (existingBadge) {
-            return [success: false, error: 'Badge already earned']
+            return [success: false, error: 'User already has this badge']
         }
         
-        // Award the badge
         def userBadge = new UserBadge(
             user: user,
             badge: badge,
             earnedAt: new Date(),
             isNew: true
-        ).save(flush: true)
+        )
         
-        // Award points for the badge
-        awardPoints(user, badge.pointsValue, "Earned badge: ${badge.badgeName}")
+        if (!userBadge.save(flush: true)) {
+            return [success: false, error: 'Failed to award badge']
+        }
         
         return [
             success: true,
-            badge: badge,
-            userBadge: userBadge
+            badge: [
+                badgeId: badge.badgeId,
+                badgeName: badge.badgeName,
+                emoji: badge.emoji,
+                category: badge.category,
+                rarity: badge.rarity,
+                earnedAt: userBadge.earnedAt,
+                isNew: userBadge.isNew
+            ]
         ]
     }
     
     /**
-     * Process rewards after test completion
+     * Process rewards after test completion - Updated for new unified system
      */
-    def processTestCompletionRewards(User user, DiagnosticTestSession session) {
+    def processTestCompletionRewards(User user, UserSession session) {
         def rewards = [
             badges: [],
             achievements: [],
@@ -88,20 +95,45 @@ class RewardService {
             newLevel: 0
         ]
         
+        // Parse game results to get test information
+        def gameResults = null
+        if (session.gameResults) {
+            try {
+                gameResults = new groovy.json.JsonSlurper().parseText(session.gameResults)
+            } catch (Exception e) {
+                log.error "Failed to parse game results JSON: ${e.message}"
+            }
+        }
+        
         // Base points for completing test
         def basePoints = 50
-        def pointsResult = awardPoints(user, basePoints, "Completed ${session.test.testName}")
+        def testName = gameResults?.gameResults?.keySet()?.join(', ') ?: 'Test'
+        def pointsResult = awardPoints(user, basePoints, "Completed ${testName}")
         rewards.points = basePoints
         rewards.leveledUp = pointsResult.leveledUp
         rewards.newLevel = pointsResult.currentLevel
         
-        // Check for test-specific badge
-        def testBadgeId = "COMPLETE_${session.test.testId}"
-        def testBadge = Badge.findByBadgeId(testBadgeId)
-        if (testBadge) {
-            def badgeResult = awardBadge(user, testBadgeId)
-            if (badgeResult.success) {
-                rewards.badges << badgeResult.badge
+        // Check for specific achievements based on results
+        if (gameResults?.dominantPersona) {
+            def personaBadgeId = "PERSONA_${gameResults.dominantPersona}"
+            def personaBadge = Badge.findByBadgeId(personaBadgeId)
+            if (personaBadge) {
+                def badgeResult = awardBadge(user, personaBadgeId)
+                if (badgeResult.success) {
+                    rewards.badges << badgeResult.badge
+                }
+            }
+        }
+        
+        // Check for first test completion achievement
+        def userSessionCount = UserSession.countByUserAndStatus(user, 'COMPLETED')
+        if (userSessionCount == 1) {
+            def firstTestBadge = Badge.findByBadgeId('FIRST_TEST')
+            if (firstTestBadge) {
+                def badgeResult = awardBadge(user, 'FIRST_TEST')
+                if (badgeResult.success) {
+                    rewards.badges << badgeResult.badge
+                }
             }
         }
         
@@ -115,10 +147,10 @@ class RewardService {
     }
     
     /**
-     * Check and award milestone achievements
+     * Check and award milestone achievements - Updated for new unified system
      */
-    private void checkMilestoneAchievements(User user, DiagnosticTestSession session, Map rewards) {
-        def completedTests = DiagnosticTestSession.countByUserAndStatus(user, 'COMPLETED')
+    private void checkMilestoneAchievements(User user, UserSession session, Map rewards) {
+        def completedTests = UserSession.countByUserAndStatus(user, 'COMPLETED')
         
         // First test achievement
         if (completedTests == 1) {
@@ -136,38 +168,44 @@ class RewardService {
             awardPoints(user, 250, '5 tests achievement')
         }
         
-        // All exam tests achievement
-        def examTestsCompleted = DiagnosticTestSession.createCriteria().count {
-            eq('user', user)
-            eq('status', 'COMPLETED')
-            test {
-                eq('testType', 'EXAM')
+        // Parse game results to count exam and career tests
+        def examTestsCompleted = 0
+        def careerTestsCompleted = 0
+        
+        def userSessions = UserSession.findAllByUserAndStatus(user, 'COMPLETED')
+        userSessions.each { userSession ->
+            if (userSession.gameResults) {
+                try {
+                    def results = new groovy.json.JsonSlurper().parseText(userSession.gameResults)
+                    results.gameResults?.each { gameType, gameResult ->
+                        if (['COGNITIVE_RADAR', 'FOCUS_STAMINA', 'GUESSWORK_QUOTIENT', 'SPIRIT_ANIMAL'].contains(gameType)) {
+                            examTestsCompleted++
+                        } else if (['CURIOSITY_COMPASS', 'MODALITY_MAP', 'PATTERN_SNAPSHOT', 'WORK_MODE', 'PERSONALITY'].contains(gameType)) {
+                            careerTestsCompleted++
+                        }
+                    }
+                } catch (Exception e) {
+                    log.warn "Failed to parse game results for achievement check: ${e.message}"
+                }
             }
         }
-        if (examTestsCompleted == 4) {
+        
+        if (examTestsCompleted >= 4) {
             def achievement = createAchievement(user, 'ALL_EXAM_TESTS',
                 '🎓 Exam Master', 'Completed all exam diagnostic tests!', '🎓', 500)
             rewards.achievements << achievement
             awardPoints(user, 500, 'All exam tests achievement')
         }
 
-        // All career tests achievement
-        def careerTestsCompleted = DiagnosticTestSession.createCriteria().count {
-            eq('user', user)
-            eq('status', 'COMPLETED')
-            test {
-                eq('testType', 'CAREER')
-            }
-        }
-        if (careerTestsCompleted == 5) {
+        if (careerTestsCompleted >= 5) {
             def achievement = createAchievement(user, 'ALL_CAREER_TESTS',
                 '🚀 Career Navigator', 'Completed all career diagnostic tests!', '🚀', 500)
             rewards.achievements << achievement
             awardPoints(user, 500, 'All career tests achievement')
         }
         
-        // All tests achievement
-        if (completedTests == 9) {
+        // All tests achievement (9 total games)
+        if (completedTests >= 9) {
             def achievement = createAchievement(user, 'ALL_TESTS', 
                 '👑 Complete Profile', 'Completed all diagnostic tests!', '👑', 1000)
             rewards.achievements << achievement

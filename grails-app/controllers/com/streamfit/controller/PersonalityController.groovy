@@ -1,13 +1,12 @@
 package com.streamfit.controller
 
-
 import com.streamfit.service.UserService
-import com.streamfit.service.PersonalityService
+import com.streamfit.service.UnifiedPersonaService
 import grails.converters.JSON
 
 class PersonalityController {
 
-    PersonalityService personalityService
+    UnifiedPersonaService unifiedPersonaService
     UserService userService
     
     /**
@@ -24,10 +23,25 @@ class PersonalityController {
      */
     def questions() {
         try {
-            def questions = personalityService.getPersonalityQuestions()
+            // Get personality questions from the new unified system
+            def questions = com.streamfit.GameQuestion.findAllByGameType('PERSONALITY', [sort: 'questionNumber', order: 'asc'])
             
-            response.status = 200
-            render(questions as JSON)
+            def response = questions.collect { question ->
+                def options = com.streamfit.GameOption.findAllByQuestion(question, [sort: 'displayOrder'])
+                [
+                    id: question.questionId,
+                    text: question.questionText,
+                    number: question.questionNumber,
+                    options: options.collect { opt ->
+                        [
+                            value: opt.optionValue,
+                            text: opt.optionText
+                        ]
+                    }
+                ]
+            }
+            
+            render(response as JSON)
         } catch (Exception e) {
             log.error "Error fetching personality questions: ${e.message}", e
             response.status = 500
@@ -61,12 +75,6 @@ class PersonalityController {
                 return
             }
             
-            if (!gender || !['Male', 'Female', 'Other'].contains(gender)) {
-                response.status = 400
-                render([success: false, error: 'Valid gender is required (Male, Female, or Other)'] as JSON)
-                return
-            }
-            
             // Get or create user
             def userId = session.userId
             def user
@@ -81,16 +89,37 @@ class PersonalityController {
                 session.userId = user.userId
             }
             
-            // Submit test
-            def result = personalityService.submitPersonalityTest(user, answers, gender)
+            // Create session and submit answers using new unified system
+            def session = new com.streamfit.UserSession(
+                user: user,
+                sessionId: UUID.randomUUID().toString(),
+                status: 'ACTIVE',
+                startTime: new Date()
+            )
+            session.save(flush: true)
             
-            if (result.success) {
-                response.status = 200
-                render(result as JSON)
-            } else {
-                response.status = 500
-                render(result as JSON)
+            // Save all responses
+            answers.each { answer ->
+                def engageData = new com.streamfit.EngageData(
+                    sessionId: session.sessionId,
+                    gameType: 'PERSONALITY',
+                    questionId: answer.id,
+                    optionId: answer.value?.toString(),
+                    timestamp: new Date()
+                )
+                engageData.save(flush: true)
             }
+            
+            // Calculate results using unified persona service
+            def result = unifiedPersonaService.calculateFinalPersona(session.sessionId)
+            
+            // Update session
+            session.status = 'COMPLETED'
+            session.endTime = new Date()
+            session.gameResults = new groovy.json.JsonBuilder(result).toString()
+            session.save(flush: true)
+            
+            render([success: true, sessionId: session.sessionId, result: result] as JSON)
         } catch (Exception e) {
             log.error "Error submitting personality test: ${e.message}", e
             response.status = 500
@@ -103,7 +132,7 @@ class PersonalityController {
      */
     def result(String sessionId) {
         // Allow anonymous users to view results
-        def testSession = personalityService.getPersonalitySession(sessionId)
+        def testSession = com.streamfit.UserSession.findBySessionId(sessionId)
 
         if (!testSession) {
             flash.error = "Invalid test session"
@@ -117,7 +146,15 @@ class PersonalityController {
             return
         }
 
-        def traits = com.streamfit.personality.PersonalityTrait.findAllBySession(testSession, [sort: 'id'])
+        // Parse game results
+        def results = null
+        if (testSession.gameResults) {
+            try {
+                results = new groovy.json.JsonSlurper().parseText(testSession.gameResults)
+            } catch (Exception e) {
+                log.error "Failed to parse game results JSON: ${e.message}"
+            }
+        }
 
         // Check if user is logged in for premium features
         def userId = session.userId
@@ -126,7 +163,7 @@ class PersonalityController {
 
         [
             session: testSession,
-            traits: traits,
+            results: results,
             user: user,
             isAnonymous: isAnonymous
         ]
@@ -146,7 +183,7 @@ class PersonalityController {
      */
     def getResult(String sessionId) {
         try {
-            def testSession = personalityService.getPersonalitySession(sessionId)
+            def testSession = com.streamfit.UserSession.findBySessionId(sessionId)
 
             if (!testSession) {
                 response.status = 404
@@ -160,38 +197,23 @@ class PersonalityController {
                 return
             }
 
-            def traits = com.streamfit.personality.PersonalityTrait.findAllBySession(testSession, [sort: 'id'])
+            // Parse game results
+            def results = null
+            if (testSession.gameResults) {
+                try {
+                    results = new groovy.json.JsonSlurper().parseText(testSession.gameResults)
+                } catch (Exception e) {
+                    log.error "Failed to parse game results JSON: ${e.message}"
+                }
+            }
 
             def result = [
                 success: true,
-                niceName: testSession.niceName,
-                personality: testSession.personality,
-                variant: testSession.variant,
-                role: testSession.role,
-                strategy: testSession.strategy,
-                avatarSrc: testSession.avatarSrc,
-                avatarAlt: testSession.avatarAlt,
-                avatarSrcStatic: testSession.avatarSrcStatic,
-                profileUrl: testSession.profileUrl,
-                traits: traits.collect { trait ->
-                    [
-                        key: trait.traitKey,
-                        label: trait.label,
-                        color: trait.color,
-                        score: trait.score,
-                        pct: trait.pct,
-                        trait: trait.trait,
-                        link: trait.link,
-                        reverse: trait.reverse,
-                        description: trait.description,
-                        snippet: trait.snippet,
-                        imageAlt: trait.imageAlt,
-                        imageSrc: trait.imageSrc
-                    ]
-                }
+                sessionId: testSession.sessionId,
+                results: results,
+                completedAt: testSession.endTime
             ]
 
-            response.status = 200
             render(result as JSON)
         } catch (Exception e) {
             log.error "Error fetching personality result: ${e.message}", e

@@ -3,6 +3,7 @@ package com.streamfit.controller
 import com.streamfit.service.DiagnosticService
 import com.streamfit.service.UserService
 import com.streamfit.service.AsyncResultProcessor
+import com.streamfit.UserSession
 import grails.converters.JSON
 
 class ResultController {
@@ -181,12 +182,20 @@ class ResultController {
      * REDUCED: 1-3 seconds → 50-100ms response time
      */
     def submit() {
+        log.info "CONTROLLER_DEBUG: ResultController.submit() called"
+        
         try {
             def requestData = request.JSON
             def sessionId = requestData.sessionId
             def answers = requestData.answers
             
+            log.info "CONTROLLER_DEBUG: Request data - sessionId: ${sessionId}, answers count: ${answers?.size()}"
+            answers?.each { answer ->
+                log.info "CONTROLLER_DEBUG: Answer - QuestionId: ${answer.questionId}, AnswerValue: ${answer.answerValue}"
+            }
+            
             if (!sessionId || !answers) {
+                log.error "CONTROLLER_DEBUG: Missing sessionId or answers"
                 response.status = 400
                 render([success: false, error: 'sessionId and answers are required'] as JSON)
                 return
@@ -197,7 +206,9 @@ class ResultController {
             // Try async processor first (high performance)
             try {
                 if (asyncResultProcessor) {
+                    log.info "CONTROLLER_DEBUG: Calling asyncResultProcessor.submitTestAsync"
                     result = asyncResultProcessor.submitTestAsync(sessionId, answers)
+                    log.info "CONTROLLER_DEBUG: Async result: ${result}"
                 } else {
                     log.warn "AsyncResultProcessor not available, falling back to sync processing"
                     throw new Exception("Fallback to sync")
@@ -236,8 +247,8 @@ class ResultController {
                 if (asyncResultProcessor) {
                     status = asyncResultProcessor.getResultStatus(sessionId)
                 } else {
-                    // Fallback: check session directly
-                    def session = DiagnosticTestSession.findBySessionId(sessionId)
+                    // Fallback: check session directly using new system
+                    def session = UserSession.findBySessionId(sessionId)
                     if (!session) {
                         status = [found: false]
                     } else {
@@ -252,8 +263,8 @@ class ResultController {
                 }
             } catch (Exception e) {
                 log.warn "Async status check failed, falling back to sync: ${e.message}"
-                // Fallback: check session directly
-                def session = DiagnosticTestSession.findBySessionId(sessionId)
+                // Fallback: check session directly using new system
+                def session = UserSession.findBySessionId(sessionId)
                 if (!session) {
                     status = [found: false]
                 } else {
