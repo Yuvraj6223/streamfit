@@ -146,9 +146,12 @@ class AsyncResultProcessor {
                 }
                 
                 // Save all responses in one batch
-                responses*.save(flush: false)
+                def validResponses = responses.findAll { it.optionId != null }
+                if (validResponses) {
+                    validResponses*.save(flush: false)
+                }
                 
-                log.debug "Saved ${responses.size()} responses for session ${session.sessionId}"
+                log.debug "Saved ${validResponses.size()} valid responses for session ${session.sessionId}"
             }
         } catch (Exception e) {
             log.error "Error saving responses async: ${e.message}", e

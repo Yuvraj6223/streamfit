@@ -56,7 +56,7 @@ class AuthController {
         def jsonData = request.JSON
         def name = jsonData?.name
         def email = jsonData?.email
-        def age = jsonData?.age
+        def age = jsonData?.age as Integer
 
         println "Signup attempt: name=${name}, email=${email}, age=${age}"
 

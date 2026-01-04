@@ -134,24 +134,28 @@ class DiagnosticService {
 
         def selectedOption = com.streamfit.GameOption.findByQuestionAndOptionValue(question, answerValueStr)
 
-        // Create engagement data entry
-        def engageData = new com.streamfit.EngageData(
-            sessionId: sessionId,
-            gameType: question.gameType,
-            questionId: questionId,
-            optionId: selectedOption?.id?.toString(),
-            timestamp: new Date(),
-            timeSpent: timeSpent,
-            confidenceLevel: confidenceLevel,
-            isCorrect: selectedOption?.isCorrect
-        )
+        if (selectedOption) {
+            // Create engagement data entry
+            def engageData = new com.streamfit.EngageData(
+                sessionId: sessionId,
+                gameType: question.gameType,
+                questionId: questionId,
+                optionId: selectedOption.id.toString(),
+                timestamp: new Date(),
+                timeSpent: timeSpent,
+                confidenceLevel: confidenceLevel,
+                isCorrect: selectedOption.isCorrect
+            )
 
-        if (!engageData.save(flush: true)) {
-            log.error "Failed to save engagement data: ${engageData.errors}"
-            return [success: false, error: 'Failed to save response']
+            if (!engageData.save(flush: true)) {
+                log.error "Failed to save engagement data: ${engageData.errors}"
+                return [success: false, error: 'Failed to save response']
+            }
+        } else {
+            log.warn "Invalid option '${answerValueStr}' for question '${questionId}'. Response not saved."
         }
 
-        return [success: true, responseId: engageData.id]
+        return [success: true]
     }
 
     /**

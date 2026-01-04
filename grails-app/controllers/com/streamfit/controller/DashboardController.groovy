@@ -18,7 +18,76 @@ class DashboardController {
     def index() {
         def user = userService.getOrCreateAnonymousUser()
 
-        [user: user]
+        def testHistory = diagnosticService.getUserTestHistory(user)
+        def completedSessions = testHistory.findAll { it.status == 'COMPLETED' && it.gameResults?.gameResults }.sort { a, b -> b.startTime <=> a.startTime }
+        
+        def availableTests = diagnosticService.getAvailableTests()
+        
+        // Get the latest result for each game type
+        def latestGameResults = [:]
+        completedSessions.each { session ->
+            session.gameResults.gameResults.each { gameType, result ->
+                if (!latestGameResults.containsKey(gameType)) {
+                    latestGameResults[gameType] = [result: result, session: session]
+                }
+            }
+        }
+
+        def completedTestIds = latestGameResults.keySet()
+
+        def completedTestResults = []
+        def pendingTests = []
+
+        availableTests.each { test ->
+            if (test.testId in completedTestIds) {
+                def resultData = latestGameResults[test.testId]
+                completedTestResults << [
+                    session: [sessionId: resultData.session.sessionId, completedAt: resultData.session.endTime],
+                    result: [
+                        testName: test.testName,
+                        emoji: '✨', // Placeholder, GSP seems to expect it
+                        resultTitle: resultData.result.resultType?.toString()?.toLowerCase()?.replace('_', ' ')?.capitalize()
+                    ]
+                ]
+            } else {
+                pendingTests << test
+            }
+        }
+
+        def stats = [
+            totalTests: availableTests.size(),
+            totalTestsCompleted: completedTestIds.size()
+        ]
+        
+        def spiritAnimalResult = latestGameResults['SPIRIT_ANIMAL']?.result
+        def cognitiveRadarResult = latestGameResults['COGNITIVE_RADAR']?.result
+        def workModeResult = latestGameResults['WORK_MODE']?.result
+
+        def model = [
+            user: user,
+            stats: stats,
+            completedTestResults: completedTestResults,
+            pendingTests: pendingTests,
+            spiritAnimal: spiritAnimalResult ? [
+                resultType: spiritAnimalResult.resultType,
+                resultTitle: spiritAnimalResult.resultType?.toString()?.toLowerCase()?.replace('_', ' ')?.capitalize(),
+                resultSummary: "Your unique strengths are becoming clear.", // Placeholder summary
+                scoreBreakdown: [
+                    primaryTrait: spiritAnimalResult.primaryTrait,
+                    secondaryTrait: spiritAnimalResult.secondaryTrait
+                ]
+            ] : null,
+            cognitiveRadar: cognitiveRadarResult ? [
+                 scoreBreakdown: cognitiveRadarResult.scores.collectEntries{ k, v -> [k.toString().toLowerCase(), v] },
+                 primaryPillar: cognitiveRadarResult.primaryPillar
+            ] : null,
+            workMode: workModeResult ? [
+                resultTitle: workModeResult.resultType?.toString()?.toLowerCase()?.replace('_', ' ')?.capitalize()
+            ] : null,
+            suggestedStreams: null // Let GSP calculate it
+        ]
+
+        [model: model]
     }
 
     /**

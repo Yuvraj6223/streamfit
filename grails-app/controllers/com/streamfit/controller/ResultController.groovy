@@ -122,7 +122,14 @@ class ResultController {
             }
 
             // Get or create session user
-            def user = userService.getOrCreateAnonymousUser()
+                        def user
+        if (session.userId) {
+            user = userService.getUserById(session.userId)
+        }
+        if (!user) {
+            user = userService.createAnonymousUser()
+            session.userId = user.userId
+        }
 
             def result = diagnosticService.startTestSession(user, testId)
             
@@ -323,7 +330,14 @@ class ResultController {
      */
     def history() {
         try {
-            def user = userService.getOrCreateAnonymousUser()
+                        def user
+        if (session.userId) {
+            user = userService.getUserById(session.userId)
+        }
+        if (!user) {
+            user = userService.createAnonymousUser()
+            session.userId = user.userId
+        }
 
             def history = diagnosticService.getUserTestHistory(user)
             
