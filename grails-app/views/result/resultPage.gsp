@@ -5,28 +5,12 @@
     <meta name="layout" content="main"/>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Your Exam Style 🧬 | learnerDNA</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-    :root {
-        --theme-primary: #8B7FE8;
-        --theme-secondary: #5FE3D0;
-        --theme-bg: #F4F7FA;
-        --text-dark: #1a1a2e;
-        --text-grey: #64748b;
-        --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
-
-        /* Auth colors */
-        --pop-coral: #FF8F7D;
-        --pop-purple: #9F97F3;
-    }
-
-    /* Theme Variants */
-    .theme-wolf { --theme-primary: #14B8A6; --theme-secondary: #ccfbf1; --theme-bg: #f0fdfa; }
-    .theme-owl { --theme-primary: #6366F1; --theme-secondary: #e0e7ff; --theme-bg: #eef2ff; }
-    .theme-bee { --theme-primary: #F59E0B; --theme-secondary: #fef3c7; --theme-bg: #fffbeb; }
-    .theme-tiger { --theme-primary: #EF4444; --theme-secondary: #fee2e2; --theme-bg: #fef2f2; }
-
     * {
         margin: 0;
         padding: 0;
@@ -34,52 +18,519 @@
         -webkit-tap-highlight-color: transparent;
     }
 
+    html {
+        overflow-x: hidden;
+        width: 100%;
+        max-width: 100vw;
+        -webkit-text-size-adjust: 100%;
+    }
+
     body {
         font-family: 'Plus Jakarta Sans', sans-serif;
-        color: var(--text-dark);
-        background: var(--theme-bg);
         min-height: 100vh;
         overflow-x: hidden;
-        transition: background 0.8s ease;
+        overflow-y: auto;
         line-height: 1.4;
+        position: relative;
+        touch-action: pan-y;
+        width: 100%;
+        max-width: 100vw;
     }
 
-    /* Animated Scenery */
-    .scenery-layer { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
-    .blob {
-        position: absolute; filter: blur(80px); opacity: 0.4;
-        border-radius: 50%;
-        animation: blobFloat 10s infinite ease-in-out;
-    }
-    .b-1 { top: -10%; right: -15%; width: 80vw; height: 80vw; background: var(--theme-primary); }
-    .b-2 { bottom: -10%; left: -15%; width: 80vw; height: 80vw; background: var(--theme-secondary); animation-delay: -5s; }
-
-    @keyframes blobFloat {
-        0%, 100% { transform: translate(0, 0) scale(1); }
-        50% { transform: translate(30px, -20px) scale(1.05); }
-    }
-
-    /* Scroll to Top Button */
-    .scroll-to-top {
+    .animated-background {
         position: fixed;
-        bottom: 100px;
-        right: 20px;
-        width: 50px;
-        height: 50px;
-        background: linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-secondary) 100%);
-        color: white;
-        border: none;
-        border-radius: 50%;
-        font-size: 1.5rem;
-        cursor: pointer;
-        box-shadow: 0 4px 16px rgba(139, 127, 232, 0.3);
+        inset: 0;
+        background: linear-gradient(135deg, #ddd6fe 0%, #e0e7ff 50%, #a8e0e0 100%);
+        z-index: -2;
         opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-        z-index: 999;
+        animation: bgFadeIn 1s ease-out forwards;
+    }
+
+    @keyframes bgFadeIn {
+        to { opacity: 1; }
+    }
+
+    .glitter {
+        position: fixed;
+        width: 4px;
+        height: 4px;
+        background: white;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: -1;
+        box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.8);
+        animation: glitterShine 2s ease-in-out infinite;
+    }
+
+    @keyframes glitterShine {
+        0%, 100% { opacity: 0; transform: scale(0); }
+        50% { opacity: 1; transform: scale(1.5); }
+    }
+
+    .glitter.gold { background: #FFD700; }
+    .glitter.silver { background: #E8E8E8; }
+    .glitter.cyan { background: #00FFFF; }
+    .glitter.pink { background: #FF69B4; }
+
+    .particle {
+        position: fixed;
+        pointer-events: none;
+        z-index: -1;
+        opacity: 0;
+        animation: particleFadeIn 0.8s ease-out forwards, floatParticle 8s infinite ease-in-out;
+    }
+
+    @keyframes particleFadeIn {
+        to { opacity: 0.8; }
+    }
+
+    @keyframes floatParticle {
+        0%, 100% { transform: translate(0, 0) rotate(0deg); }
+        50% { transform: translate(-15px, -60px) rotate(180deg); }
+    }
+
+    .results-container {
+        width: 100%;
+        max-width: 580px;
+        padding: 60px 16px 80px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+        transition: opacity 0.5s ease;
+        display: none;
+        opacity: 0;
+    }
+
+    .results-container.visible {
+        display: block;
+        opacity: 1;
+    }
+
+    .persona-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, #FFA726 0%, #FFD54F 100%);
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Fredoka', sans-serif;
+        font-weight: 700;
+        font-size: 0.6rem;
+        color: white;
+        text-transform: uppercase;
+        text-align: center;
+        line-height: 1.2;
+        box-shadow: 0 8px 20px rgba(255, 167, 38, 0.4);
+        border: 3px solid white;
+        transform: scale(0) rotate(-180deg);
+        animation: badgeSpin 1s cubic-bezier(0.34, 1.56, 0.64, 1) 1.5s forwards;
+        z-index: 10;
+    }
+
+    @keyframes badgeSpin {
+        to { transform: scale(1) rotate(0deg); }
+    }
+
+    .persona-badge::after {
+        content: '';
+        position: absolute;
+        bottom: -18px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 18px 18px 0 18px;
+        border-color: #FF6F00 transparent transparent transparent;
+    }
+
+    .game-title {
+        font-family: 'Fredoka', sans-serif;
+        font-size: clamp(1.5rem, 8vw, 2.8rem);
+        font-weight: 700;
+        text-align: center;
+        margin: 0 0 8px;
+        color: #FFD54F;
+        text-shadow: 3px 3px 0px #6B3C8F, -2px -2px 0px #8B5CB3, 0 4px 12px rgba(0, 0, 0, 0.3);
+        letter-spacing: 1px;
+        animation: titleBounceIn 1s cubic-bezier(0.34, 1.56, 0.64, 1) 1s forwards;
+        opacity: 0;
+        word-break: break-word;
+    }
+
+    @keyframes titleBounceIn {
+        0% { opacity: 0; transform: scale(0.3) translateY(-80px); }
+        70% { opacity: 1; transform: scale(1.1) translateY(0px); }
+        100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .subtitle-ribbon {
+        background: linear-gradient(135deg, #4FC3F7 0%, #29B6F6 100%);
+        padding: 8px 24px;
+        margin: 0 auto 20px;
+        border-radius: 8px;
+        font-family: 'Fredoka', sans-serif;
+        font-size: clamp(0.9rem, 4vw, 1.1rem);
+        font-weight: 700;
+        color: white;
+        text-align: center;
+        box-shadow: 0 6px 16px rgba(79, 195, 247, 0.3);
+        animation: ribbonExpand 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 1.5s forwards;
+        opacity: 0;
+        width: fit-content;
+        max-width: 90%;
+    }
+
+    @keyframes ribbonExpand {
+        0% { transform: scaleX(0); opacity: 0; }
+        100% { transform: scaleX(1); opacity: 1; }
+    }
+
+    .character-section {
+        position: relative;
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto 25px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .character-container {
+        position: relative;
+        width: clamp(180px, 55vw, 250px);
+        height: clamp(180px, 55vw, 250px);
+        animation: characterFlyIn 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards;
+        opacity: 0;
+        margin-bottom: 10px;
+    }
+
+    @keyframes characterFlyIn {
+        0% { opacity: 0; transform: translateY(-200px) rotate(-180deg) scale(0.3); }
+        60% { opacity: 1; transform: translateY(15px) rotate(5deg) scale(1.1); }
+        100% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+    }
+
+    .character-emoji, .graphic-wrapper {
+        font-size: clamp(100px, 30vw, 160px);
+        display: block;
+        text-align: center;
+        filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.2));
+        animation: characterFloat 4s ease-in-out infinite;
+    }
+
+    .graphic-wrapper svg { width: 100%; height: 100%; }
+
+    @keyframes characterFloat {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-12px); }
+    }
+
+    .graduation-cap, .overlay-icon {
+        position: absolute;
+        top: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: clamp(40px, 12vw, 70px);
+        z-index: 2;
+        animation: capWiggle 2s ease-in-out infinite;
+    }
+
+    @keyframes capWiggle {
+        0%, 100% { transform: translateX(-50%) rotate(-8deg); }
+        50% { transform: translateX(-50%) rotate(8deg); }
+    }
+
+    .wing-sparkle-static {
+        position: absolute;
+        font-size: clamp(16px, 5vw, 24px);
+        z-index: 5;
+        opacity: 0;
+        filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.8));
+        animation: sparkleStaticAppear 0.8s ease-out forwards, sparkleGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes sparkleStaticAppear {
+        to { opacity: 1; }
+    }
+
+    @keyframes sparkleGlow {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+    }
+
+    .speech-bubble {
+        position: relative;
+        background: white;
+        padding: 12px 16px;
+        border-radius: 16px;
+        font-family: 'Fredoka', sans-serif;
+        font-size: clamp(0.8rem, 3vw, 1rem);
+        font-weight: 600;
+        color: #5D4037;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        animation: bubblePop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 2s forwards;
+        opacity: 0;
+        transform: scale(0);
+        margin: 0 auto;
+        width: 90%;
+        max-width: 280px;
+        text-align: center;
+    }
+
+    .speech-bubble::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: -12px;
+        transform: translateX(-50%);
+        border-style: solid;
+        border-width: 0 10px 12px 10px;
+        border-color: transparent transparent white transparent;
+    }
+
+    @keyframes bubblePop {
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    .stats-container {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 25px;
+    }
+
+    .stat-pill {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(8px);
+        border-radius: 40px;
+        display: flex;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        border: 2px solid white;
+        overflow: hidden;
+        animation: fadeInUp 0.6s ease-out forwards;
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    .stat-pill:nth-child(1) { animation-delay: 2.5s; }
+    .stat-pill:nth-child(2) { animation-delay: 2.7s; }
+
+    @keyframes fadeInUp {
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .stat-icon-box {
+        min-width: 60px;
         display: flex;
         align-items: center;
         justify-content: center;
+        font-size: 1.8rem;
+    }
+
+    .stat-content {
+        padding: 10px 16px;
+        flex: 1;
+        color: white;
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        opacity: 0.9;
+    }
+
+    .stat-value {
+        font-family: 'Fredoka', sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    .powers-section {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin-bottom: 25px;
+    }
+
+    .power-bar-wrapper {
+        opacity: 0;
+        transform: translateY(40px);
+        animation: powerBarSlide 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .power-bar-wrapper:nth-child(1) { animation-delay: 3.2s; }
+    .power-bar-wrapper:nth-child(2) { animation-delay: 3.4s; }
+
+    @keyframes powerBarSlide {
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .power-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(139, 127, 200, 0.4);
+        padding: 8px 12px;
+        border-radius: 16px;
+        color: white;
+        font-weight: 700;
+        font-size: 0.85rem;
+    }
+
+    .power-bar-track {
+        height: 32px;
+        background: #4A3B6F;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 2px solid rgba(255,255,255,0.3);
+        position: relative;
+    }
+
+    .power-bar-fill {
+        height: 100%;
+        width: 0%;
+        transition: width 1.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        position: relative;
+    }
+
+    .battery-icon {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.2rem;
+    }
+
+    .insight-badge {
+        background: linear-gradient(135deg, #FF9800, #FFD54F);
+        padding: 16px 24px;
+        border-radius: 40px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 0 10px 25px rgba(255, 152, 0, 0.4);
+        border: 3px solid rgba(255,255,255,0.6);
+        margin-bottom: 20px;
+        animation: badgePop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 4s forwards;
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    @keyframes badgePop {
+        to { transform: scale(1); opacity: 1; }
+    }
+
+    .action-btn {
+        background: linear-gradient(135deg, #66BB6A, #81C784);
+        padding: 16px;
+        border-radius: 40px;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        font-family: 'Fredoka', sans-serif;
+        font-weight: 700;
+        display: block;
+        margin-bottom: 12px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        opacity: 0;
+        animation: fadeInUp 0.6s ease-out 5s forwards;
+        transition: transform 0.2s;
+        border: none;
+        cursor: pointer;
+        font-size: 0.95rem;
+    }
+
+    .action-btn.dashboard-btn {
+        background: linear-gradient(135deg, #6366F1, #8B7FE8);
+        animation-delay: 4.8s;
+    }
+
+    .action-btn:active {
+        transform: scale(0.95);
+    }
+
+    .share-buttons-row {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+    }
+
+    .share-btn-large {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        border: 2px solid white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.3rem;
+        cursor: pointer;
+        transition: transform 0.2s;
+        opacity: 0;
+        transform: scale(0);
+        animation: shareIconPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .share-btn-large:nth-child(1) { animation-delay: 5.4s; }
+    .share-btn-large:nth-child(2) { animation-delay: 5.6s; }
+    .share-btn-large:nth-child(3) { animation-delay: 5.8s; }
+    .share-btn-large:nth-child(4) { animation-delay: 6s; }
+    .share-btn-large:nth-child(5) { animation-delay: 6.2s; }
+
+    @keyframes shareIconPop {
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    .share-btn-large:active {
+        transform: scale(0.9);
+    }
+
+    .share-labels {
+        display: flex;
+        justify-content: center;
+        gap: 18px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #5D4037;
+        margin-bottom: 30px;
+        opacity: 0;
+        animation: fadeInUp 0.6s ease-out 6.4s forwards;
+        flex-wrap: wrap;
+    }
+
+    canvas#confetti-canvas {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 100;
+    }
+
+    .scroll-to-top {
+        position: fixed;
+        bottom: 80px;
+        right: 16px;
+        width: 48px;
+        height: 48px;
+        background: #6366F1;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        font-size: 1.4rem;
+        cursor: pointer;
+        opacity: 0;
+        visibility: hidden;
+        transition: 0.3s;
+        z-index: 999;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
     }
 
     .scroll-to-top.visible {
@@ -87,417 +538,387 @@
         visibility: visible;
     }
 
-    .scroll-to-top:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 24px rgba(139, 127, 232, 0.4);
-    }
-
-    .scroll-to-top:active {
-        transform: translateY(-2px);
-    }
-
-    /* Main Container */
-    .results-container {
-        width: 100%;
-        max-width: 500px;
-        margin: 0 auto;
-        padding: 16px 16px 80px;
-        display: none;
-        opacity: 0;
-        transition: opacity 0.6s ease-out;
-    }
-    .results-container.visible {
-        display: block;
-        opacity: 1;
-    }
-
-    /* Cards & UI Elements */
-    .main-card {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 1);
-        border-radius: 32px;
-        box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1);
-        position: relative;
-        overflow: hidden;
-        transform: translateY(20px);
-        transition: transform 0.8s var(--ease-out);
-    }
-    .visible .main-card { transform: translateY(0); }
-
-    .header-section {
-        padding: 40px 24px 20px;
-        text-align: center;
-    }
-
-    .progress-pill {
-        display: inline-flex; align-items: center; gap: 8px;
-        background: rgba(0,0,0,0.05); padding: 8px 16px; border-radius: 100px;
-        font-size: 0.75rem; font-weight: 800; color: var(--text-grey);
-        margin-bottom: 24px;
-    }
-
-    .animal-emoji {
-        font-size: clamp(4rem, 15vw, 5.5rem);
-        display: block;
-        margin: -10px auto 10px;
-        filter: drop-shadow(0 15px 25px rgba(0,0,0,0.1));
-        transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-        transform: scale(0) rotate(-45deg);
-    }
-    .visible .animal-emoji { transform: scale(1) rotate(0); }
-
-    .result-title {
-        font-size: clamp(2rem, 8vw, 2.6rem);
-        font-weight: 900;
-        line-height: 1;
-        margin-bottom: 8px;
-        letter-spacing: -1px;
-    }
-
-    .result-tagline {
-        font-size: 1.1rem; font-weight: 700; color: var(--theme-primary); margin-bottom: 16px;
-    }
-
-    .result-desc {
-        font-size: 1rem; color: var(--text-grey); font-weight: 500;
-        padding: 0 10px;
-    }
-
-    /* Stats Strip */
-    .stats-strip {
-        display: grid; grid-template-columns: 1fr 1fr;
-        background: rgba(0,0,0,0.02);
-        border-block: 1px solid rgba(0,0,0,0.05);
-    }
-    .stat-box { padding: 20px 10px; text-align: center; }
-    .stat-box:first-child { border-right: 1px solid rgba(0,0,0,0.05); }
-    .stat-label { font-size: 0.7rem; text-transform: uppercase; font-weight: 800; color: var(--text-grey); letter-spacing: 1px; }
-    .stat-value { font-size: 1.25rem; font-weight: 900; color: var(--text-dark); margin-top: 4px; }
-
-    /* Superpowers Section */
-    .content-body { padding: 30px 24px; }
-    .power-row { margin-bottom: 20px; }
-    .power-header { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 800; margin-bottom: 8px; }
-    .power-track { height: 12px; background: rgba(0,0,0,0.06); border-radius: 10px; overflow: hidden; }
-    .power-fill {
-        height: 100%;
-        background: linear-gradient(90deg, var(--theme-primary), var(--theme-secondary));
-        width: 0%;
-        border-radius: 10px;
-        transition: width 1.5s var(--ease-out) 0.5s;
-    }
-
-    .micro-reward {
-        display: flex; align-items: center; gap: 12px;
-        background: white; border: 2px solid var(--theme-primary);
-        padding: 16px; border-radius: 20px;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.03);
-    }
-
-    /* Locked Vault Peak */
-    .locked-vault {
-        background: #0f172a;
-        padding: 60px 24px 40px;
-        color: white;
-        text-align: center;
-        position: relative;
-    }
-    .locked-vault::before {
-        content: ''; position: absolute; top: -25px; left: 0; right: 0; height: 50px;
-        background: #0f172a; transform: skewY(-3deg);
-    }
-
-    .lock-portal {
-        width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%;
-        display: inline-flex; align-items: center; justify-content: center;
-        font-size: 2.2rem; margin-bottom: 25px; border: 2px solid rgba(255,255,255,0.2);
-        animation: vaultBreath 3s infinite ease-in-out;
-    }
-
-    @keyframes vaultBreath { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
-
-    .loss-frame { font-size: 1.3rem; font-weight: 800; line-height: 1.3; margin-bottom: 12px; }
-    .social-proof { font-size: 0.9rem; color: #94a3b8; margin-bottom: 30px; }
-
-    /* Buttons */
-    .btn-primary {
-        display: flex; align-items: center; justify-content: center; gap: 12px;
-        width: 100%; padding: 22px;
-        background: var(--theme-primary); color: white;
-        border: none; border-radius: 24px;
-        font-size: 1.1rem; font-weight: 900;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-        cursor: pointer; transition: transform 0.2s;
-    }
-    .btn-primary:active { transform: scale(0.96); }
-
-    .btn-outline {
-        display: block; width: 100%; padding: 18px; margin-top: 15px;
-        background: rgba(255,255,255,0.05); color: #cbd5e1;
-        border: 1px solid rgba(255,255,255,0.15); border-radius: 20px;
-        text-decoration: none; font-weight: 700; font-size: 0.95rem;
-        text-align: center;
-    }
-
-    /* Dashboard button styles */
-    .btn-dashboard {
-        background: linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-secondary) 100%) !important;
-        box-shadow: 0 15px 30px rgba(0,0,0,0.3) !important;
-    }
-
-    /* Modal Overlay */
     .reward-modal {
-        position: fixed; inset: 0; background: rgba(15, 23, 42, 0.9);
-        backdrop-filter: blur(12px); z-index: 10000;
-        display: flex; align-items: center; justify-content: center; padding: 20px;
-        transition: opacity 0.4s ease;
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.9);
+        backdrop-filter: blur(10px);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
     }
+
     .reward-content {
-        background: white; border-radius: 36px; padding: 48px 32px;
-        width: 100%; max-width: 400px; text-align: center;
+        background: white;
+        border-radius: 28px;
+        padding: 36px 24px;
+        width: 100%;
+        max-width: 380px;
+        text-align: center;
         animation: modalPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-    @keyframes modalPop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-    .modal-emoji { font-size: 4.5rem; display: block; margin-bottom: 20px; animation: vaultBreath 3s infinite; }
+    @keyframes modalPop {
+        from { transform: scale(0.8); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-emoji {
+        font-size: 4rem;
+        display: block;
+        margin-bottom: 16px;
+    }
 
     .reward-title {
-        font-size: 2.2rem;
+        font-size: 2rem;
         font-weight: 900;
-        margin-bottom: 20px;
-        color: var(--text-dark);
-        letter-spacing: -0.02em;
+        margin-bottom: 16px;
+        color: #1a1a2e;
     }
 
     .reward-badges {
         display: flex;
         justify-content: center;
-        gap: 20px;
-        margin: 32px 0;
+        gap: 16px;
+        margin: 24px 0;
         flex-wrap: wrap;
     }
 
     .badge-item {
         background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, white 100%);
-        border-radius: 20px;
-        padding: 20px;
-        min-width: 110px;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        transition: all 0.3s ease;
+        border-radius: 16px;
+        padding: 16px;
+        min-width: 100px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
         border: 2px solid rgba(139, 127, 232, 0.2);
     }
 
-    .badge-item:hover {
-        transform: translateY(-5px) scale(1.05);
-        box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-    }
-
     .badge-emoji {
-        font-size: 3rem;
-        margin-bottom: 12px;
-        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        font-size: 2.5rem;
+        margin-bottom: 10px;
     }
 
     .badge-name {
-        font-size: 0.9rem;
-        color: var(--text-grey);
+        font-size: 0.85rem;
+        color: #64748b;
         font-weight: 800;
     }
 
     .level-up {
         background: linear-gradient(135deg, #FFE17B 0%, #FFEB99 100%);
-        border-radius: 20px;
-        padding: 24px;
-        margin: 24px 0;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        border-radius: 16px;
+        padding: 20px;
+        margin: 20px 0;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
         border: 3px solid rgba(255, 255, 255, 0.6);
     }
 
     .level-up-text {
-        font-size: 1.6rem;
+        font-size: 1.4rem;
         font-weight: 900;
-        color: var(--text-dark);
-        letter-spacing: -0.01em;
+        color: #1a1a2e;
     }
 
     .continue-btn {
-        background: linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-secondary) 100%);
+        background: linear-gradient(135deg, #6366F1 0%, #8B7FE8 100%);
         color: white;
-        border: 3px solid rgba(255, 255, 255, 0.4);
-        padding: 20px 48px;
-        border-radius: 100px;
-        font-size: 1.1rem;
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        padding: 16px 40px;
+        border-radius: 80px;
+        font-size: 1rem;
         font-weight: 800;
         cursor: pointer;
-        margin-top: 24px;
+        margin-top: 20px;
         transition: all 0.3s ease;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
         font-family: inherit;
         text-transform: uppercase;
-        letter-spacing: 0.02em;
-    }
-
-    .continue-btn:hover {
-        transform: translateY(-3px) scale(1.05);
     }
 
     .continue-btn:active {
-        transform: translateY(-1px) scale(1.02);
+        transform: scale(0.95);
     }
 
-    .reveal-anim {
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.8s ease, transform 0.8s var(--ease-out);
-    }
-    .visible .reveal-anim {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    /* Share Results Section */
-    .share-section {
-        margin: 30px 0;
-        padding: 0;
-    }
-
-    .share-card {
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 24px;
-        padding: 32px 24px;
-        text-align: center;
-        border: 2px solid rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
-    }
-
-    .share-title {
-        font-size: 1.4rem;
-        font-weight: 900;
-        margin-bottom: 8px;
-        color: white;
-        letter-spacing: -0.02em;
-        display: flex;
+    .auth-modal {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(circle at top, rgba(159,151,243,.35), rgba(15,23,42,.95));
+        backdrop-filter: blur(12px);
+        z-index: 10001;
+        display: none;
         align-items: center;
         justify-content: center;
-        gap: 10px;
+        padding: 16px;
     }
 
-    .share-description {
-        font-size: 0.95rem;
-        color: #cbd5e1;
+    .auth-modal.active {
+        display: flex;
+        animation: fadeInModal 0.4s ease;
+    }
+
+    @keyframes fadeInModal {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .auth-modal-content {
+        background: linear-gradient(180deg, #FFFFFF 0%, #F8F4FF 50%, #FFF4F0 100%);
+        border-radius: 24px;
+        padding: 32px 24px;
+        width: 100%;
+        max-width: 400px;
+        position: relative;
+        box-shadow: 0 20px 40px rgba(0,0,0,.3);
+        animation: popInModal 0.6s cubic-bezier(.34,1.56,.64,1);
+        border: 2px solid rgba(159,151,243,.2);
+    }
+
+    @keyframes popInModal {
+        from { transform: scale(.85) translateY(20px); opacity: 0; }
+        to { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    .auth-close-btn {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 2px solid rgba(0,0,0,.08);
+        background: linear-gradient(135deg, #FFE8E8, #FFF);
+        font-size: 1.2rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        color: #64748b;
+    }
+
+    .auth-close-btn:active {
+        transform: scale(0.9);
+    }
+
+    .auth-header {
+        text-align: center;
         margin-bottom: 24px;
+        position: relative;
+    }
+
+    .auth-header::before {
+        content: '✨';
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 1.8rem;
+    }
+
+    .auth-header h2 {
+        font-size: 1.8rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, #1a1a2e 0%, #6366F1 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 6px;
+    }
+
+    .auth-header p {
+        font-size: 0.9rem;
+        color: #64748b;
         font-weight: 600;
     }
 
-    .share-buttons {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 12px;
+    .auth-form-group {
+        margin-bottom: 16px;
+        position: relative;
     }
 
-    .share-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        padding: 16px 20px;
-        border-radius: 16px;
+    .auth-form-label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 800;
+        margin-bottom: 6px;
+        color: #1a1a2e;
+        text-transform: uppercase;
+    }
+
+    .auth-form-input {
+        width: 100%;
+        padding: 14px 14px 14px 44px;
+        border-radius: 14px;
+        border: 2px solid #E8E4FF;
+        background: white;
         font-size: 0.95rem;
+        font-weight: 600;
+        color: #1a1a2e;
+        transition: all 0.3s ease;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .auth-form-input::placeholder {
+        color: #94a3b8;
+        font-weight: 500;
+    }
+
+    .auth-form-input:focus {
+        border-color: #9F97F3;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(159,151,243,.15);
+        transform: translateY(-2px);
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.2rem;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .auth-submit-btn {
+        width: 100%;
+        padding: 16px;
+        border-radius: 80px;
+        background: linear-gradient(135deg, #9F97F3 0%, #FF8F7D 100%);
+        color: white;
+        font-weight: 900;
+        font-size: 1rem;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 20px rgba(159,151,243,.35);
+        text-transform: uppercase;
+    }
+
+    .auth-submit-btn:active {
+        transform: scale(0.95);
+    }
+
+    .auth-footer {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #64748b;
+    }
+
+    .auth-footer a {
+        color: #9F97F3;
         font-weight: 800;
         cursor: pointer;
-        border: 2px solid rgba(255, 255, 255, 0.2);
-        transition: all 0.3s ease;
         text-decoration: none;
-        backdrop-filter: blur(5px);
     }
 
-    .share-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-        border-color: rgba(255, 255, 255, 0.4);
+    .auth-message {
+        padding: 12px 16px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        margin-bottom: 14px;
+        text-align: center;
+        display: none;
     }
 
-    .share-btn:active {
-        transform: translateY(-1px);
+    .auth-message.success {
+        background: linear-gradient(135deg, #D4FFEA, #B4F8D8);
+        color: #065f46;
+        border: 2px solid #6EE7B7;
     }
 
-    .share-btn.twitter {
-        background: linear-gradient(135deg, #1DA1F2 0%, #0d8bd9 100%);
-        color: white;
+    .auth-message.error {
+        background: linear-gradient(135deg, #FFEAEA, #FFD4D4);
+        color: #991b1b;
+        border: 2px solid #FCA5A5;
     }
 
-    .share-btn.whatsapp {
-        background: linear-gradient(135deg, #25D366 0%, #1ea952 100%);
-        color: white;
-    }
-
-    .share-btn.linkedin {
-        background: linear-gradient(135deg, #0077B5 0%, #005885 100%);
-        color: white;
-    }
-
-    .share-btn.copy {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
-        color: white;
-    }
-
-    .share-btn .emoji {
-        font-size: 1.3rem;
-        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-    }
-
-    canvas#confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 11000; }
-
-
-    /* Responsive */
-    @media (max-width: 768px) {
+    @media (max-width: 480px) {
         .results-container {
-            padding: 16px 16px 100px;
+            padding: 50px 12px 70px;
         }
 
-        .btn-primary, .btn-outline, .btn-dashboard {
-            padding: 20px;
-            font-size: 1rem;
+        .persona-badge {
+            width: 60px;
+            height: 60px;
+            font-size: 0.55rem;
+            top: 8px;
+            left: 8px;
         }
 
-        .share-buttons {
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+        .game-title {
+            font-size: clamp(1.3rem, 7vw, 2rem);
         }
 
-        .share-btn {
-            padding: 14px 16px;
+        .subtitle-ribbon {
+            font-size: 0.85rem;
+            padding: 6px 20px;
+        }
+
+        .stat-icon-box {
+            min-width: 56px;
+            font-size: 1.6rem;
+        }
+
+        .stat-content {
+            padding: 10px 14px;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+        }
+
+        .stat-value {
             font-size: 0.9rem;
         }
 
-        .share-btn .emoji {
-            font-size: 1.1rem;
+        .power-header {
+            font-size: 0.8rem;
+            padding: 6px 10px;
         }
 
-        .share-card {
-            padding: 28px 20px;
+        .power-bar-track {
+            height: 28px;
         }
 
-        .share-title {
+        .insight-badge {
+            padding: 14px 20px;
+            font-size: 0.9rem;
+        }
+
+        .action-btn {
+            padding: 14px;
+            font-size: 0.9rem;
+        }
+
+        .share-btn-large {
+            width: 52px;
+            height: 52px;
             font-size: 1.2rem;
         }
 
-        .share-description {
-            font-size: 0.9rem;
+        .share-labels {
+            font-size: 0.7rem;
+            gap: 14px;
         }
 
-        .auth-modal-content {
-            padding: 36px 24px;
-            max-width: 95%;
-        }
-
-        .auth-header h2 {
-            font-size: 2rem;
+        .scroll-to-top {
+            bottom: 70px;
+            right: 12px;
+            width: 44px;
+            height: 44px;
         }
     }
 
-    /* Accessibility: Reduced Motion */
+    @media (min-width: 481px) and (max-width: 768px) {
+        .results-container {
+            padding: 55px 16px 75px;
+        }
+    }
+
     @media (prefers-reduced-motion: reduce) {
         *,
         *::before,
@@ -505,753 +926,530 @@
             animation-duration: 0.01ms !important;
             animation-iteration-count: 1 !important;
             transition-duration: 0.01ms !important;
-            scroll-behavior: auto !important;
         }
     }
     </style>
 </head>
-<body class="theme-wolf">
+<body>
 
-<div class="scenery-layer">
-    <div class="blob b-1"></div>
-    <div class="blob b-2"></div>
-</div>
+<div class="animated-background"></div>
 <canvas id="confetti-canvas"></canvas>
 
-<!-- Scroll to Top Button -->
-<button class="scroll-to-top" id="scrollToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-    ↑
-</button>
-
-<!-- Initial Entry Modal - Reward Modal -->
 <div id="reward-modal" class="reward-modal">
     <div class="reward-content">
         <span class="modal-emoji" id="reward-emoji">🎉</span>
         <h2 class="reward-title" id="reward-title-modal">Test Completed!</h2>
-
         <div id="level-up-container"></div>
-
         <div class="reward-badges" id="reward-badges"></div>
-
         <div id="achievements-container"></div>
-
         <button class="continue-btn" id="continue-btn-reward" type="button">
             See Your Results →
         </button>
     </div>
 </div>
 
-<!-- Auth Modal (Signup/Login) -->
 <div id="auth-modal" class="auth-modal">
     <div class="auth-modal-content">
         <button class="auth-close-btn" id="auth-close-btn">×</button>
         <div id="signup-form-container">
             <g:render template="/auth/signupForm"/>
         </div>
-
         <div id="login-form-container" style="display:none">
             <g:render template="/auth/loginForm"/>
         </div>
     </div>
 </div>
 
-<!-- Results UI -->
-<div class="results-container" id="results-content">
-    <div class="main-card">
-
-        <div class="header-section reveal-anim" style="transition-delay: 0.1s;">
-            <div class="progress-pill">
-                <span style="width: 8px; height: 8px; background: var(--theme-primary); border-radius: 50%;"></span>
-                <span>Persona Revealed</span>
-            </div>
-            <span style="font-size: 0.7rem; font-weight: 900; letter-spacing: 3px; color: var(--text-grey); display: block; margin-bottom: 10px;">EXAM ARCHETYPE</span>
-            <div id="animal-emoji" class="animal-emoji">🐺</div>
-            <h1 id="result-title" class="result-title">The Strategic Wolf</h1>
-            <p id="result-tagline" class="result-tagline">"The Hunter"</p>
-            <p id="result-summary" class="result-desc">You usually know the answer before finishing the steps.</p>
-        </div>
-
-        <div class="stats-strip reveal-anim" style="transition-delay: 0.3s;">
-            <div class="stat-box">
-                <div class="stat-label">Core Strength</div>
-                <div id="stat-strength" class="stat-value">High Speed</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-label">Logic Type</div>
-                <div id="stat-style" class="stat-value">Intuitive</div>
-            </div>
-        </div>
-
-        <div class="content-body">
-            <div class="power-section reveal-anim" style="transition-delay: 0.5s;">
-                <div class="power-row">
-                    <div class="power-header"><span id="p1-label">Gut Instinct</span></div>
-                    <div class="power-track"><div id="p1-bar" class="power-fill"></div></div>
-                </div>
-                <div class="power-row">
-                    <div class="power-header"><span id="p2-label">Carefulness</span></div>
-                    <div class="power-track"><div id="p2-bar" class="power-fill"></div></div>
-                </div>
-            </div>
-
-            <div class="micro-reward reveal-anim" style="transition-delay: 0.7s;">
-                <span style="font-size: 1.5rem;">🏆</span>
-                <span id="reward-badge" style="font-weight: 800; font-size: 0.95rem;">You find shortcuts others miss</span>
-            </div>
-        </div>
-
-        <div class="locked-vault reveal-anim" style="transition-delay: 0.9s;">
-            <div class="lock-portal">🔒</div>
-            <h3 id="loss-frame" class="loss-frame">Wait. You haven't seen the part that explains why you doubt yourself.</h3>
-            <p class="social-proof" id="tribe-text">Most top scorers unlock the full report to secure their edge.</p>
-
-            <button class="btn-primary btn-dashboard" id="open-dashboard-modal" style="margin-top: 30px;">
-                📊 View Your Complete Dashboard
-            </button>
-            <a href="${createLink(controller: 'personality', action: 'start')}" class="btn-outline" id="btn-next">Take next test (to know more about yourself)</a>
-
-            <!-- Share Results Section -->
-            <div class="share-section">
-                <div class="share-card">
-                    <div class="share-title">
-                        <span class="emoji">✨</span>
-                        Share Your Results
-                    </div>
-                    <p class="share-description">
-                        Show your friends what type of learner you are!
-                    </p>
-
-                    <div class="share-buttons">
-                        <button class="share-btn twitter" onclick="shareOnTwitter()">
-                            <span class="emoji">🐦</span>
-                            <span>Twitter</span>
-                        </button>
-                        <button class="share-btn whatsapp" onclick="shareOnWhatsApp()">
-                            <span class="emoji">💬</span>
-                            <span>WhatsApp</span>
-                        </button>
-                        <button class="share-btn linkedin" onclick="shareOnLinkedIn()">
-                            <span class="emoji">💼</span>
-                            <span>LinkedIn</span>
-                        </button>
-                        <button class="share-btn copy" onclick="copyToClipboard()">
-                            <span class="emoji">📋</span>
-                            <span>Copy Link</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <p style="margin-top: 30px; font-size: 0.85rem; opacity: 0.6; font-weight: 600;">Want to see your detailed Skill Map?</p>
-        </div>
-
-    </div>
+<div class="results-container" id="mainContainer">
 </div>
 
+<button class="scroll-to-top" id="scrollToTop">↑</button>
+
 <script type="text/javascript">
-    // Server-side result data injected from Grails controller
     var resultData = ${raw((result as grails.converters.JSON).toString())};
 
-    console.log('Result data loaded:', resultData);
+    var GAME_TO_PERSONA_MAPPING = {
+        'SPIRIT_ANIMAL': ['wolf', 'owl', 'bee', 'tiger'],
+        'COGNITIVE_RADAR': 'logic-builder',
+        'CURIOSITY_COMPASS': 'curious-thinker',
+        'FOCUS_STAMINA': 'focus-finisher',
+        'GUESSWORK_QUOTIENT': 'decision-maker',
+        'MODALITY_MAP': 'adaptive-learner',
+        'PATTERN_SNAPSHOT': 'detail-detective',
+        'WORK_MODE': 'strategic-planner',
+        'PERSONALITY_TYPE': 'creative-connector'
+    };
 
-    // ANIMAL REPORTS - Default data structure (can be overridden by server data)
-    const ANIMAL_REPORTS = {
+    var ALL_PERSONAS = {
         wolf: {
-            theme: 'theme-wolf', emoji: '🐺', title: 'The Strategic Wolf', tagline: '"The Hunter"',
-            summary: 'You usually know the answer before finishing the steps.',
-            strength: 'High Speed', style: 'Intuitive',
-            loss: 'Wait. You haven\'t seen the part that explains why you change the right answer after doubting yourself.',
-            social: '94% of Wolves unlock their full report to stop second-guessing.',
-            reward: 'You find shortcuts others miss',
-            next: 'Take next test (to know more about yourself)',
-            powers: [{l:'Gut Instinct', v:92}, {l:'Carefulness', v:85}]
+            id: 'wolf', gameType: 'spirit-animal', title: "THE STRATEGIC WOLF", subtitle: "The Hunter", emoji: "🐺",
+            speech: "You sense the right move before others.",
+            stats: [
+                { icon: "🧭", label: "Core Strength:", value: "Strategic Intuition", bg: "#78909C", contentBg: "linear-gradient(135deg, #FF9800, #FFB74D)" },
+                { icon: "🎯", label: "Logic Type:", value: "Elimination-Based", bg: "#EF5350", contentBg: "linear-gradient(135deg, #26A69A, #4DB6AC)" }
+            ],
+            powers: [
+                { name: "Decision Accuracy", val: 82, color: "linear-gradient(90deg, #29B6F6, #42A5F5)" },
+                { name: "Reaction Speed", val: 91, color: "linear-gradient(90deg, #FFD54F, #FFB74D)" }
+            ],
+            insight: { icon: "⚡", text: "INSIGHT: You excel at narrowing options quickly." }
         },
         owl: {
-            theme: 'theme-owl', emoji: '🦉', title: 'The Wise Owl', tagline: '"The Strategist"',
-            summary: 'You master complex topics by breaking them into logical patterns.',
-            strength: 'Deep Precision', style: 'Analytical',
-            loss: 'Wait. You\'re missing the data on why you run out of time on the last 3 questions.',
-            social: 'Top Owls use the full report to master their time management.',
-            reward: 'You spot errors before they happen',
-            next: 'Take next test (to know more about yourself)',
-            powers: [{l:'Logic Accuracy', v:96}, {l:'Focus Stamina', v:88}]
+            id: 'owl', gameType: 'spirit-animal', title: "THE WISE OWL", subtitle: "The Strategist", emoji: "🦉",
+            speech: "You have a gift for seeing the unseen!",
+            stats: [
+                { icon: "🔍", label: "Core Strength:", value: "Deep Precision", bg: "#42A5F5", contentBg: "linear-gradient(135deg, #FF9800, #FFB74D)" },
+                { icon: "🧠", label: "Logic Type:", value: "Analytical", bg: "#9C27B0", contentBg: "linear-gradient(135deg, #26A69A, #4DB6AC)" }
+            ],
+            powers: [
+                { name: "Logic Accuracy", val: 96, color: "linear-gradient(90deg, #29B6F6, #42A5F5)" },
+                { name: "Focus Stamina", val: 88, color: "linear-gradient(90deg, #FFD54F, #FFB74D)" }
+            ],
+            insight: { icon: "👁️", text: "INSIGHT: You spot errors before they happen." }
         },
         bee: {
-            theme: 'theme-bee', emoji: '🐝', title: 'The Steady Bee', tagline: '"The Architect"',
-            summary: 'You build success through consistent, methodical systems.',
-            strength: 'Endurance', style: 'Methodical',
-            loss: 'Wait. You don\'t have the strategy for when a question breaks your routine.',
-            social: 'Most Bees unlock this to build an "unbreakable" test strategy.',
-            reward: 'You stay calm when others panic',
-            next: 'Take next test (to know more about yourself)',
-            powers: [{l:'Work Ethic', v:98}, {l:'Planning', v:94}]
+            id: 'bee', gameType: 'spirit-animal', title: "THE DISCIPLINED BEE", subtitle: "The Architect", emoji: "🐝",
+            speech: "You build success one step at a time.",
+            stats: [
+                { icon: "🧱", label: "Core Strength:", value: "Structured Consistency", bg: "#FFCA28", contentBg: "linear-gradient(135deg, #FF9800, #FFB74D)" },
+                { icon: "📊", label: "Logic Type:", value: "Process-Oriented", bg: "#26A69A", contentBg: "linear-gradient(135deg, #26A69A, #4DB6AC)" }
+            ],
+            powers: [
+                { name: "Process Discipline", val: 93, color: "linear-gradient(90deg, #29B6F6, #42A5F5)" },
+                { name: "Mental Endurance", val: 89, color: "linear-gradient(90deg, #FFD54F, #FFB74D)" }
+            ],
+            insight: { icon: "🍯", text: "INSIGHT: You thrive when routines are in place." }
         },
         tiger: {
-            theme: 'theme-tiger', emoji: '🐯', title: 'The Bold Tiger', tagline: '"The Sprinter"',
-            summary: 'You thrive under pressure and accelerate as the clock winds down.',
-            strength: 'High Intensity', style: 'Competitive',
-            loss: 'Wait. You haven\'t seen how to maintain your peak without making "rush" mistakes.',
-            social: 'Tigers use this report to turn their speed into consistent scores.',
-            reward: 'Pure speed is your natural edge',
-            next: 'Take next test (to know more about yourself)',
-            powers: [{l:'Blitz Speed', v:95}, {l:'Confidence', v:91}]
+            id: 'tiger', gameType: 'spirit-animal', title: "THE BOLD TIGER", subtitle: "The Sprinter", emoji: "🐯",
+            speech: "You perform best under pressure!",
+            stats: [
+                { icon: "🚀", label: "Core Strength:", value: "Speed & Confidence", bg: "#FF7043", contentBg: "linear-gradient(135deg, #FF9800, #FFB74D)" },
+                { icon: "🔥", label: "Logic Type:", value: "Rapid Execution", bg: "#F44336", contentBg: "linear-gradient(135deg, #26A69A, #4DB6AC)" }
+            ],
+            powers: [
+                { name: "Response Speed", val: 97, color: "linear-gradient(90deg, #29B6F6, #42A5F5)" },
+                { name: "Error Control", val: 73, color: "linear-gradient(90deg, #FFD54F, #FFB74D)" }
+            ],
+            insight: { icon: "⏱️", text: "INSIGHT: You trust your sharp instincts." }
+        },
+        'logic-builder': {
+            id: 'logic-builder', gameType: 'brain-power', title: "THE LOGIC BUILDER", subtitle: "You think step by step", isSVG: true,
+            graphic: '<svg viewBox="0 0 240 240"><polygon points="120,40 160,60 120,80 80,60" fill="#00E5FF" stroke="#00E5FF" stroke-width="2"/><polygon points="80,60 120,80 120,120 80,100" fill="#7B6FD8" stroke="#7B6FD8"/><polygon points="120,80 160,60 160,100 120,120" fill="#FFB74D" stroke="#FFB74D"/></svg>',
+            speech: "You enjoy problems that have clear answers.",
+            stats: [
+                { icon: "⚙️", label: "Core Strength:", value: "Structured Reasoning", bg: "#7B6FD8", contentBg: "linear-gradient(135deg, #A89FE8, #9888D8)" },
+                { icon: "🧠", label: "Thinking Style:", value: "Logical Sequencing", bg: "#68A8F8", contentBg: "linear-gradient(135deg, #78B8F8, #68A8E8)" }
+            ],
+            powers: [
+                { name: "Logical Thinking", val: 82, color: "linear-gradient(90deg, #4FC3F7, #29B6F6)" },
+                { name: "Accuracy", val: 78, color: "linear-gradient(90deg, #FFD54F, #FFB74D)" }
+            ],
+            insight: { icon: "🧠", text: "INSIGHT: You prefer factual structures." }
+        },
+        'curious-thinker': {
+            id: 'curious-thinker', gameType: 'curiosity', title: "THE CURIOUS THINKER", subtitle: "You love asking 'why'",
+            emoji: "😊", showLightbulb: true, speech: "You learn best when it feels interesting.",
+            stats: [
+                { icon: "🔍", label: "Core Strength:", value: "Deep Curiosity", bg: "#8B7FE8", contentBg: "linear-gradient(135deg, #A89FE8, #9888D8)" },
+                { icon: "🧠", label: "Thinking Style:", value: "Question-Based Learning", bg: "#68A8F8", contentBg: "linear-gradient(135deg, #78B8F8, #68A8E8)" }
+            ],
+            powers: [
+                { name: "Idea Exploration", val: 85, color: "linear-gradient(90deg, #FFB74D, #FFA726)" },
+                { name: "Understanding", val: 92, color: "linear-gradient(90deg, #4FC3F7, #29B6F6)" }
+            ],
+            insight: { icon: "💡", text: "INSIGHT: Curiosity fuels your engine." }
+        },
+        'focus-finisher': {
+            id: 'focus-finisher', gameType: 'focus-power', title: "THE FOCUS FINISHER", subtitle: "You stay on task till the end", isSVG: true,
+            graphic: '<svg viewBox="0 0 240 240"><circle cx="120" cy="120" r="95" fill="none" stroke="#9CFF57" stroke-width="8" opacity="0.6"/><circle cx="120" cy="120" r="75" fill="none" stroke="#4FC3F7" stroke-width="8"/><circle cx="120" cy="120" r="18" fill="#4FC3F7"/></svg>',
+            speech: "You perform best with clear goals.",
+            stats: [
+                { icon: "🎯", label: "Core Strength:", value: "Concentration", bg: "#7B6FD8", contentBg: "linear-gradient(135deg, #A89FE8, #9888D8)" },
+                { icon: "👀", label: "Thinking Style:", value: "Sustained Attention", bg: "#68A8F8", contentBg: "linear-gradient(135deg, #78B8F8, #68A8E8)" }
+            ],
+            powers: [
+                { name: "Focus Stamina", val: 93, color: "linear-gradient(90deg, #4FC3F7, #29B6F6)" },
+                { name: "Completion", val: 89, color: "linear-gradient(90deg, #FFD54F, #FFB74D)" }
+            ],
+            insight: { icon: "🎯", text: "INSIGHT: You thrive on single targets." }
+        },
+        'decision-maker': {
+            id: 'decision-maker', gameType: 'smart-guess', title: "FAST DECISION MAKER", subtitle: "You act with confidence", isSVG: true,
+            graphic: '<svg viewBox="0 0 240 240"><circle cx="120" cy="120" r="75" fill="#7B6FD8" stroke="#29B6F6" stroke-width="3"/><line x1="120" y1="120" x2="155" y2="90" stroke="#FFB74D" stroke-width="6" stroke-linecap="round"/><circle cx="120" cy="120" r="8" fill="#FFD54F"/></svg>',
+            speech: "You trust your sharp instincts.",
+            stats: [
+                { icon: "💨", label: "Core Strength:", value: "Quick Judgement", bg: "#7B6FD8", contentBg: "linear-gradient(135deg, #A89FE8, #9888D8)" },
+                { icon: "🧠", label: "Thinking Style:", value: "Rapid Execution", bg: "#68A8F8", contentBg: "linear-gradient(135deg, #78B8F8, #68A8E8)" }
+            ],
+            powers: [
+                { name: "Response Speed", val: 91, color: "linear-gradient(90deg, #42A5F5, #29B6F6)" },
+                { name: "Risk Awareness", val: 73, color: "linear-gradient(90deg, #FFD54F, #FFB74D)" }
+            ],
+            insight: { icon: "⚡", text: "INSIGHT: You make sharp moves rapidly." }
+        },
+        'adaptive-learner': {
+            id: 'adaptive-learner', gameType: 'learning-style', title: "THE ADAPTIVE LEARNER", subtitle: "You adjust and learn fast", isSVG: true,
+            graphic: '<svg viewBox="0 0 240 240"><text x="120" y="140" font-size="80" text-anchor="middle">🧠</text><circle cx="170" cy="70" r="20" fill="#4FC3F7"/><circle cx="70" cy="170" r="18" fill="#7B6FD8"/></svg>',
+            speech: "You grow faster when things change.",
+            stats: [
+                { icon: "🎗️", label: "Core Strength:", value: "Flexibility", bg: "#7B6FD8", contentBg: "linear-gradient(135deg, #A89FE8, #9888D8)" },
+                { icon: "🦎", label: "Thinking Style:", value: "Adaptive Learning", bg: "#68A8F8", contentBg: "linear-gradient(135deg, #78B8F8, #68A8E8)" }
+            ],
+            powers: [
+                { name: "Learning Speed", val: 88, color: "linear-gradient(90deg, #4FC3F7, #29B6F6)" },
+                { name: "Change Handling", val: 91, color: "linear-gradient(90deg, #FFB74D, #FFA726)" }
+            ],
+            insight: { icon: "📈", text: "INSIGHT: You master new topics easily." }
+        },
+        'detail-detective': {
+            id: 'detail-detective', gameType: 'pattern-rush', title: "THE DETAIL DETECTIVE", subtitle: "You notice the small things", isSVG: true,
+            graphic: '<svg viewBox="0 0 240 240"><circle cx="105" cy="105" r="70" fill="none" stroke="#7B6FD8" stroke-width="8"/><line x1="160" y1="160" x2="200" y2="200" stroke="#FFD54F" stroke-width="12" stroke-linecap="round"/></svg>',
+            speech: "You catch what others miss.",
+            stats: [
+                { icon: "👁️", label: "Core Strength:", value: "Detail Spotting", bg: "#7B6FD8", contentBg: "linear-gradient(135deg, #A89FE8, #9888D8)" },
+                { icon: "🔍", label: "Thinking Style:", value: "Observation", bg: "#68A8F8", contentBg: "linear-gradient(135deg, #78B8F8, #68A8E8)" }
+            ],
+            powers: [
+                { name: "Attention", val: 95, color: "linear-gradient(90deg, #4FC3F7, #29B6F6)" },
+                { name: "Pattern Recognition", val: 90, color: "linear-gradient(90deg, #FFD54F, #FFB74D)" }
+            ],
+            insight: { icon: "👁️", text: "INSIGHT: You ensure high accuracy." }
+        },
+        'strategic-planner': {
+            id: 'strategic-planner', gameType: 'work-style', title: "THE STRATEGIC PLANNER", subtitle: "You think before you act", isSVG: true,
+            graphic: '<svg viewBox="0 0 240 240"><circle cx="120" cy="120" r="28" fill="#9B8FE8"/><line x1="120" y1="50" x2="120" y2="90" stroke="#4FC3F7" stroke-width="4"/><circle cx="120" cy="50" r="18" fill="#4FC3F7"/></svg>',
+            speech: "You like having a clear plan.",
+            stats: [
+                { icon: "🗺️", label: "Core Strength:", value: "Planning Action", bg: "#7B6FD8", contentBg: "linear-gradient(135deg, #A89FE8, #9888D8)" },
+                { icon: "🕐", label: "Thinking Style:", value: "Long-Term Thinking", bg: "#68A8F8", contentBg: "linear-gradient(135deg, #78B8F8, #68A8E8)" }
+            ],
+            powers: [
+                { name: "Planning Skill", val: 92, color: "linear-gradient(90deg, #4FC3F7, #29B6F6)" },
+                { name: "Control", val: 85, color: "linear-gradient(90deg, #FFD54F, #FFB74D)" }
+            ],
+            insight: { icon: "🧠", text: "INSIGHT: Strategy is your asset." }
+        },
+        'creative-connector': {
+            id: 'creative-connector', gameType: 'personality', title: "CREATIVE CONNECTOR", subtitle: "You link ideas uniquely", isSVG: true,
+            graphic: '<svg viewBox="0 0 240 240"><circle cx="120" cy="120" r="25" fill="#FFD54F"/><path d="M 120 95 Q 80 70, 60 70" stroke="#4FC3F7" stroke-width="5" fill="none"/><path d="M 120 95 Q 160 70, 180 70" stroke="#7B6FD8" stroke-width="5" fill="none"/></svg>',
+            speech: "You see connections others miss.",
+            stats: [
+                { icon: "🧠", label: "Core Strength:", value: "Creative Thinking", bg: "#7B6FD8", contentBg: "linear-gradient(135deg, #A89FE8, #9888D8)" },
+                { icon: "💡", label: "Thinking Style:", value: "Idea Association", bg: "#68A8F8", contentBg: "linear-gradient(135deg, #78B8F8, #68A8E8)" }
+            ],
+            powers: [
+                { name: "Original Thinking", val: 87, color: "linear-gradient(90deg, #4FC3F7, #29B6F6)" },
+                { name: "Imagination", val: 94, color: "linear-gradient(90deg, #FF69B4, #FFB4D6)" }
+            ],
+            insight: { icon: "🔗", text: "INSIGHT: Lateral thinking is your gift." }
         }
     };
 
-    /* ===============================
-   AUTH MESSAGE HANDLER (FINAL)
-================================ */
+    var isLowPerfDevice = /Android|webOS|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 400 || (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4);
 
-    function clearAuthMessages() {
-        [
-            'signup-error-message',
-            'signup-success-message',
-            'login-error-message',
-            'login-success-message'
-        ].forEach(id => {
-            const el = document.getElementById(id);
-            if (el) {
-                el.style.display = 'none';
-                el.textContent = '';
-            }
-        });
-    }
+    function getPersonaData() {
+        console.log('=== PERSONA SELECTION DEBUG ===');
+        console.log('Full resultData:', resultData);
 
-    function showAuthMessage(type, status, message) {
-        const el = document.getElementById(`${type}-${status}-message`);
-        if (!el) return;
+        if (resultData && resultData.success && resultData.results) {
+            var results = resultData.results;
+            console.log('Results object:', results);
+            console.log('Game Dominant Personas:', results.gameDominantPersonas);
 
-        el.textContent = message;
-        el.style.display = 'block';
-    }
+            if (results.gameDominantPersonas) {
+                var gameKeys = Object.keys(results.gameDominantPersonas);
+                console.log('Games played:', gameKeys);
 
+                if (gameKeys.length > 0) {
+                    var lastGame = gameKeys[gameKeys.length - 1];
+                    console.log('Last game played:', lastGame);
 
-    // ========== AUTH MODAL FUNCTIONS ==========
-    function openAuthModal(mode) {
-        const modal = document.getElementById('auth-modal');
-        const signupContainer = document.getElementById('signup-form-container');
-        const loginContainer = document.getElementById('login-form-container');
+                    var personaKey = GAME_TO_PERSONA_MAPPING[lastGame];
+                    console.log('Mapped game', lastGame, 'to persona key:', personaKey);
 
-        // Clear any previous messages
-        clearAuthMessages();
-
-        if (mode === 'signup') {
-            signupContainer.style.display = 'block';
-            loginContainer.style.display = 'none';
-        } else {
-            signupContainer.style.display = 'none';
-            loginContainer.style.display = 'block';
-        }
-
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Prevent background scrolling
-    }
-
-    function closeAuthModal() {
-        const modal = document.getElementById('auth-modal');
-        modal.classList.remove('active');
-        document.body.style.overflow = ''; // Restore scrolling
-
-        // Clear forms
-        document.getElementById('signup-form').reset();
-        document.getElementById('login-form').reset();
-        clearAuthMessages();
-    }
-
-    function switchToSignup() {
-        openAuthModal('signup');
-    }
-
-    function switchToLogin() {
-        openAuthModal('login');
-    }
-
-
-    // Close modal when clicking outside
-    document.getElementById('auth-modal').addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeAuthModal();
-        }
-    });
-
-    // Handle Signup Form Submit
-    document.getElementById('signup-form').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        clearAuthMessages();
-
-        const name = document.getElementById('signup-name').value;
-        const email = document.getElementById('signup-email').value;
-        const age = document.getElementById('signup-age').value;
-
-        try {
-            const response = await fetch('/api/signup', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, age })
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-                showAuthMessage('signup', 'success', 'Account created successfully!');
-                setTimeout(() => {
-                    window.location.href = '/dashboard';
-                }, 1500);
-            } else {
-                showAuthMessage('signup', 'error', data.message || 'Signup failed. Please try again.');
-            }
-        } catch (error) {
-            showAuthMessage('signup', 'error', 'An error occurred. Please try again.');
-        }
-    });
-
-    // Handle Login Form Submit
-    document.getElementById('login-form').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        clearAuthMessages();
-
-        const email = document.getElementById('login-email').value;
-        const name = document.getElementById('login-name').value;
-
-        try {
-            const response = await fetch('/api/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, name })
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-                showAuthMessage('login', 'success', 'Login successful!');
-                setTimeout(() => {
-                    window.location.href = '/dashboard';
-                }, 1500);
-            } else {
-                showAuthMessage('login', 'error', data.message || 'Login failed. Please try again.');
-            }
-        } catch (error) {
-            showAuthMessage('login', 'error', 'An error occurred. Please try again.');
-        }
-    });
-
-    // Display rewards in the modal
-    function displayRewards(rewards) {
-        if (!rewards) return;
-
-        // Show level up if applicable
-        if (rewards.leveledUp) {
-            document.getElementById('level-up-container').innerHTML =
-                '<div class="level-up">' +
-                '<div class="level-up-text">🎊 Level Up! You' + String.fromCharCode(39) + 're now Level ' + rewards.newLevel + '!</div>' +
-                '</div>';
-        }
-
-        // Show badges
-        if (rewards.badges && rewards.badges.length > 0) {
-            var badgesHtml = rewards.badges.map(function(badge) {
-                return '<div class="badge-item">' +
-                    '<div class="badge-emoji">' + badge.emoji + '</div>' +
-                    '<div class="badge-name">' + badge.badgeName + '</div>' +
-                    '</div>';
-            }).join('');
-            document.getElementById('reward-badges').innerHTML = badgesHtml;
-        }
-
-        // Show achievements
-        if (rewards.achievements && rewards.achievements.length > 0) {
-            var achievementsHtml = '<div style="margin-top: 20px;">' +
-                '<h3 style="margin-bottom: 15px; color: var(--text-dark);">🏆 New Achievements!</h3>';
-
-            rewards.achievements.forEach(function(ach) {
-                achievementsHtml += '<div style="background: #f8f9fa; border-radius: 8px; padding: 15px; margin: 10px 0;">' +
-                    '<div style="font-size: 2rem;">' + ach.emoji + '</div>' +
-                    '<div style="font-weight: 600; margin-top: 5px;">' + ach.achievementTitle + '</div>' +
-                    '<div style="color: #666; font-size: 0.9rem;">' + ach.achievementDescription + '</div>' +
-                    '</div>';
-            });
-
-            achievementsHtml += '</div>';
-            document.getElementById('achievements-container').innerHTML = achievementsHtml;
-        }
-    }
-
-    // Populate results from server data
-    function populateResults() {
-        console.log('POPULATE_DEBUG: Starting populateResults()');
-        console.log('POPULATE_DEBUG: resultData =', resultData);
-        
-        if (!resultData) {
-            console.error('No result data available');
-            document.getElementById('result-title').textContent = 'Error Loading Results';
-            document.getElementById('result-summary').textContent = 'Unable to load test results';
-            return;
-        }
-
-        if (!resultData.success) {
-            console.error('Result failed:', resultData.error);
-            document.getElementById('result-title').textContent = 'Error Loading Results';
-            document.getElementById('result-summary').textContent = resultData.error || 'Unable to load test results';
-            return;
-        }
-
-        // Primary: build UI from server-computed game results
-        var data;
-        var gameResults = (resultData.results && resultData.results.gameResults) ? resultData.results.gameResults : null;
-        
-        console.log('POPULATE_DEBUG: gameResults =', gameResults);
-        console.log('POPULATE_DEBUG: gameResults keys =', gameResults ? Object.keys(gameResults) : 'null');
-        
-        if (gameResults && Object.keys(gameResults).length > 0) {
-            const gameTypes = Object.keys(gameResults);
-            const currentGameType = gameTypes[0]; // session generally contains a single game's responses
-            
-            console.log('POPULATE_DEBUG: currentGameType =', currentGameType);
-            console.log('POPULATE_DEBUG: gameResults[currentGameType] =', gameResults[currentGameType]);
-
-            if (currentGameType === 'SPIRIT_ANIMAL') {
-                console.log('POPULATE_DEBUG: Processing SPIRIT_ANIMAL results');
-                const sa = gameResults['SPIRIT_ANIMAL'] || {};
-                const map = {
-                    'STRATEGIC_WOLF': 'wolf',
-                    'WISE_OWL': 'owl',
-                    'DISCIPLINED_BEE': 'bee',
-                    'BOLD_TIGER': 'tiger'
-                };
-                const key = map[sa.resultType] || 'wolf';
-                data = ANIMAL_REPORTS[key];
-                console.log('POPULATE_DEBUG: Using ANIMAL_REPORTS for', key);
-            } else if (currentGameType === 'PATTERN_SNAPSHOT') {
-                console.log('POPULATE_DEBUG: Processing PATTERN_SNAPSHOT results');
-                const ps = gameResults['PATTERN_SNAPSHOT'] || {};
-                const skew = ps.dominantSkew || 'VISUAL';
-                console.log('POPULATE_DEBUG: Pattern Snapshot skew =', skew);
-                console.log('POPULATE_DEBUG: Pattern Snapshot full result =', ps);
-                const PATTERN_REPORTS = {
-                    'VISUAL': {
-                        theme: 'theme-owl', emoji: '🧠', title: 'Pattern Visualizer', tagline: '"Sees Structures"',
-                        summary: 'You recognize shapes, arrangements, and visual patterns quickly.',
-                        strength: 'Visual Reasoning', style: 'Spatial',
-                        loss: 'Unlock to learn how to convert visual intuition into step-proof answers.',
-                        social: 'Most Visualizers unlock advanced visual drills.',
-                        reward: 'You spot patterns others miss',
-                        next: 'Take next test (to know more about yourself)',
-                        powers: [{l:'Visual Patterns', v:92}, {l:'Symbol Mapping', v:84}]
-                    },
-                    'VERBAL': {
-                        theme: 'theme-wolf', emoji: '💬', title: 'Pattern Communicator', tagline: '"Language Mapper"',
-                        summary: 'You detect relationships in words, analogies, and sequences.',
-                        strength: 'Verbal Reasoning', style: 'Linguistic',
-                        loss: 'Unlock strategies to avoid over-reading traps in sequence items.',
-                        social: 'Communicators often progress fast with analogy scaffolds.',
-                        reward: 'You decode word patterns rapidly',
-                        next: 'Take next test (to know more about yourself)',
-                        powers: [{l:'Analogies', v:90}, {l:'Sequence Logic', v:86}]
-                    },
-                    'NUMERIC': {
-                        theme: 'theme-bee', emoji: '🔢', title: 'Pattern Analyzer', tagline: '"Number Sense"',
-                        summary: 'You see numeric progressions and modular patterns with ease.',
-                        strength: 'Quant Patterns', style: 'Analytical',
-                        loss: 'Unlock heuristics to speed-check numeric sequences under time.',
-                        social: 'Analyzers boost speed with timed pattern drills.',
-                        reward: 'You read numbers like a language',
-                        next: 'Take next test (to know more about yourself)',
-                        powers: [{l:'Series Detection', v:93}, {l:'Rule Finding', v:88}]
+                    if (Array.isArray(personaKey)) {
+                        console.log('🎲 Spirit Animal - Random from:', personaKey);
+                        var randomAnimal = personaKey[Math.floor(Math.random() * personaKey.length)];
+                        console.log('Selected:', randomAnimal);
+                        return ALL_PERSONAS[randomAnimal];
+                    } else if (personaKey && ALL_PERSONAS[personaKey]) {
+                        console.log('✅ Found persona:', personaKey);
+                        return ALL_PERSONAS[personaKey];
+                    } else {
+                        console.log('❌ Persona key not found:', personaKey);
+                        console.log('⚠️ Game name not in mapping! Add this game:', lastGame);
                     }
-                };
-                data = PATTERN_REPORTS[skew] || PATTERN_REPORTS['VISUAL'];
-            } else {
-                // Minimal generic presentation for other games
-                const prettyName = (currentGameType || 'Your Results')
-                    .toLowerCase().replace(/_/g, ' ')
-                    .replace(/\b\w/g, function(c) { return c.toUpperCase(); });
-                data = {
-                    theme: 'theme-wolf', emoji: '🎯',
-                    title: prettyName, tagline: '"Summary"',
-                    summary: (resultData.results && resultData.results.summary) ? resultData.results.summary : 'Your personalized results are ready.',
-                    strength: 'Core Strength', style: 'Style',
-                    loss: 'Unlock to see deeper insights.',
-                    social: 'Learners like you continue to the next test.',
-                    reward: 'Nice progress!',
-                    next: 'Take next test (to know more about yourself)',
-                    powers: [{l:'Dimension A', v:85}, {l:'Dimension B', v:80}]
-                };
-            }
-        } else {
-            // Legacy fallback: use ANIMAL_REPORTS with URL/localStorage hints
-            if (resultData.emoji && resultData.resultTitle) {
-                data = {
-                    emoji: resultData.emoji || '🎯',
-                    title: resultData.resultTitle || 'Your Results',
-                    tagline: resultData.resultSummary || '',
-                    summary: resultData.profile || '',
-                    strength: resultData.strengths || '',
-                    style: resultData.aiRoadmap || '',
-                    loss: resultData.traps || 'Unlock to see potential challenges',
-                    social: resultData.bestMatches || '',
-                    reward: resultData.strengths || 'Great job!',
-                    next: 'Take next test (to know more about yourself)',
-                    powers: [
-                        {l: 'Core Strength', v: 85},
-                        {l: 'Learning Style', v: 90}
-                    ],
-                    theme: 'theme-wolf'
-                };
-            } else {
-                const urlParams = new URLSearchParams(window.location.search);
-                const urlResult = urlParams.get('animal');
-                const storedResult = localStorage.getItem('exam_animal_result');
-                const keys = Object.keys(ANIMAL_REPORTS);
-                const randomResult = keys[Math.floor(Math.random() * keys.length)];
-                let resultKey = (urlResult && ANIMAL_REPORTS[urlResult]) ? urlResult : (storedResult || randomResult);
-                data = ANIMAL_REPORTS[resultKey];
+                }
             }
         }
 
-        // Update theme
-        document.body.className = data.theme || 'theme-wolf';
-
-        // Update DOM with result data
-        document.getElementById('animal-emoji').innerText = data.emoji || '🎯';
-        document.getElementById('result-title').innerText = data.title || 'Your Results';
-        document.getElementById('result-tagline').innerText = data.tagline || '';
-        document.getElementById('result-summary').innerText = data.summary || '';
-        document.getElementById('stat-strength').innerText = data.strength || 'High Speed';
-        document.getElementById('stat-style').innerText = data.style || 'Intuitive';
-        document.getElementById('loss-frame').innerText = data.loss || 'Unlock to see more details';
-        document.getElementById('tribe-text').innerText = data.social || 'Join others who unlocked their full potential';
-        document.getElementById('reward-badge').innerText = data.reward || 'Great job!';
-        document.getElementById('btn-next').innerText = data.next || 'Take next test';
-
-        if (data.powers && data.powers.length >= 2) {
-            document.getElementById('p1-label').innerText = data.powers[0].l;
-            document.getElementById('p2-label').innerText = data.powers[1].l;
-
-            // Animate power bars
-            setTimeout(() => {
-                document.getElementById('p1-bar').style.width = data.powers[0].v + '%';
-                document.getElementById('p2-bar').style.width = data.powers[1].v + '%';
-            }, 600);
-        }
-
-        console.log('Results populated successfully');
+        console.log('⚠️ Falling back to random persona');
+        var keys = Object.keys(ALL_PERSONAS);
+        var randomKey = keys[Math.floor(Math.random() * keys.length)];
+        console.log('Random persona selected:', randomKey);
+        return ALL_PERSONAS[randomKey];
     }
 
-    // Show results (hide modal, show content)
-    function revealResults() {
-        const modal = document.getElementById('reward-modal');
-        const results = document.getElementById('results-content');
+    function renderPersona(p) {
+        var container = document.getElementById('mainContainer');
+        var charHTML = p.isSVG ? '<div class="graphic-wrapper">' + p.graphic + '</div>' :
+            (p.showLightbulb ? '<div class="overlay-icon">💡</div>' : '<div class="graduation-cap">🎓</div>') + '<div class="character-emoji">' + p.emoji + '</div>';
 
-        modal.style.opacity = '0';
-        setTimeout(() => {
-            modal.style.display = 'none';
-            results.classList.add('visible');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }, 400);
+        container.innerHTML = '<div class="persona-badge">PERSONA<br>REVEALED!</div>' +
+            '<h1 class="game-title">' + p.title + '</h1>' +
+            '<div class="subtitle-ribbon">' + p.subtitle + '</div>' +
+            '<div class="character-section">' +
+            '<div class="character-container" id="char-box">' + charHTML +
+            '<div class="wing-sparkle-static" style="left:15px; top:70px; animation-delay: 2.3s, 2.3s;">✨</div>' +
+            '<div class="wing-sparkle-static" style="left:30px; top:110px; animation-delay: 2.5s, 2.5s;">⭐</div>' +
+            '<div class="wing-sparkle-static" style="right:15px; top:70px; animation-delay: 2.4s, 2.4s;">✨</div>' +
+            '<div class="wing-sparkle-static" style="right:30px; top:110px; animation-delay: 2.6s, 2.6s;">⭐</div>' +
+            '</div>' +
+            '<div class="speech-bubble">' + p.speech + '</div>' +
+            '</div>' +
+            '<div class="stats-container">' + p.stats.map(function(s) { return '<div class="stat-pill"><div class="stat-icon-box" style="background: ' + s.bg + '">' + s.icon + '</div>' +
+                '<div class="stat-content" style="background: ' + s.contentBg + '"><div class="stat-label">' + s.label + '</div>' +
+                '<div class="stat-value">' + s.value + '</div></div></div>'; }).join('') + '</div>' +
+            '<div class="powers-section">' + p.powers.map(function(pow, i) { return '<div class="power-bar-wrapper"><div class="power-header"><span>' + pow.name + '</span>' +
+                '<span style="font-size:1.1rem">⚡</span></div><div class="power-bar-track">' +
+                '<div class="power-bar-fill" id="bar-' + i + '" style="background: ' + pow.color + '"></div>' +
+                '<div class="battery-icon">🔋</div></div></div>'; }).join('') + '</div>' +
+            '<div class="insight-badge"><div style="font-size: 2.2rem">' + p.insight.icon + '</div>' +
+            '<div style="font-family: \'Fredoka\', sans-serif; font-weight: 700; color: white; font-size: 0.95rem;">' + p.insight.text + '</div></div>' +
+            '<div class="action-buttons">' +
+            '<a href="/dashboard" class="action-btn dashboard-btn"><i class="fas fa-chart-line" style="margin-right:8px"></i> View Dashboard</a>' +
+            '<a href="${createLink(controller: 'personality', action: 'start')}" class="action-btn"><i class="fas fa-bullseye" style="margin-right:8px"></i> Take Next Test</a></div>' +
+            '<div class="share-buttons-row">' +
+            '<div class="share-btn-large" style="background: #1DA1F2" onclick="shareOnTwitter()"><i class="fab fa-twitter"></i></div>' +
+            '<div class="share-btn-large" style="background: #25D366" onclick="shareOnWhatsApp()"><i class="fab fa-whatsapp"></i></div>' +
+            '<div class="share-btn-large" style="background: #0077B5" onclick="shareOnLinkedIn()"><i class="fab fa-linkedin-in"></i></div>' +
+            '<div class="share-btn-large" style="background: #6366F1" onclick="copyToClipboard()"><i class="fas fa-link"></i></div>' +
+            '<div class="share-btn-large" style="background: #42A5F5" onclick="copyToClipboard()"><i class="far fa-copy"></i></div></div>' +
+            '<div class="share-labels"><span>Twitter</span><span>WhatsApp</span><span>LinkedIn</span><span>Link</span><span>Copy</span></div>';
 
+        setTimeout(function() {
+            p.powers.forEach(function(pow, i) {
+                var el = document.getElementById('bar-' + i);
+                if(el) el.style.width = pow.val + '%';
+            });
+        }, 3500);
         fireConfetti();
     }
 
-    // Confetti animation
+    function displayRewards(r) {
+        if (!r) return;
+        if (r.leveledUp) document.getElementById('level-up-container').innerHTML = '<div class="level-up"><div class="level-up-text">🎊 Level Up! You\'re now Level ' + r.newLevel + '!</div></div>';
+        if (r.badges && r.badges.length) document.getElementById('reward-badges').innerHTML = r.badges.map(function(b) { return '<div class="badge-item"><div class="badge-emoji">' + b.emoji + '</div><div class="badge-name">' + b.badgeName + '</div></div>'; }).join('');
+        if (r.achievements && r.achievements.length) {
+            var html = '<div style="margin-top: 20px;"><h3 style="margin-bottom: 15px; color: #1a1a2e;">🏆 New Achievements!</h3>';
+            r.achievements.forEach(function(a) { html += '<div style="background: #f8f9fa; border-radius: 8px; padding: 15px; margin: 10px 0;"><div style="font-size: 2rem;">' + a.emoji + '</div><div style="font-weight: 600; margin-top: 5px;">' + a.achievementTitle + '</div><div style="color: #666; font-size: 0.9rem;">' + a.achievementDescription + '</div></div>'; });
+            document.getElementById('achievements-container').innerHTML = html + '</div>';
+        }
+    }
+
+    function revealResults() {
+        var modal = document.getElementById('reward-modal');
+        modal.style.opacity = '0';
+        setTimeout(function() {
+            modal.style.display = 'none';
+            document.getElementById('mainContainer').classList.add('visible');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 400);
+        createBackgroundGlitter();
+        createFloatingParticles();
+        renderPersona(getPersonaData());
+    }
+
+    function createBackgroundGlitter() {
+        var colors = ['', 'gold', 'silver', 'cyan', 'pink'];
+        var interval = isLowPerfDevice ? 400 : 200;
+        setInterval(function() {
+            for (var i = 0; i < (isLowPerfDevice ? 2 : 4); i++) {
+                var g = document.createElement('div');
+                g.className = 'glitter ' + colors[Math.floor(Math.random() * colors.length)];
+                g.style.left = (Math.random() * 100) + '%';
+                g.style.top = (Math.random() * 100) + '%';
+                document.body.appendChild(g);
+                setTimeout(function(elem) { return function() { elem.remove(); }; }(g), 2500);
+            }
+        }, interval);
+    }
+
+    function createFloatingParticles() {
+        var particles = [
+            { t: 'emoji', c: '⭐', s: '24px' }, { t: 'emoji', c: '✨', s: '20px' },
+            { t: 'circle', c: '#FFB8E8', s: '40px' }, { t: 'circle', c: '#5FE3D0', s: '38px' }
+        ];
+        particles.slice(0, isLowPerfDevice ? 4 : 8).forEach(function(p) {
+            var el = document.createElement('div');
+            el.className = 'particle';
+            el.style.animationDelay = (1 + Math.random()) + 's';
+            if (p.t === 'emoji') { el.textContent = p.c; el.style.fontSize = p.s; }
+            else { el.style.width = el.style.height = p.s; el.style.borderRadius = '50%'; el.style.background = 'radial-gradient(circle, ' + p.c + ', transparent)'; el.style.opacity = '0.7'; }
+            el.style.left = (Math.random() * 100) + '%';
+            el.style.top = (Math.random() * 100) + '%';
+            document.body.appendChild(el);
+        });
+    }
+
     function fireConfetti() {
-        const canvas = document.getElementById('confetti-canvas');
+        var canvas = document.getElementById('confetti-canvas');
         if (!canvas) return;
-        const ctx = canvas.getContext('2d');
+        var ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-
-        const particles = [];
-        const colors = ['#8B7FE8', '#5FE3D0', '#FFB4D6', '#F59E0B'];
-
-        for(let i=0; i<100; i++) {
-            particles.push({
-                x: Math.random() * canvas.width,
-                y: -20,
-                r: Math.random() * 6 + 2,
-                d: Math.random() * 20 + 10,
-                color: colors[Math.floor(Math.random() * colors.length)],
-                tilt: Math.floor(Math.random() * 10) - 10,
-                tiltAngleIncremental: (Math.random() * 0.07) + 0.05,
-                tiltAngle: 0
+        var parts = [];
+        var colors = ['#8B7FE8', '#5FE3D0', '#FFB4D6', '#FFD86D'];
+        for(var i = 0; i < (isLowPerfDevice ? 80 : 150); i++) {
+            parts.push({ x: Math.random() * canvas.width, y: -30, r: Math.random() * 8 + 3, d: Math.random() * 20 + 10,
+                color: colors[Math.floor(Math.random() * colors.length)], tilt: Math.floor(Math.random() * 12) - 12,
+                tiltAngleIncremental: (Math.random() * 0.08) + 0.04, tiltAngle: 0
             });
         }
-
-        let frame = 0;
+        var frame = 0;
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach((p, i) => {
+            parts.forEach(function(p, i) {
                 p.tiltAngle += p.tiltAngleIncremental;
                 p.y += (Math.cos(p.d) + 3 + p.r / 2) / 2;
                 p.tilt = Math.sin(p.tiltAngle) * 15;
-
                 ctx.beginPath();
                 ctx.lineWidth = p.r;
                 ctx.strokeStyle = p.color;
                 ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
                 ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
                 ctx.stroke();
-
-                if (p.y > canvas.height) {
-                    particles[i].y = -20;
-                    particles[i].x = Math.random() * canvas.width;
-                }
+                if (p.y > canvas.height) { parts[i].y = -30; parts[i].x = Math.random() * canvas.width; }
             });
-            frame++;
-            if(frame < 250) requestAnimationFrame(draw);
-            else ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if(frame++ < (isLowPerfDevice ? 200 : 300)) requestAnimationFrame(draw);
         }
         draw();
     }
 
-    // Share functionality
-    function shareOnTwitter() {
-        const text = encodeURIComponent('I just discovered my learning style! Find out yours at learnerDNA 🧬');
-        const url = encodeURIComponent(window.location.href);
-        window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank', 'width=550,height=420');
-    }
-
+    function shareOnTwitter() { window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent('I discovered my learning style! 🧬') + '&url=' + encodeURIComponent(location.href), '_blank'); }
     function shareOnWhatsApp() {
-        const text = encodeURIComponent('I just discovered my learning style on learnerDNA! Check it out: ' + window.location.href);
-        window.open(`https://wa.me/?text=${text}`, '_blank');
-    }
-
-    function shareOnLinkedIn() {
-        const url = encodeURIComponent(window.location.href);
-        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank', 'width=550,height=420');
-    }
-
-    function copyToClipboard() {
-        const url = window.location.href;
-
-        // Try modern clipboard API first
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(url).then(function() {
-                showCopyNotification();
-            }).catch(function(err) {
-                fallbackCopyToClipboard(url);
-            });
+        var text = encodeURIComponent('Check out learnerDNA: ' + location.href);
+        if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            window.location.href = 'whatsapp://send?text=' + text;
         } else {
-            fallbackCopyToClipboard(url);
+            window.open('https://wa.me/?text=' + text, '_blank');
         }
     }
-
-    function fallbackCopyToClipboard(text) {
-        const textArea = document.createElement("textarea");
-        textArea.value = text;
-        textArea.style.position = "fixed";
-        textArea.style.left = "-999999px";
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-
-        try {
-            document.execCommand('copy');
-            showCopyNotification();
-        } catch (err) {
-            alert('Failed to copy link. Please copy manually: ' + text);
+    function shareOnLinkedIn() { window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(location.href), '_blank'); }
+    function copyToClipboard() {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(location.href).then(function() { alert('✅ Link copied!'); }).catch(function() { fallbackCopy(); });
+        } else {
+            fallbackCopy();
         }
-
-        document.body.removeChild(textArea);
+    }
+    function fallbackCopy() {
+        var t = document.createElement('textarea');
+        t.value = location.href;
+        t.style.position = 'fixed';
+        t.style.left = '-9999px';
+        document.body.appendChild(t);
+        t.select();
+        try { document.execCommand('copy'); alert('✅ Link copied!'); } catch(e) { prompt('Copy this link:', location.href); }
+        document.body.removeChild(t);
     }
 
-    function showCopyNotification() {
-        const btn = document.querySelector('.share-btn.copy');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<span class="emoji">✓</span><span>Copied!</span>';
-        btn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
-
-        setTimeout(() => {
-            btn.innerHTML = originalText;
-            btn.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%)';
-        }, 2000);
+    function clearAuthMessages() {
+        ['signup-error-message', 'signup-success-message', 'login-error-message', 'login-success-message'].forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) { el.style.display = 'none'; el.textContent = ''; }
+        });
     }
 
-    // Initialize on page load
+    function showAuthMessage(type, status, msg) {
+        var el = document.getElementById(type + '-' + status + '-message');
+        if (el) { el.textContent = msg; el.style.display = 'block'; }
+    }
+
+    function openAuthModal(mode) {
+        var m = document.getElementById('auth-modal');
+        var s = document.getElementById('signup-form-container');
+        var l = document.getElementById('login-form-container');
+        clearAuthMessages();
+        if (mode === 'signup') { s.style.display = 'block'; l.style.display = 'none'; }
+        else { s.style.display = 'none'; l.style.display = 'block'; }
+        m.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeAuthModal() {
+        document.getElementById('auth-modal').classList.remove('active');
+        document.body.style.overflow = '';
+        clearAuthMessages();
+    }
+
+    document.getElementById('scrollToTop').addEventListener('click', function() { window.scrollTo({top: 0, behavior: 'smooth'}); });
+    window.addEventListener('scroll', function() {
+        var btn = document.getElementById('scrollToTop');
+        if (window.pageYOffset > 300) btn.classList.add('visible');
+        else btn.classList.remove('visible');
+    }, { passive: true });
+
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('DOM Content Loaded');
-        console.log('Result data:', resultData);
+        if (resultData && resultData.rewards) displayRewards(resultData.rewards);
 
-        // Populate results first
-        populateResults();
+        var continueBtn = document.getElementById('continue-btn-reward');
+        if (continueBtn) continueBtn.addEventListener('click', function(e) { e.preventDefault(); revealResults(); });
 
-        // Attach event listener to dashboard button
-        const dashboardBtn = document.getElementById('open-dashboard-modal');
-        if (dashboardBtn) {
-            dashboardBtn.addEventListener('click', function(e) {
+        var closeBtn = document.getElementById('auth-close-btn');
+        if (closeBtn) closeBtn.addEventListener('click', function(e) { e.preventDefault(); closeAuthModal(); });
+
+        document.getElementById('auth-modal').addEventListener('click', function(e) { if (e.target.id === 'auth-modal') closeAuthModal(); });
+
+        var signupForm = document.getElementById('signup-form');
+        if (signupForm) {
+            signupForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-                console.log('Opening auth modal');
-                openAuthModal('signup');
+                clearAuthMessages();
+                fetch('/api/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: document.getElementById('signup-name').value,
+                        email: document.getElementById('signup-email').value,
+                        age: document.getElementById('signup-age').value
+                    })
+                }).then(function(res) { return res.json(); }).then(function(data) {
+                    if (data.success) {
+                        showAuthMessage('signup', 'success', 'Success!');
+                        setTimeout(function() { location.href = '/dashboard'; }, 1500);
+                    } else showAuthMessage('signup', 'error', data.message || 'Failed');
+                }).catch(function() { showAuthMessage('signup', 'error', 'Error occurred'); });
             });
         }
 
-        // Attach event listeners to auth modal buttons
-        const closeBtn = document.getElementById('auth-close-btn');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', function(e) {
+        var loginForm = document.getElementById('login-form');
+        if (loginForm) {
+            loginForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-                closeAuthModal();
-            });
-        }
-
-        const switchToLoginLink = document.getElementById('switch-to-login-link');
-        if (switchToLoginLink) {
-            switchToLoginLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                switchToLogin();
-            });
-        }
-
-        const switchToSignupLink = document.getElementById('switch-to-signup-link');
-        if (switchToSignupLink) {
-            switchToSignupLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                switchToSignup();
-            });
-        }
-
-        // Display rewards if available from server
-        if (resultData && resultData.rewards) {
-            displayRewards(resultData.rewards);
-        }
-
-        // Setup continue button
-        const continueBtn = document.getElementById('continue-btn-reward');
-        if (continueBtn) {
-            continueBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                revealResults();
-            });
-        }
-
-        // Auto-reveal after short delay (or keep modal if you want manual click)
-        // Uncomment below to auto-skip modal:
-        /*
-        setTimeout(function() {
-            revealResults();
-        }, 100);
-        */
-
-        // Scroll to Top Button Functionality
-        const scrollToTopBtn = document.getElementById('scrollToTop');
-        if (scrollToTopBtn) {
-            window.addEventListener('scroll', function() {
-                if (window.pageYOffset > 300) {
-                    scrollToTopBtn.classList.add('visible');
-                } else {
-                    scrollToTopBtn.classList.remove('visible');
-                }
+                clearAuthMessages();
+                fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: document.getElementById('login-email').value,
+                        name: document.getElementById('login-name').value
+                    })
+                }).then(function(res) { return res.json(); }).then(function(data) {
+                    if (data.success) {
+                        showAuthMessage('login', 'success', 'Success!');
+                        setTimeout(function() { location.href = '/dashboard'; }, 1500);
+                    } else showAuthMessage('login', 'error', data.message || 'Failed');
+                }).catch(function() { showAuthMessage('login', 'error', 'Error occurred'); });
             });
         }
     });
 
-    // Resize handler for canvas
-    window.addEventListener('resize', () => {
-        const canvas = document.getElementById('confetti-canvas');
-        if(canvas) {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-    });
+    window.addEventListener('resize', function() {
+        var c = document.getElementById('confetti-canvas');
+        if(c) { c.width = window.innerWidth; c.height = window.innerHeight; }
+    }, { passive: true });
 </script>
 </body>
 </html>
