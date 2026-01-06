@@ -12,7 +12,6 @@ class DiagnosticService {
 
     // Use the unified persona service instead of individual services
     UnifiedPersonaService unifiedPersonaService
-    RewardService rewardService
 
     /**
      * Get all available diagnostic tests (using new unified system)

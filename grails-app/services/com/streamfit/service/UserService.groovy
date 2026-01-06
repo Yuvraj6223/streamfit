@@ -1,7 +1,6 @@
 package com.streamfit.service
 
 import com.streamfit.user.User
-import com.streamfit.dashboard.LearningDNA
 import grails.gorm.transactions.Transactional
 import groovy.json.JsonOutput
 
@@ -93,15 +92,6 @@ class UserService {
         ]
     }
     
-    private Double calculateCompletionPercentage(LearningDNA dna) {
-        if (!dna) return 0.0
-
-        int totalRequired = 5 // 3 core + 2 streamfit minimum
-        int completed = Math.min(dna.coreTestsCompleted, 3) + Math.min(dna.streamFitTestsCompleted, 2)
-
-        return (completed / totalRequired) * 100
-    }
-
     /**
      * Create an anonymous user for personality test
      */

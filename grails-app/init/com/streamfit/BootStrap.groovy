@@ -1,12 +1,10 @@
 package com.streamfit
 
 import com.streamfit.service.UnifiedPersonaService
-import com.streamfit.service.RewardService
 
 class BootStrap {
 
     UnifiedPersonaService unifiedPersonaService
-    RewardService rewardService
 
     def init = { servletContext ->
         // Always create essential tables first
@@ -26,13 +24,14 @@ class BootStrap {
         // Only delete old tables on first run
         if (isFirstRun) {
             deleteOldTables()
+            verifyRequiredTables()
         }
         
         // Initialize new unified game system
         initializeUnifiedGameSystem(isFirstRun)
 
         // Initialize reward system
-        initializeRewardSystem()
+        // initializeRewardSystem() // Skipped - using unified game system
     }
 
     def destroy = {
@@ -81,72 +80,103 @@ class BootStrap {
         try {
             log.info "Dropping old database tables..."
             
-            // Drop old diagnostic tables
-            try {
-                com.streamfit.diagnostic.DiagnosticQuestion.withTransaction { tx ->
-                    com.streamfit.diagnostic.DiagnosticQuestion.withSession { session ->
-                        session.createSQLQuery("DROP TABLE IF EXISTS diagnostic_question_option").executeUpdate()
-                        session.createSQLQuery("DROP TABLE IF EXISTS diagnostic_response").executeUpdate()
-                        session.createSQLQuery("DROP TABLE IF EXISTS diagnostic_result").executeUpdate()
-                        session.createSQLQuery("DROP TABLE IF EXISTS diagnostic_question").executeUpdate()
-                        session.createSQLQuery("DROP TABLE IF EXISTS diagnostic_test_session").executeUpdate()
-                        session.createSQLQuery("DROP TABLE IF EXISTS diagnostic_test").executeUpdate()
-                    }
+            // Use direct SQL queries to drop all old tables
+            com.streamfit.GameQuestion.withTransaction { tx ->
+                com.streamfit.GameQuestion.withSession { session ->
+                    // Drop old diagnostic tables
+                    session.createSQLQuery("DROP TABLE IF EXISTS diagnostic_question_option").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS diagnostic_response").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS diagnostic_result").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS diagnostic_question").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS diagnostic_test_session").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS diagnostic_test").executeUpdate()
+                    
+                    // Drop old personality tables
+                    session.createSQLQuery("DROP TABLE IF EXISTS personality_question_option").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS personality_response").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS personality_question").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS personality_test_session").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS personality_trait").executeUpdate()
+                    
+                    // Drop old reward tables
+                    session.createSQLQuery("DROP TABLE IF EXISTS user_badge").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS user_points").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS badge").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS achievement").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS reward").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS user_reward").executeUpdate()
+                    
+                    // Drop old dashboard tables
+                    session.createSQLQuery("DROP TABLE IF EXISTS learning_dna").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS dashboard_widget").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS user_dashboard").executeUpdate()
+                    
+                    // Drop any other old/unused tables
+                    session.createSQLQuery("DROP TABLE IF EXISTS user_persona").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS persona_result").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS test_result").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS user_answer").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS answer_option").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS question_category").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS user_progress").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS stream_mapping").executeUpdate()
+                    
+                    // Drop any old versioned tables or incorrect table names
+                    session.createSQLQuery("DROP TABLE IF EXISTS streamfit_user_v1").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS streamfit_user_v2").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS game_question").executeUpdate()
+                    session.createSQLQuery("DROP TABLE IF EXISTS game_option").executeUpdate()
+                    
+                    log.info "All old tables dropped successfully"
                 }
-                log.info "Old diagnostic tables dropped"
-            } catch (Exception e) {
-                log.warn "Some diagnostic tables may not exist: ${e.message}"
             }
-            
-            // Drop old personality tables
-            try {
-                com.streamfit.personality.PersonalityQuestion.withTransaction { tx ->
-                    com.streamfit.personality.PersonalityQuestion.withSession { session ->
-                        session.createSQLQuery("DROP TABLE IF EXISTS personality_question_option").executeUpdate()
-                        session.createSQLQuery("DROP TABLE IF EXISTS personality_response").executeUpdate()
-                        session.createSQLQuery("DROP TABLE IF EXISTS personality_question").executeUpdate()
-                        session.createSQLQuery("DROP TABLE IF EXISTS personality_test_session").executeUpdate()
-                        session.createSQLQuery("DROP TABLE IF EXISTS personality_trait").executeUpdate()
-                    }
-                }
-                log.info "Old personality tables dropped"
-            } catch (Exception e) {
-                log.warn "Some personality tables may not exist: ${e.message}"
-            }
-            
-            // Drop old reward tables
-            try {
-                com.streamfit.reward.Badge.withTransaction { tx ->
-                    com.streamfit.reward.Badge.withSession { session ->
-                        session.createSQLQuery("DROP TABLE IF EXISTS user_badge").executeUpdate()
-                        session.createSQLQuery("DROP TABLE IF EXISTS user_points").executeUpdate()
-                        session.createSQLQuery("DROP TABLE IF EXISTS badge").executeUpdate()
-                        session.createSQLQuery("DROP TABLE IF EXISTS achievement").executeUpdate()
-                    }
-                }
-                log.info "Old reward tables dropped"
-            } catch (Exception e) {
-                log.warn "Some reward tables may not exist: ${e.message}"
-            }
-            
-            // Drop old dashboard tables
-            try {
-                com.streamfit.dashboard.LearningDNA.withTransaction { tx ->
-                    com.streamfit.dashboard.LearningDNA.withSession { session ->
-                        session.createSQLQuery("DROP TABLE IF EXISTS learning_dna").executeUpdate()
-                    }
-                }
-                log.info "Old dashboard tables dropped"
-            } catch (Exception e) {
-                log.warn "Dashboard tables may not exist: ${e.message}"
-            }
-            
-            // NOTE: streamfit_user table is NOT dropped here as it's still needed by the system
             
             log.info "Old tables cleanup completed"
             
         } catch (Exception e) {
             log.error "Error dropping old tables: ${e.message}", e
+        }
+    }
+
+    private void verifyRequiredTables() {
+        try {
+            log.info "Verifying only required tables exist..."
+            
+            com.streamfit.GameQuestion.withTransaction { tx ->
+                com.streamfit.GameQuestion.withSession { session ->
+                    // Get all table names in the database
+                    def tables = session.createSQLQuery("""
+                        SELECT table_name 
+                        FROM information_schema.tables 
+                        WHERE table_schema = DATABASE() 
+                        AND table_type = 'BASE TABLE'
+                    """).list()
+                    
+                    // Define required tables
+                    def requiredTables = [
+                        'streamfit_user',
+                        'game_questions', 
+                        'game_options',
+                        'option_persona_mapping',
+                        'user_session',
+                        'engage_data'
+                    ]
+                    
+                    // Log existing tables
+                    log.info "Current database tables: ${tables}"
+                    
+                    // Check for any unexpected tables
+                    def unexpectedTables = tables.findAll { !requiredTables.contains(it) }
+                    if (unexpectedTables) {
+                        log.warn "Found unexpected tables that may need cleanup: ${unexpectedTables}"
+                    } else {
+                        log.info "Database contains only required tables: ${requiredTables.intersect(tables)}"
+                    }
+                }
+            }
+            
+        } catch (Exception e) {
+            log.warn "Could not verify tables: ${e.message}"
         }
     }
 
@@ -208,9 +238,9 @@ class BootStrap {
                         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
                     """).executeUpdate()
                     
-                    // Create game_question table
+                    // Create game_questions table
                     session.createSQLQuery("""
-                        CREATE TABLE IF NOT EXISTS game_question (
+                        CREATE TABLE IF NOT EXISTS game_questions (
                             id BIGINT AUTO_INCREMENT PRIMARY KEY,
                             question_id VARCHAR(100) NOT NULL UNIQUE,
                             game_type VARCHAR(50) NOT NULL,
@@ -219,6 +249,7 @@ class BootStrap {
                             question_type VARCHAR(50) NOT NULL,
                             scoring_dimension VARCHAR(100),
                             time_limit INT,
+                            is_active BOOLEAN DEFAULT TRUE,
                             date_created DATETIME,
                             last_updated DATETIME,
                             INDEX idx_question_id (question_id),
@@ -226,9 +257,9 @@ class BootStrap {
                         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
                     """).executeUpdate()
                     
-                    // Create game_option table
+                    // Create game_options table
                     session.createSQLQuery("""
-                        CREATE TABLE IF NOT EXISTS game_option (
+                        CREATE TABLE IF NOT EXISTS game_options (
                             id BIGINT AUTO_INCREMENT PRIMARY KEY,
                             question_id BIGINT NOT NULL,
                             option_text TEXT NOT NULL,
@@ -237,7 +268,7 @@ class BootStrap {
                             is_correct BOOLEAN DEFAULT FALSE,
                             date_created DATETIME,
                             last_updated DATETIME,
-                            FOREIGN KEY (question_id) REFERENCES game_question(id) ON DELETE CASCADE,
+                            FOREIGN KEY (question_id) REFERENCES game_questions(id) ON DELETE CASCADE,
                             INDEX idx_question_id (question_id)
                         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
                     """).executeUpdate()
@@ -252,7 +283,7 @@ class BootStrap {
                             weight DECIMAL(3,2) DEFAULT 1.0,
                             date_created DATETIME,
                             last_updated DATETIME,
-                            FOREIGN KEY (game_option_id) REFERENCES game_option(id) ON DELETE CASCADE,
+                            FOREIGN KEY (game_option_id) REFERENCES game_options(id) ON DELETE CASCADE,
                             INDEX idx_game_option_id (game_option_id),
                             INDEX idx_persona_type (persona_type)
                         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
