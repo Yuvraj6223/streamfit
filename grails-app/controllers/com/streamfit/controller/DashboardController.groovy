@@ -1,6 +1,7 @@
 package com.streamfit.controller
 
 import com.streamfit.service.DiagnosticService
+import com.streamfit.service.UnifiedPersonaService
 import com.streamfit.service.UserService
 // import com.streamfit.service.RewardService // Disabled - reward system no longer available
 import grails.converters.JSON
@@ -9,6 +10,7 @@ class DashboardController {
 
     DiagnosticService diagnosticService
     UserService userService
+    UnifiedPersonaService unifiedPersonaService
     // RewardService rewardService // Disabled - reward system no longer available
     
     /**
@@ -16,17 +18,17 @@ class DashboardController {
      * GET /dashboard
      */
     def index() {
-        def user = userService.getOrCreateAnonymousUser()
+        def user = session.userId ? userService.getUserById(session.userId) : userService.getOrCreateAnonymousUser()
 
         def testHistory = diagnosticService.getUserTestHistory(user)
-        def completedSessions = testHistory.findAll { it.status == 'COMPLETED' && it.gameResults?.gameResults }.sort { a, b -> b.startTime <=> a.startTime }
+        def completedSessions = testHistory.findAll { it.status == 'COMPLETED' && it.gameResults }.sort { a, b -> b.startTime <=> a.startTime }
         
         def availableTests = diagnosticService.getAvailableTests()
         
         // Get the latest result for each game type
         def latestGameResults = [:]
         completedSessions.each { session ->
-            session.gameResults.gameResults.each { gameType, result ->
+            session.gameResults.each { gameType, result ->
                 if (!latestGameResults.containsKey(gameType)) {
                     latestGameResults[gameType] = [result: result, session: session]
                 }
@@ -63,6 +65,19 @@ class DashboardController {
         def cognitiveRadarResult = latestGameResults['COGNITIVE_RADAR']?.result
         def workModeResult = latestGameResults['WORK_MODE']?.result
 
+        def cognitiveRadarModel = cognitiveRadarResult ? [
+            // FIX: Add safe navigation to prevent NPE if scores is null
+            scoreBreakdown: cognitiveRadarResult.scores?.collectEntries{ k, v -> [k.toString().toLowerCase(), v] } ?: [:],
+            primaryPillar: cognitiveRadarResult.primaryPillar
+        ] : null
+
+        def suggestedStreams = []
+        // Business logic moved from GSP to controller/service
+        // Only calculate if the panel will be shown (all tests completed)
+        if (stats.totalTestsCompleted >= stats.totalTests && cognitiveRadarModel) {
+            suggestedStreams = unifiedPersonaService.calculateSuggestedStreams(cognitiveRadarModel)
+        }
+
         def model = [
             user: user,
             stats: stats,
@@ -77,14 +92,11 @@ class DashboardController {
                     secondaryTrait: spiritAnimalResult.secondaryTrait
                 ]
             ] : null,
-            cognitiveRadar: cognitiveRadarResult ? [
-                 scoreBreakdown: cognitiveRadarResult.scores.collectEntries{ k, v -> [k.toString().toLowerCase(), v] },
-                 primaryPillar: cognitiveRadarResult.primaryPillar
-            ] : null,
+            cognitiveRadar: cognitiveRadarModel,
             workMode: workModeResult ? [
                 resultTitle: workModeResult.resultType?.toString()?.toLowerCase()?.replace('_', ' ')?.capitalize()
             ] : null,
-            suggestedStreams: null // Let GSP calculate it
+            suggestedStreams: suggestedStreams
         ]
 
         [model: model]
@@ -96,7 +108,7 @@ class DashboardController {
      */
     def data() {
         try {
-            def user = userService.getOrCreateAnonymousUser()
+            def user = session.userId ? userService.getUserById(session.userId) : userService.getOrCreateAnonymousUser()
             
             // Get test history
             def testHistory = diagnosticService.getUserTestHistory(user)

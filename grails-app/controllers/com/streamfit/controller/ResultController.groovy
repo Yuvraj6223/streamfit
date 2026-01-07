@@ -381,8 +381,17 @@ class ResultController {
             return
         }
 
-        // Check if user is authenticated
-        def isAnonymous = true // Always anonymous since we removed auth
+        // Get or create session user
+        def user
+        if (session.userId) {
+            user = userService.getUserById(session.userId)
+        }
+        if (!user) {
+            user = userService.createAnonymousUser()
+            session.userId = user.userId
+        }
+
+        def isAnonymous = user.userId.startsWith("anon_")
 
         [result: result, isAnonymous: isAnonymous]
     }

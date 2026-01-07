@@ -6,7 +6,7 @@
 <div id="login-success-message" class="auth-message success"></div>
 <div id="login-error-message" class="auth-message error"></div>
 
-<form id="login-form">
+<form id="login-form" data-ajax-form action="${createLink(controller: 'auth', action: 'processLogin')}" method="POST">
     <div class="auth-form-group">
         <label class="auth-form-label">✉️ EMAIL</label>
         <div style="position: relative;">

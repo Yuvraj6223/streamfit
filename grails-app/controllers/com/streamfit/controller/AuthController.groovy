@@ -8,13 +8,15 @@ import com.streamfit.user.User
 class AuthController {
 
     static namespace = null
+    def userService
+
 
     def login() {
-        redirect(uri: "/result")
+        render(view: "login")
     }
 
     def signup() {
-        redirect(uri: "/result")
+        render(view: "signup")
     }
 
     @Transactional
@@ -34,6 +36,10 @@ class AuthController {
         def user = User.findByEmail(email)
 
         if (user) {
+            def anonymousUserId = session.userId
+            if (anonymousUserId?.startsWith("anon_")) {
+                userService.migrateUserSession(anonymousUserId, user)
+            }
             session.user = user
             session.userId = user.userId
 
@@ -60,46 +66,29 @@ class AuthController {
 
         println "Signup attempt: name=${name}, email=${email}, age=${age}"
 
-        // Validate required fields
-        if (!email) {
-            render([success: false, message: "Email is required"] as JSON)
-            return
-        }
-
-        // Check if user already exists
-        def existingUser = User.findByEmail(email)
-        if (existingUser) {
-            render([success: false, message: "Email already registered. Please login instead."] as JSON)
-            return
-        }
-
-        // Generate unique userId
-        def userId = generateUniqueUserId()
-
-        // Get request metadata
         def ipAddress = request.getRemoteAddr()
         def userAgent = request.getHeader('User-Agent')
 
-        // Create new user
-        def user = new User(
-                userId: userId,
-                name: name,
-                email: email,
-                age: age,
-                ipAddress: ipAddress,
-                userAgent: userAgent,
-                agreedToTerms: true
-        )
+        def result = userService.registerUser([
+            name: name,
+            email: email,
+            age: age,
+            ipAddress: ipAddress,
+            userAgent: userAgent
+        ])
 
-        if (user.save(flush: true)) {
+        if (result.success) {
+            def user = result.user
+            def anonymousUserId = session.userId
+            if (anonymousUserId?.startsWith("anon_")) {
+                userService.migrateUserSession(anonymousUserId, user)
+            }
             session.user = user
             session.userId = user.userId
 
-            println "User created successfully: ${user.userId} - ${user.name}"
-
             render([
                     success: true,
-                    message: "Account created successfully!",
+                    message: result.message,
                     user: [
                             userId: user.userId,
                             name: user.name,
@@ -108,27 +97,8 @@ class AuthController {
                     ]
             ] as JSON)
         } else {
-            println "User save failed: ${user.errors.allErrors}"
-            def errorMessage = "Failed to create account. Please try again."
-
-            if (user.errors.hasErrors()) {
-                errorMessage = user.errors.allErrors[0].defaultMessage
-            }
-
-            render([success: false, message: errorMessage] as JSON)
+            render([success: false, message: result.message] as JSON)
         }
-    }
-
-    private String generateUniqueUserId() {
-        def userId
-        def exists = true
-
-        while (exists) {
-            userId = "USR" + System.currentTimeMillis() + String.format("%04d", new Random().nextInt(10000))
-            exists = User.findByUserId(userId) != null
-        }
-
-        return userId
     }
 
     @Transactional

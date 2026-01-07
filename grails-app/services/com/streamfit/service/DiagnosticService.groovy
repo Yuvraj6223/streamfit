@@ -183,7 +183,9 @@ class DiagnosticService {
         // Update session with results
         session.endTime = new Date()
         session.status = 'COMPLETED'
-        session.gameResults = new groovy.json.JsonBuilder(results).toString()
+        if (results && results.gameResults) {
+            session.gameResults = new groovy.json.JsonBuilder(results.gameResults).toString()
+        }
         session.save(flush: true)
 
         // Skip rewards since reward system is disabled

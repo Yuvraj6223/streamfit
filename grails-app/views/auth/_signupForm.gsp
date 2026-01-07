@@ -6,7 +6,7 @@
 <div id="signup-success-message" class="auth-message success"></div>
 <div id="signup-error-message" class="auth-message error"></div>
 
-<form id="signup-form">
+<form id="signup-form" data-ajax-form action="${createLink(controller: 'auth', action: 'processSignup')}" method="POST">
     <div class="auth-form-group">
         <label class="auth-form-label">👤 FULL NAME</label>
         <div style="position: relative;">
@@ -24,7 +24,7 @@
     <div class="auth-form-group">
         <label class="auth-form-label">🎂 AGE</label>
         <div style="position: relative;">
-            <input type="number" id="signup-age" class="auth-form-input" placeholder="Optional">
+            <input type="number" id="signup-age" name="age" class="auth-form-input" placeholder="Optional">
         </div>
     </div>
 

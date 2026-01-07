@@ -29,51 +29,18 @@
 <div class="glass-console">
 
     <%-- PRE-CALCULATIONS: Centralize logic to keep HTML clean --%>
-    <g:set var="totalTests" value="${model.stats.totalTests ?: 9}" />
-    <g:set var="completedTests" value="${model.stats.totalTestsCompleted}" />
+    <g:set var="totalTests" value="${model?.stats?.totalTests ?: 9}" />
+    <g:set var="completedTests" value="${model?.stats?.totalTestsCompleted ?: 0}" />
     <g:set var="completionPct" value="${totalTests > 0 ? (completedTests / totalTests) * 100 : 0}" />
     
     <%-- MAPPING: Map result types to assets to avoid if/else chains --%>
     <g:set var="animalImages" value="${['WISE_OWL': 'owl.png', 'DISCIPLINED_BEE': 'bee.png', 'STRATEGIC_WOLF': 'wolf.png', 'BOLD_TIGER': 'tiger.png']}" />
 
-    <%-- DYNAMIC STREAMS: Calculate based on cognitive scores --%>
-    <%
-        def calculatedStreams = model.suggestedStreams
-        if (!calculatedStreams && model.cognitiveRadar?.scoreBreakdown) {
-            def s = model.cognitiveRadar.scoreBreakdown
-            // Normalize scores based on chart logic (Logic/Verbal out of 2, others out of 1)
-            def logic = (s.logic ?: 0) / 2.0 * 100
-            def verbal = (s.verbal ?: 0) / 2.0 * 100
-            def spatial = (s.spatial ?: 0) * 100
-            def speed = (s.speed ?: 0) * 100
-
-            def lib = [
-                [id: 'engineering', title: 'Engineering', icon: '🏗️', w: [logic: 0.5, spatial: 0.5], outcome: 'Build Systems'],
-                [id: 'law', title: 'Law', icon: '⚖️', w: [verbal: 0.8, logic: 0.2], outcome: 'Defend Rights'],
-                [id: 'cs', title: 'Comp. Science', icon: '💻', w: [logic: 0.6, speed: 0.4], outcome: 'Innovate Tech'],
-                [id: 'design', title: 'Design', icon: '🎨', w: [spatial: 0.8, verbal: 0.2], outcome: 'Create Art'],
-                [id: 'medicine', title: 'Medicine', icon: '🩺', w: [logic: 0.4, speed: 0.3, verbal: 0.3], outcome: 'Heal Others'],
-                [id: 'business', title: 'Business', icon: '💼', w: [verbal: 0.5, logic: 0.3, speed: 0.2], outcome: 'Lead Teams']
-            ]
-
-            calculatedStreams = lib.collect { item ->
-                def score = 0
-                if (item.w.logic) score += logic * item.w.logic
-                if (item.w.verbal) score += verbal * item.w.verbal
-                if (item.w.spatial) score += spatial * item.w.spatial
-                if (item.w.speed) score += speed * item.w.speed
-                
-                def desc = score > 85 ? "Your profile is a strong match." : (score > 70 ? "Good potential with effort." : "A challenging path.")
-                [id: item.id, title: item.title, icon: item.icon, match: score.toInteger(), isBest: false, desc: desc, outcome: item.outcome]
-            }.sort { -it.match }.take(3)
-            if (calculatedStreams) calculatedStreams[0].isBest = true
-        }
-        // Expose to view
-        pageScope.suggestedStreams = calculatedStreams ?: [[id: 'engineering', title: 'Engineering', icon: '🏗️', match: 0, isBest: false, desc: 'Complete tests to reveal match.', outcome: 'Secure Future'], [id: 'cs', title: 'Comp. Science', icon: '💻', match: 0, isBest: false, desc: 'Complete tests to reveal match.', outcome: 'Reach Goals'], [id: 'law', title: 'Law', icon: '⚖️', match: 0, isBest: false, desc: 'Complete tests to reveal match.', outcome: 'Defend Rights']]
-    %>
+    <%-- DYNAMIC STREAMS: This is now calculated in the controller --%>
+    <g:set var="suggestedStreams" value="${model?.suggestedStreams ?: []}" />
 
     <header class="console-header anim-pop">
-        <div class="welcome-text">Hello, ${model.user.name ?: 'User'} 👋</div>
+        <div class="welcome-text">Hello, ${model?.user?.name ?: 'User'} 👋</div>
         <div class="sub-text">
             <g:if test="${completionPct > 0}">
                 <span>🗺️ ${completionPct as int}% mapped!</span>
@@ -87,11 +54,11 @@
     <div class="dashboard-grid">
 
         <div class="glass-panel identity-core anim-pop d-2 area-identity">
-                <g:if test="${completedTests >= totalTests && model.spiritAnimal}">
+                <g:if test="${completedTests >= totalTests && model?.spiritAnimal}">
                     <div class="panel-label" style="justify-content: center; color: var(--pop-purple); font-size: 0.8rem;">
                         <span>✨ YOUR IDENTITY REVEALED ✨</span>
                     </div>
-                    <g:set var="animalImage" value="${animalImages[model.spiritAnimal.resultType] ?: 'brain.png'}" />
+                    <g:set var="animalImage" value="${animalImages[model?.spiritAnimal?.resultType] ?: 'brain.png'}" />
                     <div class="avatar-wrapper-float">
                         <div class="core-ring cr-1"></div>
                         <div class="core-ring cr-2"></div>
@@ -150,17 +117,17 @@
             <div class="panel-label">
                 <span>Test History</span>
             </div>
-            <g:if test="${model.completedTestResults}">
+            <g:if test="${model?.completedTestResults}">
                 <div class="latest-result-content">
-                    <g:each in="${model.completedTestResults.sort { a, b -> (b.session.completedAt?.time ?: 0) <=> (a.session.completedAt?.time ?: 0) }.take(5)}" var="test">
-                        <g:link controller="result" action="resultPage" params="[sessionId: test.session.sessionId]" class="history-card">
-                            <div class="history-card-icon">${test.result.emoji}</div>
+                    <g:each in="${model?.completedTestResults?.sort { a, b -> (b.session?.completedAt?.time ?: 0) <=> (a.session?.completedAt?.time ?: 0) }?.take(5)}" var="test">
+                        <g:link controller="result" action="resultPage" params="[sessionId: test.session?.sessionId]" class="history-card">
+                            <div class="history-card-icon">${test.result?.emoji}</div>
                             <div class="history-card-info">
-                                <div class="history-card-title">${test.result.testName}</div>
-                                <g:if test="${test.result.resultTitle}">
-                                    <div class="history-card-one-liner">"${test.result.resultTitle}"</div>
+                                <div class="history-card-title">${test.result?.testName}</div>
+                                <g:if test="${test.result?.resultTitle}">
+                                    <div class="history-card-one-liner">"${test.result?.resultTitle}"</div>
                                 </g:if>
-                                <div class="history-card-date">Completed on <g:formatDate date="${test.session.completedAt}" format="dd MMM yyyy"/></div>
+                                <div class="history-card-date">Completed on <g:formatDate date="${test.session?.completedAt}" format="dd MMM yyyy"/></div>
                             </div>
                             <div class="history-card-action">View Result &rarr;</div>
                         </g:link>
@@ -175,9 +142,9 @@
 
             <div class="pending-tests-container">
                 <h4>Available Tests</h4>
-                <g:if test="${model.pendingTests}">
+                <g:if test="${model?.pendingTests}">
                     <div class="pending-tests-list">
-                        <g:each in="${model.pendingTests.sort { it.testName }}" var="test">
+                        <g:each in="${model?.pendingTests?.sort { it.testName }}" var="test">
                             <div class="pending-test-item">
                                 <div class="pending-test-name">${test.testName}</div>
                                 <g:link controller="personality" action="start" params="[testId: test.testId]">
@@ -209,31 +176,31 @@
                 <span>Key Traits</span>
             </div>
             <div class="traits-grid">
-                <g:if test="${model.spiritAnimal}">
+                <g:if test="${model?.spiritAnimal}">
                     <div class="trait-token">
                         <div class="tt-label">🧠 Curiosity</div>
-                        <div class="tt-val">${model.spiritAnimal.scoreBreakdown.primaryTrait.capitalize()}</div>
+                        <div class="tt-val">${model?.spiritAnimal?.scoreBreakdown?.primaryTrait?.capitalize()}</div>
                         <div class="tt-desc">Your dominant approach to new information.</div>
                     </div>
                 </g:if>
-                <g:if test="${model.cognitiveRadar}">
+                <g:if test="${model?.cognitiveRadar}">
                     <div class="trait-token">
                         <div class="tt-label">👁️ Learning Mode</div>
-                        <div class="tt-val">${model.cognitiveRadar.scoreBreakdown.primaryPillar.capitalize()}</div>
+                        <div class="tt-val">${model?.cognitiveRadar?.primaryPillar?.capitalize()}</div>
                         <div class="tt-desc">Your strongest cognitive channel for learning.</div>
                     </div>
                 </g:if>
-                <g:if test="${model.spiritAnimal}">
+                <g:if test="${model?.spiritAnimal}">
                     <div class="trait-token">
                         <div class="tt-label">⚡ Driver</div>
-                        <div class="tt-val">${model.spiritAnimal.scoreBreakdown.secondaryTrait.capitalize()}</div>
+                        <div class="tt-val">${model?.spiritAnimal?.scoreBreakdown?.secondaryTrait?.capitalize()}</div>
                         <div class="tt-desc">What you prioritize when solving problems.</div>
                     </div>
                 </g:if>
-                <g:if test="${model.workMode}">
+                <g:if test="${model?.workMode}">
                     <div class="trait-token">
                         <div class="tt-label">👤 Work Style</div>
-                        <div class="tt-val">${model.workMode.resultTitle}</div>
+                        <div class="tt-val">${model?.workMode?.resultTitle}</div>
                         <div class="tt-desc">The environment where you are most effective.</div>
                     </div>
                 </g:if>
@@ -254,11 +221,11 @@
 
             <div class="radar-content-wrapper" <g:if test="${completedTests < totalTests}">style="filter: blur(10px); opacity: 0;"</g:if>>
                 <div class="radar-bars">
-                    <g:if test="${model.cognitiveRadar}">
-                        <g:set var="logicPct" value="${(model.cognitiveRadar.scoreBreakdown.logic / 2) * 100}" />
-                        <g:set var="verbalPct" value="${(model.cognitiveRadar.scoreBreakdown.verbal / 2) * 100}" />
-                        <g:set var="spatialPct" value="${(model.cognitiveRadar.scoreBreakdown.spatial / 1) * 100}" />
-                        <g:set var="speedPct" value="${(model.cognitiveRadar.scoreBreakdown.speed / 1) * 100}" />
+                    <g:if test="${model?.cognitiveRadar}">
+                        <g:set var="logicPct" value="${((model?.cognitiveRadar?.scoreBreakdown?.logic ?: 0) / 2) * 100}" />
+                        <g:set var="verbalPct" value="${((model?.cognitiveRadar?.scoreBreakdown?.verbal ?: 0) / 2) * 100}" />
+                        <g:set var="spatialPct" value="${((model?.cognitiveRadar?.scoreBreakdown?.spatial ?: 0) / 1) * 100}" />
+                        <g:set var="speedPct" value="${((model?.cognitiveRadar?.scoreBreakdown?.speed ?: 0) / 1) * 100}" />
                         
                         <div class="skill-row">
                             <div class="skill-icon">🧩</div>
@@ -356,7 +323,7 @@
                     <p>Start a quick 5-minute drill to boost your stats.</p>
                 </g:link>
 
-            </>
+            </div>
         </div>
 
     </div>

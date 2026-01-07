@@ -113,10 +113,11 @@ class PersonalityController {
             // Calculate results using unified persona service
             def result = unifiedPersonaService.calculateFinalPersona(session.sessionId)
             
-            // Update session
+            // Extract gameResults and update session
+            def gameResults = result.gameResults
             session.status = 'COMPLETED'
             session.endTime = new Date()
-            session.gameResults = new groovy.json.JsonBuilder(result).toString()
+            session.gameResults = new groovy.json.JsonBuilder(gameResults).toString()
             session.save(flush: true)
             
             render([success: true, sessionId: session.sessionId, result: result] as JSON)

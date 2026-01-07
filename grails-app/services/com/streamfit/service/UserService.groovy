@@ -1,8 +1,10 @@
 package com.streamfit.service
 
+import com.streamfit.UserSession
 import com.streamfit.user.User
 import grails.gorm.transactions.Transactional
 import groovy.json.JsonOutput
+import java.util.Random
 
 @Transactional
 class UserService {
@@ -55,6 +57,52 @@ class UserService {
         return user
     }
 
+    @Transactional
+    def registerUser(Map params) {
+        def email = params.email
+
+        if (!email) {
+            return [success: false, message: "Email is required", user: null]
+        }
+
+        if (User.findByEmail(email)) {
+            return [success: false, message: "Email already registered. Please login instead.", user: null]
+        }
+
+        def userId = generateUniqueUserId()
+
+        def user = new User(
+            userId: userId,
+            name: params.name,
+            email: params.email,
+            age: params.age as Integer,
+            ipAddress: params.ipAddress,
+            userAgent: params.userAgent,
+            agreedToTerms: true
+        )
+
+        if (user.save(flush: true)) {
+            log.info "User created successfully: ${user.userId} - ${user.name}"
+            return [success: true, message: "Account created successfully!", user: user]
+        } else {
+            log.error "User save failed for email ${email}: ${user.errors.allErrors}"
+            def errorMessage = user.errors.allErrors.first()?.defaultMessage ?: "Failed to create account. Please try again."
+            return [success: false, message: errorMessage, user: null]
+        }
+    }
+
+    private String generateUniqueUserId() {
+        def userId
+        def exists = true
+
+        while (exists) {
+            userId = "USR" + System.currentTimeMillis() + String.format("%04d", new Random().nextInt(10000))
+            exists = User.findByUserId(userId) != null
+        }
+
+        return userId
+    }
+
     def createLearningDNA(User user) {
         try {
             // Skip LearningDNA creation since the table was dropped
@@ -91,7 +139,7 @@ class UserService {
             completionPercentage: 0.0
         ]
     }
-    
+
     /**
      * Create an anonymous user for personality test
      */
@@ -141,6 +189,23 @@ class UserService {
         // This method is kept for backward compatibility
         // Controllers should use AuthService.getCurrentUser() or AuthService.getOrCreateSessionUser()
         return null
+    }
+
+    @Transactional
+    def migrateUserSession(String anonymousUserId, User authenticatedUser) {
+        if (!anonymousUserId || !authenticatedUser) {
+            return
+        }
+
+        def anonymousUser = User.findByUserId(anonymousUserId)
+        if (anonymousUser) {
+            def userSessions = UserSession.findAllByUser(anonymousUser)
+            userSessions.each { session ->
+                session.user = authenticatedUser
+                session.save(flush: true)
+            }
+            anonymousUser.delete(flush: true)
+        }
     }
 }
 

@@ -37,6 +37,8 @@ class User {
         referralSource nullable: true
     }
 
+    static hasMany = [sessions: com.streamfit.UserSession]
+
     static mapping = {
         table 'streamfit_user'  // ← CHANGED THIS
         version false

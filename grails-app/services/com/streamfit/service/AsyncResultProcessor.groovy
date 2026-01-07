@@ -171,7 +171,11 @@ class AsyncResultProcessor {
                 def sessionToUpdate = UserSession.get(session.id)
                 sessionToUpdate.status = 'COMPLETED'
                 sessionToUpdate.endTime = new Date()
-                sessionToUpdate.gameResults = new groovy.json.JsonBuilder(results).toString()
+                // CRITICAL FIX: Extract the nested 'gameResults' map and save it.
+                // This ensures the JSON structure matches what the dashboard controller expects.
+                if (results && results.gameResults) {
+                    sessionToUpdate.gameResults = new groovy.json.JsonBuilder(results.gameResults).toString()
+                }
                 sessionToUpdate.save(flush: true) // Flush here to commit results
             }
             

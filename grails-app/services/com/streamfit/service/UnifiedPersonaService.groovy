@@ -61,9 +61,6 @@ class UnifiedPersonaService {
         // Get comprehensive persona profile
         def personaProfile = getPersonaProfile(dominantPersona, gameResults)
         
-        // Save session results
-        saveSessionResults(sessionId, gameResults, dominantPersona, personaProfile)
-        
         return [
             sessionId: sessionId,
             dominantPersona: dominantPersona,
@@ -134,7 +131,7 @@ class UnifiedPersonaService {
                 }
                 
                 if (response.isCorrect) {
-                    scores[option.question.scoringDimension]++
+                    scores[mapping.personaType]++
                 }
             }
         }
@@ -638,24 +635,6 @@ class UnifiedPersonaService {
     }
     
     /**
-     * Save session results
-     */
-    def saveSessionResults(String sessionId, Map gameResults, String dominantPersona, Map personaProfile) {
-        def session = UserSession.findBySessionId(sessionId)
-        if (session) {
-            session.endTime = new Date()
-            session.status = 'COMPLETED'
-            session.gameResults = new JsonBuilder([
-                gameResults: gameResults,
-                dominantPersona: dominantPersona,
-                personaProfile: personaProfile,
-                completedAt: new Date()
-            ]).toString()
-            session.save(flush: true)
-        }
-    }
-    
-    /**
      * Generate persona summary
      */
     def generatePersonaSummary(String dominantPersona, Map gameResults) {
@@ -666,5 +645,49 @@ class UnifiedPersonaService {
         }
         
         return summary
+    }
+
+    /**
+     * Calculate suggested career streams based on cognitive radar scores
+     */
+    def calculateSuggestedStreams(cognitiveRadarResult) {
+        if (!cognitiveRadarResult?.scoreBreakdown) {
+            return []
+        }
+
+        def s = cognitiveRadarResult.scoreBreakdown
+
+        // Normalize scores (same logic as was in the GSP)
+        // Note: The controller is responsible for passing lowercase keys (logic, verbal, etc.)
+        def logic = (s.logic ?: 0) / 2.0 * 100
+        def verbal = (s.verbal ?: 0) / 2.0 * 100
+        def spatial = (s.spatial ?: 0) * 100
+        def speed = (s.speed ?: 0) * 100
+
+        def streamLibrary = [
+            [id: 'engineering', title: 'Engineering', icon: '🏗️', w: [logic: 0.5, spatial: 0.5], outcome: 'Build Systems'],
+            [id: 'law', title: 'Law', icon: '⚖️', w: [verbal: 0.8, logic: 0.2], outcome: 'Defend Rights'],
+            [id: 'cs', title: 'Comp. Science', icon: '💻', w: [logic: 0.6, speed: 0.4], outcome: 'Innovate Tech'],
+            [id: 'design', title: 'Design', icon: '🎨', w: [spatial: 0.8, verbal: 0.2], outcome: 'Create Art'],
+            [id: 'medicine', title: 'Medicine', icon: '🩺', w: [logic: 0.4, speed: 0.3, verbal: 0.3], outcome: 'Heal Others'],
+            [id: 'business', title: 'Business', icon: '💼', w: [verbal: 0.5, logic: 0.3, speed: 0.2], outcome: 'Lead Teams']
+        ]
+
+        def calculatedStreams = streamLibrary.collect { item ->
+            def score = 0
+            if (item.w.logic) score += logic * item.w.logic
+            if (item.w.verbal) score += verbal * item.w.verbal
+            if (item.w.spatial) score += spatial * item.w.spatial
+            if (item.w.speed) score += speed * item.w.speed
+            
+            def desc = score > 85 ? "Your profile is a strong match." : (score > 70 ? "Good potential with effort." : "A challenging path.")
+            [id: item.id, title: item.title, icon: item.icon, match: score.toInteger(), isBest: false, desc: desc, outcome: item.outcome]
+        }.sort { -it.match }.take(3)
+
+        if (calculatedStreams) {
+            calculatedStreams[0].isBest = true
+        }
+
+        return calculatedStreams
     }
 }
