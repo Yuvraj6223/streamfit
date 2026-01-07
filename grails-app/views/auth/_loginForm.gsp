@@ -1,30 +1,29 @@
-<style>
-/* Uses same CSS — no duplication needed */
-</style>
-
 <div class="auth-header">
-    <h2>Welcome Back</h2>
-    <p>Login to continue</p>
+    <h2>🎮 Resume Your Journey</h2>
+    <p>Your Learning DNA is waiting</p>
 </div>
 
-<div class="auth-error-message" id="login-error-message"></div>
-<div class="auth-success-message" id="login-success-message"></div>
+<div id="login-success-message" class="auth-message success"></div>
+<div id="login-error-message" class="auth-message error"></div>
 
 <form id="login-form">
     <div class="auth-form-group">
-        <label class="auth-form-label">Email</label>
-        <input type="email" id="login-email" class="auth-form-input" required>
+        <label class="auth-form-label">✉️ EMAIL</label>
+        <div style="position: relative;">
+            <input type="email" id="login-email" class="auth-form-input" placeholder="you@email.com" required>
+        </div>
     </div>
 
-    <div class="auth-form-group">
-        <label class="auth-form-label">Name</label>
-        <input type="text" id="login-name" class="auth-form-input">
-    </div>
+    <button type="submit" class="auth-submit-btn">
+        ▶ Continue
+    </button>
+    <p style="text-align:center; font-size:0.75rem; color:#64748b; margin-top:12px;">
+        🔒 We only save progress. Never spam. Never sell data.
+    </p>
 
-    <button class="auth-submit-btn">Login</button>
 </form>
 
 <div class="auth-footer">
-    Don’t have an account?
-    <a onclick="switchToSignup()">Sign up</a>
+    New here?
+    <a id="switch-to-signup-link">Unlock full report</a>
 </div>

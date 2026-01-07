@@ -436,6 +436,7 @@
         font-family: 'Fredoka', sans-serif;
         font-weight: 700;
         display: block;
+        width: 100%;
         margin-bottom: 12px;
         box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         opacity: 0;
@@ -1218,7 +1219,7 @@
             '<div class="insight-badge"><div style="font-size: 2.2rem">' + p.insight.icon + '</div>' +
             '<div style="font-family: \'Fredoka\', sans-serif; font-weight: 700; color: white; font-size: 0.95rem;">' + p.insight.text + '</div></div>' +
             '<div class="action-buttons">' +
-            '<a href="/dashboard" class="action-btn dashboard-btn"><i class="fas fa-chart-line" style="margin-right:8px"></i> View Dashboard</a>' +
+            '<button id="open-dashboard-modal" class="action-btn dashboard-btn"><i class="fas fa-chart-line" style="margin-right:8px"></i> View Dashboard</button>' +
             '<a href="${createLink(controller: 'personality', action: 'start')}" class="action-btn"><i class="fas fa-bullseye" style="margin-right:8px"></i> Take Next Test</a></div>' +
             '<div class="share-buttons-row">' +
             '<div class="share-btn-large" style="background: #1DA1F2" onclick="shareOnTwitter()"><i class="fab fa-twitter"></i></div>' +
@@ -1391,29 +1392,61 @@
         else btn.classList.remove('visible');
     }, { passive: true });
 
+    // Attach continue button listener immediately (before DOMContentLoaded)
+    var continueBtn = document.getElementById('continue-btn-reward');
+    if (continueBtn) {
+        continueBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            revealResults();
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         if (resultData && resultData.rewards) displayRewards(resultData.rewards);
-
-        var continueBtn = document.getElementById('continue-btn-reward');
-        if (continueBtn) continueBtn.addEventListener('click', function(e) { e.preventDefault(); revealResults(); });
 
         var closeBtn = document.getElementById('auth-close-btn');
         if (closeBtn) closeBtn.addEventListener('click', function(e) { e.preventDefault(); closeAuthModal(); });
 
+        // ADD THESE LISTENERS FOR SWITCHING BETWEEN FORMS:
+        document.body.addEventListener('click', function(e) {
+            // Handle dashboard button
+            if (e.target.id === 'open-dashboard-modal' || e.target.closest('#open-dashboard-modal')) {
+                e.preventDefault();
+                openAuthModal('signup');
+            }
+
+            // Handle "Already have account? Login" link
+            if (e.target.id === 'switch-to-login-link' || e.target.closest('#switch-to-login-link')) {
+                e.preventDefault();
+                openAuthModal('login');
+            }
+
+            // Handle "Don't have account? Sign up" link
+            if (e.target.id === 'switch-to-signup-link' || e.target.closest('#switch-to-signup-link')) {
+                e.preventDefault();
+                openAuthModal('signup');
+            }
+        });
+
         document.getElementById('auth-modal').addEventListener('click', function(e) { if (e.target.id === 'auth-modal') closeAuthModal(); });
+
+        // ... rest of your code (signup form, login form handlers)
 
         var signupForm = document.getElementById('signup-form');
         if (signupForm) {
             signupForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 clearAuthMessages();
+
+                var ageValue = document.getElementById('signup-age').value;  // ADD THIS LINE
+
                 fetch('/api/signup', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         name: document.getElementById('signup-name').value,
                         email: document.getElementById('signup-email').value,
-                        age: document.getElementById('signup-age').value
+                        age: ageValue ? parseInt(ageValue) : null  // CHANGE THIS LINE
                     })
                 }).then(function(res) { return res.json(); }).then(function(data) {
                     if (data.success) {
@@ -1429,12 +1462,13 @@
             loginForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 clearAuthMessages();
+
                 fetch('/api/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        email: document.getElementById('login-email').value,
-                        name: document.getElementById('login-name').value
+                        email: document.getElementById('login-email').value
+                        // Remove the 'name' field - it doesn't exist in the form!
                     })
                 }).then(function(res) { return res.json(); }).then(function(data) {
                     if (data.success) {

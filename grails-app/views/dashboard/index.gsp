@@ -21,7 +21,7 @@
 <nav class="main-nav">
     <div class="nav-container">
         <g:link uri="/" class="nav-logo">
-            <asset:image src="logo.png" alt="learnerDNA - Free Student Aptitude Test" onerror="this.src='https://placehold.co/150x40?text=learnerDNA'" />
+            <asset:image src="logo1.png" alt="learnerDNA - Free Student Aptitude Test" onerror="this.src='https://placehold.co/150x40?text=learnerDNA'" />
         </g:link>
     </div>
 </nav>
