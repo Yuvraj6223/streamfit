@@ -20,9 +20,11 @@
 
     html {
         overflow-x: hidden;
+        overflow-y: auto;
         width: 100%;
         max-width: 100vw;
         -webkit-text-size-adjust: 100%;
+        position: relative;
     }
 
     body {
@@ -35,6 +37,7 @@
         touch-action: pan-y;
         width: 100%;
         max-width: 100vw;
+        height: auto;
     }
 
     .animated-background {
@@ -99,6 +102,7 @@
         transition: opacity 0.5s ease;
         display: none;
         opacity: 0;
+        overflow-x: hidden;
     }
 
     .results-container.visible {
@@ -155,6 +159,7 @@
         font-weight: 700;
         text-align: center;
         margin: 0 0 8px;
+        padding: 0 90px;
         color: #FFD54F;
         text-shadow: 3px 3px 0px #6B3C8F, -2px -2px 0px #8B5CB3, 0 4px 12px rgba(0, 0, 0, 0.3);
         letter-spacing: 1px;
@@ -458,7 +463,7 @@
 
     .share-buttons-row {
         display: flex;
-        gap: 10px;
+        gap: 18px;
         justify-content: center;
         margin-bottom: 10px;
         flex-wrap: wrap;
@@ -508,11 +513,18 @@
         flex-wrap: wrap;
     }
 
+    .share-labels span {
+        width: 56px;
+        text-align: center;
+    }
+
     canvas#confetti-canvas {
         position: fixed;
         inset: 0;
         pointer-events: none;
         z-index: 100;
+        transition: opacity 1s ease-out;
+        display: none;
     }
 
     .scroll-to-top {
@@ -545,10 +557,16 @@
         background: rgba(15, 23, 42, 0.9);
         backdrop-filter: blur(10px);
         z-index: 10000;
-        display: flex;
+        display: none;
         align-items: center;
         justify-content: center;
         padding: 16px;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .reward-modal.active {
+        display: flex;
     }
 
     .reward-content {
@@ -559,6 +577,8 @@
         max-width: 380px;
         text-align: center;
         animation: modalPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        overflow-x: hidden;
+        box-sizing: border-box;
     }
 
     @keyframes modalPop {
@@ -652,6 +672,8 @@
         align-items: center;
         justify-content: center;
         padding: 16px;
+        overflow-x: hidden;
+        overflow-y: auto;
     }
 
     .auth-modal.active {
@@ -674,6 +696,8 @@
         box-shadow: 0 20px 40px rgba(0,0,0,.3);
         animation: popInModal 0.6s cubic-bezier(.34,1.56,.64,1);
         border: 2px solid rgba(159,151,243,.2);
+        overflow-x: hidden;
+        box-sizing: border-box;
     }
 
     @keyframes popInModal {
@@ -852,6 +876,7 @@
 
         .game-title {
             font-size: clamp(1.3rem, 7vw, 2rem);
+            padding: 0 75px;
         }
 
         .subtitle-ribbon {
@@ -903,7 +928,11 @@
 
         .share-labels {
             font-size: 0.7rem;
-            gap: 14px;
+            gap: 18px;
+        }
+
+        .share-labels span {
+            width: 52px;
         }
 
         .scroll-to-top {
@@ -1239,13 +1268,32 @@
     }
 
     function displayRewards(r) {
-        if (!r) return;
-        if (r.leveledUp) document.getElementById('level-up-container').innerHTML = '<div class="level-up"><div class="level-up-text">🎊 Level Up! You\'re now Level ' + r.newLevel + '!</div></div>';
-        if (r.badges && r.badges.length) document.getElementById('reward-badges').innerHTML = r.badges.map(function(b) { return '<div class="badge-item"><div class="badge-emoji">' + b.emoji + '</div><div class="badge-name">' + b.badgeName + '</div></div>'; }).join('');
-        if (r.achievements && r.achievements.length) {
+        var hasRewards = false;
+
+        if (r && r.leveledUp) {
+            document.getElementById('level-up-container').innerHTML = '<div class="level-up"><div class="level-up-text">🎊 Level Up! You\'re now Level ' + r.newLevel + '!</div></div>';
+            hasRewards = true;
+        }
+
+        if (r && r.badges && r.badges.length) {
+            document.getElementById('reward-badges').innerHTML = r.badges.map(function(b) { return '<div class="badge-item"><div class="badge-emoji">' + b.emoji + '</div><div class="badge-name">' + b.badgeName + '</div></div>'; }).join('');
+            hasRewards = true;
+        }
+
+        if (r && r.achievements && r.achievements.length) {
             var html = '<div style="margin-top: 20px;"><h3 style="margin-bottom: 15px; color: #1a1a2e;">🏆 New Achievements!</h3>';
             r.achievements.forEach(function(a) { html += '<div style="background: #f8f9fa; border-radius: 8px; padding: 15px; margin: 10px 0;"><div style="font-size: 2rem;">' + a.emoji + '</div><div style="font-weight: 600; margin-top: 5px;">' + a.achievementTitle + '</div><div style="color: #666; font-size: 0.9rem;">' + a.achievementDescription + '</div></div>'; });
             document.getElementById('achievements-container').innerHTML = html + '</div>';
+            hasRewards = true;
+        }
+
+        // Show the modal only if there are rewards to display
+        if (hasRewards) {
+            document.getElementById('reward-modal').classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scroll while modal is open
+        } else {
+            // No rewards, go straight to results
+            revealResults();
         }
     }
 
@@ -1253,7 +1301,15 @@
         var modal = document.getElementById('reward-modal');
         modal.style.opacity = '0';
         setTimeout(function() {
+            modal.classList.remove('active');
             modal.style.display = 'none';
+            modal.style.opacity = '1'; // Reset for next time
+            // CRITICAL FIX: Restore body scroll - force both directions explicitly
+            document.body.style.overflow = '';
+            document.body.style.overflowX = 'hidden';
+            document.body.style.overflowY = 'auto';
+            document.documentElement.style.overflowX = 'hidden';
+            document.documentElement.style.overflowY = 'auto';
             document.getElementById('mainContainer').classList.add('visible');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }, 400);
@@ -1300,6 +1356,9 @@
         var ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
+        canvas.style.display = 'block'; // Show canvas
+        canvas.style.opacity = '1'; // Ensure it starts visible
+
         var parts = [];
         var colors = ['#8B7FE8', '#5FE3D0', '#FFB4D6', '#FFD86D'];
         for(var i = 0; i < (isLowPerfDevice ? 80 : 150); i++) {
@@ -1309,6 +1368,8 @@
             });
         }
         var frame = 0;
+        var maxFrames = isLowPerfDevice ? 200 : 300;
+
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             parts.forEach(function(p, i) {
@@ -1323,7 +1384,19 @@
                 ctx.stroke();
                 if (p.y > canvas.height) { parts[i].y = -30; parts[i].x = Math.random() * canvas.width; }
             });
-            if(frame++ < (isLowPerfDevice ? 200 : 300)) requestAnimationFrame(draw);
+
+            frame++;
+            if(frame < maxFrames) {
+                requestAnimationFrame(draw);
+            } else {
+                // CRITICAL FIX: Animation complete - fade out the canvas
+                canvas.style.opacity = '0';
+                setTimeout(function() {
+                    canvas.style.display = 'none';
+                    canvas.style.pointerEvents = 'none'; // Extra safety
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }, 1000); // Wait for fade transition to complete
+            }
         }
         draw();
     }
@@ -1381,6 +1454,7 @@
 
     function closeAuthModal() {
         document.getElementById('auth-modal').classList.remove('active');
+        // CRITICAL FIX: Restore body scroll
         document.body.style.overflow = '';
         clearAuthMessages();
     }
@@ -1402,7 +1476,26 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        if (resultData && resultData.rewards) displayRewards(resultData.rewards);
+        // CRITICAL FIX: Ensure page is scrollable on load - force both directions
+        document.body.style.overflow = '';
+        document.body.style.overflowX = 'hidden';
+        document.body.style.overflowY = 'auto';
+        document.documentElement.style.overflowX = 'hidden';
+        document.documentElement.style.overflowY = 'auto';
+
+        var canvas = document.getElementById('confetti-canvas');
+        if (canvas) {
+            canvas.style.display = 'none';
+            canvas.style.opacity = '0';
+        }
+
+        // Check if there are rewards to display
+        if (resultData && resultData.rewards) {
+            displayRewards(resultData.rewards);
+        } else {
+            // No rewards data, show results directly
+            revealResults();
+        }
 
         var closeBtn = document.getElementById('auth-close-btn');
         if (closeBtn) closeBtn.addEventListener('click', function(e) { e.preventDefault(); closeAuthModal(); });
