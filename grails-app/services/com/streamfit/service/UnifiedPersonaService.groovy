@@ -545,18 +545,16 @@ class UnifiedPersonaService {
         
         return 'BALANCED_STRATEGIST'
     }
-    
+
     private String determineSpiritAnimal(String primaryTrait, String secondaryTrait) {
-        if (primaryTrait == 'PROCESS' && secondaryTrait == 'ACCURACY') {
-            return 'WISE_OWL'
-        } else if (primaryTrait == 'PROCESS' && secondaryTrait == 'SPEED') {
-            return 'DISCIPLINED_BEE'
-        } else if (primaryTrait == 'INTUITION' && secondaryTrait == 'ACCURACY') {
-            return 'STRATEGIC_WOLF'
-        } else if (primaryTrait == 'INTUITION' && secondaryTrait == 'SPEED') {
-            return 'BOLD_TIGER'
-        }
-        return 'UNKNOWN'
+        // ✅ RANDOM SELECTION - Returns random animal every time
+        def animals = ['WISE_OWL', 'DISCIPLINED_BEE', 'STRATEGIC_WOLF', 'BOLD_TIGER']
+        def random = new Random()
+        def selectedAnimal = animals[random.nextInt(4)]
+
+        log.info "🎲 Random Spirit Animal: ${selectedAnimal}"
+
+        return selectedAnimal
     }
     
     private Double calculateFocusDecay(List responses) {

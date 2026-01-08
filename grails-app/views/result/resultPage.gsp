@@ -998,18 +998,6 @@
 <script type="text/javascript">
     var resultData = ${raw((result as grails.converters.JSON).toString())};
 
-    var GAME_TO_PERSONA_MAPPING = {
-        'SPIRIT_ANIMAL': ['wolf', 'owl', 'bee', 'tiger'],
-        'COGNITIVE_RADAR': 'logic-builder',
-        'CURIOSITY_COMPASS': 'curious-thinker',
-        'FOCUS_STAMINA': 'focus-finisher',
-        'GUESSWORK_QUOTIENT': 'decision-maker',
-        'MODALITY_MAP': 'adaptive-learner',
-        'PATTERN_SNAPSHOT': 'detail-detective',
-        'WORK_MODE': 'strategic-planner',
-        'PERSONALITY_TYPE': 'creative-connector'
-    };
-
     var ALL_PERSONAS = {
         wolf: {
             id: 'wolf', gameType: 'spirit-animal', title: "THE STRATEGIC WOLF", subtitle: "The Hunter", emoji: "🐺",
@@ -1182,36 +1170,44 @@
         console.log('=== PERSONA SELECTION DEBUG ===');
         console.log('Full resultData:', resultData);
 
-        if (resultData && resultData.success && resultData.results) {
+        if (resultData && resultData.results) {
             var results = resultData.results;
             console.log('Results object:', results);
-            console.log('Game Dominant Personas:', results.gameDominantPersonas);
 
-            if (results.gameDominantPersonas) {
-                var gameKeys = Object.keys(results.gameDominantPersonas);
-                console.log('Games played:', gameKeys);
+            // ✅ FIX: Your backend structure is results.SPIRIT_ANIMAL directly (not nested in gameResults)
+            var gameKeys = Object.keys(results);
+            console.log('Game keys found:', gameKeys);
 
-                if (gameKeys.length > 0) {
-                    var lastGame = gameKeys[gameKeys.length - 1];
-                    console.log('Last game played:', lastGame);
+            if (gameKeys.length > 0) {
+                var lastGame = gameKeys[gameKeys.length - 1];
+                var gameData = results[lastGame];
+                console.log('Last game:', lastGame);
+                console.log('Game data:', gameData);
 
-                    var personaKey = GAME_TO_PERSONA_MAPPING[lastGame];
-                    console.log('Mapped game', lastGame, 'to persona key:', personaKey);
+                // Read resultType directly from the game data
+                if (gameData && gameData.resultType) {
+                    var resultType = gameData.resultType;
+                    console.log('Result type:', resultType);
 
-                    if (Array.isArray(personaKey)) {
-                        console.log('🎲 Spirit Animal - Random from:', personaKey);
-                        var randomAnimal = personaKey[Math.floor(Math.random() * personaKey.length)];
-                        console.log('Selected:', randomAnimal);
-                        return ALL_PERSONAS[randomAnimal];
-                    } else if (personaKey && ALL_PERSONAS[personaKey]) {
-                        console.log('✅ Found persona:', personaKey);
+                    // Map to persona key
+                    var personaKey = mapResultTypeToPersonaKey(lastGame, resultType);
+                    console.log('Mapped to persona key:', personaKey);
+
+                    if (personaKey && ALL_PERSONAS[personaKey]) {
+                        console.log('✅ SUCCESS: Found persona:', personaKey);
                         return ALL_PERSONAS[personaKey];
                     } else {
-                        console.log('❌ Persona key not found:', personaKey);
-                        console.log('⚠️ Game name not in mapping! Add this game:', lastGame);
+                        console.log('❌ Persona key not found in ALL_PERSONAS:', personaKey);
+                        console.log('Available personas:', Object.keys(ALL_PERSONAS));
                     }
+                } else {
+                    console.log('❌ No resultType found in game data');
                 }
+            } else {
+                console.log('❌ No games found in results');
             }
+        } else {
+            console.log('❌ resultData.results not found');
         }
 
         console.log('⚠️ Falling back to random persona');
@@ -1219,6 +1215,36 @@
         var randomKey = keys[Math.floor(Math.random() * keys.length)];
         console.log('Random persona selected:', randomKey);
         return ALL_PERSONAS[randomKey];
+    }
+
+    // ✅ NEW: Centralized mapping function
+    function mapResultTypeToPersonaKey(gameType, resultType) {
+        console.log('🔍 Mapping:', gameType, '→', resultType);
+
+        // Spirit Animal mapping
+        if (gameType === 'SPIRIT_ANIMAL') {
+            var animalMap = {
+                'BOLD_TIGER': 'tiger',
+                'WISE_OWL': 'owl',
+                'DISCIPLINED_BEE': 'bee',
+                'STRATEGIC_WOLF': 'wolf'
+            };
+            return animalMap[resultType];
+        }
+
+        // Other games - direct mapping
+        var gameToPersonaMap = {
+            'COGNITIVE_RADAR': 'logic-builder',
+            'CURIOSITY_COMPASS': 'curious-thinker',
+            'FOCUS_STAMINA': 'focus-finisher',
+            'GUESSWORK_QUOTIENT': 'decision-maker',
+            'MODALITY_MAP': 'adaptive-learner',
+            'PATTERN_SNAPSHOT': 'detail-detective',
+            'WORK_MODE': 'strategic-planner',
+            'PERSONALITY': 'creative-connector'
+        };
+
+        return gameToPersonaMap[gameType];
     }
 
     function renderPersona(p) {
@@ -1287,12 +1313,10 @@
             hasRewards = true;
         }
 
-        // Show the modal only if there are rewards to display
         if (hasRewards) {
             document.getElementById('reward-modal').classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent scroll while modal is open
+            document.body.style.overflow = 'hidden';
         } else {
-            // No rewards, go straight to results
             revealResults();
         }
     }
@@ -1303,8 +1327,7 @@
         setTimeout(function() {
             modal.classList.remove('active');
             modal.style.display = 'none';
-            modal.style.opacity = '1'; // Reset for next time
-            // CRITICAL FIX: Restore body scroll - force both directions explicitly
+            modal.style.opacity = '1';
             document.body.style.overflow = '';
             document.body.style.overflowX = 'hidden';
             document.body.style.overflowY = 'auto';
@@ -1356,8 +1379,8 @@
         var ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        canvas.style.display = 'block'; // Show canvas
-        canvas.style.opacity = '1'; // Ensure it starts visible
+        canvas.style.display = 'block';
+        canvas.style.opacity = '1';
 
         var parts = [];
         var colors = ['#8B7FE8', '#5FE3D0', '#FFB4D6', '#FFD86D'];
@@ -1389,13 +1412,12 @@
             if(frame < maxFrames) {
                 requestAnimationFrame(draw);
             } else {
-                // CRITICAL FIX: Animation complete - fade out the canvas
                 canvas.style.opacity = '0';
                 setTimeout(function() {
                     canvas.style.display = 'none';
-                    canvas.style.pointerEvents = 'none'; // Extra safety
+                    canvas.style.pointerEvents = 'none';
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
-                }, 1000); // Wait for fade transition to complete
+                }, 1000);
             }
         }
         draw();
@@ -1454,7 +1476,6 @@
 
     function closeAuthModal() {
         document.getElementById('auth-modal').classList.remove('active');
-        // CRITICAL FIX: Restore body scroll
         document.body.style.overflow = '';
         clearAuthMessages();
     }
@@ -1466,7 +1487,6 @@
         else btn.classList.remove('visible');
     }, { passive: true });
 
-    // Attach continue button listener immediately (before DOMContentLoaded)
     var continueBtn = document.getElementById('continue-btn-reward');
     if (continueBtn) {
         continueBtn.addEventListener('click', function(e) {
@@ -1476,7 +1496,6 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        // CRITICAL FIX: Ensure page is scrollable on load - force both directions
         document.body.style.overflow = '';
         document.body.style.overflowX = 'hidden';
         document.body.style.overflowY = 'auto';
@@ -1489,32 +1508,24 @@
             canvas.style.opacity = '0';
         }
 
-        // Check if there are rewards to display
         if (resultData && resultData.rewards) {
             displayRewards(resultData.rewards);
         } else {
-            // No rewards data, show results directly
             revealResults();
         }
 
         var closeBtn = document.getElementById('auth-close-btn');
         if (closeBtn) closeBtn.addEventListener('click', function(e) { e.preventDefault(); closeAuthModal(); });
 
-        // ADD THESE LISTENERS FOR SWITCHING BETWEEN FORMS:
         document.body.addEventListener('click', function(e) {
-            // Handle dashboard button
             if (e.target.id === 'open-dashboard-modal' || e.target.closest('#open-dashboard-modal')) {
                 e.preventDefault();
                 openAuthModal('signup');
             }
-
-            // Handle "Already have account? Login" link
             if (e.target.id === 'switch-to-login-link' || e.target.closest('#switch-to-login-link')) {
                 e.preventDefault();
                 openAuthModal('login');
             }
-
-            // Handle "Don't have account? Sign up" link
             if (e.target.id === 'switch-to-signup-link' || e.target.closest('#switch-to-signup-link')) {
                 e.preventDefault();
                 openAuthModal('signup');
@@ -1523,23 +1534,19 @@
 
         document.getElementById('auth-modal').addEventListener('click', function(e) { if (e.target.id === 'auth-modal') closeAuthModal(); });
 
-        // ... rest of your code (signup form, login form handlers)
-
         var signupForm = document.getElementById('signup-form');
         if (signupForm) {
             signupForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 clearAuthMessages();
-
-                var ageValue = document.getElementById('signup-age').value;  // ADD THIS LINE
-
+                var ageValue = document.getElementById('signup-age').value;
                 fetch('/api/signup', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         name: document.getElementById('signup-name').value,
                         email: document.getElementById('signup-email').value,
-                        age: ageValue ? parseInt(ageValue) : null  // CHANGE THIS LINE
+                        age: ageValue ? parseInt(ageValue) : null
                     })
                 }).then(function(res) { return res.json(); }).then(function(data) {
                     if (data.success) {
@@ -1555,13 +1562,11 @@
             loginForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 clearAuthMessages();
-
                 fetch('/api/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         email: document.getElementById('login-email').value
-                        // Remove the 'name' field - it doesn't exist in the form!
                     })
                 }).then(function(res) { return res.json(); }).then(function(data) {
                     if (data.success) {
