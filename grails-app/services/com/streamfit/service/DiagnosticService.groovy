@@ -6,17 +6,119 @@ import com.streamfit.service.UnifiedPersonaService
 import grails.gorm.transactions.Transactional
 import groovy.json.JsonSlurper
 import groovy.json.JsonOutput
+import org.springframework.data.redis.core.RedisTemplate
+import org.springframework.beans.factory.annotation.Value
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicLong
 
 @Transactional
 class DiagnosticService {
 
     // Use the unified persona service instead of individual services
     UnifiedPersonaService unifiedPersonaService
+    
+    RedisTemplate<String, Object> redisTemplate
+    
+    private static final String CACHE_VERSION = "v1"
+    
+    // Circuit breaker state for Redis failures
+    private static final AtomicInteger failureCount = new AtomicInteger(0)
+    private static final AtomicLong lastFailureTime = new AtomicLong(0)
+    
+    @Value('${cache.circuit-breaker.failure-threshold:5}')
+    private int failureThreshold
+    
+    @Value('${cache.circuit-breaker.recovery-timeout:30000}')
+    private long recoveryTimeout
+    
+    @Value('${cache.ttl.test-metadata:86400}')
+    private long testMetadataTTL
+    
+    @Value('${cache.ttl.test-questions:86400}')
+    private long testQuestionsTTL
+    
+    @Value('${cache.ttl.user-history:7200}')
+    private long userHistoryTTL
+    
+    @Value('${cache.ttl.session-progress:1800}')
+    private long sessionProgressTTL
+    
+    @Value('${cache.ttl.default:3600}')
+    private long defaultTTL
+    
+    /**
+     * Helper method to generate versioned cache keys
+     */
+    private String getCacheKey(String baseKey) {
+        return "${CACHE_VERSION}:${baseKey}"
+    }
+    
+    /**
+     * Check if circuit breaker is open (Redis should be bypassed)
+     */
+    private boolean isCircuitOpen() {
+        if (failureCount.get() >= failureThreshold) {
+            long timeSinceLastFailure = System.currentTimeMillis() - lastFailureTime.get()
+            if (timeSinceLastFailure < recoveryTimeout) {
+                return true // Circuit is open, bypass Redis
+            } else {
+                // Recovery timeout passed, try to reset
+                failureCount.set(0)
+                return false
+            }
+        }
+        return false
+    }
+    
+    /**
+     * Record a Redis failure for circuit breaker
+     */
+    private void recordRedisFailure() {
+        failureCount.incrementAndGet()
+        lastFailureTime.set(System.currentTimeMillis())
+    }
+    
+    /**
+     * Reset circuit breaker on successful Redis operation
+     */
+    private void recordRedisSuccess() {
+        failureCount.set(0)
+    }
+    
+    /**
+     * Get TTL based on cache type
+     */
+    private long getCacheTTL(String cacheType) {
+        switch(cacheType) {
+            case 'test-metadata': return testMetadataTTL
+            case 'test-questions': return testQuestionsTTL
+            case 'user-history': return userHistoryTTL
+            case 'session-progress': return sessionProgressTTL
+            default: return defaultTTL
+        }
+    }
 
     /**
      * Get all available diagnostic tests (using new unified system)
      */
     def getAvailableTests(String testType = null) {
+        String cacheKey = getCacheKey("game:all")
+        
+        try {
+            // Try cache first
+            def cached = redisTemplate.opsForValue().get(cacheKey)
+            if (cached) {
+                log.debug "Cache HIT: ${cacheKey}"
+                def gameTypes = new JsonSlurper().parseText(cached.toString())
+                return testType ? gameTypes.findAll { it.testType == testType } : gameTypes
+            }
+        } catch (Exception e) {
+            log.warn "Redis cache read failed for ${cacheKey}: ${e.message}"
+        }
+        
+        log.debug "Cache MISS: ${cacheKey}"
+        
         try {
             // Return available game types from the new system
             def gameTypes = [
@@ -30,6 +132,13 @@ class DiagnosticService {
                 [testId: 'WORK_MODE', testName: 'Work Style Game', testType: 'CAREER', questionCount: 5, estimatedMinutes: 2],
                 [testId: 'PERSONALITY', testName: 'Personality Game', testType: 'CAREER', questionCount: 5, estimatedMinutes: 3]
             ]
+            
+            // Cache the result
+            try {
+                redisTemplate.opsForValue().set(cacheKey, JsonOutput.toJson(gameTypes), getCacheTTL('test-metadata'), TimeUnit.SECONDS)
+            } catch (Exception e) {
+                log.warn "Redis cache write failed for ${cacheKey}: ${e.message}"
+            }
             
             if (testType) {
                 return gameTypes.findAll { it.testType == testType }
@@ -46,18 +155,58 @@ class DiagnosticService {
      * Get a specific diagnostic test by ID (using new unified system)
      */
     def getTest(String testId) {
+        String cacheKey = getCacheKey("game:${testId}")
+        
+        try {
+            // Try cache first
+            def cached = redisTemplate.opsForValue().get(cacheKey)
+            if (cached) {
+                log.debug "Cache HIT: ${cacheKey}"
+                return new JsonSlurper().parseText(cached.toString())
+            }
+        } catch (Exception e) {
+            log.warn "Redis cache read failed for ${cacheKey}: ${e.message}"
+        }
+        
+        log.debug "Cache MISS: ${cacheKey}"
         def gameTypes = getAvailableTests()
-        return gameTypes.find { it.testId == testId }
+        def test = gameTypes.find { it.testId == testId }
+        
+        // Cache the result
+        if (test) {
+            try {
+                redisTemplate.opsForValue().set(cacheKey, JsonOutput.toJson(test), getCacheTTL('test-metadata'), TimeUnit.SECONDS)
+            } catch (Exception e) {
+                log.warn "Redis cache write failed for ${cacheKey}: ${e.message}"
+            }
+        }
+        
+        return test
     }
 
     /**
      * Get all questions for a diagnostic test (using new unified system)
      */
     def getTestQuestions(String testId) {
+        String cacheKey = getCacheKey("game:${testId}:questions")
+        
+        try {
+            // Try cache first
+            def cached = redisTemplate.opsForValue().get(cacheKey)
+            if (cached) {
+                log.debug "Cache HIT: ${cacheKey}"
+                return new JsonSlurper().parseText(cached.toString())
+            }
+        } catch (Exception e) {
+            log.warn "Redis cache read failed for ${cacheKey}: ${e.message}"
+        }
+        
+        log.debug "Cache MISS: ${cacheKey}"
+        
         try {
             def questions = com.streamfit.GameQuestion.findAllByGameType(testId, [sort: 'questionNumber', order: 'asc'])
 
-            return questions.collect { question ->
+            def result = questions.collect { question ->
                 def options = com.streamfit.GameOption.findAllByQuestion(question, [sort: 'displayOrder'])
 
                 [
@@ -77,6 +226,15 @@ class DiagnosticService {
                     }
                 ]
             }
+            
+            // Cache the result
+            try {
+                redisTemplate.opsForValue().set(cacheKey, JsonOutput.toJson(result), getCacheTTL('test-questions'), TimeUnit.SECONDS)
+            } catch (Exception e) {
+                log.warn "Redis cache write failed for ${cacheKey}: ${e.message}"
+            }
+            
+            return result
         } catch (Exception e) {
             log.error "Could not fetch test questions for ${testId}: ${e.message}"
             return null
@@ -150,59 +308,109 @@ class DiagnosticService {
                 log.error "Failed to save engagement data: ${engageData.errors}"
                 return [success: false, error: 'Failed to save response']
             }
+            
+            // Update session progress cache
+            updateSessionProgressCache(sessionId)
         } else {
             log.warn "Invalid option '${answerValueStr}' for question '${questionId}'. Response not saved."
         }
 
         return [success: true]
     }
+    
+    /**
+     * Update session progress in cache
+     */
+    private void updateSessionProgressCache(String sessionId) {
+        String cacheKey = getCacheKey("session:${sessionId}")
+        
+        try {
+            def engageData = com.streamfit.EngageData.findAllBySessionId(sessionId)
+            def progress = [
+                sessionId: sessionId,
+                responsesCount: engageData.size(),
+                lastUpdated: new Date(),
+                gameTypes: engageData.collect { it.gameType }.unique()
+            ]
+            
+            redisTemplate.opsForValue().set(cacheKey, JsonOutput.toJson(progress), getCacheTTL('session-progress'), TimeUnit.SECONDS)
+        } catch (Exception e) {
+            log.warn "Redis cache write failed for ${cacheKey}: ${e.message}"
+        }
+    }
 
     /**
      * Submit all answers and calculate results (using new unified system)
      */
+    @Transactional
     def submitTest(String sessionId, List answers) {
         def session = com.streamfit.UserSession.findBySessionId(sessionId)
         if (!session) {
             return [success: false, error: 'Session not found']
         }
 
-        // Save all responses
-        answers.each { answer ->
-            submitResponse(
-                sessionId,
-                answer.questionId,
-                answer.answerValue,
-                answer.confidenceLevel,
-                answer.timeSpent
-            )
+        try {
+            // Save all responses within transaction
+            answers.each { answer ->
+                submitResponse(
+                    sessionId,
+                    answer.questionId,
+                    answer.answerValue,
+                    answer.confidenceLevel,
+                    answer.timeSpent
+                )
+            }
+
+            // Calculate results using the unified persona service
+            def results = unifiedPersonaService.calculateFinalPersona(sessionId)
+
+            // Update session with results
+            session.endTime = new Date()
+            session.status = 'COMPLETED'
+            if (results && results.gameResults) {
+                session.gameResults = new groovy.json.JsonBuilder(results.gameResults).toString()
+            }
+            session.save(flush: true)
+            
+            // Cache invalidation happens AFTER successful transaction commit
+            invalidateTestCaches(sessionId, session.user.userId)
+            
+            // Skip rewards since reward system is disabled
+            def rewards = [message: "Reward system is currently disabled"]
+
+            return [
+                success: true,
+                sessionId: session.sessionId,
+                results: results,
+                rewards: rewards
+            ]
+        } catch (Exception e) {
+            log.error "Error submitting test ${sessionId}: ${e.message}", e
+            // Cache is NOT updated on error - transaction rolls back
+            throw e
         }
-
-        // Calculate results using the unified persona service
-        def results = unifiedPersonaService.calculateFinalPersona(sessionId)
-
-        // Update session with results
-        session.endTime = new Date()
-        session.status = 'COMPLETED'
-        if (results && results.gameResults) {
-            session.gameResults = new groovy.json.JsonBuilder(results.gameResults).toString()
-        }
-        session.save(flush: true)
-
-        // Skip rewards since reward system is disabled
-        def rewards = [message: "Reward system is currently disabled"]
-
-        return [
-            success: true,
-            sessionId: session.sessionId,
-            results: results,
-            rewards: rewards
-        ]
     }
 
     /**
      * Get test results for a session (using new unified system)
      */
     def getResults(String sessionId) {
+        String cacheKey = getCacheKey("result:${sessionId}")
+        
+        try {
+            // Try cache first
+            def cached = redisTemplate.opsForValue().get(cacheKey)
+            if (cached) {
+                log.debug "Cache HIT: ${cacheKey}"
+                def cachedResult = new JsonSlurper().parseText(cached.toString())
+                return cachedResult
+            }
+        } catch (Exception e) {
+            log.warn "Redis cache read failed for ${cacheKey}: ${e.message}"
+        }
+        
+        log.debug "Cache MISS: ${cacheKey}"
+        
         def session = com.streamfit.UserSession.findBySessionId(sessionId)
         if (!session) {
             return [success: false, error: 'Session not found']
@@ -221,23 +429,47 @@ class DiagnosticService {
                 log.error "Failed to parse game results JSON: ${e.message}"
             }
         }
-
-        return [
+        
+        def result = [
             success: true,
             sessionId: session.sessionId,
             results: results,
             completedAt: session.endTime
         ]
+        
+        // Cache the result
+        try {
+            redisTemplate.opsForValue().set(cacheKey, JsonOutput.toJson(result), getCacheTTL('test-results'), TimeUnit.SECONDS)
+        } catch (Exception e) {
+            log.warn "Redis cache write failed for ${cacheKey}: ${e.message}"
+        }
+
+        return result
     }
 
     /**
      * Get user's test history (using new unified system)
      */
     def getUserTestHistory(User user) {
+        String cacheKey = getCacheKey("user:${user.userId}:history")
+        
+        try {
+            // Try cache first
+            def cached = redisTemplate.opsForValue().get(cacheKey)
+            if (cached) {
+                log.debug "Cache HIT: ${cacheKey}"
+                return new JsonSlurper().parseText(cached.toString())
+            }
+        } catch (Exception e) {
+            log.warn "Redis cache read failed for ${cacheKey}: ${e.message}"
+        }
+        
+        log.debug "Cache MISS: ${cacheKey}"
+        
         try {
             def sessions = com.streamfit.UserSession.findAllByUser(user, [sort: 'startTime', order: 'desc'])
 
-            return sessions.collect { session ->
+            def result = sessions.collect { session ->
                 [
                     sessionId: session.sessionId,
                     status: session.status,
@@ -246,9 +478,56 @@ class DiagnosticService {
                     gameResults: session.gameResults ? new groovy.json.JsonSlurper().parseText(session.gameResults) : null
                 ]
             }
+            
+            // Cache the result
+            try {
+                redisTemplate.opsForValue().set(cacheKey, JsonOutput.toJson(result), getCacheTTL('user-history'), TimeUnit.SECONDS)
+            } catch (Exception e) {
+                log.warn "Redis cache write failed for ${cacheKey}: ${e.message}"
+            }
+            
+            return result
         } catch (Exception e) {
             log.warn "Could not fetch test history for user ${user.userId}: ${e.message}"
             return []
+        }
+    }
+    
+    /**
+     * Invalidate all related caches when test data changes
+     */
+    def invalidateTestCaches(String sessionId, String userId = null) {
+        try {
+            // Invalidate session results cache
+            redisTemplate.delete(getCacheKey("result:${sessionId}"))
+            
+            // Invalidate session progress cache
+            redisTemplate.delete(getCacheKey("session:${sessionId}"))
+            
+            // Invalidate persona profiles cache (since results changed)
+            redisTemplate.delete(getCacheKey("persona:all"))
+            
+            // Invalidate user test history cache if userId provided
+            if (userId) {
+                redisTemplate.delete(getCacheKey("user:${userId}:history"))
+            }
+            
+            log.info "Invalidated caches for session: ${sessionId}, user: ${userId}"
+        } catch (Exception e) {
+            log.warn "Failed to invalidate test caches: ${e.message}"
+        }
+    }
+    
+    /**
+     * Invalidate user test history cache - kept for backward compatibility
+     */
+    private void invalidateUserTestHistoryCache(User user) {
+        String cacheKey = getCacheKey("user:${user.userId}:history")
+        
+        try {
+            redisTemplate.delete(cacheKey)
+        } catch (Exception e) {
+            log.warn "Redis cache invalidation failed for ${cacheKey}: ${e.message}"
         }
     }
 }

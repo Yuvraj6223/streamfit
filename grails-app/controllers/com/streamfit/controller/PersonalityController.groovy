@@ -3,11 +3,26 @@ package com.streamfit.controller
 import com.streamfit.service.UserService
 import com.streamfit.service.UnifiedPersonaService
 import grails.converters.JSON
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+import org.springframework.data.redis.core.RedisTemplate
+import org.springframework.beans.factory.annotation.Value
+import java.util.concurrent.TimeUnit
 
 class PersonalityController {
 
     UnifiedPersonaService unifiedPersonaService
     UserService userService
+    RedisTemplate<String, Object> redisTemplate
+    
+    private static final String CACHE_VERSION = "v1"
+    
+    @Value('${cache.ttl.personality-questions:86400}')
+    private long personalityQuestionsTTL
+    
+    private String getCacheKey(String baseKey) {
+        return "${CACHE_VERSION}:${baseKey}"
+    }
     
     /**
      * Main personality test page - Free for all users
@@ -20,13 +35,31 @@ class PersonalityController {
     /**
      * API endpoint: Get all personality test questions
      * GET /api/personality/questions
+     * CACHED: 24 hours - questions rarely change
      */
     def questions() {
+        String cacheKey = getCacheKey("personality:questions")
+        
+        try {
+            // Try cache first - HIGH IMPACT: This endpoint is hit on every test start
+            def cached = redisTemplate?.opsForValue()?.get(cacheKey)
+            if (cached) {
+                log.debug "Cache HIT: ${cacheKey}"
+                def cachedResponse = new JsonSlurper().parseText(cached.toString())
+                render(cachedResponse as JSON)
+                return
+            }
+        } catch (Exception e) {
+            log.warn "Redis cache read failed for ${cacheKey}: ${e.message}"
+        }
+        
+        log.debug "Cache MISS: ${cacheKey}"
+        
         try {
             // Get personality questions from the new unified system
             def questions = com.streamfit.GameQuestion.findAllByGameType('PERSONALITY', [sort: 'questionNumber', order: 'asc'])
             
-            def response = questions.collect { question ->
+            def responseData = questions.collect { question ->
                 def options = com.streamfit.GameOption.findAllByQuestion(question, [sort: 'displayOrder'])
                 [
                     id: question.questionId,
@@ -41,7 +74,14 @@ class PersonalityController {
                 ]
             }
             
-            render(response as JSON)
+            // Cache the result for 24 hours
+            try {
+                redisTemplate?.opsForValue()?.set(cacheKey, JsonOutput.toJson(responseData), personalityQuestionsTTL, TimeUnit.SECONDS)
+            } catch (Exception e) {
+                log.warn "Redis cache write failed for ${cacheKey}: ${e.message}"
+            }
+            
+            render(responseData as JSON)
         } catch (Exception e) {
             log.error "Error fetching personality questions: ${e.message}", e
             response.status = 500
@@ -72,6 +112,38 @@ class PersonalityController {
             if (!answers || answers.isEmpty()) {
                 response.status = 400
                 render([success: false, error: 'Answers are required'] as JSON)
+                return
+            }
+            
+            // Prevent DoS with overly large payloads
+            if (answers.size() > 100) {
+                response.status = 400
+                render([success: false, error: 'Too many answers provided'] as JSON)
+                return
+            }
+            
+            // Validate each answer
+            for (answer in answers) {
+                // Validate answer has required fields
+                if (!answer.id) {
+                    response.status = 400
+                    render([success: false, error: 'Each answer must have an id'] as JSON)
+                    return
+                }
+                
+                // Validate answer value is in range (-3 to 3)
+                def value = answer.value
+                if (value == null || !(value instanceof Number) || value < -3 || value > 3) {
+                    response.status = 400
+                    render([success: false, error: 'Answer values must be between -3 and 3'] as JSON)
+                    return
+                }
+            }
+            
+            // Validate gender if provided
+            if (gender && !(gender in ['Male', 'Female', 'Other'])) {
+                response.status = 400
+                render([success: false, error: 'Invalid gender value'] as JSON)
                 return
             }
             

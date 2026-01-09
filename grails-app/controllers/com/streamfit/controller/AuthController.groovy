@@ -3,6 +3,7 @@ package com.streamfit.controller
 import grails.converters.JSON
 import grails.gorm.transactions.Transactional
 import com.streamfit.user.User
+import java.util.regex.Pattern
 
 
 class AuthController {
@@ -19,16 +20,34 @@ class AuthController {
         render(view: "signup")
     }
 
+    // Email validation pattern (RFC 5322 simplified)
+    private static final Pattern EMAIL_PATTERN = ~/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+    
+    // Maximum input lengths to prevent DoS
+    private static final int MAX_EMAIL_LENGTH = 254
+    private static final int MAX_NAME_LENGTH = 100
+
     @Transactional
     def processLogin() {
         def jsonData = request.JSON
-        def email = jsonData?.email
-        def name = jsonData?.name
+        def email = jsonData?.email?.toString()?.trim()
+        def name = jsonData?.name?.toString()?.trim()
 
-        println "Login attempt: email=${email}, name=${name}"
-
+        // Input validation
         if (!email) {
             render([success: false, message: "Email is required"] as JSON)
+            return
+        }
+        
+        // Validate email length
+        if (email.length() > MAX_EMAIL_LENGTH) {
+            render([success: false, message: "Email is too long"] as JSON)
+            return
+        }
+        
+        // Validate email format
+        if (!EMAIL_PATTERN.matcher(email).matches()) {
+            render([success: false, message: "Invalid email format"] as JSON)
             return
         }
 
@@ -36,10 +55,15 @@ class AuthController {
         def user = User.findByEmail(email)
 
         if (user) {
-            def anonymousUserId = session.userId
-            if (anonymousUserId?.startsWith("anon_")) {
-                userService.migrateUserSession(anonymousUserId, user)
+            // Prevent session fixation: regenerate session ID after successful login
+            def oldUserId = session.userId
+            if (oldUserId?.startsWith("anon_")) {
+                userService.migrateUserSession(oldUserId, user)
             }
+            
+            // Regenerate session to prevent session fixation attacks
+            request.changeSessionId()
+            
             session.user = user
             session.userId = user.userId
 
@@ -60,11 +84,39 @@ class AuthController {
     @Transactional
     def processSignup() {
         def jsonData = request.JSON
-        def name = jsonData?.name
-        def email = jsonData?.email
+        def name = jsonData?.name?.toString()?.trim()
+        def email = jsonData?.email?.toString()?.trim()
         def age = jsonData?.age as Integer
 
-        println "Signup attempt: name=${name}, email=${email}, age=${age}"
+        // Input validation
+        if (!email) {
+            render([success: false, message: "Email is required"] as JSON)
+            return
+        }
+        
+        // Validate email length
+        if (email.length() > MAX_EMAIL_LENGTH) {
+            render([success: false, message: "Email is too long"] as JSON)
+            return
+        }
+        
+        // Validate email format
+        if (!EMAIL_PATTERN.matcher(email).matches()) {
+            render([success: false, message: "Invalid email format"] as JSON)
+            return
+        }
+        
+        // Validate name length if provided
+        if (name && name.length() > MAX_NAME_LENGTH) {
+            render([success: false, message: "Name is too long"] as JSON)
+            return
+        }
+        
+        // Validate age if provided
+        if (age != null && (age < 1 || age > 120)) {
+            render([success: false, message: "Invalid age"] as JSON)
+            return
+        }
 
         def ipAddress = request.getRemoteAddr()
         def userAgent = request.getHeader('User-Agent')

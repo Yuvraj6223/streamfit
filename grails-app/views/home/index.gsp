@@ -518,30 +518,6 @@
 
 </div>
 
-<!-- Continue Game Modal -->
-<div id="continueGameModal" class="continue-modal" style="display: none;">
-    <div class="continue-modal-overlay"></div>
-    <div class="continue-modal-content">
-        <h2 class="continue-modal-title">Welcome Back! 🎮</h2>
-        <p class="continue-modal-text">You have an unfinished game. What would you like to do?</p>
-        <div class="continue-modal-game-info">
-            <span class="continue-game-emoji" id="continueGameEmoji">🦉</span>
-            <span class="continue-game-name" id="continueGameName">Spirit Animal Game</span>
-        </div>
-        <div class="continue-modal-buttons">
-            <a href="${createLink(controller: 'personality', action: 'start')}"
-               class="btn-continue" id="continueGameBtn">
-                <span>▶️</span> Continue Game
-            </a>
-            <a href="${createLink(controller: 'personality', action: 'start')}"
-               class="btn-new-game" id="newGameBtn">
-                <span>🎯</span> Start New Game
-            </a>
-        </div>
-        <button class="continue-modal-close" id="closeModalBtn">✕</button>
-    </div>
-</div>
-
 <!-- Scroll to Top Button -->
 <button class="scroll-to-top" id="scrollToTop" title="Back to top">
     <span>↑</span>

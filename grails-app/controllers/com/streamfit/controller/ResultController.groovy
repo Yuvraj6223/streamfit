@@ -189,22 +189,39 @@ class ResultController {
      * REDUCED: 1-3 seconds → 50-100ms response time
      */
     def submit() {
-        log.info "CONTROLLER_DEBUG: ResultController.submit() called"
+        // UUID pattern for sessionId validation
+        def UUID_PATTERN = ~/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
         
         try {
             def requestData = request.JSON
-            def sessionId = requestData.sessionId
+            def sessionId = requestData.sessionId?.toString()?.trim()
             def answers = requestData.answers
             
-            log.info "CONTROLLER_DEBUG: Request data - sessionId: ${sessionId}, answers count: ${answers?.size()}"
-            answers?.each { answer ->
-                log.info "CONTROLLER_DEBUG: Answer - QuestionId: ${answer.questionId}, AnswerValue: ${answer.answerValue}"
+            // Validate sessionId
+            if (!sessionId) {
+                response.status = 400
+                render([success: false, error: 'sessionId is required'] as JSON)
+                return
             }
             
-            if (!sessionId || !answers) {
-                log.error "CONTROLLER_DEBUG: Missing sessionId or answers"
+            // Validate sessionId format
+            if (!UUID_PATTERN.matcher(sessionId.toLowerCase()).matches()) {
                 response.status = 400
-                render([success: false, error: 'sessionId and answers are required'] as JSON)
+                render([success: false, error: 'Invalid sessionId format'] as JSON)
+                return
+            }
+            
+            // Validate answers
+            if (!answers || !(answers instanceof List)) {
+                response.status = 400
+                render([success: false, error: 'answers are required and must be an array'] as JSON)
+                return
+            }
+            
+            // Prevent DoS with overly large payloads
+            if (answers.size() > 100) {
+                response.status = 400
+                render([success: false, error: 'Too many answers provided'] as JSON)
                 return
             }
             
@@ -213,15 +230,12 @@ class ResultController {
             // Try async processor first (high performance)
             try {
                 if (asyncResultProcessor) {
-                    log.info "CONTROLLER_DEBUG: Calling asyncResultProcessor.submitTestAsync"
                     result = asyncResultProcessor.submitTestAsync(sessionId, answers)
-                    log.info "CONTROLLER_DEBUG: Async result: ${result}"
                 } else {
-                    log.warn "AsyncResultProcessor not available, falling back to sync processing"
                     throw new Exception("Fallback to sync")
                 }
             } catch (Exception e) {
-                log.warn "Async processing failed, falling back to sync: ${e.message}"
+                log.debug "Async processing unavailable, using sync: ${e.message}"
                 // Fallback to legacy sync method
                 result = diagnosticService.submitTest(sessionId, answers)
             }

@@ -4,10 +4,44 @@ import com.streamfit.UserSession
 import com.streamfit.user.User
 import grails.gorm.transactions.Transactional
 import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+import org.springframework.data.redis.core.RedisTemplate
+import org.springframework.beans.factory.annotation.Value
+import java.util.concurrent.TimeUnit
 import java.util.Random
 
 @Transactional
 class UserService {
+
+    DiagnosticService diagnosticService
+    RedisTemplate<String, Object> redisTemplate
+    
+    private static final String CACHE_VERSION = "v1"
+    
+    @Value('${cache.ttl.user-profile:3600}')
+    private long userProfileTTL
+    
+    @Value('${cache.ttl.user-stats:1800}')
+    private long userStatsTTL
+    
+    /**
+     * Helper method to generate versioned cache keys
+     */
+    private String getCacheKey(String baseKey) {
+        return "${CACHE_VERSION}:${baseKey}"
+    }
+    
+    /**
+     * Invalidate user cache when user data changes
+     */
+    private void invalidateUserCache(String userId) {
+        try {
+            redisTemplate.delete(getCacheKey("user:${userId}"))
+            redisTemplate.delete(getCacheKey("user:${userId}:stats"))
+        } catch (Exception e) {
+            log.warn "Failed to invalidate user cache: ${e.message}"
+        }
+    }
 
     def createOrGetUser(Map params) {
         String userId = params.userId ?: UUID.randomUUID().toString()
@@ -115,7 +149,37 @@ class UserService {
     }
     
     def getUserById(String userId) {
-        return User.findByUserId(userId)
+        if (!userId) return null
+        
+        String cacheKey = getCacheKey("user:${userId}")
+        
+        try {
+            // Try cache first
+            def cached = redisTemplate.opsForValue().get(cacheKey)
+            if (cached) {
+                log.debug "Cache HIT: ${cacheKey}"
+                def userData = new JsonSlurper().parseText(cached.toString())
+                return User.findByUserId(userData.userId) // Return actual domain object
+            }
+        } catch (Exception e) {
+            log.warn "Redis cache read failed for ${cacheKey}: ${e.message}"
+        }
+        
+        log.debug "Cache MISS: ${cacheKey}"
+        
+        def user = User.findByUserId(userId)
+        
+        // Cache the result
+        if (user) {
+            try {
+                def userData = [userId: user.userId, name: user.name, email: user.email]
+                redisTemplate.opsForValue().set(cacheKey, JsonOutput.toJson(userData), userProfileTTL, TimeUnit.SECONDS)
+            } catch (Exception e) {
+                log.warn "Redis cache write failed for ${cacheKey}: ${e.message}"
+            }
+        }
+        
+        return user
     }
     
     def updateUserPreferences(User user, Map preferences) {
@@ -130,7 +194,37 @@ class UserService {
     }
     
     def getUserStats(User user) {
-        // Return default stats since LearningDNA table was dropped
+        if (!user) return getDefaultStats()
+        
+        String cacheKey = getCacheKey("user:${user.userId}:stats")
+        
+        try {
+            // Try cache first
+            def cached = redisTemplate.opsForValue().get(cacheKey)
+            if (cached) {
+                log.debug "Cache HIT: ${cacheKey}"
+                return new JsonSlurper().parseText(cached.toString())
+            }
+        } catch (Exception e) {
+            log.warn "Redis cache read failed for ${cacheKey}: ${e.message}"
+        }
+        
+        log.debug "Cache MISS: ${cacheKey}"
+        
+        // Calculate stats (currently returns defaults since LearningDNA was dropped)
+        def stats = getDefaultStats()
+        
+        // Cache the result
+        try {
+            redisTemplate.opsForValue().set(cacheKey, JsonOutput.toJson(stats), userStatsTTL, TimeUnit.SECONDS)
+        } catch (Exception e) {
+            log.warn "Redis cache write failed for ${cacheKey}: ${e.message}"
+        }
+        
+        return stats
+    }
+    
+    private Map getDefaultStats() {
         return [
             totalTestsCompleted: 0,
             coreTestsCompleted: 0,
@@ -205,6 +299,14 @@ class UserService {
                 session.save(flush: true)
             }
             anonymousUser.delete(flush: true)
+            
+            // Invalidate test history cache for both users
+            try {
+                diagnosticService.invalidateUserTestHistoryCache(anonymousUser)
+                diagnosticService.invalidateUserTestHistoryCache(authenticatedUser)
+            } catch (Exception e) {
+                log.warn "Failed to invalidate user test history cache during migration: ${e.message}"
+            }
         }
     }
 }

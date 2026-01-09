@@ -65,6 +65,10 @@ dependencies {
     // Database
     runtimeOnly "com.h2database:h2"
     runtimeOnly "mysql:mysql-connector-java:8.0.33"
+    
+    // Redis
+    implementation "org.springframework.boot:spring-boot-starter-data-redis"
+    implementation "org.springframework.data:spring-data-redis"
 
     testImplementation "io.micronaut:micronaut-inject-groovy"
     testImplementation "org.grails:grails-gorm-testing-support"

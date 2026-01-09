@@ -36,6 +36,9 @@ class UrlMappings {
         // Dashboard
         "/dashboard"(controller: 'dashboard', action: 'index')
         "/api/dashboard/data"(controller: 'dashboard', action: 'data')
+        
+        // Admin - Cache monitoring
+        "/admin/cache/stats"(controller: 'dashboard', action: 'cacheStats')
 
         // Personality API endpoints (16personalities compatible)
         "/api/personality/questions"(controller: 'personality', action: 'questions')
@@ -63,9 +66,11 @@ class UrlMappings {
         "/robots.txt"(controller: 'sitemap', action: 'robots')
 
         // Error pages
-        "404"(view: '/error/404')
-        "500"(view: '/error/500')
+        "401"(view: '/error/401')
         "403"(view: '/error/403')
+        "404"(view: '/error/404')
+        "429"(view: '/error/429')
+        "500"(view: '/error/500')
     }
 }
 

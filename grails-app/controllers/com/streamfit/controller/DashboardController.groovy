@@ -3,7 +3,7 @@ package com.streamfit.controller
 import com.streamfit.service.DiagnosticService
 import com.streamfit.service.UnifiedPersonaService
 import com.streamfit.service.UserService
-// import com.streamfit.service.RewardService // Disabled - reward system no longer available
+import org.springframework.data.redis.core.RedisTemplate
 import grails.converters.JSON
 
 class DashboardController {
@@ -11,7 +11,7 @@ class DashboardController {
     DiagnosticService diagnosticService
     UserService userService
     UnifiedPersonaService unifiedPersonaService
-    // RewardService rewardService // Disabled - reward system no longer available
+    RedisTemplate<String, Object> redisTemplate
     
     /**
      * Main dashboard page
@@ -147,6 +147,49 @@ class DashboardController {
             log.error "Error fetching dashboard data: ${e.message}", e
             response.status = 500
             render([success: false, error: 'Failed to fetch dashboard data'] as JSON)
+        }
+    }
+    
+    /**
+     * Cache statistics endpoint for monitoring
+     * GET /admin/cache/stats
+     */
+    def cacheStats() {
+        try {
+            // Get Redis connection info
+            def redisInfo = [:]
+            try {
+                def connection = redisTemplate?.connectionFactory?.connection
+                if (connection) {
+                    redisInfo = [
+                        connected: true,
+                        dbSize: connection.dbSize() ?: 0
+                    ]
+                } else {
+                    redisInfo = [connected: false, error: 'No connection available']
+                }
+            } catch (Exception e) {
+                redisInfo = [connected: false, error: e.message]
+            }
+            
+            response.status = 200
+            render([
+                success: true,
+                cache: [
+                    note: 'Cache metrics tracking not enabled',
+                    poolSettings: [
+                        maxActive: 500,
+                        maxIdle: 100,
+                        minIdle: 50
+                    ]
+                ],
+                redis: redisInfo,
+                timestamp: new Date().format("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+            ] as JSON)
+        } catch (Exception e) {
+            log.error "Error fetching cache stats: ${e.message}", e
+            response.status = 500
+            render([success: false, error: 'Failed to fetch cache stats'] as JSON)
         }
     }
 }

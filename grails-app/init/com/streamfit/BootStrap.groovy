@@ -1,10 +1,12 @@
 package com.streamfit
 
 import com.streamfit.service.UnifiedPersonaService
+import com.streamfit.service.DiagnosticService
 
 class BootStrap {
 
     UnifiedPersonaService unifiedPersonaService
+    DiagnosticService diagnosticService
 
     def init = { servletContext ->
         // Always create essential tables first
@@ -32,6 +34,9 @@ class BootStrap {
 
         // Initialize reward system
         // initializeRewardSystem() // Skipped - using unified game system
+        
+        // Warm caches for static data (improves first-request performance)
+        warmCaches()
     }
 
     def destroy = {
@@ -346,6 +351,51 @@ class BootStrap {
             log.info "Reward system initialization skipped - using unified game system"
         } catch (Exception e) {
             log.error "Error in reward system: ${e.message}", e
+        }
+    }
+    
+    /**
+     * Warm caches for static data on application startup
+     * This improves first-request performance for read-heavy data
+     */
+    private void warmCaches() {
+        try {
+            log.info "Warming caches for static data..."
+            
+            // Warm available tests cache
+            try {
+                diagnosticService?.getAvailableTests()
+                log.info "Warmed cache: available tests"
+            } catch (Exception e) {
+                log.warn "Could not warm available tests cache: ${e.message}"
+            }
+            
+            // Warm test questions cache for each game type
+            def gameTypes = ['COGNITIVE_RADAR', 'CURIOSITY_COMPASS', 'FOCUS_STAMINA', 
+                           'GUESSWORK_QUOTIENT', 'MODALITY_MAP', 'PATTERN_SNAPSHOT', 
+                           'SPIRIT_ANIMAL', 'WORK_MODE', 'PERSONALITY']
+            
+            gameTypes.each { gameType ->
+                try {
+                    diagnosticService?.getTestQuestions(gameType)
+                    log.info "Warmed cache: ${gameType} questions"
+                } catch (Exception e) {
+                    log.warn "Could not warm ${gameType} questions cache: ${e.message}"
+                }
+            }
+            
+            // Warm persona profiles cache
+            try {
+                unifiedPersonaService?.buildPersonaProfiles()
+                log.info "Warmed cache: persona profiles"
+            } catch (Exception e) {
+                log.warn "Could not warm persona profiles cache: ${e.message}"
+            }
+            
+            log.info "Cache warming completed!"
+            
+        } catch (Exception e) {
+            log.warn "Cache warming failed (non-fatal): ${e.message}"
         }
     }
 }

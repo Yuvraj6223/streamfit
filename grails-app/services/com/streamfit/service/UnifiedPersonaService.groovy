@@ -4,15 +4,65 @@ import com.streamfit.*
 import grails.gorm.transactions.Transactional
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
+import org.springframework.data.redis.core.RedisTemplate
+import org.springframework.beans.factory.annotation.Value
+import java.util.concurrent.TimeUnit
 
 @Transactional
 class UnifiedPersonaService {
+
+    RedisTemplate<String, Object> redisTemplate
+    
+    private static final String CACHE_VERSION = "v1"
+    
+    @Value('${cache.ttl.test-results:604800}')
+    private long testResultsTTL
+    
+    @Value('${cache.ttl.persona-profile:86400}')
+    private long personaProfileTTL
+    
+    @Value('${cache.ttl.default:3600}')
+    private long defaultTTL
+    
+    /**
+     * Helper method to generate versioned cache keys
+     */
+    private String getCacheKey(String baseKey) {
+        return "${CACHE_VERSION}:${baseKey}"
+    }
+    
+    /**
+     * Get TTL based on cache type
+     */
+    private long getCacheTTL(String cacheType) {
+        switch(cacheType) {
+            case 'test-results': return testResultsTTL
+            case 'persona-profile': return personaProfileTTL
+            default: return defaultTTL
+        }
+    }
 
     /**
      * Calculate final persona based on all game responses
      * STRICT: Each game's results are calculated independently from its own options only
      */
     def calculateFinalPersona(String sessionId) {
+        String cacheKey = getCacheKey("result:${sessionId}")
+        
+        try {
+            // Try cache first
+            def cached = redisTemplate.opsForValue().get(cacheKey)
+            if (cached) {
+                log.debug "Cache HIT: ${cacheKey}"
+                return new JsonSlurper().parseText(cached.toString())
+            }
+        } catch (Exception e) {
+            log.warn "Redis cache read failed for ${cacheKey}: ${e.message}"
+        }
+        
+        log.debug "Cache MISS: ${cacheKey}"
+        
         def engageData = EngageData.findAllBySessionId(sessionId)
         if (!engageData) {
             return [error: 'No engagement data found for session']
@@ -61,7 +111,7 @@ class UnifiedPersonaService {
         // Get comprehensive persona profile
         def personaProfile = getPersonaProfile(dominantPersona, gameResults)
         
-        return [
+        def result = [
             sessionId: sessionId,
             dominantPersona: dominantPersona,
             personaProfile: personaProfile,
@@ -69,6 +119,15 @@ class UnifiedPersonaService {
             gameDominantPersonas: dominantPersonas, // Show each game's individual dominant persona
             summary: generatePersonaSummary(dominantPersona, gameResults)
         ]
+        
+        // Cache the result
+        try {
+            redisTemplate.opsForValue().set(cacheKey, JsonOutput.toJson(result), getCacheTTL('test-results'), TimeUnit.SECONDS)
+        } catch (Exception e) {
+            log.warn "Redis cache write failed for ${cacheKey}: ${e.message}"
+        }
+        
+        return result
     }
     
     /**
@@ -586,7 +645,55 @@ class UnifiedPersonaService {
      * Get comprehensive persona profile
      */
     def getPersonaProfile(String dominantPersona, Map gameResults) {
-        def profiles = [
+        String cacheKey = getCacheKey("persona:all")
+        
+        try {
+            // Try cache first
+            def cached = redisTemplate.opsForValue().get(cacheKey)
+            def profiles
+            if (cached) {
+                log.debug "Cache HIT: ${cacheKey}"
+                profiles = new JsonSlurper().parseText(cached.toString())
+            } else {
+                // Build profiles from hardcoded data
+                profiles = buildPersonaProfiles()
+                
+                // Cache the profiles
+                try {
+                    redisTemplate.opsForValue().set(cacheKey, JsonOutput.toJson(profiles), getCacheTTL('persona-profile'), TimeUnit.SECONDS)
+                } catch (Exception e) {
+                    log.warn "Redis cache write failed for ${cacheKey}: ${e.message}"
+                }
+            }
+            
+            return profiles[dominantPersona] ?: [
+                title: 'Unique Thinker',
+                emoji: '🌟',
+                description: 'You have a unique combination of traits that makes you special.',
+                strengths: 'Adaptive thinking and diverse problem-solving approaches.',
+                challenges: 'Finding the right learning environment that matches your style.',
+                recommendations: 'Our AI will create a personalized learning path based on your specific traits.'
+            ]
+        } catch (Exception e) {
+            log.warn "Redis cache read failed for ${cacheKey}: ${e.message}"
+            
+            // Fallback to hardcoded profiles
+            return buildPersonaProfiles()[dominantPersona] ?: [
+                title: 'Unique Thinker',
+                emoji: '🌟',
+                description: 'You have a unique combination of traits that makes you special.',
+                strengths: 'Adaptive thinking and diverse problem-solving approaches.',
+                challenges: 'Finding the right learning environment that matches your style.',
+                recommendations: 'Our AI will create a personalized learning path based on your specific traits.'
+            ]
+        }
+    }
+    
+    /**
+     * Build persona profile map
+     */
+    private Map buildPersonaProfiles() {
+        return [
             'ANALYTICAL_DIAMOND': [
                 title: 'The Analytical Diamond',
                 emoji: '💎',
@@ -619,16 +726,6 @@ class UnifiedPersonaService {
                 challenges: 'You get bored with easy topics and forget things you learned a while ago.',
                 recommendations: 'We\'ll make learning fun like a game and send you quick reminders.'
             ]
-            // Add more persona profiles as needed
-        ]
-        
-        return profiles[dominantPersona] ?: [
-            title: 'Unique Thinker',
-            emoji: '🌟',
-            description: 'You have a unique combination of traits that makes you special.',
-            strengths: 'Adaptive thinking and diverse problem-solving approaches.',
-            challenges: 'Finding the right learning environment that matches your style.',
-            recommendations: 'Our AI will create a personalized learning path based on your specific traits.'
         ]
     }
     

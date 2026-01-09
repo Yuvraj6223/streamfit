@@ -8,6 +8,23 @@ grails:
             events: false
     cors:
         enabled: true
+        # SECURITY: Configure allowed origins for production
+        # Update 'https://your-domain.com' with your actual domain before deployment
+        allowedOrigins:
+            - 'https://your-domain.com'
+            - 'http://localhost:8080'  # Remove in production
+        allowedMethods:
+            - GET
+            - POST
+            - PUT
+            - DELETE
+            - OPTIONS
+        allowedHeaders:
+            - Content-Type
+            - Authorization
+            - X-Requested-With
+        allowCredentials: true
+        maxAge: 3600
 info:
     app:
         name: '@info.app.name@'
@@ -30,9 +47,44 @@ spring:
                 - '**/*.gson'
                 - 'logback.groovy'
                 - '*.properties'
+    redis:
+        host: localhost
+        port: 6379
+        timeout: 2000ms
+        lettuce:
+            pool:
+                max-active: 500          # Increased for 1M users (was 200)
+                max-idle: 100            # Increased for 1M users (was 20)
+                min-idle: 50             # Increased for 1M users (was 5)
+                max-wait: 1000ms         # Max wait for connection
+            shutdown-timeout: 100ms
+    health:
+        redis:
+            enabled: true
 management:
     endpoints:
         enabled-by-default: false
+        web:
+            exposure:
+                include: health
+    endpoint:
+        health:
+            show-details: when-authorized
+cache:
+    ttl:
+        test-metadata: 86400        # 24 hours in seconds
+        test-questions: 86400       # 24 hours in seconds
+        test-results: 604800        # 7 days in seconds
+        user-history: 7200          # 2 hours in seconds
+        session-progress: 1800      # 30 minutes in seconds
+        persona-profile: 86400      # 24 hours in seconds
+        user-profile: 3600          # 1 hour - NEW for UserService
+        user-stats: 1800            # 30 minutes - NEW for UserService
+        personality-questions: 86400 # 24 hours - NEW for PersonalityController
+        default: 3600               # 1 hour in seconds
+    circuit-breaker:
+        failure-threshold: 5        # Open circuit after 5 failures
+        recovery-timeout: 30000     # Try to recover after 30 seconds
 
 ---
 grails:
@@ -104,7 +156,7 @@ environments:
     development:
         dataSource:
             dbCreate: none
-            url: jdbc:mysql://localhost:3306/wsuser?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
+            url: jdbc:mysql://localhost:3306/wsldna?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
             logSql: false
             formatSql: false
             properties:
@@ -132,11 +184,11 @@ environments:
     test:
         dataSource:
             dbCreate: none
-            url: jdbc:mysql://localhost:3306/wsuser?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
+            url: jdbc:mysql://localhost:3306/wsldna?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
     production:
         dataSource:
             dbCreate: none
-            url: jdbc:mysql://localhost:3306/wsuser?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&useSSL=true
+            url: jdbc:mysql://localhost:3306/wsldna?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&useSSL=true
             properties:
                 jmxEnabled: true
                 # High-performance production settings
@@ -163,7 +215,3 @@ environments:
                 # Cache prepared statements
                 poolPreparedStatements: true
                 maxOpenPreparedStatements: 250
-    server:
-      address: 192.168.0.107
-      port: 8080
-
