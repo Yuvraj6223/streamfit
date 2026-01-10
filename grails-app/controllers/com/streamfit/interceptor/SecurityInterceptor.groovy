@@ -113,7 +113,11 @@ class SecurityInterceptor {
             }
         } catch (Exception e) {
             log.error "Error validating session ownership: ${e.message}"
-            // Allow request to continue on error - fail open for availability
+            // SECURITY: Fail-closed - deny access on error to prevent unauthorized viewing
+            response.status = 500
+            response.setContentType('application/json')
+            response.writer.write('{"success": false, "error": "Unable to verify access. Please try again."}')
+            return false
         }
         
         return true

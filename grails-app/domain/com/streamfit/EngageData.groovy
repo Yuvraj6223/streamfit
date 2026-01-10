@@ -29,5 +29,6 @@ class EngageData {
         table 'engage_data'
         version false
         timestamp default: "now()"
+        sessionId index: 'idx_engage_data_session'  // Index for faster result aggregation
     }
 }

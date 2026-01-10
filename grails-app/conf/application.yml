@@ -9,10 +9,10 @@ grails:
     cors:
         enabled: true
         # SECURITY: Configure allowed origins for production
-        # Update 'https://your-domain.com' with your actual domain before deployment
+        # In production, only allow your actual domain(s)
+        # The localhost origin below will be overridden in development environment
         allowedOrigins:
             - 'https://your-domain.com'
-            - 'http://localhost:8080'  # Remove in production
         allowedMethods:
             - GET
             - POST
@@ -138,6 +138,36 @@ grails:
                 scriptlets: html
                 taglib: none
                 staticparts: none
+
+# ========== Game Configuration (Externalized) ==========
+streamfit:
+    games:
+        # Available game types in the system
+        types:
+            - COGNITIVE_RADAR
+            - CURIOSITY_COMPASS
+            - FOCUS_STAMINA
+            - GUESSWORK_QUOTIENT
+            - MODALITY_MAP
+            - PATTERN_SNAPSHOT
+            - SPIRIT_ANIMAL
+            - WORK_MODE
+            - PERSONALITY
+        # Test categories
+        categories:
+            EXAM:
+                - COGNITIVE_RADAR
+                - FOCUS_STAMINA
+                - PATTERN_SNAPSHOT
+            CAREER:
+                - SPIRIT_ANIMAL
+                - WORK_MODE
+                - CURIOSITY_COMPASS
+            PERSONALITY:
+                - PERSONALITY
+                - MODALITY_MAP
+                - GUESSWORK_QUOTIENT
+
 ---
 hibernate:
     cache:
@@ -154,6 +184,11 @@ dataSource:
 
 environments:
     development:
+        grails:
+            cors:
+                allowedOrigins:
+                    - 'http://localhost:8080'
+                    - 'http://127.0.0.1:8080'
         dataSource:
             dbCreate: none
             url: jdbc:mysql://localhost:3306/wsldna?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false

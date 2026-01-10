@@ -147,23 +147,77 @@ class RateLimitingInterceptor {
         }
     }
     
+    // Trusted proxy IPs - configure based on your infrastructure
+    // Add your load balancer/reverse proxy IPs here
+    private static final Set<String> TRUSTED_PROXY_IPS = [
+        '127.0.0.1',
+        '::1',
+        // Add your production proxy IPs, e.g.:
+        // '10.0.0.0/8' prefix check done below
+    ].toSet()
+    
     /**
-     * Get the real client IP, handling proxies
+     * Get the real client IP, handling proxies securely
+     * Only trusts X-Forwarded-For when request originates from a known trusted proxy
      */
     private String getClientIp() {
-        // Check for proxy headers
-        String ip = request.getHeader('X-Forwarded-For')
-        if (ip && ip != 'unknown') {
-            // X-Forwarded-For can contain multiple IPs, take the first one
-            return ip.split(',')[0].trim()
+        String remoteAddr = request.remoteAddr ?: '0.0.0.0'
+        
+        // Only trust proxy headers if the direct connection is from a trusted proxy
+        if (isTrustedProxy(remoteAddr)) {
+            // Check X-Forwarded-For header
+            String xff = request.getHeader('X-Forwarded-For')
+            if (xff && xff != 'unknown') {
+                // X-Forwarded-For can contain multiple IPs, take the first (original client)
+                String clientIp = xff.split(',')[0].trim()
+                // Validate it looks like an IP address
+                if (isValidIpFormat(clientIp)) {
+                    return clientIp
+                }
+            }
+            
+            // Check X-Real-IP header
+            String realIp = request.getHeader('X-Real-IP')
+            if (realIp && realIp != 'unknown' && isValidIpFormat(realIp)) {
+                return realIp
+            }
         }
         
-        ip = request.getHeader('X-Real-IP')
-        if (ip && ip != 'unknown') {
-            return ip
+        return remoteAddr
+    }
+    
+    /**
+     * Check if the given IP is a trusted proxy
+     */
+    private boolean isTrustedProxy(String ip) {
+        if (!ip) return false
+        
+        // Check exact matches
+        if (TRUSTED_PROXY_IPS.contains(ip)) return true
+        
+        // Check common private network ranges (typically where proxies reside)
+        // Only enable these if your proxy is on a private network
+        if (ip.startsWith('10.') || 
+            ip.startsWith('172.16.') || ip.startsWith('172.17.') || ip.startsWith('172.18.') ||
+            ip.startsWith('172.19.') || ip.startsWith('172.20.') || ip.startsWith('172.21.') ||
+            ip.startsWith('172.22.') || ip.startsWith('172.23.') || ip.startsWith('172.24.') ||
+            ip.startsWith('172.25.') || ip.startsWith('172.26.') || ip.startsWith('172.27.') ||
+            ip.startsWith('172.28.') || ip.startsWith('172.29.') || ip.startsWith('172.30.') ||
+            ip.startsWith('172.31.') ||
+            ip.startsWith('192.168.')) {
+            return true
         }
         
-        return request.remoteAddr ?: '0.0.0.0'
+        return false
+    }
+    
+    /**
+     * Basic IP format validation to prevent injection
+     */
+    private boolean isValidIpFormat(String ip) {
+        if (!ip || ip.length() > 45) return false  // Max length for IPv6
+        // Allow IPv4 and IPv6 characters only
+        return ip.matches('^[0-9a-fA-F.:]+$')
     }
     
     /**

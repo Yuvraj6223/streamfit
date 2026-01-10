@@ -19,6 +19,7 @@ class OptionPersonaMapping {
         table 'option_persona_mapping'
         version false
         mappingRule type: 'text'
+        gameOption index: 'idx_persona_mapping_option'  // Index for faster lookups by option
     }
     
     static belongsTo = [gameOption: GameOption]

@@ -25,5 +25,6 @@ class UserSession {
         table 'user_session'
         version false
         gameResults type: 'text'
+        user index: 'idx_user_session_user'  // Index for faster user history queries
     }
 }

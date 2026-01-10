@@ -18,7 +18,7 @@ class DashboardController {
      * GET /dashboard
      */
     def index() {
-        def user = session.userId ? userService.getUserById(session.userId) : userService.getOrCreateAnonymousUser()
+        def user = session.userId ? userService.getUserById(session.userId) : userService.getOrCreateAnonymousUser(session)
 
         def testHistory = diagnosticService.getUserTestHistory(user)
         def completedSessions = testHistory.findAll { it.status == 'COMPLETED' && it.gameResults }.sort { a, b -> b.startTime <=> a.startTime }
@@ -108,7 +108,7 @@ class DashboardController {
      */
     def data() {
         try {
-            def user = session.userId ? userService.getUserById(session.userId) : userService.getOrCreateAnonymousUser()
+            def user = session.userId ? userService.getUserById(session.userId) : userService.getOrCreateAnonymousUser(session)
             
             // Get test history
             def testHistory = diagnosticService.getUserTestHistory(user)

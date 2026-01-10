@@ -29,6 +29,7 @@ class GameQuestion {
         table 'game_questions'
         version false
         questionText type: 'text'
+        options batchSize: 25  // Batch fetch options to avoid N+1 queries
     }
     
     static hasMany = [options: GameOption]

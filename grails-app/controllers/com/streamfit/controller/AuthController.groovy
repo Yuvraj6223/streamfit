@@ -135,6 +135,10 @@ class AuthController {
             if (anonymousUserId?.startsWith("anon_")) {
                 userService.migrateUserSession(anonymousUserId, user)
             }
+            
+            // SECURITY: Regenerate session ID to prevent session fixation attacks
+            request.changeSessionId()
+            
             session.user = user
             session.userId = user.userId
 

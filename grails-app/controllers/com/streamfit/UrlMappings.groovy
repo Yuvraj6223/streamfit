@@ -15,11 +15,40 @@ class UrlMappings {
         // Authentication
         "/login"(controller: 'auth', action: 'login')
         "/signup"(controller: 'auth', action: 'signup')
+        
+        // ========== API v1 Endpoints (Recommended) ==========
+        // Authentication API v1
+        "/api/v1/auth/login"(controller: 'auth', action: 'doLogin')
+        "/api/v1/auth/signup"(controller: 'auth', action: 'doSignup')
+        "/api/v1/auth/logout"(controller: 'auth', action: 'logout')
+        "/api/v1/auth/me"(controller: 'auth', action: 'me')
+        "/api/v1/login"(controller: "auth", action: "processLogin")
+        "/api/v1/signup"(controller: "auth", action: "processSignup")
+        
+        // Dashboard API v1
+        "/api/v1/dashboard/data"(controller: 'dashboard', action: 'data')
+        
+        // Personality API v1
+        "/api/v1/personality/questions"(controller: 'personality', action: 'questions')
+        "/api/v1/personality/submit"(controller: 'personality', action: 'submit')
+        "/api/v1/personality/result/$sessionId"(controller: 'personality', action: 'getResult')
+        
+        // Result API v1
+        "/api/v1/result/tests"(controller: 'result', action: 'tests')
+        "/api/v1/result/test/$testId"(controller: 'result', action: 'test')
+        "/api/v1/result/questions/$testId"(controller: 'result', action: 'questions')
+        "/api/v1/result/start"(controller: 'result', action: 'start')
+        "/api/v1/result/response"(controller: 'result', action: 'submitResponse')
+        "/api/v1/result/submit"(controller: 'result', action: 'submit')
+        "/api/v1/result/status/$sessionId"(controller: 'result', action: 'status')
+        "/api/v1/result/$sessionId"(controller: 'result', action: 'result')
+        "/api/v1/result/history"(controller: 'result', action: 'history')
+        
+        // ========== Legacy API Endpoints (Backward Compatibility) ==========
         "/api/auth/login"(controller: 'auth', action: 'doLogin')
         "/api/auth/signup"(controller: 'auth', action: 'doSignup')
         "/api/auth/logout"(controller: 'auth', action: 'logout')
         "/api/auth/me"(controller: 'auth', action: 'me')
-        // API endpoints for actual authentication
         "/api/login"(controller: "auth", action: "processLogin")
         "/api/signup"(controller: "auth", action: "processSignup")
 
@@ -40,7 +69,7 @@ class UrlMappings {
         // Admin - Cache monitoring
         "/admin/cache/stats"(controller: 'dashboard', action: 'cacheStats')
 
-        // Personality API endpoints (16personalities compatible)
+        // Legacy Personality API endpoints
         "/api/personality/questions"(controller: 'personality', action: 'questions')
         "/api/personality/submit"(controller: 'personality', action: 'submit')
         "/api/personality/result/$sessionId"(controller: 'personality', action: 'getResult')
@@ -50,7 +79,7 @@ class UrlMappings {
         "/result/test/$testId"(controller: 'result', action: 'testPage')
         "/result/$sessionId"(controller: 'result', action: 'resultPage')
 
-        // Result API endpoints
+        // Legacy Result API endpoints
         "/api/result/tests"(controller: 'result', action: 'tests')
         "/api/result/test/$testId"(controller: 'result', action: 'test')
         "/api/result/questions/$testId"(controller: 'result', action: 'questions')
@@ -64,6 +93,11 @@ class UrlMappings {
         // SEO - Sitemap and Robots
         "/sitemap.xml"(controller: 'sitemap', action: 'index')
         "/robots.txt"(controller: 'sitemap', action: 'robots')
+
+        // Health Check endpoints
+        "/health"(controller: 'health', action: 'check')
+        "/health/live"(controller: 'health', action: 'live')
+        "/health/ready"(controller: 'health', action: 'ready')
 
         // Error pages
         "401"(view: '/error/401')

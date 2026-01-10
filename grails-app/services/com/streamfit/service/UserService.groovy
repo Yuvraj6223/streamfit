@@ -265,13 +265,23 @@ class UserService {
 
     /**
      * Get or create an anonymous user for diagnostic tests
-     * This creates a new anonymous user each time for now
-     * In production, you might want to use session-based user tracking
+     * Reuses existing anonymous user from session if available
      */
-    def getOrCreateAnonymousUser() {
-        // For now, always create a new anonymous user
-        // In production, you could check session or use a different strategy
-        return createAnonymousUser()
+    def getOrCreateAnonymousUser(session = null) {
+        // Try to reuse existing anonymous user from session
+        if (session?.userId?.startsWith('anon_')) {
+            def existingUser = User.findByUserId(session.userId)
+            if (existingUser) {
+                return existingUser
+            }
+        }
+        
+        // Create new anonymous user only if needed
+        def newUser = createAnonymousUser()
+        if (session != null && newUser) {
+            session.userId = newUser.userId
+        }
+        return newUser
     }
 
     /**

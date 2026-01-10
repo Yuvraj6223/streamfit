@@ -46,6 +46,7 @@ class UnifiedPersonaService {
     /**
      * Calculate final persona based on all game responses
      * STRICT: Each game's results are calculated independently from its own options only
+     * OPTIMIZED: Batch loads all options and mappings upfront to avoid N+1 queries
      */
     def calculateFinalPersona(String sessionId) {
         String cacheKey = getCacheKey("result:${sessionId}")
@@ -68,37 +69,52 @@ class UnifiedPersonaService {
             return [error: 'No engagement data found for session']
         }
         
-        // INFO: Log all engagement data to see what we're working with
-        log.info "PATTERN_DEBUG: Total engageData records: ${engageData.size()}"
-        engageData.each { data ->
-            log.info "PATTERN_DEBUG: Session ${data.sessionId}, GameType: ${data.gameType}, QuestionId: ${data.questionId}, OptionId: ${data.optionId}"
+        log.debug "Total engageData records: ${engageData.size()}"
+        
+        // PERFORMANCE FIX: Batch load all options and mappings upfront (2 queries instead of N*2)
+        def optionIds = engageData.collect { it.optionId }.findAll { it }
+        def optionsMap = [:]
+        def mappingsMap = [:]
+        
+        if (optionIds) {
+            // Batch load all options in one query
+            def options = GameOption.createCriteria().list {
+                'in'('id', optionIds.collect { Long.parseLong(it) })
+                join 'question'  // Eager load question relationship
+            }
+            optionsMap = options.collectEntries { [(it.id.toString()): it] }
+            
+            // Batch load all mappings in one query
+            if (options) {
+                def mappings = OptionPersonaMapping.createCriteria().list {
+                    'in'('gameOption', options)
+                }
+                mappingsMap = mappings.collectEntries { [(it.gameOption.id): it] }
+            }
         }
         
         // Group responses by game type - STRICT ISOLATION
         def gameResponses = engageData.groupBy { it.gameType }
         
-        log.info "PATTERN_DEBUG: Game groups found: ${gameResponses.keySet()}"
-        gameResponses.each { gameType, responses ->
-            log.info "PATTERN_DEBUG: Game ${gameType} has ${responses.size()} responses"
-        }
+        log.debug "Game groups found: ${gameResponses.keySet()}"
         
         def gameResults = [:]
         def dominantPersonas = [:] // Store each game's dominant persona
         
         // Calculate results for each game INDEPENDENTLY
         gameResponses.each { gameType, responses ->
-            log.info "PATTERN_DEBUG: Calculating results for gameType: ${gameType} with ${responses.size()} responses"
+            log.debug "Calculating results for gameType: ${gameType} with ${responses.size()} responses"
             
             // STRICT: Only use this game's responses and its own persona mappings
-            def gameResult = calculateGameResults(gameType, responses)
+            // OPTIMIZED: Pass pre-loaded maps to avoid N+1 queries
+            def gameResult = calculateGameResultsOptimized(gameType, responses, optionsMap, mappingsMap)
             gameResults[gameType] = gameResult
             
-            log.info "PATTERN_DEBUG: Game ${gameType} result: ${gameResult.resultType}, personaScores: ${gameResult.personaScores}"
+            log.debug "Game ${gameType} result: ${gameResult.resultType}"
             
             // Store each game's dominant persona separately - NO CROSS-GAME MIXING
             if (gameResult.personaScores) {
                 dominantPersonas[gameType] = gameResult.personaScores.max { it.value }?.key
-                log.info "PATTERN_DEBUG: Dominant persona for ${gameType}: ${dominantPersonas[gameType]}"
             }
         }
         
@@ -106,7 +122,7 @@ class UnifiedPersonaService {
         def personaFrequency = dominantPersonas.values().countBy { it }
         def dominantPersona = personaFrequency.max { it.value }?.key ?: 'UNKNOWN'
         
-        log.info "PATTERN_DEBUG: Final dominant persona: ${dominantPersona}"
+        log.debug "Final dominant persona: ${dominantPersona}"
         
         // Get comprehensive persona profile
         def personaProfile = getPersonaProfile(dominantPersona, gameResults)
@@ -128,6 +144,34 @@ class UnifiedPersonaService {
         }
         
         return result
+    }
+    
+    /**
+     * OPTIMIZED: Calculate results for a specific game type using pre-loaded data
+     */
+    def calculateGameResultsOptimized(String gameType, List responses, Map optionsMap, Map mappingsMap) {
+        switch (gameType) {
+            case 'COGNITIVE_RADAR':
+                return calculateCognitiveRadarOptimized(responses, optionsMap, mappingsMap)
+            case 'CURIOSITY_COMPASS':
+                return calculateCuriosityCompassOptimized(responses, optionsMap, mappingsMap)
+            case 'FOCUS_STAMINA':
+                return calculateFocusStaminaOptimized(responses, optionsMap, mappingsMap)
+            case 'GUESSWORK_QUOTIENT':
+                return calculateGuessworkQuotientOptimized(responses, optionsMap, mappingsMap)
+            case 'MODALITY_MAP':
+                return calculateModalityMapOptimized(responses, optionsMap, mappingsMap)
+            case 'PATTERN_SNAPSHOT':
+                return calculatePatternSnapshotOptimized(responses, optionsMap, mappingsMap)
+            case 'SPIRIT_ANIMAL':
+                return calculateSpiritAnimalOptimized(responses, optionsMap, mappingsMap)
+            case 'WORK_MODE':
+                return calculateWorkModeOptimized(responses, optionsMap, mappingsMap)
+            case 'PERSONALITY':
+                return calculatePersonalityOptimized(responses, optionsMap, mappingsMap)
+            default:
+                return [error: "Unknown game type: $gameType"]
+        }
     }
     
     /**
@@ -274,7 +318,21 @@ class UnifiedPersonaService {
         
         def focusDecay = calculateFocusDecay(attentionResponses)
         def gritLevel = calculateGritLevel(stressResponse)
-        def resultType = determineWorkStyle(focusDecay < 20, gritLevel > 60)
+        
+        // Determine Focus Stamina type (NOT work style!)
+        def resultType
+        def lowDecay = focusDecay < 20
+        def highGrit = gritLevel > 60
+        
+        if (lowDecay && highGrit) {
+            resultType = 'MARATHONER'     // Sustained focus + high grit = marathon runner
+        } else if (!lowDecay && highGrit) {
+            resultType = 'SPRINTER'       // High decay but high grit = works in bursts
+        } else if (lowDecay && !highGrit) {
+            resultType = 'SAFE_PLAYER'    // Sustained focus but low grit = plays safe
+        } else {
+            resultType = 'QUITTER'        // High decay + low grit = gives up early
+        }
         
         def personaScores = [
             'MARATHONER': (resultType == 'MARATHONER' ? 10 : 0),
@@ -568,6 +626,286 @@ class UnifiedPersonaService {
         ]
     }
     
+    // ========== OPTIMIZED CALCULATION METHODS (No N+1 queries) ==========
+    
+    /**
+     * OPTIMIZED Cognitive Radar - Uses pre-loaded maps
+     */
+    def calculateCognitiveRadarOptimized(List responses, Map optionsMap, Map mappingsMap) {
+        def scores = [LOGIC: 0, VERBAL: 0, SPATIAL: 0, SPEED: 0]
+        def personaScores = [:]
+        
+        def cognitiveRadarResponses = responses.findAll { it.gameType == 'COGNITIVE_RADAR' }
+        
+        cognitiveRadarResponses.each { response ->
+            def option = optionsMap[response.optionId]
+            def mapping = option ? mappingsMap[option.id] : null
+            
+            if (mapping && option?.question?.gameType == 'COGNITIVE_RADAR') {
+                def dimensionToPersona = [
+                    'LOGIC': 'ANALYTICAL_DIAMOND', 'VERBAL': 'COMMUNICATOR_PEARL',
+                    'SPATIAL': 'VISUALIZER_EMERALD', 'SPEED': 'PERFORMER_RUBY'
+                ]
+                def personaType = dimensionToPersona[option.question.scoringDimension]
+                if (personaType) {
+                    personaScores[personaType] = (personaScores[personaType] ?: 0) + mapping.weight
+                }
+                if (response.isCorrect) { scores[mapping.personaType]++ }
+            }
+        }
+        
+        def sortedPillars = scores.sort { -it.value }.collect { it.key }
+        def primaryPillar = sortedPillars[0]
+        def secondaryPillar = sortedPillars[1]
+        def resultType = determineCognitiveProfile(primaryPillar, secondaryPillar)
+        
+        return [resultType: resultType, scores: scores, primaryPillar: primaryPillar, 
+                secondaryPillar: secondaryPillar, personaScores: personaScores]
+    }
+    
+    /**
+     * OPTIMIZED Curiosity Compass - Uses pre-loaded maps
+     */
+    def calculateCuriosityCompassOptimized(List responses, Map optionsMap, Map mappingsMap) {
+        def scores = [THEORIST: 0, BUILDER: 0, EMPATH: 0, CHALLENGER: 0]
+        def personaScores = [:]
+        
+        def curiosityResponses = responses.findAll { it.gameType == 'CURIOSITY_COMPASS' }
+        
+        curiosityResponses.each { response ->
+            def option = optionsMap[response.optionId]
+            def mapping = option ? mappingsMap[option.id] : null
+            
+            if (mapping && option?.question?.gameType == 'CURIOSITY_COMPASS') {
+                scores[mapping.personaType] = (scores[mapping.personaType] ?: 0) + mapping.weight
+                def personaMapping = ['THEORIST': 'INNOVATOR_SAPPHIRE', 'BUILDER': 'BUILDER_AMETHYST',
+                                      'EMPATH': 'EMPATH_ROSE', 'CHALLENGER': 'CHALLENGER_GARNET']
+                def personaType = personaMapping[mapping.personaType]
+                if (personaType) {
+                    personaScores[personaType] = (personaScores[personaType] ?: 0) + mapping.weight
+                }
+            }
+        }
+        
+        def dominantType = scores.max { it.value }?.key ?: 'THEORIST'
+        return [resultType: dominantType, scores: scores, dominantType: dominantType, personaScores: personaScores]
+    }
+    
+    /**
+     * OPTIMIZED Focus Stamina - Uses pre-loaded maps
+     */
+    def calculateFocusStaminaOptimized(List responses, Map optionsMap, Map mappingsMap) {
+        def focusResponses = responses.findAll { it.gameType == 'FOCUS_STAMINA' }
+        
+        def attentionResponses = focusResponses.findAll { response ->
+            def option = optionsMap[response.optionId]
+            option?.question?.scoringDimension == 'ATTENTION_SUSTAIN'
+        }
+        def stressResponse = focusResponses.find { response ->
+            def option = optionsMap[response.optionId]
+            option?.question?.scoringDimension == 'STRESS_RESPONSE'
+        }
+        
+        def focusDecay = calculateFocusDecay(attentionResponses)
+        def gritLevel = calculateGritLevel(stressResponse)
+        
+        // Determine Focus Stamina type (NOT work style!)
+        def resultType
+        def lowDecay = focusDecay < 20
+        def highGrit = gritLevel > 60
+        
+        if (lowDecay && highGrit) {
+            resultType = 'MARATHONER'     // Sustained focus + high grit = marathon runner
+        } else if (!lowDecay && highGrit) {
+            resultType = 'SPRINTER'       // High decay but high grit = works in bursts
+        } else if (lowDecay && !highGrit) {
+            resultType = 'SAFE_PLAYER'    // Sustained focus but low grit = plays safe
+        } else {
+            resultType = 'QUITTER'        // High decay + low grit = gives up early
+        }
+        
+        def personaScores = [
+            'MARATHONER': (resultType == 'MARATHONER' ? 10 : 0),
+            'SPRINTER': (resultType == 'SPRINTER' ? 10 : 0),
+            'SAFE_PLAYER': (resultType == 'SAFE_PLAYER' ? 10 : 0),
+            'QUITTER': (resultType == 'QUITTER' ? 10 : 0)
+        ]
+        
+        return [resultType: resultType, focusDecay: focusDecay, gritLevel: gritLevel, personaScores: personaScores]
+    }
+    
+    /**
+     * OPTIMIZED Guesswork Quotient - Uses pre-loaded maps
+     */
+    def calculateGuessworkQuotientOptimized(List responses, Map optionsMap, Map mappingsMap) {
+        def guessworkResponses = responses.findAll { it.gameType == 'GUESSWORK_QUOTIENT' }
+        
+        def totalQuestions = guessworkResponses.size() ?: 1
+        def correctAnswers = guessworkResponses.count { it.isCorrect }
+        def accuracy = (correctAnswers / totalQuestions) * 100
+        
+        def confidenceSum = guessworkResponses.sum { it.confidenceLevel ?: 0 } ?: 0
+        def avgConfidence = (confidenceSum / totalQuestions) * 33.33
+        
+        def calibration = Math.abs(accuracy - avgConfidence)
+        def resultType = determineRiskProfile(accuracy, avgConfidence)
+        
+        def personaScores = [
+            'BALANCED_STRATEGIST': (resultType == 'BALANCED_STRATEGIST' ? 10 : 0),
+            'HIGH_ROLLER': (resultType == 'HIGH_ROLLER' ? 10 : 0),
+            'UNDER_ESTIMATOR': (resultType == 'UNDER_ESTIMATOR' ? 10 : 0),
+            'HESITANT_SEARCHER': (resultType == 'HESITANT_SEARCHER' ? 10 : 0)
+        ]
+        
+        return [resultType: resultType, accuracy: accuracy, avgConfidence: avgConfidence, 
+                calibration: calibration, personaScores: personaScores]
+    }
+    
+    /**
+     * OPTIMIZED Modality Map - Uses pre-loaded maps
+     */
+    def calculateModalityMapOptimized(List responses, Map optionsMap, Map mappingsMap) {
+        def scores = [VISUAL: 0, AUDITORY: 0, KINESTHETIC: 0, CONCEPTUAL: 0]
+        def personaScores = [:]
+        
+        def modalityResponses = responses.findAll { it.gameType == 'MODALITY_MAP' }
+        
+        modalityResponses.each { response ->
+            def option = optionsMap[response.optionId]
+            def mapping = option ? mappingsMap[option.id] : null
+            
+            if (mapping && option?.question?.gameType == 'MODALITY_MAP' && mapping.personaType) {
+                scores[mapping.personaType] = (scores[mapping.personaType] ?: 0) + mapping.weight
+                personaScores[mapping.personaType] = (personaScores[mapping.personaType] ?: 0) + mapping.weight
+            }
+        }
+        
+        def dominantModality = scores.max { it.value }?.key ?: 'UNKNOWN'
+        return [resultType: dominantModality, scores: scores, dominantModality: dominantModality, personaScores: personaScores]
+    }
+    
+    /**
+     * OPTIMIZED Pattern Snapshot - Uses pre-loaded maps
+     */
+    def calculatePatternSnapshotOptimized(List responses, Map optionsMap, Map mappingsMap) {
+        def scores = [VISUAL: 0, VERBAL: 0, NUMERIC: 0]
+        def personaScores = [:]
+        
+        def patternResponses = responses.findAll { it.gameType == 'PATTERN_SNAPSHOT' }
+        
+        patternResponses.each { response ->
+            def option = optionsMap[response.optionId]
+            def mapping = option ? mappingsMap[option.id] : null
+            
+            if (mapping && option?.question?.gameType == 'PATTERN_SNAPSHOT') {
+                scores[mapping.personaType] = (scores[mapping.personaType] ?: 0) + mapping.weight
+                personaScores[mapping.personaType] = (personaScores[mapping.personaType] ?: 0) + mapping.weight
+                if (response.isCorrect) { scores[option.question.scoringDimension]++ }
+            }
+        }
+        
+        def dominantSkew = scores.max { it.value }?.key ?: 'UNKNOWN'
+        return [resultType: dominantSkew, scores: scores, dominantSkew: dominantSkew, personaScores: personaScores]
+    }
+    
+    /**
+     * OPTIMIZED Spirit Animal - Uses pre-loaded maps
+     */
+    def calculateSpiritAnimalOptimized(List responses, Map optionsMap, Map mappingsMap) {
+        def processCount = 0, intuitionCount = 0, accuracyCount = 0, speedCount = 0
+        
+        def spiritResponses = responses.findAll { it.gameType == 'SPIRIT_ANIMAL' }
+        
+        spiritResponses.each { response ->
+            def option = optionsMap[response.optionId]
+            def mapping = option ? mappingsMap[option.id] : null
+            
+            if (mapping && option?.question?.gameType == 'SPIRIT_ANIMAL') {
+                switch (mapping.personaType) {
+                    case 'PROCESS': processCount++; break
+                    case 'INTUITION': intuitionCount++; break
+                    case 'ACCURACY': accuracyCount++; break
+                    case 'SPEED': speedCount++; break
+                }
+            }
+        }
+        
+        def primaryTrait = processCount > intuitionCount ? 'PROCESS' : 'INTUITION'
+        def secondaryTrait = accuracyCount > speedCount ? 'ACCURACY' : 'SPEED'
+        def resultType = determineSpiritAnimal(primaryTrait, secondaryTrait)
+        
+        def personaScores = [
+            'WISE_OWL': (resultType == 'WISE_OWL' ? 10 : 0),
+            'STRATEGIC_WOLF': (resultType == 'STRATEGIC_WOLF' ? 10 : 0),
+            'DISCIPLINED_BEE': (resultType == 'DISCIPLINED_BEE' ? 10 : 0),
+            'BOLD_TIGER': (resultType == 'BOLD_TIGER' ? 10 : 0)
+        ]
+        
+        return [resultType: resultType, processCount: processCount, intuitionCount: intuitionCount,
+                accuracyCount: accuracyCount, speedCount: speedCount, primaryTrait: primaryTrait,
+                secondaryTrait: secondaryTrait, personaScores: personaScores]
+    }
+    
+    /**
+     * OPTIMIZED Work Mode - Uses pre-loaded maps
+     */
+    def calculateWorkModeOptimized(List responses, Map optionsMap, Map mappingsMap) {
+        def soloCount = 0, teamCount = 0, structuredCount = 0, flexibleCount = 0
+        
+        def workModeResponses = responses.findAll { it.gameType == 'WORK_MODE' }
+        
+        workModeResponses.each { response ->
+            def option = optionsMap[response.optionId]
+            def mapping = option ? mappingsMap[option.id] : null
+            
+            if (mapping && option?.question?.gameType == 'WORK_MODE') {
+                switch (mapping.personaType) {
+                    case 'SOLO': soloCount++; break
+                    case 'TEAM': teamCount++; break
+                    case 'STRUCTURED': structuredCount++; break
+                    case 'FLEXIBLE': flexibleCount++; break
+                }
+            }
+        }
+        
+        def workStyle = determineWorkStyle(soloCount > teamCount, structuredCount > flexibleCount)
+        
+        def personaScores = [
+            'STRUCTURED_SOLOIST': (workStyle == 'STRUCTURED_SOLOIST' ? 10 : 0),
+            'STRUCTURED_COLLABORATOR': (workStyle == 'STRUCTURED_COLLABORATOR' ? 10 : 0),
+            'FREEFORM_EXPLORER': (workStyle == 'FREEFORM_EXPLORER' ? 10 : 0),
+            'CHAOTIC_CREATIVE': (workStyle == 'CHAOTIC_CREATIVE' ? 10 : 0)
+        ]
+        
+        return [resultType: workStyle, soloCount: soloCount, teamCount: teamCount,
+                structuredCount: structuredCount, flexibleCount: flexibleCount, personaScores: personaScores]
+    }
+    
+    /**
+     * OPTIMIZED Personality - Uses pre-loaded maps
+     */
+    def calculatePersonalityOptimized(List responses, Map optionsMap, Map mappingsMap) {
+        def personalityScore = 0
+        
+        def personalityResponses = responses.findAll { it.gameType == 'PERSONALITY' }
+        
+        personalityResponses.each { response ->
+            def option = optionsMap[response.optionId]
+            if (option?.question?.gameType == 'PERSONALITY') {
+                personalityScore += Integer.parseInt(option.optionValue ?: '0')
+            }
+        }
+        
+        def resultType = personalityScore > 0 ? 'EXTROVERT' : 'INTROVERT'
+        
+        def personaScores = [
+            'PERSONALITY_EXTROVERT': (resultType == 'EXTROVERT' ? Math.abs(personalityScore) : 0),
+            'PERSONALITY_INTROVERT': (resultType == 'INTROVERT' ? Math.abs(personalityScore) : 0)
+        ]
+        
+        return [resultType: resultType, personalityScore: personalityScore, personaScores: personaScores]
+    }
+    
     // Helper methods for determining profiles
     private String determineCognitiveProfile(String primary, String secondary) {
         if ((primary == 'LOGIC' && secondary == 'SPATIAL') || (primary == 'SPATIAL' && secondary == 'LOGIC')) {
@@ -606,12 +944,23 @@ class UnifiedPersonaService {
     }
 
     private String determineSpiritAnimal(String primaryTrait, String secondaryTrait) {
-        // ✅ RANDOM SELECTION - Returns random animal every time
-        def animals = ['WISE_OWL', 'DISCIPLINED_BEE', 'STRATEGIC_WOLF', 'BOLD_TIGER']
-        def random = new Random()
-        def selectedAnimal = animals[random.nextInt(4)]
+        // Calculate Spirit Animal based on user's actual trait combinations
+        def selectedAnimal
+        
+        if (primaryTrait == 'PROCESS' && secondaryTrait == 'ACCURACY') {
+            selectedAnimal = 'WISE_OWL'
+        } else if (primaryTrait == 'PROCESS' && secondaryTrait == 'SPEED') {
+            selectedAnimal = 'DISCIPLINED_BEE'
+        } else if (primaryTrait == 'INTUITION' && secondaryTrait == 'ACCURACY') {
+            selectedAnimal = 'STRATEGIC_WOLF'
+        } else if (primaryTrait == 'INTUITION' && secondaryTrait == 'SPEED') {
+            selectedAnimal = 'BOLD_TIGER'
+        } else {
+            // Default fallback
+            selectedAnimal = 'WISE_OWL'
+        }
 
-        log.info "🎲 Random Spirit Animal: ${selectedAnimal}"
+        log.info "🎯 Calculated Spirit Animal: ${selectedAnimal} (primary: ${primaryTrait}, secondary: ${secondaryTrait})"
 
         return selectedAnimal
     }

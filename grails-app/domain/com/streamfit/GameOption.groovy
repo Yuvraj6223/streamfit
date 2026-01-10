@@ -19,6 +19,7 @@ class GameOption {
         table 'game_options'
         version false
         optionText type: 'text'
+        question index: 'idx_game_option_question'  // Index for faster lookups by question
     }
     
     static belongsTo = [question: GameQuestion]

@@ -1065,6 +1065,59 @@
             ],
             insight: { icon: "🧠", text: "INSIGHT: You prefer factual structures." }
         },
+        // COGNITIVE_RADAR personas
+        'analytical-diamond': {
+            id: 'analytical-diamond', gameType: 'cognitive-radar', title: "THE ANALYTICAL DIAMOND", subtitle: "STEM Brain Power", emoji: "💎",
+            speech: "You see the world in systems and structures!",
+            stats: [
+                { icon: "🔬", label: "Core Strength:", value: "Systematic Thinking", bg: "#5C6BC0", contentBg: "linear-gradient(135deg, #7986CB, #5C6BC0)" },
+                { icon: "🧮", label: "Best For:", value: "Math/Physics/Coding", bg: "#42A5F5", contentBg: "linear-gradient(135deg, #64B5F6, #42A5F5)" }
+            ],
+            powers: [
+                { name: "Logical Reasoning", val: 94, color: "linear-gradient(90deg, #5C6BC0, #7986CB)" },
+                { name: "Pattern Analysis", val: 88, color: "linear-gradient(90deg, #42A5F5, #64B5F6)" }
+            ],
+            insight: { icon: "💎", text: "INSIGHT: Complex problems energize you." }
+        },
+        'verbal-virtuoso': {
+            id: 'verbal-virtuoso', gameType: 'cognitive-radar', title: "THE VERBAL VIRTUOSO", subtitle: "Master of Words", emoji: "✍️",
+            speech: "Words are your superpower!",
+            stats: [
+                { icon: "📚", label: "Core Strength:", value: "Communication", bg: "#7E57C2", contentBg: "linear-gradient(135deg, #9575CD, #7E57C2)" },
+                { icon: "⚖️", label: "Best For:", value: "Law/Humanities", bg: "#26A69A", contentBg: "linear-gradient(135deg, #4DB6AC, #26A69A)" }
+            ],
+            powers: [
+                { name: "Reading Speed", val: 96, color: "linear-gradient(90deg, #7E57C2, #9575CD)" },
+                { name: "Comprehension", val: 92, color: "linear-gradient(90deg, #26A69A, #4DB6AC)" }
+            ],
+            insight: { icon: "✍️", text: "INSIGHT: Language is your canvas." }
+        },
+        'precise-processor': {
+            id: 'precise-processor', gameType: 'cognitive-radar', title: "THE PRECISE PROCESSOR", subtitle: "Speed + Accuracy", emoji: "⚡",
+            speech: "You process information at lightning speed!",
+            stats: [
+                { icon: "🎯", label: "Core Strength:", value: "Quick Processing", bg: "#FF7043", contentBg: "linear-gradient(135deg, #FF8A65, #FF7043)" },
+                { icon: "🧠", label: "Best For:", value: "Fast-Paced Tasks", bg: "#66BB6A", contentBg: "linear-gradient(135deg, #81C784, #66BB6A)" }
+            ],
+            powers: [
+                { name: "Processing Speed", val: 97, color: "linear-gradient(90deg, #FF7043, #FF8A65)" },
+                { name: "Accuracy Rate", val: 85, color: "linear-gradient(90deg, #66BB6A, #81C784)" }
+            ],
+            insight: { icon: "⚡", text: "INSIGHT: Speed is your advantage." }
+        },
+        'visual-visionary': {
+            id: 'visual-visionary', gameType: 'cognitive-radar', title: "THE VISUAL VISIONARY", subtitle: "Sees the Big Picture", emoji: "🎨",
+            speech: "You think in images and patterns!",
+            stats: [
+                { icon: "🖼️", label: "Core Strength:", value: "Spatial Thinking", bg: "#EC407A", contentBg: "linear-gradient(135deg, #F48FB1, #EC407A)" },
+                { icon: "🎯", label: "Best For:", value: "Design/Architecture", bg: "#AB47BC", contentBg: "linear-gradient(135deg, #CE93D8, #AB47BC)" }
+            ],
+            powers: [
+                { name: "Visualization", val: 95, color: "linear-gradient(90deg, #EC407A, #F48FB1)" },
+                { name: "Spatial Memory", val: 90, color: "linear-gradient(90deg, #AB47BC, #CE93D8)" }
+            ],
+            insight: { icon: "🎨", text: "INSIGHT: You see what others miss." }
+        },
         'curious-thinker': {
             id: 'curious-thinker', gameType: 'curiosity', title: "THE CURIOUS THINKER", subtitle: "You love asking 'why'",
             emoji: "😊", showLightbulb: true, speech: "You learn best when it feels interesting.",
@@ -1077,6 +1130,59 @@
                 { name: "Understanding", val: 92, color: "linear-gradient(90deg, #4FC3F7, #29B6F6)" }
             ],
             insight: { icon: "💡", text: "INSIGHT: Curiosity fuels your engine." }
+        },
+        // CURIOSITY_COMPASS personas
+        'theorist': {
+            id: 'theorist', gameType: 'curiosity', title: "THE THEORIST", subtitle: "Deep Thinker", emoji: "🔬",
+            speech: "You love understanding the 'why' behind everything!",
+            stats: [
+                { icon: "📖", label: "Core Strength:", value: "Theoretical Analysis", bg: "#5E35B1", contentBg: "linear-gradient(135deg, #7E57C2, #5E35B1)" },
+                { icon: "🧪", label: "Learning Style:", value: "Concept-First", bg: "#3949AB", contentBg: "linear-gradient(135deg, #5C6BC0, #3949AB)" }
+            ],
+            powers: [
+                { name: "Deep Understanding", val: 96, color: "linear-gradient(90deg, #5E35B1, #7E57C2)" },
+                { name: "Abstract Thinking", val: 91, color: "linear-gradient(90deg, #3949AB, #5C6BC0)" }
+            ],
+            insight: { icon: "🔬", text: "INSIGHT: You question to understand." }
+        },
+        'builder': {
+            id: 'builder', gameType: 'curiosity', title: "THE BUILDER", subtitle: "Hands-On Creator", emoji: "🛠️",
+            speech: "You learn best by building and doing!",
+            stats: [
+                { icon: "🏗️", label: "Core Strength:", value: "Practical Application", bg: "#FF6F00", contentBg: "linear-gradient(135deg, #FF8F00, #FF6F00)" },
+                { icon: "⚙️", label: "Learning Style:", value: "Learn by Doing", bg: "#F57C00", contentBg: "linear-gradient(135deg, #FF9800, #F57C00)" }
+            ],
+            powers: [
+                { name: "Practical Skills", val: 94, color: "linear-gradient(90deg, #FF6F00, #FF8F00)" },
+                { name: "Project Completion", val: 89, color: "linear-gradient(90deg, #F57C00, #FF9800)" }
+            ],
+            insight: { icon: "🛠️", text: "INSIGHT: You make ideas real." }
+        },
+        'empath': {
+            id: 'empath', gameType: 'curiosity', title: "THE EMPATH", subtitle: "People Person", emoji: "💝",
+            speech: "You connect deeply with people and stories!",
+            stats: [
+                { icon: "🤝", label: "Core Strength:", value: "Emotional Intelligence", bg: "#E91E63", contentBg: "linear-gradient(135deg, #F06292, #E91E63)" },
+                { icon: "👥", label: "Learning Style:", value: "Social Learning", bg: "#AD1457", contentBg: "linear-gradient(135deg, #D81B60, #AD1457)" }
+            ],
+            powers: [
+                { name: "Understanding Others", val: 97, color: "linear-gradient(90deg, #E91E63, #F06292)" },
+                { name: "Collaboration", val: 92, color: "linear-gradient(90deg, #AD1457, #D81B60)" }
+            ],
+            insight: { icon: "💝", text: "INSIGHT: You learn through connection." }
+        },
+        'challenger': {
+            id: 'challenger', gameType: 'curiosity', title: "THE CHALLENGER", subtitle: "Bold Questioner", emoji: "🔥",
+            speech: "You push boundaries and question everything!",
+            stats: [
+                { icon: "💪", label: "Core Strength:", value: "Critical Thinking", bg: "#D32F2F", contentBg: "linear-gradient(135deg, #E57373, #D32F2F)" },
+                { icon: "🎯", label: "Learning Style:", value: "Challenge-Driven", bg: "#C62828", contentBg: "linear-gradient(135deg, #EF5350, #C62828)" }
+            ],
+            powers: [
+                { name: "Problem Solving", val: 95, color: "linear-gradient(90deg, #D32F2F, #E57373)" },
+                { name: "Resilience", val: 88, color: "linear-gradient(90deg, #C62828, #EF5350)" }
+            ],
+            insight: { icon: "🔥", text: "INSIGHT: You thrive on tough challenges." }
         },
         'focus-finisher': {
             id: 'focus-finisher', gameType: 'focus-power', title: "THE FOCUS FINISHER", subtitle: "You stay on task till the end", isSVG: true,
@@ -1092,6 +1198,59 @@
             ],
             insight: { icon: "🎯", text: "INSIGHT: You thrive on single targets." }
         },
+        // FOCUS_STAMINA personas
+        'marathoner': {
+            id: 'marathoner', gameType: 'focus-stamina', title: "THE MARATHONER", subtitle: "Endurance Champion", emoji: "🏃",
+            speech: "You maintain focus for the long haul!",
+            stats: [
+                { icon: "⏱️", label: "Core Strength:", value: "Sustained Focus", bg: "#43A047", contentBg: "linear-gradient(135deg, #66BB6A, #43A047)" },
+                { icon: "💪", label: "Work Style:", value: "Long Sessions", bg: "#388E3C", contentBg: "linear-gradient(135deg, #4CAF50, #388E3C)" }
+            ],
+            powers: [
+                { name: "Focus Duration", val: 97, color: "linear-gradient(90deg, #43A047, #66BB6A)" },
+                { name: "Mental Stamina", val: 94, color: "linear-gradient(90deg, #388E3C, #4CAF50)" }
+            ],
+            insight: { icon: "🏃", text: "INSIGHT: You excel in lengthy tasks." }
+        },
+        'sprinter': {
+            id: 'sprinter', gameType: 'focus-stamina', title: "THE SPRINTER", subtitle: "Quick Burst Energy", emoji: "⚡",
+            speech: "You work best in short, intense bursts!",
+            stats: [
+                { icon: "🔥", label: "Core Strength:", value: "Explosive Focus", bg: "#FF5722", contentBg: "linear-gradient(135deg, #FF7043, #FF5722)" },
+                { icon: "⏰", label: "Work Style:", value: "Short Bursts", bg: "#F4511E", contentBg: "linear-gradient(135deg, #FF6E40, #F4511E)" }
+            ],
+            powers: [
+                { name: "Intensity", val: 96, color: "linear-gradient(90deg, #FF5722, #FF7043)" },
+                { name: "Quick Results", val: 91, color: "linear-gradient(90deg, #F4511E, #FF6E40)" }
+            ],
+            insight: { icon: "⚡", text: "INSIGHT: Short tasks suit you best." }
+        },
+        'safe-player': {
+            id: 'safe-player', gameType: 'focus-stamina', title: "THE SAFE PLAYER", subtitle: "Careful & Steady", emoji: "🛡️",
+            speech: "You take calculated risks and steady progress!",
+            stats: [
+                { icon: "🎯", label: "Core Strength:", value: "Consistency", bg: "#1976D2", contentBg: "linear-gradient(135deg, #2196F3, #1976D2)" },
+                { icon: "📊", label: "Work Style:", value: "Measured Approach", bg: "#1565C0", contentBg: "linear-gradient(135deg, #1E88E5, #1565C0)" }
+            ],
+            powers: [
+                { name: "Reliability", val: 93, color: "linear-gradient(90deg, #1976D2, #2196F3)" },
+                { name: "Risk Management", val: 89, color: "linear-gradient(90deg, #1565C0, #1E88E5)" }
+            ],
+            insight: { icon: "🛡️", text: "INSIGHT: Steady wins the race." }
+        },
+        'quitter': {
+            id: 'quitter', gameType: 'focus-stamina', title: "THE QUICK STARTER", subtitle: "Great Initiator", emoji: "🚀",
+            speech: "You're amazing at starting new things!",
+            stats: [
+                { icon: "✨", label: "Core Strength:", value: "Initiative", bg: "#9C27B0", contentBg: "linear-gradient(135deg, #BA68C8, #9C27B0)" },
+                { icon: "🌟", label: "Work Style:", value: "Fresh Beginnings", bg: "#7B1FA2", contentBg: "linear-gradient(135deg, #AB47BC, #7B1FA2)" }
+            ],
+            powers: [
+                { name: "Starting Energy", val: 95, color: "linear-gradient(90deg, #9C27B0, #BA68C8)" },
+                { name: "Variety Seeking", val: 87, color: "linear-gradient(90deg, #7B1FA2, #AB47BC)" }
+            ],
+            insight: { icon: "🚀", text: "INSIGHT: Keep tasks short and varied." }
+        },
         'decision-maker': {
             id: 'decision-maker', gameType: 'smart-guess', title: "FAST DECISION MAKER", subtitle: "You act with confidence", isSVG: true,
             graphic: '<svg viewBox="0 0 240 240"><circle cx="120" cy="120" r="75" fill="#7B6FD8" stroke="#29B6F6" stroke-width="3"/><line x1="120" y1="120" x2="155" y2="90" stroke="#FFB74D" stroke-width="6" stroke-linecap="round"/><circle cx="120" cy="120" r="8" fill="#FFD54F"/></svg>',
@@ -1105,6 +1264,59 @@
                 { name: "Risk Awareness", val: 73, color: "linear-gradient(90deg, #FFD54F, #FFB74D)" }
             ],
             insight: { icon: "⚡", text: "INSIGHT: You make sharp moves rapidly." }
+        },
+        // GUESSWORK_QUOTIENT personas
+        'balanced-strategist': {
+            id: 'balanced-strategist', gameType: 'guesswork', title: "THE BALANCED STRATEGIST", subtitle: "Calibrated Mind", emoji: "⚖️",
+            speech: "Your confidence matches your abilities perfectly!",
+            stats: [
+                { icon: "🎯", label: "Core Strength:", value: "Self-Awareness", bg: "#00897B", contentBg: "linear-gradient(135deg, #26A69A, #00897B)" },
+                { icon: "🧠", label: "Decision Style:", value: "Calibrated", bg: "#00796B", contentBg: "linear-gradient(135deg, #009688, #00796B)" }
+            ],
+            powers: [
+                { name: "Self-Calibration", val: 96, color: "linear-gradient(90deg, #00897B, #26A69A)" },
+                { name: "Accuracy", val: 92, color: "linear-gradient(90deg, #00796B, #009688)" }
+            ],
+            insight: { icon: "⚖️", text: "INSIGHT: Trust your judgment." }
+        },
+        'high-roller': {
+            id: 'high-roller', gameType: 'guesswork', title: "THE HIGH ROLLER", subtitle: "Bold Risk Taker", emoji: "🎰",
+            speech: "You bet big on your abilities!",
+            stats: [
+                { icon: "🔥", label: "Core Strength:", value: "Confidence", bg: "#FF6D00", contentBg: "linear-gradient(135deg, #FF9100, #FF6D00)" },
+                { icon: "🎲", label: "Decision Style:", value: "Bold Moves", bg: "#E65100", contentBg: "linear-gradient(135deg, #FF6D00, #E65100)" }
+            ],
+            powers: [
+                { name: "Confidence Level", val: 98, color: "linear-gradient(90deg, #FF6D00, #FF9100)" },
+                { name: "Bold Decisions", val: 85, color: "linear-gradient(90deg, #E65100, #FF6D00)" }
+            ],
+            insight: { icon: "🎰", text: "INSIGHT: Sometimes slow down a bit." }
+        },
+        'under-estimator': {
+            id: 'under-estimator', gameType: 'guesswork', title: "THE HUMBLE ACHIEVER", subtitle: "Hidden Talent", emoji: "💎",
+            speech: "You're better than you think you are!",
+            stats: [
+                { icon: "🌟", label: "Core Strength:", value: "True Abilities", bg: "#7B1FA2", contentBg: "linear-gradient(135deg, #9C27B0, #7B1FA2)" },
+                { icon: "📈", label: "Decision Style:", value: "Cautious", bg: "#6A1B9A", contentBg: "linear-gradient(135deg, #8E24AA, #6A1B9A)" }
+            ],
+            powers: [
+                { name: "Actual Performance", val: 94, color: "linear-gradient(90deg, #7B1FA2, #9C27B0)" },
+                { name: "Untapped Potential", val: 88, color: "linear-gradient(90deg, #6A1B9A, #8E24AA)" }
+            ],
+            insight: { icon: "💎", text: "INSIGHT: Believe in yourself more!" }
+        },
+        'hesitant-searcher': {
+            id: 'hesitant-searcher', gameType: 'guesswork', title: "THE CAREFUL SEARCHER", subtitle: "Thorough Thinker", emoji: "🔍",
+            speech: "You think carefully before deciding!",
+            stats: [
+                { icon: "🧐", label: "Core Strength:", value: "Thoroughness", bg: "#455A64", contentBg: "linear-gradient(135deg, #607D8B, #455A64)" },
+                { icon: "📚", label: "Decision Style:", value: "Research-Based", bg: "#37474F", contentBg: "linear-gradient(135deg, #546E7A, #37474F)" }
+            ],
+            powers: [
+                { name: "Careful Analysis", val: 91, color: "linear-gradient(90deg, #455A64, #607D8B)" },
+                { name: "Knowledge Seeking", val: 87, color: "linear-gradient(90deg, #37474F, #546E7A)" }
+            ],
+            insight: { icon: "🔍", text: "INSIGHT: Trust your research." }
         },
         'adaptive-learner': {
             id: 'adaptive-learner', gameType: 'learning-style', title: "THE ADAPTIVE LEARNER", subtitle: "You adjust and learn fast", isSVG: true,
@@ -1120,6 +1332,59 @@
             ],
             insight: { icon: "📈", text: "INSIGHT: You master new topics easily." }
         },
+        // MODALITY_MAP personas
+        'visual-learner': {
+            id: 'visual-learner', gameType: 'modality', title: "THE VISUAL LEARNER", subtitle: "Sees to Understand", emoji: "👁️",
+            speech: "You learn best when you can see it!",
+            stats: [
+                { icon: "🖼️", label: "Core Strength:", value: "Visual Processing", bg: "#1976D2", contentBg: "linear-gradient(135deg, #2196F3, #1976D2)" },
+                { icon: "📊", label: "Best Method:", value: "Diagrams & Charts", bg: "#1565C0", contentBg: "linear-gradient(135deg, #1E88E5, #1565C0)" }
+            ],
+            powers: [
+                { name: "Visual Memory", val: 96, color: "linear-gradient(90deg, #1976D2, #2196F3)" },
+                { name: "Pattern Recognition", val: 93, color: "linear-gradient(90deg, #1565C0, #1E88E5)" }
+            ],
+            insight: { icon: "👁️", text: "INSIGHT: Use diagrams and videos." }
+        },
+        'auditory-learner': {
+            id: 'auditory-learner', gameType: 'modality', title: "THE AUDITORY LEARNER", subtitle: "Listens to Learn", emoji: "🎧",
+            speech: "You absorb information by listening!",
+            stats: [
+                { icon: "🎵", label: "Core Strength:", value: "Audio Processing", bg: "#7B1FA2", contentBg: "linear-gradient(135deg, #9C27B0, #7B1FA2)" },
+                { icon: "🗣️", label: "Best Method:", value: "Lectures & Discussion", bg: "#6A1B9A", contentBg: "linear-gradient(135deg, #8E24AA, #6A1B9A)" }
+            ],
+            powers: [
+                { name: "Listening Skills", val: 97, color: "linear-gradient(90deg, #7B1FA2, #9C27B0)" },
+                { name: "Verbal Memory", val: 91, color: "linear-gradient(90deg, #6A1B9A, #8E24AA)" }
+            ],
+            insight: { icon: "🎧", text: "INSIGHT: Use audiobooks and podcasts." }
+        },
+        'kinesthetic-learner': {
+            id: 'kinesthetic-learner', gameType: 'modality', title: "THE KINESTHETIC LEARNER", subtitle: "Learns by Doing", emoji: "🤲",
+            speech: "Hands-on experience is your best teacher!",
+            stats: [
+                { icon: "🛠️", label: "Core Strength:", value: "Tactile Learning", bg: "#2E7D32", contentBg: "linear-gradient(135deg, #43A047, #2E7D32)" },
+                { icon: "🎯", label: "Best Method:", value: "Practice & Experiments", bg: "#1B5E20", contentBg: "linear-gradient(135deg, #388E3C, #1B5E20)" }
+            ],
+            powers: [
+                { name: "Physical Memory", val: 95, color: "linear-gradient(90deg, #2E7D32, #43A047)" },
+                { name: "Skill Acquisition", val: 92, color: "linear-gradient(90deg, #1B5E20, #388E3C)" }
+            ],
+            insight: { icon: "🤲", text: "INSIGHT: Practice makes permanent." }
+        },
+        'conceptual-learner': {
+            id: 'conceptual-learner', gameType: 'modality', title: "THE CONCEPTUAL LEARNER", subtitle: "Thinks in Ideas", emoji: "💭",
+            speech: "You understand through abstract concepts!",
+            stats: [
+                { icon: "🧩", label: "Core Strength:", value: "Abstract Thinking", bg: "#5D4037", contentBg: "linear-gradient(135deg, #795548, #5D4037)" },
+                { icon: "🔗", label: "Best Method:", value: "Connections & Theory", bg: "#4E342E", contentBg: "linear-gradient(135deg, #6D4C41, #4E342E)" }
+            ],
+            powers: [
+                { name: "Conceptual Understanding", val: 94, color: "linear-gradient(90deg, #5D4037, #795548)" },
+                { name: "Theory Building", val: 90, color: "linear-gradient(90deg, #4E342E, #6D4C41)" }
+            ],
+            insight: { icon: "💭", text: "INSIGHT: Connect ideas to learn." }
+        },
         'detail-detective': {
             id: 'detail-detective', gameType: 'pattern-rush', title: "THE DETAIL DETECTIVE", subtitle: "You notice the small things", isSVG: true,
             graphic: '<svg viewBox="0 0 240 240"><circle cx="105" cy="105" r="70" fill="none" stroke="#7B6FD8" stroke-width="8"/><line x1="160" y1="160" x2="200" y2="200" stroke="#FFD54F" stroke-width="12" stroke-linecap="round"/></svg>',
@@ -1133,6 +1398,33 @@
                 { name: "Pattern Recognition", val: 90, color: "linear-gradient(90deg, #FFD54F, #FFB74D)" }
             ],
             insight: { icon: "👁️", text: "INSIGHT: You ensure high accuracy." }
+        },
+        // PATTERN_SNAPSHOT personas (VISUAL uses visual-learner)
+        'verbal-pattern': {
+            id: 'verbal-pattern', gameType: 'pattern', title: "THE VERBAL PATTERN MASTER", subtitle: "Word Pattern Expert", emoji: "📝",
+            speech: "You see patterns in words and language!",
+            stats: [
+                { icon: "📚", label: "Core Strength:", value: "Verbal Patterns", bg: "#5E35B1", contentBg: "linear-gradient(135deg, #7E57C2, #5E35B1)" },
+                { icon: "🔤", label: "Pattern Type:", value: "Language-Based", bg: "#512DA8", contentBg: "linear-gradient(135deg, #673AB7, #512DA8)" }
+            ],
+            powers: [
+                { name: "Word Recognition", val: 95, color: "linear-gradient(90deg, #5E35B1, #7E57C2)" },
+                { name: "Linguistic Patterns", val: 91, color: "linear-gradient(90deg, #512DA8, #673AB7)" }
+            ],
+            insight: { icon: "📝", text: "INSIGHT: You decode text effortlessly." }
+        },
+        'numeric-pattern': {
+            id: 'numeric-pattern', gameType: 'pattern', title: "THE NUMERIC PATTERN MASTER", subtitle: "Number Pattern Expert", emoji: "🔢",
+            speech: "You spot numerical patterns instantly!",
+            stats: [
+                { icon: "🧮", label: "Core Strength:", value: "Numeric Patterns", bg: "#0288D1", contentBg: "linear-gradient(135deg, #03A9F4, #0288D1)" },
+                { icon: "📊", label: "Pattern Type:", value: "Number-Based", bg: "#0277BD", contentBg: "linear-gradient(135deg, #0288D1, #0277BD)" }
+            ],
+            powers: [
+                { name: "Number Recognition", val: 96, color: "linear-gradient(90deg, #0288D1, #03A9F4)" },
+                { name: "Mathematical Patterns", val: 93, color: "linear-gradient(90deg, #0277BD, #0288D1)" }
+            ],
+            insight: { icon: "🔢", text: "INSIGHT: Numbers speak to you." }
         },
         'strategic-planner': {
             id: 'strategic-planner', gameType: 'work-style', title: "THE STRATEGIC PLANNER", subtitle: "You think before you act", isSVG: true,
@@ -1161,6 +1453,86 @@
                 { name: "Imagination", val: 94, color: "linear-gradient(90deg, #FF69B4, #FFB4D6)" }
             ],
             insight: { icon: "🔗", text: "INSIGHT: Lateral thinking is your gift." }
+        },
+        // WORK_MODE personas
+        'structured-soloist': {
+            id: 'structured-soloist', gameType: 'work-mode', title: "THE STRUCTURED SOLOIST", subtitle: "Independent Organizer", emoji: "🎯",
+            speech: "You work best alone with a clear plan!",
+            stats: [
+                { icon: "📋", label: "Core Strength:", value: "Self-Discipline", bg: "#455A64", contentBg: "linear-gradient(135deg, #607D8B, #455A64)" },
+                { icon: "👤", label: "Work Style:", value: "Independent & Organized", bg: "#37474F", contentBg: "linear-gradient(135deg, #546E7A, #37474F)" }
+            ],
+            powers: [
+                { name: "Focus", val: 95, color: "linear-gradient(90deg, #455A64, #607D8B)" },
+                { name: "Organization", val: 93, color: "linear-gradient(90deg, #37474F, #546E7A)" }
+            ],
+            insight: { icon: "🎯", text: "INSIGHT: Solo time boosts your productivity." }
+        },
+        'structured-collaborator': {
+            id: 'structured-collaborator', gameType: 'work-mode', title: "THE STRUCTURED COLLABORATOR", subtitle: "Team Organizer", emoji: "👥",
+            speech: "You thrive in organized team settings!",
+            stats: [
+                { icon: "🤝", label: "Core Strength:", value: "Team Coordination", bg: "#1976D2", contentBg: "linear-gradient(135deg, #2196F3, #1976D2)" },
+                { icon: "📊", label: "Work Style:", value: "Collaborative & Organized", bg: "#1565C0", contentBg: "linear-gradient(135deg, #1E88E5, #1565C0)" }
+            ],
+            powers: [
+                { name: "Teamwork", val: 94, color: "linear-gradient(90deg, #1976D2, #2196F3)" },
+                { name: "Planning", val: 91, color: "linear-gradient(90deg, #1565C0, #1E88E5)" }
+            ],
+            insight: { icon: "👥", text: "INSIGHT: Structured teams amplify you." }
+        },
+        'freeform-explorer': {
+            id: 'freeform-explorer', gameType: 'work-mode', title: "THE FREEFORM EXPLORER", subtitle: "Flexible Collaborator", emoji: "🌊",
+            speech: "You love flexible team environments!",
+            stats: [
+                { icon: "🎨", label: "Core Strength:", value: "Adaptability", bg: "#00897B", contentBg: "linear-gradient(135deg, #26A69A, #00897B)" },
+                { icon: "👥", label: "Work Style:", value: "Flexible & Social", bg: "#00796B", contentBg: "linear-gradient(135deg, #009688, #00796B)" }
+            ],
+            powers: [
+                { name: "Flexibility", val: 96, color: "linear-gradient(90deg, #00897B, #26A69A)" },
+                { name: "Collaboration", val: 92, color: "linear-gradient(90deg, #00796B, #009688)" }
+            ],
+            insight: { icon: "🌊", text: "INSIGHT: Go with the flow." }
+        },
+        'chaotic-creative': {
+            id: 'chaotic-creative', gameType: 'work-mode', title: "THE CHAOTIC CREATIVE", subtitle: "Free Spirit", emoji: "🎪",
+            speech: "You make magic from chaos!",
+            stats: [
+                { icon: "✨", label: "Core Strength:", value: "Creative Freedom", bg: "#E91E63", contentBg: "linear-gradient(135deg, #F06292, #E91E63)" },
+                { icon: "🎭", label: "Work Style:", value: "Spontaneous & Solo", bg: "#C2185B", contentBg: "linear-gradient(135deg, #EC407A, #C2185B)" }
+            ],
+            powers: [
+                { name: "Creativity", val: 98, color: "linear-gradient(90deg, #E91E63, #F06292)" },
+                { name: "Innovation", val: 94, color: "linear-gradient(90deg, #C2185B, #EC407A)" }
+            ],
+            insight: { icon: "🎪", text: "INSIGHT: Embrace your spontaneity." }
+        },
+        // PERSONALITY personas
+        'extrovert': {
+            id: 'extrovert', gameType: 'personality', title: "THE SOCIAL BUTTERFLY", subtitle: "Energy from People", emoji: "🦋",
+            speech: "You gain energy from social interactions!",
+            stats: [
+                { icon: "🗣️", label: "Core Strength:", value: "Social Energy", bg: "#FF6F00", contentBg: "linear-gradient(135deg, #FF8F00, #FF6F00)" },
+                { icon: "🌟", label: "Personality:", value: "Outgoing & Expressive", bg: "#F57C00", contentBg: "linear-gradient(135deg, #FF9800, #F57C00)" }
+            ],
+            powers: [
+                { name: "Social Skills", val: 96, color: "linear-gradient(90deg, #FF6F00, #FF8F00)" },
+                { name: "Enthusiasm", val: 94, color: "linear-gradient(90deg, #F57C00, #FF9800)" }
+            ],
+            insight: { icon: "🦋", text: "INSIGHT: People energize you." }
+        },
+        'introvert': {
+            id: 'introvert', gameType: 'personality', title: "THE DEEP THINKER", subtitle: "Inner Energy", emoji: "🌙",
+            speech: "You recharge through quiet reflection!",
+            stats: [
+                { icon: "🧘", label: "Core Strength:", value: "Deep Focus", bg: "#5C6BC0", contentBg: "linear-gradient(135deg, #7986CB, #5C6BC0)" },
+                { icon: "💭", label: "Personality:", value: "Thoughtful & Reflective", bg: "#3F51B5", contentBg: "linear-gradient(135deg, #5C6BC0, #3F51B5)" }
+            ],
+            powers: [
+                { name: "Deep Thinking", val: 97, color: "linear-gradient(90deg, #5C6BC0, #7986CB)" },
+                { name: "Focus", val: 95, color: "linear-gradient(90deg, #3F51B5, #5C6BC0)" }
+            ],
+            insight: { icon: "🌙", text: "INSIGHT: Solitude is your superpower." }
         }
     };
 
@@ -1199,6 +1571,23 @@
                     } else {
                         console.log('❌ Persona key not found in ALL_PERSONAS:', personaKey);
                         console.log('Available personas:', Object.keys(ALL_PERSONAS));
+                        // Use game-type-based fallback
+                        var gameTypeDefaults = {
+                            'COGNITIVE_RADAR': 'analytical-diamond',
+                            'CURIOSITY_COMPASS': 'theorist',
+                            'FOCUS_STAMINA': 'marathoner',
+                            'GUESSWORK_QUOTIENT': 'balanced-strategist',
+                            'MODALITY_MAP': 'visual-learner',
+                            'PATTERN_SNAPSHOT': 'detail-detective',
+                            'SPIRIT_ANIMAL': 'owl',
+                            'WORK_MODE': 'structured-soloist',
+                            'PERSONALITY': 'extrovert'
+                        };
+                        var fallbackKey = gameTypeDefaults[lastGame];
+                        if (fallbackKey && ALL_PERSONAS[fallbackKey]) {
+                            console.log('⚠️ Using game-type fallback:', fallbackKey);
+                            return ALL_PERSONAS[fallbackKey];
+                        }
                     }
                 } else {
                     console.log('❌ No resultType found in game data');
@@ -1210,41 +1599,84 @@
             console.log('❌ resultData.results not found');
         }
 
-        console.log('⚠️ Falling back to random persona');
-        var keys = Object.keys(ALL_PERSONAS);
-        var randomKey = keys[Math.floor(Math.random() * keys.length)];
-        console.log('Random persona selected:', randomKey);
-        return ALL_PERSONAS[randomKey];
+        console.log('⚠️ Using default persona (analytical-diamond) - check data flow!');
+        return ALL_PERSONAS['analytical-diamond']; // Default to a game-neutral persona
     }
 
-    // ✅ NEW: Centralized mapping function
+    // ✅ FIXED: Maps database resultType to persona key for ALL games
     function mapResultTypeToPersonaKey(gameType, resultType) {
         console.log('🔍 Mapping:', gameType, '→', resultType);
 
-        // Spirit Animal mapping
-        if (gameType === 'SPIRIT_ANIMAL') {
-            var animalMap = {
-                'BOLD_TIGER': 'tiger',
-                'WISE_OWL': 'owl',
-                'DISCIPLINED_BEE': 'bee',
-                'STRATEGIC_WOLF': 'wolf'
-            };
-            return animalMap[resultType];
-        }
-
-        // Other games - direct mapping
-        var gameToPersonaMap = {
-            'COGNITIVE_RADAR': 'logic-builder',
-            'CURIOSITY_COMPASS': 'curious-thinker',
-            'FOCUS_STAMINA': 'focus-finisher',
-            'GUESSWORK_QUOTIENT': 'decision-maker',
-            'MODALITY_MAP': 'adaptive-learner',
-            'PATTERN_SNAPSHOT': 'detail-detective',
-            'WORK_MODE': 'strategic-planner',
-            'PERSONALITY': 'creative-connector'
+        // Complete mapping of all game result types to persona keys
+        var resultTypeToPersona = {
+            // SPIRIT_ANIMAL results
+            'BOLD_TIGER': 'tiger',
+            'WISE_OWL': 'owl',
+            'DISCIPLINED_BEE': 'bee',
+            'STRATEGIC_WOLF': 'wolf',
+            // COGNITIVE_RADAR results
+            'ANALYTICAL_DIAMOND': 'analytical-diamond',
+            'VERBAL_VIRTUOSO': 'verbal-virtuoso',
+            'PRECISE_PROCESSOR': 'precise-processor',
+            'VISUAL_VISIONARY': 'visual-visionary',
+            // COGNITIVE_RADAR fallback results (COGNITIVE_LOGIC, etc.)
+            'COGNITIVE_LOGIC': 'analytical-diamond',
+            'COGNITIVE_VERBAL': 'verbal-virtuoso',
+            'COGNITIVE_SPATIAL': 'visual-visionary',
+            'COGNITIVE_SPEED': 'precise-processor',
+            // CURIOSITY_COMPASS results
+            'THEORIST': 'theorist',
+            'BUILDER': 'builder',
+            'EMPATH': 'empath',
+            'CHALLENGER': 'challenger',
+            // FOCUS_STAMINA results
+            'MARATHONER': 'marathoner',
+            'SPRINTER': 'sprinter',
+            'SAFE_PLAYER': 'safe-player',
+            'QUITTER': 'quitter',
+            // GUESSWORK_QUOTIENT results
+            'BALANCED_STRATEGIST': 'balanced-strategist',
+            'HIGH_ROLLER': 'high-roller',
+            'UNDER_ESTIMATOR': 'under-estimator',
+            'HESITANT_SEARCHER': 'hesitant-searcher',
+            // MODALITY_MAP results
+            'VISUAL': 'visual-learner',
+            'AUDITORY': 'auditory-learner',
+            'KINESTHETIC': 'kinesthetic-learner',
+            'CONCEPTUAL': 'conceptual-learner',
+            // PATTERN_SNAPSHOT results
+            'VERBAL': 'verbal-pattern',
+            'NUMERIC': 'numeric-pattern',
+            // WORK_MODE results
+            'STRUCTURED_SOLOIST': 'structured-soloist',
+            'STRUCTURED_COLLABORATOR': 'structured-collaborator',
+            'FREEFORM_EXPLORER': 'freeform-explorer',
+            'CHAOTIC_CREATIVE': 'chaotic-creative',
+            // PERSONALITY results
+            'EXTROVERT': 'extrovert',
+            'INTROVERT': 'introvert'
         };
 
-        return gameToPersonaMap[gameType];
+        // Check direct mapping first
+        if (resultTypeToPersona[resultType]) {
+            return resultTypeToPersona[resultType];
+        }
+
+        // Game-type-based fallback (ensures game-specific persona, not owl)
+        var gameTypeDefaults = {
+            'COGNITIVE_RADAR': 'analytical-diamond',
+            'CURIOSITY_COMPASS': 'theorist',
+            'FOCUS_STAMINA': 'marathoner',
+            'GUESSWORK_QUOTIENT': 'balanced-strategist',
+            'MODALITY_MAP': 'visual-learner',
+            'PATTERN_SNAPSHOT': 'detail-detective',
+            'SPIRIT_ANIMAL': 'owl',
+            'WORK_MODE': 'structured-soloist',
+            'PERSONALITY': 'extrovert'
+        };
+
+        console.log('⚠️ Using game-type default for:', gameType);
+        return gameTypeDefaults[gameType] || null;
     }
 
     function renderPersona(p) {
@@ -1276,6 +1708,7 @@
             '<div class="action-buttons">' +
             '<button id="open-dashboard-modal" class="action-btn dashboard-btn"><i class="fas fa-chart-line" style="margin-right:8px"></i> View Dashboard</button>' +
             '<a href="${createLink(controller: 'personality', action: 'start')}" class="action-btn"><i class="fas fa-bullseye" style="margin-right:8px"></i> Take Next Test</a></div>' +
+            '<div class="share-section-title" style="text-align:center; font-family:Fredoka,sans-serif; font-weight:700; font-size:1.1rem; color:#5D4037; margin:20px 0 15px; opacity:0; animation:fadeInUp 0.6s ease-out 5.2s forwards;">SHARE YOUR RESULTS!</div>' +
             '<div class="share-buttons-row">' +
             '<div class="share-btn-large" style="background: #1DA1F2" onclick="shareOnTwitter()"><i class="fab fa-twitter"></i></div>' +
             '<div class="share-btn-large" style="background: #25D366" onclick="shareOnWhatsApp()"><i class="fab fa-whatsapp"></i></div>' +

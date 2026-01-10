@@ -147,7 +147,8 @@ Crawl-delay: 1
         if (!date) {
             date = new Date()
         }
-        return date.format("yyyy-MM-dd'T'HH:mm:ssXXX")
+        def formatter = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX")
+        return formatter.format(date)
     }
 }
 
