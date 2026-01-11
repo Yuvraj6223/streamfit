@@ -278,7 +278,7 @@ class UserService {
             return
         }
 
-        def anonymousUser = User.findByUserId(anonymousUserId)
+        def anonymousUser = User.findByUserId(anonymousUserId, [lock: true])
         if (anonymousUser) {
             try {
                 def userSessions = UserSession.findAllByUser(anonymousUser)
