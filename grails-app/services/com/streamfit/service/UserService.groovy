@@ -70,12 +70,6 @@ class UserService {
                 return null
             }
 
-            // Create Learning DNA for the user (optional - won't fail if table doesn't exist)
-            try {
-                createLearningDNA(user)
-            } catch (Exception e) {
-                log.warn "Could not create Learning DNA for user ${user.userId}: ${e.message}"
-            }
 
             log.info "Created new user: ${user.userId}"
         } else {
@@ -137,17 +131,7 @@ class UserService {
         return userId
     }
 
-    def createLearningDNA(User user) {
-        try {
-            // Skip LearningDNA creation since the table was dropped
-            log.info "LearningDNA creation skipped - table no longer exists"
-            return null
-        } catch (Exception e) {
-            log.warn "Could not create Learning DNA for user ${user.userId}: ${e.message}"
-            return null
-        }
-    }
-    
+
     def getUserById(String userId) {
         if (!userId) return null
         
@@ -250,13 +234,6 @@ class UserService {
         if (!user.save(flush: true)) {
             log.error "Failed to create anonymous user: ${user.errors}"
             return null
-        }
-
-        // Create Learning DNA for the user (optional - won't fail if table doesn't exist)
-        try {
-            createLearningDNA(user)
-        } catch (Exception e) {
-            log.warn "Could not create Learning DNA for anonymous user ${user.userId}: ${e.message}"
         }
 
         log.info "Created anonymous user: ${user.userId}"
