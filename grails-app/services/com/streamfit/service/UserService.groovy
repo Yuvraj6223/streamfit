@@ -275,7 +275,7 @@ class UserService {
                 return existingUser
             }
         }
-        
+
         // Create new anonymous user only if needed
         def newUser = createAnonymousUser()
         if (session != null && newUser) {
@@ -303,19 +303,21 @@ class UserService {
 
         def anonymousUser = User.findByUserId(anonymousUserId)
         if (anonymousUser) {
-            def userSessions = UserSession.findAllByUser(anonymousUser)
-            userSessions.each { session ->
-                session.user = authenticatedUser
-                session.save(flush: true)
-            }
-            anonymousUser.delete(flush: true)
-            
-            // Invalidate test history cache for both users
             try {
+                def userSessions = UserSession.findAllByUser(anonymousUser)
+                userSessions.each { session ->
+                    session.user = authenticatedUser
+                    session.save(flush: true)
+                }
+
+                // Invalidate caches for both users before deleting the anonymous one
                 diagnosticService.invalidateUserTestHistoryCache(anonymousUser)
                 diagnosticService.invalidateUserTestHistoryCache(authenticatedUser)
+
+                anonymousUser.delete(flush: true)
+                
             } catch (Exception e) {
-                log.warn "Failed to invalidate user test history cache during migration: ${e.message}"
+                log.warn "Failed to migrate user session or invalidate cache for ${anonymousUserId}: ${e.message}"
             }
         }
     }

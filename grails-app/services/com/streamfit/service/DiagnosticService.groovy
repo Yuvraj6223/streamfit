@@ -522,7 +522,7 @@ class DiagnosticService {
     /**
      * Invalidate user test history cache - kept for backward compatibility
      */
-    private void invalidateUserTestHistoryCache(User user) {
+    def invalidateUserTestHistoryCache(User user) {
         String cacheKey = getCacheKey("user:${user.userId}:history")
         
         try {
