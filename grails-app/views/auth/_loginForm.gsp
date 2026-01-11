@@ -10,7 +10,7 @@
     <div class="auth-form-group">
         <label class="auth-form-label">✉️ EMAIL</label>
         <div style="position: relative;">
-            <input type="email" id="login-email" class="auth-form-input" placeholder="you@email.com" required>
+            <input type="email" id="login-email" name="email" class="auth-form-input" placeholder="you@email.com" required>
         </div>
     </div>
 

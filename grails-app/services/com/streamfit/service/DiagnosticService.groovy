@@ -294,6 +294,7 @@ class DiagnosticService {
         if (selectedOption) {
             // Create engagement data entry
             def engageData = new com.streamfit.EngageData(
+                user: session.user,
                 sessionId: sessionId,
                 gameType: question.gameType,
                 questionId: questionId,

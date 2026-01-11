@@ -147,19 +147,7 @@ class PersonalityController {
                 return
             }
             
-            // Get or create user
-            def userId = session.userId
-            def user
-            
-            if (userId) {
-                user = userService.getUserById(userId)
-            }
-            
-            if (!user) {
-                // Create anonymous user for personality test
-                user = userService.createAnonymousUser()
-                session.userId = user.userId
-            }
+            def user = userService.getOrCreateAnonymousUser(session)
             
             // Create session and submit answers using new unified system
             def session = new com.streamfit.UserSession(
