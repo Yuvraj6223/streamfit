@@ -478,12 +478,13 @@
         align-items: center;
         justify-content: center;
         color: white;
-        font-size: 1.3rem;
+        font-size: 24px;
         cursor: pointer;
-        transition: transform 0.2s;
+        transition: transform 0.2s, opacity 0.2s;
         opacity: 0;
         transform: scale(0);
         animation: shareIconPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.15);
     }
 
     .share-btn-large:nth-child(1) { animation-delay: 5.4s; }
@@ -1706,16 +1707,16 @@
             '<div class="insight-badge"><div style="font-size: 2.2rem">' + p.insight.icon + '</div>' +
             '<div style="font-family: \'Fredoka\', sans-serif; font-weight: 700; color: white; font-size: 0.95rem;">' + p.insight.text + '</div></div>' +
             '<div class="action-buttons">' +
-            '<button id="open-dashboard-modal" class="action-btn dashboard-btn"><i class="fas fa-chart-line" style="margin-right:8px"></i> View Dashboard</button>' +
-            '<a href="${createLink(controller: 'personality', action: 'start')}" class="action-btn"><i class="fas fa-bullseye" style="margin-right:8px"></i> Take Next Test</a></div>' +
+            '<button id="open-dashboard-modal" class="action-btn dashboard-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right:8px"><path d="M3 3v18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7 14l4-4 3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> View Dashboard</button>' +
+            '<a href="${createLink(controller: 'personality', action: 'start')}" class="action-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right:8px"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg> Take Next Test</a></div>' +
             '<div class="share-section-title" style="text-align:center; font-family:Fredoka,sans-serif; font-weight:700; font-size:1.1rem; color:#5D4037; margin:20px 0 15px; opacity:0; animation:fadeInUp 0.6s ease-out 5.2s forwards;">SHARE YOUR RESULTS!</div>' +
             '<div class="share-buttons-row">' +
-            '<div class="share-btn-large" style="background: #1DA1F2" onclick="shareOnTwitter()"><i class="fab fa-twitter"></i></div>' +
-            '<div class="share-btn-large" style="background: #25D366" onclick="shareOnWhatsApp()"><i class="fab fa-whatsapp"></i></div>' +
-            '<div class="share-btn-large" style="background: #0077B5" onclick="shareOnLinkedIn()"><i class="fab fa-linkedin-in"></i></div>' +
-            '<div class="share-btn-large" style="background: #6366F1" onclick="copyToClipboard()"><i class="fas fa-link"></i></div>' +
-            '<div class="share-btn-large" style="background: #42A5F5" onclick="copyToClipboard()"><i class="far fa-copy"></i></div></div>' +
-            '<div class="share-labels"><span>Twitter</span><span>WhatsApp</span><span>LinkedIn</span><span>Link</span><span>Copy</span></div>';
+            '<div class="share-btn-large" style="background: #1DA1F2" onclick="shareOnTwitter()" title="Share on Twitter"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></div>' +
+            '<div class="share-btn-large" style="background: #25D366" onclick="shareOnWhatsApp()" title="Share on WhatsApp"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.52 3.48A11.77 11.77 0 0 0 12.02 0C5.39.04.08 5.35.08 12c0 2.11.55 4.14 1.59 5.95L0 24l6.2-1.62A11.9 11.9 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.48-8.52zM12 22a9.9 9.9 0 0 1-5.04-1.39l-.36-.21-3.68.96.98-3.58-.24-.37A9.91 9.91 0 1 1 12 22zm5.43-7.45c-.3-.15-1.78-.88-2.06-.97-.28-.1-.48-.15-.69.15-.2.3-.79.97-.97 1.17-.18.2-.36.22-.66.07-.3-.15-1.27-.47-2.42-1.5-.89-.79-1.49-1.76-1.67-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.33.45-.5.15-.17.2-.29.3-.49.1-.2.05-.37-.02-.52-.07-.15-.69-1.65-.95-2.26-.25-.6-.5-.52-.69-.53h-.59c-.2 0-.52..07-.79.37s-1.04 1.02-1.04 2.49 1.07 2.89 1.22 3.09c.15.2 2.1 3.2 5.1 4.49.71.31 1.26.5 1.69.64.71.23 1.36.2 1.87.12.57-.08 1.78-.73 2.03-1.44.25-.71.25-1.32.17-1.44-.08-.12-.27-.2-.57-.35z"/></svg></div>' +
+            '<div class="share-btn-large" style="background: #E1306C" onclick="shareOnInstagram()" title="Share on Instagram"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></div>' +
+            '<div class="share-btn-large" style="background: #0077B5" onclick="shareOnLinkedIn()" title="Share on LinkedIn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></div>' +
+            '<div class="share-btn-large" style="background: #6c5ce7" onclick="copyToClipboard()" title="Copy link to clipboard"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="10" height="12" rx="2"></rect><rect x="5" y="5" width="10" height="12" rx="2"></rect></svg></div></div>' +
+            '<div class="share-labels"><span>Twitter</span><span>WhatsApp</span><span>Instagram</span><span>LinkedIn</span><span>Copy</span></div>';
 
         setTimeout(function() {
             p.powers.forEach(function(pow, i) {
@@ -1863,6 +1864,16 @@
             window.location.href = 'whatsapp://send?text=' + text;
         } else {
             window.open('https://wa.me/?text=' + text, '_blank');
+        }
+    }
+    function shareOnInstagram() {
+        // Instagram doesn't support direct sharing, so we'll open the Instagram app or web
+        if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            window.location.href = 'instagram://library?AssetPath=' + encodeURIComponent(location.href);
+        } else if (/Android/i.test(navigator.userAgent)) {
+            window.location.href = 'intent://share?text=' + encodeURIComponent('Check out my learning style! ') + encodeURIComponent(location.href) + '#Intent;package=com.instagram.android;scheme=https;end';
+        } else {
+            window.open('https://www.instagram.com/', '_blank');
         }
     }
     function shareOnLinkedIn() { window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(location.href), '_blank'); }
