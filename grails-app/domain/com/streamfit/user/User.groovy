@@ -23,6 +23,13 @@ class User {
     Boolean optInForUpdates = false
     Boolean prebookedStreamMap = false
 
+    // JWT/Auth tracking
+    Date lastLoginAt
+    Date lastLogoutAt
+    String lastLoginIp
+    Integer failedLoginAttempts = 0
+    Date lastFailedLoginAt
+
     static constraints = {
         userId unique: true, blank: false
         name nullable: true
@@ -35,9 +42,14 @@ class User {
         ipAddress nullable: true
         userAgent nullable: true
         referralSource nullable: true
+        lastLoginAt nullable: true
+        lastLogoutAt nullable: true
+        lastLoginIp nullable: true
+        failedLoginAttempts nullable: false, min: 0
+        lastFailedLoginAt nullable: true
     }
 
-    static hasMany = [sessions: com.streamfit.UserSession]
+    static hasMany = [sessions: com.streamfit.UserSession, refreshTokens: com.streamfit.RefreshToken]
 
     static mapping = {
         table 'streamfit_user'  // ← CHANGED THIS

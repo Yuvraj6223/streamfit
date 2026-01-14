@@ -70,6 +70,11 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-data-redis"
     implementation "org.springframework.data:spring-data-redis"
 
+    // JWT Authentication
+    implementation "io.jsonwebtoken:jjwt-api:0.12.5"
+    runtimeOnly "io.jsonwebtoken:jjwt-impl:0.12.5"
+    runtimeOnly "io.jsonwebtoken:jjwt-jackson:0.12.5"
+
     testImplementation "io.micronaut:micronaut-inject-groovy"
     testImplementation "org.grails:grails-gorm-testing-support"
     testImplementation "org.mockito:mockito-core"

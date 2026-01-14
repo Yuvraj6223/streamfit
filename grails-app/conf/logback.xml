@@ -15,7 +15,7 @@
     <logger name="org.hibernate.SQL" level="ERROR"/>
     <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="ERROR"/>
     <logger name="grails" level="ERROR"/>
-    <logger name="com.streamfit" level="INFO"/>
+    <logger name="com.streamfit" level="WARN"/>
     <logger name="org.apache.tomcat" level="ERROR"/>
     <logger name="org.apache.catalina" level="ERROR"/>
     <logger name="com.zaxxer.hikari" level="ERROR"/>

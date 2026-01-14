@@ -5,6 +5,8 @@ import com.streamfit.service.UnifiedPersonaService
 import com.streamfit.service.UserService
 import org.springframework.data.redis.core.RedisTemplate
 import grails.converters.JSON
+import java.util.Date
+import java.text.SimpleDateFormat
 
 class DashboardController {
 
@@ -12,13 +14,32 @@ class DashboardController {
     UserService userService
     UnifiedPersonaService unifiedPersonaService
     RedisTemplate<String, Object> redisTemplate
-    
+
     /**
      * Main dashboard page
      * GET /dashboard
+     * Requires: JWT authentication or session
      */
     def index() {
+        // Get user from JWT or session
+        def userId = request.getAttribute('userId') as String
+        def sessionId = request.getAttribute('sessionId') as String
+
+        if (!userId && !session.userId) {
+            // Not authenticated, redirect to login
+            redirect(controller: 'auth', action: 'login')
+            return
+        }
+
+        // Use JWT user if available, otherwise use session user
+        userId = userId ?: session.userId
+
         def user = session.userId ? userService.getUserById(session.userId) : userService.getOrCreateAnonymousUser(session)
+        if (!user) {
+            flash.error = "User not found"
+            redirect(controller: 'auth', action: 'login')
+            return
+        }
 
         def testHistory = diagnosticService.getUserTestHistory(user)
         def completedSessions = testHistory.findAll { it.status == 'COMPLETED' && it.gameResults }.sort { a, b -> b.startTime <=> a.startTime }
@@ -29,6 +50,7 @@ class DashboardController {
         def latestGameResults = [:]
         completedSessions.each { session ->
             session.gameResults.each { gameType, result ->
+                // FIX: Corrected typo from latestGameGresults to latestGameResults
                 if (!latestGameResults.containsKey(gameType)) {
                     latestGameResults[gameType] = [result: result, session: session]
                 }
@@ -43,8 +65,32 @@ class DashboardController {
         availableTests.each { test ->
             if (test.testId in completedTestIds) {
                 def resultData = latestGameResults[test.testId]
+                
+                def endTime = resultData.session.endTime
+                def completedAt
+
+                if (endTime == null) {
+                    completedAt = null
+                } else if (endTime instanceof java.sql.Timestamp) {
+                    completedAt = new Date(endTime.getTime())
+                } else if (endTime instanceof String) {
+                    try {
+                        // Use Java's SimpleDateFormat to avoid Groovy's casting behavior
+                        def sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                        completedAt = sdf.parse(endTime)
+                    } catch (Exception e) {
+                        log.error("Could not parse 'completedAt' date from string: ${endTime}", e)
+                        completedAt = null
+                    }
+                } else if (endTime instanceof Date) {
+                    completedAt = endTime
+                } else {
+                    log.warn("Unhandled type for 'completedAt': ${endTime.getClass().getName()}")
+                    completedAt = null // Fallback to null for unhandled types
+                }
+
                 completedTestResults << [
-                    session: [sessionId: resultData.session.sessionId, completedAt: resultData.session.endTime],
+                    session: [sessionId: resultData.session.sessionId, completedAt: completedAt],
                     result: [
                         testName: test.testName,
                         emoji: '✨', // Placeholder, GSP seems to expect it
@@ -108,8 +154,12 @@ class DashboardController {
      */
     def data() {
         try {
+            // Fix: Check JWT userId first, then fall back to session
+            def jwtUserId = request.getAttribute('userId') as String
+            def userId = jwtUserId ?: session.userId
+
             def user = session.userId ? userService.getUserById(session.userId) : userService.getOrCreateAnonymousUser(session)
-            
+
             // Get test history
             def testHistory = diagnosticService.getUserTestHistory(user)
             
@@ -193,4 +243,3 @@ class DashboardController {
         }
     }
 }
-

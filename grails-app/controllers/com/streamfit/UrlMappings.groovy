@@ -15,7 +15,7 @@ class UrlMappings {
         // Authentication
         "/login"(controller: 'auth', action: 'login')
         "/signup"(controller: 'auth', action: 'signup')
-        
+
         // ========== API v1 Endpoints (Recommended) ==========
         // Authentication API v1
         "/api/v1/auth/login"(controller: 'auth', action: 'doLogin')
@@ -24,15 +24,15 @@ class UrlMappings {
         "/api/v1/auth/me"(controller: 'auth', action: 'me')
         "/api/v1/login"(controller: "auth", action: "processLogin")
         "/api/v1/signup"(controller: "auth", action: "processSignup")
-        
+
         // Dashboard API v1
         "/api/v1/dashboard/data"(controller: 'dashboard', action: 'data')
-        
+
         // Personality API v1
         "/api/v1/personality/questions"(controller: 'personality', action: 'questions')
         "/api/v1/personality/submit"(controller: 'personality', action: 'submit')
         "/api/v1/personality/result/$sessionId"(controller: 'personality', action: 'getResult')
-        
+
         // Result API v1
         "/api/v1/result/tests"(controller: 'result', action: 'tests')
         "/api/v1/result/test/$testId"(controller: 'result', action: 'test')
@@ -43,14 +43,18 @@ class UrlMappings {
         "/api/v1/result/status/$sessionId"(controller: 'result', action: 'status')
         "/api/v1/result/$sessionId"(controller: 'result', action: 'result')
         "/api/v1/result/history"(controller: 'result', action: 'history')
-        
+
         // ========== Legacy API Endpoints (Backward Compatibility) ==========
         "/api/auth/login"(controller: 'auth', action: 'doLogin')
         "/api/auth/signup"(controller: 'auth', action: 'doSignup')
         "/api/auth/logout"(controller: 'auth', action: 'logout')
         "/api/auth/me"(controller: 'auth', action: 'me')
+        // API endpoints for actual authentication (with JWT support)
         "/api/login"(controller: "auth", action: "processLogin")
         "/api/signup"(controller: "auth", action: "processSignup")
+        "/api/logout"(controller: "auth", action: "logout")
+        "/api/me"(controller: "auth", action: "me")
+        "/api/token/refresh"(controller: "auth", action: "refreshToken")
 
         // Personality Test Pages
         "/personality"(controller: 'personality', action: 'index')

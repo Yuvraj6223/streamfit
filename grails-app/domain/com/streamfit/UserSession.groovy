@@ -14,7 +14,7 @@ class UserSession {
     
     static constraints = {
         sessionId unique: true, blank: false
-        user nullable: false
+        user nullable: true  // Allow guest sessions without user
         startTime nullable: false
         endTime nullable: true
         status inList: ['ACTIVE', 'COMPLETED', 'ABANDONED']

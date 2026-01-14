@@ -78,6 +78,7 @@
     <asset:javascript src="mobile-enhancements.js"/>
     <asset:javascript src="mobile-share.js"/>
     <asset:javascript src="dynamic-nav.js"/>
+    <asset:javascript src="auth.js"/>
     <!-- Load CSS with media attribute for non-blocking -->
     <asset:stylesheet src="application.css" media="all"/>
     <asset:stylesheet src="personality-test.css" media="all"/>
@@ -256,9 +257,8 @@
     /* GAME-STYLE CTA BUTTON */
     .nav-cta-wrapper {
         display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 4px;
+        align-items: center;
+        gap: 12px;
     }
 
     .btn {
@@ -1019,4 +1019,3 @@
 
 </body>
 </html>
-

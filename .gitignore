@@ -78,3 +78,10 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Local Documentation & Scripts
+*.md
+*.sh
+*.bat
+*.ps1
+validate-jwt.groovy

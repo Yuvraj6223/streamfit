@@ -14,7 +14,7 @@ class PersonalityController {
     UnifiedPersonaService unifiedPersonaService
     UserService userService
     RedisTemplate<String, Object> redisTemplate
-    
+
     private static final String CACHE_VERSION = "v1"
     
     @Value('${cache.ttl.personality-questions:86400}')

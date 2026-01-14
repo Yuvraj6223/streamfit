@@ -11,7 +11,7 @@ class ResultController {
     DiagnosticService diagnosticService
     UserService userService
     AsyncResultProcessor asyncResultProcessor
-    
+
     /**
      * Main diagnostic tests page
      * GET /diagnostic

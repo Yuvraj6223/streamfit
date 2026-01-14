@@ -1964,7 +1964,12 @@
         document.body.addEventListener('click', function(e) {
             if (e.target.id === 'open-dashboard-modal' || e.target.closest('#open-dashboard-modal')) {
                 e.preventDefault();
-                openAuthModal('signup');
+                // If user is already logged in, go to dashboard. Otherwise, show auth modal.
+                if (window.authManager && window.authManager.isLoggedIn()) {
+                    window.location.href = '/dashboard';
+                } else {
+                    openAuthModal('signup');
+                }
             }
             if (e.target.id === 'switch-to-login-link' || e.target.closest('#switch-to-login-link')) {
                 e.preventDefault();
@@ -1984,20 +1989,32 @@
                 e.preventDefault();
                 clearAuthMessages();
                 var ageValue = document.getElementById('signup-age').value;
+                // Get guest session ID from localStorage if it exists
+                const guestSessionState = JSON.parse(localStorage.getItem('personality_start_state') || '{}');
+                const guestSessionId = guestSessionState.sessionId;
+
                 fetch('/api/signup', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         name: document.getElementById('signup-name').value,
                         email: document.getElementById('signup-email').value,
-                        age: ageValue ? parseInt(ageValue) : null
+                        age: ageValue ? parseInt(ageValue) : null,
+                        sessionId: guestSessionId // Pass guest session ID
                     })
                 }).then(function(res) { return res.json(); }).then(function(data) {
                     if (data.success) {
-                        showAuthMessage('signup', 'success', 'Success!');
+                        showAuthMessage('signup', 'success', 'Success! Redirecting...');
+                        // Store tokens and user info
+                        if (window.authManager) {
+                            window.authManager.storeAuthData(data);
+                        }
+                        // Redirect to dashboard
                         setTimeout(function() { location.href = '/dashboard'; }, 1500);
-                    } else showAuthMessage('signup', 'error', data.message || 'Failed');
-                }).catch(function() { showAuthMessage('signup', 'error', 'Error occurred'); });
+                    } else {
+                        showAuthMessage('signup', 'error', data.error || 'Signup failed. Please try again.');
+                    }
+                }).catch(function() { showAuthMessage('signup', 'error', 'An error occurred. Please check your connection.'); });
             });
         }
 
@@ -2006,18 +2023,30 @@
             loginForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 clearAuthMessages();
+                // Get guest session ID from localStorage if it exists
+                const guestSessionState = JSON.parse(localStorage.getItem('personality_start_state') || '{}');
+                const guestSessionId = guestSessionState.sessionId;
+
                 fetch('/api/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        email: document.getElementById('login-email').value
+                        email: document.getElementById('login-email').value,
+                        sessionId: guestSessionId // Pass guest session ID
                     })
                 }).then(function(res) { return res.json(); }).then(function(data) {
                     if (data.success) {
-                        showAuthMessage('login', 'success', 'Success!');
+                        showAuthMessage('login', 'success', 'Success! Redirecting...');
+                        // Store tokens and user info
+                        if (window.authManager) {
+                            window.authManager.storeAuthData(data);
+                        }
+                        // Redirect to dashboard
                         setTimeout(function() { location.href = '/dashboard'; }, 1500);
-                    } else showAuthMessage('login', 'error', data.message || 'Failed');
-                }).catch(function() { showAuthMessage('login', 'error', 'Error occurred'); });
+                    } else {
+                        showAuthMessage('login', 'error', data.error || 'Login failed. Please check your email.');
+                    }
+                }).catch(function() { showAuthMessage('login', 'error', 'An error occurred. Please check your connection.'); });
             });
         }
     });
