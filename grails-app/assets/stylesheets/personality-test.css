@@ -10,19 +10,28 @@
 }
 
 .progress-container {
-    display: none !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
+    border: none !important;
 }
 
 .progress-bar {
-    display: none !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 .progress-fill {
-    display: none !important;
+    background: transparent !important;
+    border: none !important;
 }
 
 .progress-text {
-    display: none !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 /* Gender Selection */

@@ -527,7 +527,7 @@
             </div>
         </div>
 
-        <div class="progress-container" style="display: none;">
+        <div class="progress-container" style="background: transparent !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; box-shadow: none !important; border: none !important;">
             <div class="progress-bar">
                 <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
             </div>

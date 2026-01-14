@@ -98,6 +98,11 @@ class UrlMappings {
         "/sitemap.xml"(controller: 'sitemap', action: 'index')
         "/robots.txt"(controller: 'sitemap', action: 'robots')
 
+        // Diagnostic endpoints (for debugging)
+        "/diagnostic/personality-check"(controller: 'diagnostic', action: 'personalityCheck')
+        "/diagnostic/personality-migrate"(controller: 'diagnostic', action: 'personalityMigrate')
+        "/diagnostic/personality-clear-cache"(controller: 'diagnostic', action: 'personalityClearCache')
+
         // Health Check endpoints
         "/health"(controller: 'health', action: 'check')
         "/health/live"(controller: 'health', action: 'live')

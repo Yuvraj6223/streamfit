@@ -7,6 +7,7 @@ import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.beans.factory.annotation.Value
+import grails.gorm.transactions.Transactional
 import java.util.concurrent.TimeUnit
 
 class PersonalityController {
@@ -44,7 +45,6 @@ class PersonalityController {
             // Try cache first - HIGH IMPACT: This endpoint is hit on every test start
             def cached = redisTemplate?.opsForValue()?.get(cacheKey)
             if (cached) {
-                log.debug "Cache HIT: ${cacheKey}"
                 def cachedResponse = new JsonSlurper().parseText(cached.toString())
                 render(cachedResponse as JSON)
                 return
@@ -52,8 +52,6 @@ class PersonalityController {
         } catch (Exception e) {
             log.warn "Redis cache read failed for ${cacheKey}: ${e.message}"
         }
-        
-        log.debug "Cache MISS: ${cacheKey}"
         
         try {
             // Get personality questions from the new unified system
@@ -78,7 +76,7 @@ class PersonalityController {
             try {
                 redisTemplate?.opsForValue()?.set(cacheKey, JsonOutput.toJson(responseData), personalityQuestionsTTL, TimeUnit.SECONDS)
             } catch (Exception e) {
-                log.warn "Redis cache write failed for ${cacheKey}: ${e.message}"
+                // Silent fail - cache is optional
             }
             
             render(responseData as JSON)
@@ -102,6 +100,7 @@ class PersonalityController {
      *   "gender": "Male" | "Female" | "Other"
      * }
      */
+    @Transactional
     def submit() {
         try {
             def params = request.JSON ?: params
@@ -176,7 +175,9 @@ class PersonalityController {
             // Save FULL result (including gameDominantPersonas) to session
             session.status = 'COMPLETED'
             session.endTime = new Date()
-            session.gameResults = new groovy.json.JsonBuilder(result).toString()  // ✅ Save full result including gameDominantPersonas
+            // Persist only the per-game results map (consistent with DiagnosticService.getResults)
+            // so the unified result page can reliably render the correct game's result.
+            session.gameResults = new groovy.json.JsonBuilder(result?.gameResults ?: [:]).toString()
             session.save(flush: true)
             
             render([success: true, sessionId: session.sessionId, result: result] as JSON)
@@ -263,7 +264,7 @@ class PersonalityController {
                 try {
                     results = new groovy.json.JsonSlurper().parseText(testSession.gameResults)
                 } catch (Exception e) {
-                    log.error "Failed to parse game results JSON: ${e.message}"
+                    log.error "Failed to parse game results JSON: ${e.message}", e
                 }
             }
 

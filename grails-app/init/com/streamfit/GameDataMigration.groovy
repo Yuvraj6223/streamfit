@@ -27,7 +27,14 @@ class GameDataMigration {
         migrateWorkMode()
         migratePersonality()
         
+        // CRITICAL: Flush and clear the session to ensure data is committed
+        GameQuestion.withSession { session ->
+            session.flush()
+            session.clear()
+        }
+        
         println "Game data migration completed!"
+        println "Total questions created: ${GameQuestion.count()}"
     }
     
     void migrateCognitiveRadar() {
@@ -432,45 +439,100 @@ class GameDataMigration {
         println "Migrating Personality..."
         
         def questions = [
-            'I prefer structured routines over spontaneous activities.',
-            'I feel energized when working in a team rather than alone.',
-            'I often look for patterns and connections others may miss.',
-            'I stay focused and calm under pressure.',
-            'I enjoy exploring new ideas even if they are unconventional.'
+            [number: 1, text: 'Your ideal weekend looks like this'],
+            [number: 2, text: 'After a long day you feel recharged by'],
+            [number: 3, text: 'At a party or social gathering you usually'],
+            [number: 4, text: 'When you have free time you prefer to'],
+            [number: 5, text: 'You just got great news and you want to']
         ]
         
-        questions.eachWithIndex { qText, index ->
-            def number = index + 1
-            def question = new GameQuestion(
-                questionId: "PERSONALITY_Q${number}",
-                gameType: 'PERSONALITY',
-                questionNumber: number,
-                questionText: qText,
-                questionType: 'LIKERT',
-                scoringDimension: 'PERSONALITY_TRAIT'
-            ).save(flush: true)
-            
-            // Likert scale options
-            def likertOptions = [
-                [text: 'Strongly disagree', value: '-3'],
-                [text: 'Disagree', value: '-2'],
-                [text: 'Somewhat disagree', value: '-1'],
-                [text: 'Somewhat agree', value: '1'],
-                [text: 'Agree', value: '2'],
-                [text: 'Strongly agree', value: '3']
+        def optionsData = [
+            1: [
+                ['🏠 Quiet time at home', '-2'],
+                ['📚 Reading or solo hobby', '-1'],
+                ['🎉 Small gathering with friends', '1'],
+                ['🎊 Big party with lots of people', '2']
+            ],
+            2: [
+                ['🧘 Being completely alone', '-2'],
+                ['📖 Quiet activity solo', '-1'],
+                ['💬 Talking with close friends', '1'],
+                ['🎤 Socializing with many people', '2']
+            ],
+            3: [
+                ['🚪 Leave early feeling drained', '-2'],
+                ['👥 Stay but talk to few people', '-1'],
+                ['😊 Enjoy and meet some people', '1'],
+                ['⭐ Be the life of party', '2']
+            ],
+            4: [
+                ['🤫 Be alone with thoughts', '-2'],
+                ['🎨 Do solo creative work', '-1'],
+                ['☕ Meet up with friends', '1'],
+                ['🎭 Join group activities', '2']
+            ],
+            5: [
+                ['📝 Write it in journal', '-2'],
+                ['💭 Think about it quietly', '-1'],
+                ['📞 Call a close friend', '1'],
+                ['📣 Tell everyone immediately', '2']
             ]
-            
-            likertOptions.eachWithIndex { opt, idx ->
-                def option = new GameOption(
-                    question: question,
-                    optionText: opt.text,
-                    optionValue: opt.value,
-                    displayOrder: idx + 1
-                ).save(flush: true)
+        ]
+        
+        questions.each { qData ->
+            try {
+                def question = new GameQuestion(
+                    questionId: "PERSONALITY_Q${qData.number}",
+                    gameType: 'PERSONALITY',
+                    questionNumber: qData.number,
+                    questionText: qData.text,
+                    questionType: 'MULTIPLE_CHOICE',
+                    scoringDimension: 'PERSONALITY_TRAIT'
+                )
                 
-                createPersonaMapping(option, 'PERSONALITY_SPECTRUM')
+                if (!question.save(flush: true)) {
+                    println "❌ ERROR saving PERSONALITY question ${qData.number}: ${question.errors}"
+                    question.errors.allErrors.each { error ->
+                        println "  - ${error}"
+                    }
+                    return
+                }
+                
+                println "✅ Created PERSONALITY question ${qData.number}: ${question.questionId}"
+                
+                optionsData[qData.number].eachWithIndex { opt, index ->
+                    try {
+                        def option = new GameOption(
+                            question: question,
+                            optionText: opt[0],
+                            optionValue: opt[1],
+                            displayOrder: index + 1
+                        )
+                        
+                        if (!option.save(flush: true)) {
+                            println "❌ ERROR saving option ${index + 1} for question ${qData.number}: ${option.errors}"
+                            option.errors.allErrors.each { error ->
+                                println "  - ${error}"
+                            }
+                            return
+                        }
+                        
+                        println "  ✅ Created option ${index + 1}: ${opt[0]}"
+                        
+                        // Create persona mapping - no specific mapping needed as we use optionValue directly
+                        createPersonaMapping(option, 'PERSONALITY_SPECTRUM')
+                    } catch (Exception e) {
+                        println "❌ Exception creating option ${index + 1} for question ${qData.number}: ${e.message}"
+                        e.printStackTrace()
+                    }
+                }
+            } catch (Exception e) {
+                println "❌ Exception creating PERSONALITY question ${qData.number}: ${e.message}"
+                e.printStackTrace()
             }
         }
+        
+        println "✅ Personality migration completed!"
     }
     
     void createPersonaMapping(GameOption option, String personaType) {

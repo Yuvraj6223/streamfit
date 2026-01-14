@@ -21,7 +21,7 @@
 <nav class="main-nav">
     <div class="nav-container">
         <g:link uri="/" class="nav-logo">
-            <asset:image src="logo1.png" alt="learnerDNA - Free Student Aptitude Test" onerror="this.src='https://placehold.co/150x40?text=learnerDNA'" />
+            <asset:image src="logo1.png" alt="learnerDNA - Free Student Aptitude Game" onerror="this.src='https://placehold.co/150x40?text=learnerDNA'" />
         </g:link>
     </div>
 </nav>
@@ -29,9 +29,9 @@
 <div class="glass-console">
 
     <%-- PRE-CALCULATIONS: Centralize logic to keep HTML clean --%>
-    <g:set var="totalTests" value="${model?.stats?.totalTests ?: 9}" />
-    <g:set var="completedTests" value="${model?.stats?.totalTestsCompleted ?: 0}" />
-    <g:set var="completionPct" value="${totalTests > 0 ? (completedTests / totalTests) * 100 : 0}" />
+    <g:set var="totalGames" value="${model?.stats?.totalTests ?: 9}" />
+    <g:set var="completedGames" value="${model?.stats?.totalTestsCompleted ?: 0}" />
+    <g:set var="completionPct" value="${totalGames > 0 ? (completedGames / totalGames) * 100 : 0}" />
     
     <%-- MAPPING: Map result types to assets to avoid if/else chains --%>
     <g:set var="animalImages" value="${['WISE_OWL': 'owl.png', 'DISCIPLINED_BEE': 'bee.png', 'STRATEGIC_WOLF': 'wolf.png', 'BOLD_TIGER': 'tiger.png']}" />
@@ -54,7 +54,7 @@
     <div class="dashboard-grid">
 
         <div class="glass-panel identity-core anim-pop d-2 area-identity">
-                <g:if test="${completedTests >= totalTests && model?.spiritAnimal}">
+                <g:if test="${completedGames >= totalGames && model?.spiritAnimal}">
                     <div class="panel-label" style="justify-content: center; color: var(--pop-purple); font-size: 0.8rem;">
                         <span>✨ YOUR IDENTITY REVEALED ✨</span>
                     </div>
@@ -84,18 +84,18 @@
                         </div>
                     </div>
                     <div class="animal-title" style="font-size: 1.4rem; color: #3B2F5F;">Discover Your Inner Spark</div>
-                    <div class="archetype-desc" style="max-width: 90%; margin-top: 8px; margin-bottom: 24px;">Complete your tests to reveal the core of your learning identity and unlock your hidden strengths.</div>
+                    <div class="archetype-desc" style="max-width: 90%; margin-top: 8px; margin-bottom: 24px;">Complete your games to reveal the core of your learning identity and unlock your hidden strengths.</div>
                 </g:else>
             <div class="step-progress-container">
                 <div class="step-progress-label">Your Discovery Journey</div>
                 <div class="step-progress-dots">
-                    <g:each in="${1..totalTests}" var="i">
-                        <div class="step-dot ${i <= completedTests ? 'completed' : ''}" title="Discovery ${i}"></div>
+                    <g:each in="${1..totalGames}" var="i">
+                        <div class="step-dot ${i <= completedGames ? 'completed' : ''}" title="Discovery ${i}"></div>
                     </g:each>
                 </div>
                 <div class="step-progress-subtext">
                     <g:if test="${completionPct < 100}">
-                        ${completedTests} of ${totalTests} discoveries made
+                        ${completedGames} of ${totalGames} discoveries made
                     </g:if>
                     <g:else>
                         Journey Complete!
@@ -115,7 +115,7 @@
 
         <div class="glass-panel anim-pop d-4 area-latest-result">
             <div class="panel-label">
-                <span>Test History</span>
+                <span>Game History</span>
             </div>
             <g:if test="${model?.completedTestResults}">
                 <div class="latest-result-content">
@@ -136,19 +136,19 @@
             </g:if>
             <g:else>
                 <div class="latest-result-content">
-                    <p>No tests completed yet. Complete a test to see your history.</p>
+                    <p>No games completed yet. Complete a game to see your history.</p>
                 </div>
             </g:else>
 
             <div class="pending-tests-container">
-                <h4>Available Tests</h4>
+                <h4>Available Games</h4>
                 <g:if test="${model?.pendingTests}">
                     <div class="pending-tests-list">
                         <g:each in="${model?.pendingTests?.sort { it.testName }}" var="test">
                             <div class="pending-test-item">
                                 <div class="pending-test-name">${test.testName}</div>
                                 <g:link controller="personality" action="start" params="[testId: test.testId]">
-                                    Take Test
+                                    Start Game
                                 </g:link>
                             </div>
                         </g:each>
@@ -156,19 +156,19 @@
                 </g:if>
                 <g:else>
                     <p>
-                        You've completed all available tests!
+                        You've completed all available games!
                     </p>
                 </g:else>
             </div>
         </div>
 
-        <div class="glass-panel anim-pop d-1 area-traits ${completedTests < totalTests ? 'locked' : ''}">
-            <g:if test="${completedTests < totalTests}">
+        <div class="glass-panel anim-pop d-1 area-traits ${completedGames < totalGames ? 'locked' : ''}">
+            <g:if test="${completedGames < totalGames}">
                 <div class="lock-overlay">
                     <div class="lock-box">
                         <h4>Unlock Key Traits</h4>
-                        <p>Complete all ${totalTests} tests to reveal your key traits.</p>
-                        <g:link controller="personality" action="start" style="display: inline-block; padding: 10px 16px; background: var(--pop-purple); color: white; font-weight: 700; font-size: 0.85rem; border-radius: 20px; text-decoration: none;">Take a Test</g:link>
+                        <p>Complete all ${totalGames} games to reveal your key traits.</p>
+                        <g:link controller="personality" action="start" style="display: inline-block; padding: 10px 16px; background: var(--pop-purple); color: white; font-weight: 700; font-size: 0.85rem; border-radius: 20px; text-decoration: none;">Start a Game</g:link>
                     </div>
                 </div>
             </g:if>
@@ -207,19 +207,19 @@
             </div>
         </div>
 
-        <div class="glass-panel anim-pop d-3 area-radar ${completedTests < totalTests ? 'locked' : ''}">
-            <g:if test="${completedTests < totalTests}">
+        <div class="glass-panel anim-pop d-3 area-radar ${completedGames < totalGames ? 'locked' : ''}">
+            <g:if test="${completedGames < totalGames}">
                 <div class="lock-overlay">
                     <div class="lock-box">
                         <h4>Unlock Your Cognitive Map</h4>
-                        <p>Complete all ${totalTests} tests to reveal your Cognitive Map.</p>
-                        <g:link controller="personality" action="start" style="display: inline-block; padding: 10px 16px; background: var(--pop-purple); color: white; font-weight: 700; font-size: 0.85rem; border-radius: 20px; text-decoration: none;">Take a Test</g:link>
+                        <p>Complete all ${totalGames} games to reveal your Cognitive Map.</p>
+                        <g:link controller="personality" action="start" style="display: inline-block; padding: 10px 16px; background: var(--pop-purple); color: white; font-weight: 700; font-size: 0.85rem; border-radius: 20px; text-decoration: none;">Start a Game</g:link>
                     </div>
                 </div>
             </g:if>
             <div class="panel-label">Cognitive Radar</div>
 
-            <div class="radar-content-wrapper" <g:if test="${completedTests < totalTests}">style="filter: blur(10px); opacity: 0;"</g:if>>
+            <div class="radar-content-wrapper" <g:if test="${completedGames < totalGames}">style="filter: blur(10px); opacity: 0;"</g:if>>
                 <div class="radar-bars">
                     <g:if test="${model?.cognitiveRadar}">
                         <g:set var="logicPct" value="${((model?.cognitiveRadar?.scoreBreakdown?.logic ?: 0) / 2) * 100}" />
@@ -271,13 +271,13 @@
             </div>
         </div>
 
-        <div class="results-deck anim-pop d-3 ${completedTests < totalTests ? 'locked' : ''}">
-            <g:if test="${completedTests < totalTests}">
+        <div class="results-deck anim-pop d-3 ${completedGames < totalGames ? 'locked' : ''}">
+            <g:if test="${completedGames < totalGames}">
                 <div class="lock-overlay">
                     <div class="lock-box">
                         <h4>Unlock learnerDNA Suggestions</h4>
-                        <p>Complete all ${totalTests} tests to see your recommended career streams.</p>
-                        <g:link controller="personality" action="start" style="display: inline-block; padding: 10px 16px; background: var(--pop-purple); color: white; font-weight: 700; font-size: 0.85rem; border-radius: 20px; text-decoration: none;">Take a Test</g:link>
+                        <p>Complete all ${totalGames} games to see your recommended career streams.</p>
+                        <g:link controller="personality" action="start" style="display: inline-block; padding: 10px 16px; background: var(--pop-purple); color: white; font-weight: 700; font-size: 0.85rem; border-radius: 20px; text-decoration: none;">Start a Game</g:link>
                     </div>
                 </div>
             </g:if>
@@ -310,7 +310,7 @@
                 <g:link controller="result" action="testPage" params="[testId: 'GUESSWORK_QUOTIENT']" class="ns-item primary">
                     <span class="ns-tag">Start Here</span>
                     <h4>Calibrate Decisions</h4>
-                    <p>Take the 2-minute Guesswork Quotient test to complete your profile.</p>
+                    <p>Play the 2-minute Guesswork Quotient game to complete your profile.</p>
                 </g:link>
 
                 <g:link controller="career" action="details" id="engineering" class="ns-item secondary">

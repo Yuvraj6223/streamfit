@@ -90,9 +90,16 @@ class ResultController {
             def testId = params.testId
             def questions = diagnosticService.getTestQuestions(testId)
             
-            if (!questions) {
+            if (questions == null) {
                 response.status = 404
                 render([success: false, error: 'Test not found'] as JSON)
+                return
+            }
+            
+            if (questions.isEmpty()) {
+                // Return empty array with 200 status (questions exist but empty)
+                response.status = 200
+                render(questions as JSON)
                 return
             }
             
@@ -235,7 +242,6 @@ class ResultController {
                     throw new Exception("Fallback to sync")
                 }
             } catch (Exception e) {
-                log.debug "Async processing unavailable, using sync: ${e.message}"
                 // Fallback to legacy sync method
                 result = diagnosticService.submitTest(sessionId, answers)
             }

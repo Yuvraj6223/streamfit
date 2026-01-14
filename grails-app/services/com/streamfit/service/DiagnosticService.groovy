@@ -109,15 +109,12 @@ class DiagnosticService {
             // Try cache first
             def cached = redisTemplate.opsForValue().get(cacheKey)
             if (cached) {
-                log.debug "Cache HIT: ${cacheKey}"
                 def gameTypes = new JsonSlurper().parseText(cached.toString())
                 return testType ? gameTypes.findAll { it.testType == testType } : gameTypes
             }
         } catch (Exception e) {
             log.warn "Redis cache read failed for ${cacheKey}: ${e.message}"
         }
-        
-        log.debug "Cache MISS: ${cacheKey}"
         
         try {
             // Return available game types from the new system
@@ -188,23 +185,26 @@ class DiagnosticService {
      * Get all questions for a diagnostic test (using new unified system)
      */
     def getTestQuestions(String testId) {
+        log.info "🔍 getTestQuestions called for testId: '${testId}'"
+        
         String cacheKey = getCacheKey("game:${testId}:questions")
         
         try {
             // Try cache first
             def cached = redisTemplate.opsForValue().get(cacheKey)
             if (cached) {
-                log.debug "Cache HIT: ${cacheKey}"
                 return new JsonSlurper().parseText(cached.toString())
             }
         } catch (Exception e) {
             log.warn "Redis cache read failed for ${cacheKey}: ${e.message}"
         }
         
-        log.debug "Cache MISS: ${cacheKey}"
-        
         try {
             def questions = com.streamfit.GameQuestion.findAllByGameType(testId, [sort: 'questionNumber', order: 'asc'])
+            
+            if (!questions || questions.isEmpty()) {
+                return []
+            }
 
             def result = questions.collect { question ->
                 def options = com.streamfit.GameOption.findAllByQuestion(question, [sort: 'displayOrder'])
@@ -227,6 +227,8 @@ class DiagnosticService {
                 ]
             }
             
+            log.info "✅ Successfully prepared ${result.size()} questions for ${testId}"
+            
             // Cache the result
             try {
                 redisTemplate.opsForValue().set(cacheKey, JsonOutput.toJson(result), getCacheTTL('test-questions'), TimeUnit.SECONDS)
@@ -236,7 +238,7 @@ class DiagnosticService {
             
             return result
         } catch (Exception e) {
-            log.error "Could not fetch test questions for ${testId}: ${e.message}"
+            log.error "Could not fetch test questions for ${testId}: ${e.message}", e
             return null
         }
     }
@@ -402,15 +404,12 @@ class DiagnosticService {
             // Try cache first
             def cached = redisTemplate.opsForValue().get(cacheKey)
             if (cached) {
-                log.debug "Cache HIT: ${cacheKey}"
                 def cachedResult = new JsonSlurper().parseText(cached.toString())
                 return cachedResult
             }
         } catch (Exception e) {
             log.warn "Redis cache read failed for ${cacheKey}: ${e.message}"
         }
-        
-        log.debug "Cache MISS: ${cacheKey}"
         
         def session = com.streamfit.UserSession.findBySessionId(sessionId)
         if (!session) {
@@ -513,7 +512,6 @@ class DiagnosticService {
                 redisTemplate.delete(getCacheKey("user:${userId}:history"))
             }
             
-            log.info "Invalidated caches for session: ${sessionId}, user: ${userId}"
         } catch (Exception e) {
             log.warn "Failed to invalidate test caches: ${e.message}"
         }

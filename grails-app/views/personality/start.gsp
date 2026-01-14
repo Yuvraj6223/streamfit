@@ -1070,6 +1070,11 @@
             padding: 0 10px;
         }
 
+        /* Hide all option icons */
+        .option-icon {
+            display: none !important;
+        }
+
         .countdown-container {
             min-height: 52px;
             margin: 0 0 clamp(8px, 1.4svh, 12px) 0;
@@ -1466,12 +1471,11 @@
         text-align: center;
         padding: 10px 14px; /* slightly smaller height */
         margin: 0 auto 22px auto; /* breathing room below HUD */
-        background: rgba(255, 255, 255, 0.46); /* softer, lighter */
-        border-radius: 22px;
-        box-shadow: var(--shadow-soft);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border: 2px solid rgba(139, 127, 232, 0.18);
+        background: transparent !important; /* transparent background */
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        box-shadow: none !important;
+        border: none !important;
         flex-shrink: 0;
         max-width: 760px;
     }
@@ -1491,9 +1495,9 @@
         border-radius: 16px;
         display: grid;
         place-items: center;
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.6) 100%);
-        border: 2px solid rgba(139, 127, 232, 0.18);
-        box-shadow: 0 8px 20px rgba(139, 127, 232, 0.10);
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
     }
 
     .hud-stack {
@@ -1548,12 +1552,25 @@
     }
 
     .hud-xp-sub {
-        font-size: 0.75rem;
-        font-weight: 800;
+        font-size: 0.7rem;
+        font-weight: 700;
         color: var(--text-grey);
         text-align: left;
-        letter-spacing: 0.04em;
+        letter-spacing: 0.03em;
         text-transform: uppercase;
+    }
+
+    /* --- QUESTION NUMBER BADGE --- */
+    .question-number {
+        display: inline-block;
+        font-size: 0.85rem;
+        font-weight: 800;
+        color: var(--pop-purple);
+        background: rgba(139, 127, 232, 0.12);
+        padding: 6px 14px;
+        border-radius: 20px;
+        margin-bottom: 12px;
+        letter-spacing: 0.05em;
     }
 
     .game-title-emoji {
@@ -1949,10 +1966,11 @@
         .game-title-top {
             padding: 12px 12px;
             margin: 0 12px 12px 12px;
-            border-radius: 22px;
-            background: rgba(255, 255, 255, 0.6);
-            border: 2px solid rgba(139, 127, 232, 0.25);
-            box-shadow: var(--shadow-soft);
+            background: transparent !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            box-shadow: none !important;
+            border: none !important;
         }
 
         .hud-row {
@@ -2140,10 +2158,11 @@
         .game-title-top {
             padding: 10px 10px;
             margin: 0 10px 10px 10px;
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 22px;
-            border: 2px solid rgba(139, 127, 232, 0.25);
-            box-shadow: var(--shadow-soft);
+            background: transparent !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            box-shadow: none !important;
+            border: none !important;
         }
 
         .game-title-emoji {
@@ -2598,7 +2617,7 @@
             </div>
 
             <!-- Progress Bar - REMOVED -->
-            <div class="progress-container" style="display: none;">
+            <div class="progress-container" style="background: transparent !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; box-shadow: none !important; border: none !important;">
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressBar"></div>
                 </div>
@@ -2632,10 +2651,7 @@
                         </div>
 
                         <div class="challenge-card" id="challengeCard">
-                            <div class="challenge-topline">
-                                <div class="challenge-badge">LEVEL EVENT</div>
-                                <div class="challenge-hint" id="challengeHint">Choose an action</div>
-                            </div>
+                            <div class="question-number" id="questionNumber"></div>
                             <div class="question-text" id="questionText"></div>
                         </div>
                     </div>
@@ -2647,14 +2663,6 @@
                         </div>
 
                         <div class="action-feedback" id="actionFeedback" aria-live="polite"></div>
-
-                        <!-- Navigation and Progress Container -->
-                        <div class="navigation-progress-container">
-                            <!-- Game Progress Dots (NOT question numbers) -->
-                            <div class="game-progress-meter" id="gameProgressMeter">
-                                <!-- Progress dots will be dynamically inserted here -->
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -2736,18 +2744,16 @@
             optionDiv.className = 'option';
             optionDiv.dataset.value = option.optionValue;
             
+            // Comprehensive emoji removal - covers ALL Unicode emoji ranges
             const textWithoutEmoji = String(option.optionText || '')
-                .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '')
+                .replace(/[\u{1F000}-\u{1FFFF}]|[\u{2600}-\u{27BF}]|[\u{2300}-\u{23FF}]|[\u{2B50}-\u{2B55}]|[\u{FE00}-\u{FE0F}]|[\u{1F900}-\u{1F9FF}]|[\u{1FA00}-\u{1FA6F}]|[\u{1FA70}-\u{1FAFF}]|[\u{231A}-\u{231B}]|[\u{23E9}-\u{23F3}]|[\u{23F8}-\u{23FA}]|[\u{25AA}-\u{25AB}]|[\u{25B6}]|[\u{25C0}]|[\u{25FB}-\u{25FE}]|[\u{2614}-\u{2615}]|[\u{2648}-\u{2653}]|[\u{267F}]|[\u{2693}]|[\u{26A1}]|[\u{26AA}-\u{26AB}]|[\u{26BD}-\u{26BE}]|[\u{26C4}-\u{26C5}]|[\u{26CE}]|[\u{26D4}]|[\u{26EA}]|[\u{26F2}-\u{26F3}]|[\u{26F5}]|[\u{26FA}]|[\u{26FD}]|[\u{2702}]|[\u{2705}]|[\u{2708}-\u{270D}]|[\u{270F}]|[\u{2712}]|[\u{2714}]|[\u{2716}]|[\u{271D}]|[\u{2721}]|[\u{2728}]|[\u{2733}-\u{2734}]|[\u{2744}]|[\u{2747}]|[\u{274C}]|[\u{274E}]|[\u{2753}-\u{2755}]|[\u{2757}]|[\u{2763}-\u{2764}]|[\u{2795}-\u{2797}]|[\u{27A1}]|[\u{27B0}]|[\u{27BF}]|[\u{2934}-\u{2935}]|[\u{2B05}-\u{2B07}]|[\u{2B1B}-\u{2B1C}]|[\u{3030}]|[\u{303D}]|[\u{3297}]|[\u{3299}]|[\u{00A9}]|[\u{00AE}]|[\u{200D}]|[\u{20E3}]|[\u{E0020}-\u{E007F}]/gu, '')
                 .replace(/\s{2,}/g, ' ')
                 .trim();
             const safeText = escapeHtml(textWithoutEmoji);
-            const icon = actionCardIcons[index % actionCardIcons.length];
             
             optionDiv.innerHTML = (
-                '<span class="option-icon">' + icon + '</span>' +
                 '<span class="option-copy">' +
                     '<span class="option-label">' + safeText + '</span>' +
-                    '<span class="option-sub">Tap to lock in</span>' +
                 '</span>'
             );
             
@@ -3015,7 +3021,6 @@
                         '<h3>' + test.testName + '</h3>' +
                         '<p style="color: #7B7896; flex-grow: 1; display: flex; align-items: center; text-align:center;">' + (test.description || '') + '</p>' +
                         '<p class="player-count" id="livePlayerCount">👥 1,237 players playing right now</p>' +
-                        '<button class="test-start-btn" onclick="event.stopPropagation(); startTest()">Start Game →</button>' +
                     '</div>' +
                 '</div>'
             );
@@ -3036,12 +3041,11 @@
                     '<p style="font-size: 0.85rem; color: #A0A0B0; margin-top: 10px;">' +
                     test.questionCount + ' questions • ' + test.estimatedMinutes + ' min' +
                     '</p>' +
-                    '<button class="test-start-btn" onclick="event.stopPropagation(); startTest()">Start Game →</button>' +
                     '</div>' +
                     '</div>';
             }).join('');
         }
-        // Select a test
+        // Select a test and immediately start it
         function selectTest(testId) {
             const testCards = document.querySelectorAll('.test-card');
             testCards.forEach(card => card.classList.remove('selected'));
@@ -3055,6 +3059,9 @@
 
             // Save state when test is selected
             savePageState();
+            
+            // Immediately start the game without waiting for a second click
+            startTest();
         }
         // Start the test
         async function startTest() {
@@ -3064,30 +3071,54 @@
                     selectedTest = allTests[0];
                 }
 
-                // Start test session
-                const response = await fetch('/api/result/start', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ testId: selectedTest.testId })
-                });
+                // Special handling for PERSONALITY game - uses different API
+                if (selectedTest.testId === 'PERSONALITY') {
+                    // Load personality questions from dedicated endpoint
+                    const questionsResponse = await fetch('/api/personality/questions');
+                    if (!questionsResponse.ok) throw new Error('Failed to load personality questions');
 
-                if (!response.ok) throw new Error('Failed to start test');
+                    const rawQuestions = await questionsResponse.json();
+                    
+                    // Map personality API response to frontend format
+                    questions = rawQuestions.map(q => ({
+                        questionId: q.id,
+                        questionText: q.text,
+                        questionNumber: q.number,
+                        options: (q.options || []).map(o => ({
+                            optionText: o.text,
+                            optionValue: o.value
+                        }))
+                    }));
+                    
+                    // Create a mock session for personality (it handles sessions differently)
+                    sessionId = 'personality-session-' + Date.now();
+                } else {
+                    // Normal flow for other games
+                    const response = await fetch('/api/result/start', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ testId: selectedTest.testId })
+                    });
 
-                const result = await response.json();
-                sessionId = result.sessionId;
+                    if (!response.ok) throw new Error('Failed to start test');
 
-                // Load questions
-                const questionsResponse = await fetch('/api/result/questions/' + selectedTest.testId);
-                if (!questionsResponse.ok) throw new Error('Failed to load questions');
+                    const result = await response.json();
+                    sessionId = result.sessionId;
 
-                questions = await questionsResponse.json();
+                    // Load questions
+                    const questionsResponse = await fetch('/api/result/questions/' + selectedTest.testId);
+                    if (!questionsResponse.ok) throw new Error('Failed to load questions');
+
+                    questions = await questionsResponse.json();
+                }
+                
                 answers = new Array(questions.length).fill(null);
 
                 // Show game container and lock mobile viewport
                 document.getElementById('testSelection').classList.add('hidden');
                 document.getElementById('questionContainer').classList.remove('hidden');
                 document.body.classList.add('game-active'); // Prevent mobile scrolling
-                updateProgress(0, 'Level 1 of ' + questions.length);
+                updateProgress(0, 'Question 1 of ' + questions.length);
 
                 // Show big game title at top
                 const emoji = testEmojis[selectedTest.testId] || '📝';
@@ -3119,10 +3150,16 @@
 
             // Update progress bar
             const progress = ((index + 1) / questions.length) * 100;
-            updateProgress(progress, 'Level ' + (index + 1) + ' of ' + questions.length);
+            updateProgress(progress, 'Question ' + (index + 1) + ' of ' + questions.length);
 
             // Reset navigation buttons immediately
             updateNavigationButtons();
+
+            // Update question number display
+            const questionNumber = document.getElementById('questionNumber');
+            if (questionNumber) {
+                questionNumber.textContent = 'Q' + (index + 1);
+            }
 
             // Update game moment text (make it feel like a situation, not a question)
             const questionText = document.getElementById('questionText');
@@ -3143,11 +3180,6 @@
             questionText.style.opacity = '1';
 
             // Render action buttons immediately
-            
-            // DEBUG: Log question data
-            console.log('DEBUG: Question data:', question);
-            console.log('DEBUG: Options count:', question.options ? question.options.length : 0);
-            console.log('DEBUG: Test ID:', selectedTest ? selectedTest.testId : 'unknown');
             
             // Render action buttons
             if (question.options && question.options.length > 0) {
@@ -3171,7 +3203,6 @@
                 // Single DOM operation
                 optionsContainer.appendChild(fragment);
             } else {
-                console.error('DEBUG: No options found in question data for test:', selectedTest?.testId);
                 
                 // Create appropriate options based on the game type
                 let gameOptions = [];
@@ -3201,12 +3232,9 @@
                     optionDiv.className = 'option';
                     optionDiv.dataset.value = option.optionValue;
                     
-                    const icon = actionCardIcons[optionIndex % actionCardIcons.length];
                     optionDiv.innerHTML = (
-                        '<span class="option-icon">' + icon + '</span>' +
                         '<span class="option-copy">' +
                             '<span class="option-label">' + option.optionText + '</span>' +
-                            '<span class="option-sub">Tap to lock in</span>' +
                         '</span>'
                     );
                     
@@ -3224,8 +3252,7 @@
             // Adjust layout density based on rendered option count (UI-only)
             applyOptionLayoutDensity();
 
-            // Update progress dots and navigation buttons
-            updateGameProgressDots();
+            // Update navigation buttons
             updateNavigationButtons();
         }
 
@@ -3371,43 +3398,85 @@
             showLoadingOverlay();
 
             try {
-                // Prepare answers in the format expected by the API
-                const formattedAnswers = questions.map((q, index) => ({
-                    questionId: q.questionId,
-                    answerValue: answers[index],
-                    timeSpent: 0
-                }));
+                // Special handling for PERSONALITY game
+                if (selectedTest.testId === 'PERSONALITY') {
+                    // Prepare answers in personality format
+                    const formattedAnswers = questions.map((q, index) => ({
+                        id: q.questionId,
+                        value: parseInt(answers[index]) // Convert to integer
+                    }));
 
-                // Add timeout to prevent hanging
-                const controller = new AbortController();
-                timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+                    // Add timeout to prevent hanging
+                    const controller = new AbortController();
+                    timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
-                const response = await fetch('/api/result/submit', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        sessionId: sessionId,
-                        answers: formattedAnswers
-                    }),
-                    signal: controller.signal
-                });
+                    const response = await fetch('/api/personality/submit', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            answers: formattedAnswers
+                            // Gender field omitted - it's optional
+                        }),
+                        signal: controller.signal
+                    });
 
-                clearTimeout(timeoutId);
+                    clearTimeout(timeoutId);
 
-                if (!response.ok) throw new Error('Failed to submit test');
+                    if (!response.ok) throw new Error('Failed to submit personality test');
 
-                const result = await response.json();
+                    const result = await response.json();
 
-                if (result.success) {
-                    // Clear saved state before redirecting
-                    clearPageState();
-                    
-                    // IMMEDIATE redirect - results are processing in background
-                    window.location.replace('/result/' + sessionId);
+                    if (result.success) {
+                        // Clear saved state before redirecting
+                        clearPageState();
+                        
+                        // Redirect to unified result page (same as other games)
+                        window.location.replace('/result/' + result.sessionId);
+                    } else {
+                        throw new Error(result.error || 'Failed to submit test');
+                    }
                 } else {
-                    throw new Error(result.error || 'Failed to submit test');
+                    // Normal flow for other games
+                    // Prepare answers in the format expected by the API
+                    const formattedAnswers = questions.map((q, index) => ({
+                        questionId: q.questionId,
+                        answerValue: answers[index],
+                        timeSpent: 0
+                    }));
+
+                    // Add timeout to prevent hanging
+                    const controller = new AbortController();
+                    timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+                    const response = await fetch('/api/result/submit', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            sessionId: sessionId,
+                            answers: formattedAnswers
+                        }),
+                        signal: controller.signal
+                    });
+
+                    clearTimeout(timeoutId);
+
+                    if (!response.ok) throw new Error('Failed to submit test');
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        // Clear saved state before redirecting
+                        clearPageState();
+                        
+                        // IMMEDIATE redirect - results are processing in background
+                        window.location.replace('/result/' + sessionId);
+                    } else {
+                        throw new Error(result.error || 'Failed to submit test');
+                    }
                 }
             } catch (error) {
                 if (timeoutId) clearTimeout(timeoutId); // Check if timeoutId exists
@@ -3421,6 +3490,7 @@
                 } else {
                     alert('Failed to submit test. Please try again.');
                 }
+
 
                 // Restore UI
                 document.getElementById('questionContainer').classList.remove('hidden');

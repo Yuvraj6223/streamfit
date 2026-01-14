@@ -203,7 +203,20 @@ class BootStrap {
                     
                     log.info "Unified game system initialized successfully!"
                 } else {
-                    log.info "Game questions already exist (${questionCount} questions) - skipping migration"
+                    log.info "Game questions already exist (${questionCount} questions)"
+                    
+                    // Check for PERSONALITY questions specifically (added later)
+                    def personalityCount = com.streamfit.GameQuestion.countByGameType('PERSONALITY')
+                    if (personalityCount == 0) {
+                        log.warn "⚠️ PERSONALITY questions missing! Running PERSONALITY migration..."
+                        def migration = new com.streamfit.GameDataMigration()
+                        migration.migratePersonality()
+                        
+                        def newPersonalityCount = com.streamfit.GameQuestion.countByGameType('PERSONALITY')
+                        log.info "✅ PERSONALITY migration completed! Created ${newPersonalityCount} questions"
+                    } else {
+                        log.info "✅ PERSONALITY questions exist (${personalityCount} questions)"
+                    }
                 }
             }
         } catch (Exception e) {
@@ -357,46 +370,15 @@ class BootStrap {
     /**
      * Warm caches for static data on application startup
      * This improves first-request performance for read-heavy data
+     * DISABLED: Causes issues with caching empty results before data is committed
      */
     private void warmCaches() {
         try {
-            log.info "Warming caches for static data..."
-            
-            // Warm available tests cache
-            try {
-                diagnosticService?.getAvailableTests()
-                log.info "Warmed cache: available tests"
-            } catch (Exception e) {
-                log.warn "Could not warm available tests cache: ${e.message}"
-            }
-            
-            // Warm test questions cache for each game type
-            def gameTypes = ['COGNITIVE_RADAR', 'CURIOSITY_COMPASS', 'FOCUS_STAMINA', 
-                           'GUESSWORK_QUOTIENT', 'MODALITY_MAP', 'PATTERN_SNAPSHOT', 
-                           'SPIRIT_ANIMAL', 'WORK_MODE', 'PERSONALITY']
-            
-            gameTypes.each { gameType ->
-                try {
-                    diagnosticService?.getTestQuestions(gameType)
-                    log.info "Warmed cache: ${gameType} questions"
-                } catch (Exception e) {
-                    log.warn "Could not warm ${gameType} questions cache: ${e.message}"
-                }
-            }
-            
-            // Warm persona profiles cache
-            try {
-                unifiedPersonaService?.buildPersonaProfiles()
-                log.info "Warmed cache: persona profiles"
-            } catch (Exception e) {
-                log.warn "Could not warm persona profiles cache: ${e.message}"
-            }
-            
-            log.info "Cache warming completed!"
+            log.info "Cache warming disabled to prevent stale data issues"
+            log.info "Caches will be populated on first request"
             
         } catch (Exception e) {
             log.warn "Cache warming failed (non-fatal): ${e.message}"
         }
     }
 }
-
