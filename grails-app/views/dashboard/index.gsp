@@ -35,6 +35,52 @@
     
     <%-- MAPPING: Map result types to assets to avoid if/else chains --%>
     <g:set var="animalImages" value="${['WISE_OWL': 'owl.png', 'DISCIPLINED_BEE': 'bee.png', 'STRATEGIC_WOLF': 'wolf.png', 'BOLD_TIGER': 'tiger.png']}" />
+    <g:set var="resultTitlesMap" value="${[
+            'BOLD_TIGER': 'THE BOLD TIGER',
+            'WISE_OWL': 'THE WISE OWL',
+            'DISCIPLINED_BEE': 'THE DISCIPLINED BEE',
+            'STRATEGIC_WOLF': 'THE STRATEGIC WOLF',
+            'ANALYTICAL_DIAMOND': 'THE ANALYTICAL DIAMOND',
+            'VERBAL_VIRTUOSO': 'THE VERBAL VIRTUOSO',
+            'PRECISE_PROCESSOR': 'THE PRECISE PROCESSOR',
+            'VISUAL_VISIONARY': 'THE VISUAL VISIONARY',
+            'COGNITIVE_LOGIC': 'THE ANALYTICAL DIAMOND',
+            'COGNITIVE_VERBAL': 'THE VERBAL VIRTUOSO',
+            'COGNITIVE_SPATIAL': 'THE VISUAL VISIONARY',
+            'COGNITIVE_SPEED': 'THE PRECISE PROCESSOR',
+            'THEORIST': 'THE THEORIST',
+            'BUILDER': 'THE BUILDER',
+            'EMPATH': 'THE EMPATH',
+            'CHALLENGER': 'THE CHALLENGER',
+            'MARATHONER': 'THE MARATHONER',
+            'SPRINTER': 'THE SPRINTER',
+            'SAFE_PLAYER': 'THE SAFE PLAYER',
+            'QUITTER': 'THE QUICK STARTER',
+            'BALANCED_STRATEGIST': 'THE BALANCED STRATEGIST',
+            'HIGH_ROLLER': 'THE HIGH ROLLER',
+            'UNDER_ESTIMATOR': 'THE HUMBLE ACHIEVER',
+            'HESITANT_SEARCHER': 'THE CAREFUL SEARCHER',
+            'VISUAL': 'THE VISUAL LEARNER',
+            'AUDITORY': 'THE AUDITORY LEARNER',
+            'KINESTHETIC': 'THE KINESTHETIC LEARNER',
+            'CONCEPTUAL': 'THE CONCEPTUAL LEARNER',
+            'VERBAL': 'THE VERBAL PATTERN MASTER',
+            'NUMERIC': 'THE NUMERIC PATTERN MASTER',
+            'STRUCTURED_SOLOIST': 'THE STRUCTURED SOLOIST',
+            'STRUCTURED_COLLABORATOR': 'THE STRUCTURED COLLABORATOR',
+            'FREEFORM_EXPLORER': 'THE FREEFORM EXPLORER',
+            'CHAOTIC_CREATIVE': 'THE CHAOTIC CREATIVE',
+            'EXTROVERT': 'THE SOCIAL BUTTERFLY',
+            'INTROVERT': 'THE DEEP THINKER',
+            'LOGIC_BUILDER': 'THE LOGIC BUILDER',
+            'CURIOUS_THINKER': 'THE CURIOUS THINKER',
+            'FOCUS_FINISHER': 'THE FOCUS FINISHER',
+            'DECISION_MAKER': 'FAST DECISION MAKER',
+            'ADAPTIVE_LEARNER': 'THE ADAPTIVE LEARNER',
+            'DETAIL_DETECTIVE': 'THE DETAIL DETECTIVE',
+            'STRATEGIC_PLANNER': 'THE STRATEGIC PLANNER',
+            'CREATIVE_CONNECTOR': 'CREATIVE CONNECTOR'
+    ]}"/>
 
     <%-- DYNAMIC STREAMS: This is now calculated in the controller --%>
     <g:set var="suggestedStreams" value="${model?.suggestedStreams ?: []}" />
@@ -124,8 +170,14 @@
                             <div class="history-card-icon">${test.result?.emoji}</div>
                             <div class="history-card-info">
                                 <div class="history-card-title">${test.result?.testName}</div>
-                                <g:if test="${test.result?.resultTitle}">
-                                    <div class="history-card-one-liner">"${test.result?.resultTitle}"</div>
+
+                                <g:set var="rawTitle" value="${test.result?.resultTitle}" />
+                                <g:set var="lookupKey" value="${rawTitle?.toString()?.trim()?.toUpperCase()?.replaceAll(' ', '_')}" />
+                                
+                                <g:if test="${rawTitle}">
+                                    <div class="history-card-one-liner">
+                                        ${(resultTitlesMap && resultTitlesMap[lookupKey]) ? resultTitlesMap[lookupKey] : rawTitle}
+                                    </div>
                                 </g:if>
                                 <div class="history-card-date">Completed on <g:formatDate date="${test.session?.completedAt}" format="dd MMM yyyy"/></div>
                             </div>

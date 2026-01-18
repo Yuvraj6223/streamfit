@@ -62,6 +62,28 @@ class DashboardController {
         def completedTestResults = []
         def pendingTests = []
 
+        def personaEmojiMap = [
+            // SPIRIT_ANIMAL
+            'WISE_OWL': '🦉', 'DISCIPLINED_BEE': '🐝', 'STRATEGIC_WOLF': '🐺', 'BOLD_TIGER': '🐯',
+            // COGNITIVE_RADAR
+            'ANALYTICAL_DIAMOND': '💎', 'VERBAL_VIRTUOSO': '✍️', 'PRECISE_PROCESSOR': '⚡', 'VISUAL_VISIONARY': '🎨',
+            'COGNITIVE_LOGIC': '💎', 'COGNITIVE_VERBAL': '✍️', 'COGNITIVE_SPATIAL': '🎨', 'COGNITIVE_SPEED': '⚡',
+            // CURIOSITY_COMPASS
+            'THEORIST': '🔬', 'BUILDER': '🛠️', 'EMPATH': '💝', 'CHALLENGER': '🔥',
+            // FOCUS_STAMINA
+            'MARATHONER': '🏃', 'SPRINTER': '⚡', 'SAFE_PLAYER': '🛡️', 'QUITTER': '🚀',
+            // GUESSWORK_QUOTIENT
+            'BALANCED_STRATEGIST': '⚖️', 'HIGH_ROLLER': '🎰', 'UNDER_ESTIMATOR': '💎', 'HESITANT_SEARCHER': '🔍',
+            // MODALITY_MAP
+            'VISUAL': '👁️', 'AUDITORY': '🎧', 'KINESTHETIC': '🤲', 'CONCEPTUAL': '💭',
+            // PATTERN_SNAPSHOT
+            'VERBAL': '📝', 'NUMERIC': '🔢',
+            // WORK_MODE
+            'STRUCTURED_SOLOIST': '🎯', 'STRUCTURED_COLLABORATOR': '👥', 'FREEFORM_EXPLORER': '🌊', 'CHAOTIC_CREATIVE': '🎪',
+            // PERSONALITY
+            'EXTROVERT': '🦋', 'INTROVERT': '🌙'
+        ]
+
         availableTests.each { test ->
             if (test.testId in completedTestIds) {
                 def resultData = latestGameResults[test.testId]
@@ -89,12 +111,27 @@ class DashboardController {
                     completedAt = null // Fallback to null for unhandled types
                 }
 
+                def resultType = resultData.result.resultType?.toString()
+                def resultTitle = resultType?.toString()?.toLowerCase()?.replace('_', ' ')?.capitalize()
+                def resultKey = resultType // Default to the existing resultType
+
+                if (test.testId == 'COGNICLE_RADAR') {
+                    def pillar = resultData.result.primaryPillar?.toString()
+                    if (pillar == 'LOGIC') resultKey = 'ANALYTICAL_DIAMOND'
+                    else if (pillar == 'VERBAL') resultKey = 'VERBAL_VIRTUOSO'
+                    else if (pillar == 'SPATIAL') resultKey = 'VISUAL_VISIONARY'
+                    else if (pillar == 'SPEED') resultKey = 'PRECISE_PROCESSOR'
+                }
+
+                def emoji = personaEmojiMap[resultKey] ?: personaEmojiMap[resultType] ?: '✨'
+
                 completedTestResults << [
                     session: [sessionId: resultData.session.sessionId, completedAt: completedAt],
                     result: [
                         testName: test.testName,
-                        emoji: '✨', // Placeholder, GSP seems to expect it
-                        resultTitle: resultData.result.resultType?.toString()?.toLowerCase()?.replace('_', ' ')?.capitalize()
+                        emoji: emoji,
+                        resultKey: resultKey,
+                        resultTitle: resultTitle
                     ]
                 ]
             } else {
