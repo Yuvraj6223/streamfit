@@ -849,7 +849,6 @@
         <h3>SUPPORT</h3>
         <ul class="footer-link-list">
             <li><g:link uri="/faq">FAQ</g:link></li>
-            <li><g:link uri="/contact">Contact Us</g:link></li>
             <li><g:link uri="/about">About learnerDNA</g:link></li>
         </ul>
     </div>
@@ -859,7 +858,6 @@
         <div class="footer-links">
             <g:link uri="/terms">Terms</g:link>
             <g:link uri="/privacy">Privacy</g:link>
-            <g:link uri="/contact">Contact</g:link>
         </div>
     </div>
 </footer>
