@@ -1,107 +1,75 @@
 package com.streamfit.service
 
+import io.jsonwebtoken.Claims
+import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
-import io.jsonwebtoken.JwtException
-import io.jsonwebtoken.Claims
 import org.springframework.beans.factory.annotation.Value
 import javax.crypto.SecretKey
-import java.util.Date
 import java.nio.charset.StandardCharsets
+import java.security.SecureRandom
+import java.util.Base64
+import java.util.Date
 
 class JwtTokenService {
 
-    // ...existing code...
-
-    @Value('${jwt.secret:your-super-secret-key-change-this-in-production-at-least-32-characters}')
+    @Value('${jwt.secret:}')
     private String jwtSecret
 
     @Value('${jwt.access-token-expiry:3600}')  // 1 hour in seconds
     private long accessTokenExpiry
 
-    @Value('${jwt.refresh-token-expiry:604800}')  // 7 days in seconds
-    private long refreshTokenExpiry
+    private SecretKey signingKey
 
-    /**
-     * Get the signing key from secret
-     */
+    private static final SecureRandom secureRandom = new SecureRandom()
+    private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder()
+
     private SecretKey getSigningKey() {
-        byte[] decodedKey = jwtSecret.getBytes(StandardCharsets.UTF_8)
-        return Keys.hmacShaKeyFor(decodedKey)
+        if (signingKey == null) {
+            if (!jwtSecret || jwtSecret.length() < 32) {
+                throw new IllegalStateException(
+                    "jwt.secret is not configured or is less than 32 characters long in application.yml. " +
+                    "This is a critical security vulnerability. Please provide a strong, random secret."
+                )
+            }
+            byte[] decodedKey = jwtSecret.getBytes(StandardCharsets.UTF_8)
+            this.signingKey = Keys.hmacShaKeyFor(decodedKey)
+        }
+        return signingKey
     }
 
-    /**
-     * Generate Access Token (short-lived, 1 hour)
-     * Payload: uid, sid, role, iat, exp
-     *
-     * @param userId User ID (null for guests)
-     * @param sessionId Session ID
-     * @param role "guest" or "user"
-     * @return JWT token string
-     */
     String generateAccessToken(String userId, String sessionId, String role = 'guest') {
-        try {
-            long now = System.currentTimeMillis()
-            long expiryMs = accessTokenExpiry * 1000L
+        long now = System.currentTimeMillis()
+        long expiryMs = accessTokenExpiry * 1000L
 
-            def token = Jwts.builder()
-                .subject(userId ?: 'guest')
-                .claim('uid', userId)
-                .claim('sid', sessionId)
-                .claim('role', role)
-                .issuedAt(new Date(now))
-                .expiration(new Date(now + expiryMs))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
-                .compact()
+        def claims = Jwts.claims()
+            .subject(userId ?: 'guest')
+            .add('uid', userId)
+            .add('sid', sessionId)
+            .add('role', role)
+            .issuedAt(new Date(now))
+            .expiration(new Date(now + expiryMs))
+            .build()
 
-            log.debug("Access token generated for uid=${userId}, sid=${sessionId}, role=${role}")
-            return token
-        } catch (Exception e) {
-            log.error("Error generating access token: ${e.message}", e)
-            throw new RuntimeException("Failed to generate access token", e)
-        }
+        return buildAndSignJwt(claims)
     }
 
-    /**
-     * Generate Refresh Token (long-lived, 7 days)
-     * Payload: uid, sid, role, iat, exp
-     *
-     * @param userId User ID (null for guests)
-     * @param sessionId Session ID
-     * @param role "guest" or "user"
-     * @return JWT token string
-     */
-    String generateRefreshToken(String userId, String sessionId, String role = 'guest') {
-        try {
-            long now = System.currentTimeMillis()
-            long expiryMs = refreshTokenExpiry * 1000L
-
-            def token = Jwts.builder()
-                .subject(userId ?: 'guest')
-                .claim('uid', userId)
-                .claim('sid', sessionId)
-                .claim('role', role)
-                .claim('type', 'refresh')  // Mark as refresh token
-                .issuedAt(new Date(now))
-                .expiration(new Date(now + expiryMs))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
-                .compact()
-
-            log.debug("Refresh token generated for uid=${userId}, sid=${sessionId}, role=${role}")
-            return token
-        } catch (Exception e) {
-            log.error("Error generating refresh token: ${e.message}", e)
-            throw new RuntimeException("Failed to generate refresh token", e)
-        }
+    String generateRefreshToken() {
+        byte[] randomBytes = new byte[32]
+        secureRandom.nextBytes(randomBytes)
+        return base64Encoder.encodeToString(randomBytes)
     }
 
-    /**
-     * Validate and extract claims from token
-     *
-     * @param token JWT token
-     * @return Claims object or null if invalid
-     */
+    Map<String, Object> generateTokenPair(String userId, String sessionId, String role = 'guest') {
+        return [
+            accessToken: generateAccessToken(userId, sessionId, role),
+            refreshToken: generateRefreshToken(),
+            expiresIn: accessTokenExpiry,
+            tokenType: 'Bearer'
+        ]
+    }
+
     Claims validateToken(String token) {
         try {
             if (!token) {
@@ -109,17 +77,13 @@ class JwtTokenService {
                 return null
             }
 
-            // Remove "Bearer " prefix if present
             token = token.startsWith('Bearer ') ? token.substring(7) : token
 
-            def claims = Jwts.parserBuilder()
+            return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
                 .body
-
-            log.debug("Token validated successfully for subject=${claims.subject}")
-            return claims
         } catch (JwtException e) {
             log.warn("JWT validation failed: ${e.message}")
             return null
@@ -129,62 +93,35 @@ class JwtTokenService {
         }
     }
 
-    /**
-     * Extract userId from token claims
-     */
-    String getUserIdFromToken(String token) {
-        Claims claims = validateToken(token)
+    String getUserIdFromClaims(Claims claims) {
         return claims?.get('uid', String.class)
     }
 
-    /**
-     * Extract sessionId from token claims
-     */
-    String getSessionIdFromToken(String token) {
-        Claims claims = validateToken(token)
+    String getSessionIdFromClaims(Claims claims) {
         return claims?.get('sid', String.class)
     }
 
-    /**
-     * Extract role from token claims
-     */
-    String getRoleFromToken(String token) {
-        Claims claims = validateToken(token)
+    String getRoleFromClaims(Claims claims) {
         return claims?.get('role', String.class) ?: 'guest'
     }
 
-    /**
-     * Check if token is expired
-     */
-    boolean isTokenExpired(String token) {
-        try {
-            Claims claims = validateToken(token)
-            if (!claims) return true
-            return claims.expiration.before(new Date())
-        } catch (Exception e) {
-            return true
-        }
-    }
-
-    /**
-     * Get expiration time from token
-     */
-    Date getExpirationFromToken(String token) {
-        Claims claims = validateToken(token)
+    Date getExpirationFromClaims(Claims claims) {
         return claims?.expiration
     }
 
-    /**
-     * Generate both access and refresh tokens
-     * Returns a map with both tokens
-     */
-    Map<String, Object> generateTokenPair(String userId, String sessionId, String role = 'guest') {
-        return [
-            accessToken: generateAccessToken(userId, sessionId, role),
-            refreshToken: generateRefreshToken(userId, sessionId, role),
-            expiresIn: accessTokenExpiry,
-            tokenType: 'Bearer'
-        ]
+    boolean isTokenExpired(Claims claims) {
+        return claims?.expiration?.before(new Date()) ?: true
+    }
+
+    private String buildAndSignJwt(Claims claims) {
+        try {
+            return Jwts.builder()
+                .claims(claims)
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact()
+        } catch (Exception e) {
+            log.error("Error building and signing JWT: ${e.message}", e)
+            throw new RuntimeException("Failed to build and sign JWT", e)
+        }
     }
 }
-

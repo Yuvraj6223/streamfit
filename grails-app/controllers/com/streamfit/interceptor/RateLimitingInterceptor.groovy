@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap
 class RateLimitingInterceptor {
 
     @Autowired(required = false)
-    RedisTemplate<String, Object> redisTemplate
+    RedisTemplate<String, String> redisTemplate
     
     // Fallback in-memory rate limiter when Redis unavailable
     private static final ConcurrentHashMap<String, RateLimitEntry> localRateLimits = new ConcurrentHashMap<>()
@@ -99,22 +99,20 @@ class RateLimitingInterceptor {
      * Check rate limit using Redis (distributed)
      */
     private boolean checkRedisRateLimit(String key, int limit) {
-        def currentCount = redisTemplate.opsForValue().get(key)
-        
+        Long currentCount = redisTemplate.opsForValue().increment(key)
+
         if (currentCount == null) {
-            // First request - set counter with TTL
-            redisTemplate.opsForValue().set(key, 1, WINDOW_SECONDS, TimeUnit.SECONDS)
-            return true
+            // This can happen if the Redis command fails, though the exception should be caught above.
+            // Fallback to local to be safe.
+            return checkLocalRateLimit(key, limit)
         }
-        
-        int count = currentCount as Integer
-        if (count >= limit) {
-            return false
+
+        // If it's a new key, the count will be 1. Set the expiration.
+        if (currentCount == 1L) {
+            redisTemplate.expire(key, WINDOW_SECONDS, TimeUnit.SECONDS)
         }
-        
-        // Increment counter
-        redisTemplate.opsForValue().increment(key)
-        return true
+
+        return currentCount <= limit
     }
     
     /**
