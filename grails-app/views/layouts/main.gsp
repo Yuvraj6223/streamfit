@@ -780,9 +780,11 @@
             }
         }
     </style>
+    <style>
+    </style>
 </head>
 
-<body>
+<body class="${pageBodyClass ?: ''}">
 
 <!-- NAV - GAME HUD OVERLAY -->
 <nav class="main-nav">

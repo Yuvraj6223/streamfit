@@ -23,7 +23,7 @@
     --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-body {
+.dashboard-body {
     font-family: 'Plus Jakarta Sans', sans-serif;
     background-color: var(--bg-warm);
     color: var(--text-dark);
@@ -451,7 +451,7 @@ body {
     box-sizing: border-box;
 }
 
-body {
+.dashboard-body {
     font-family: var(--font-display);
     background: linear-gradient(180deg,
     #9C86FF 0%,

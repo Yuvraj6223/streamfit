@@ -1,7 +1,5 @@
-<!DOCTYPE html>
-<html lang="en-IN">
-
 <head>
+    <meta name="layout" content="main"/>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title><g:message code="page.title" default="My learning DNA | learnerDNA"/></title>
@@ -17,16 +15,7 @@
 </head>
 
 <body>
-
-<nav class="main-nav">
-    <div class="nav-container">
-        <g:link uri="/" class="nav-logo">
-            <asset:image src="logo1.png" alt="learnerDNA - Free Student Aptitude Game" onerror="this.src='https://placehold.co/150x40?text=learnerDNA'" />
-        </g:link>
-    </div>
-</nav>
-
-<div class="glass-console">
+    <div class="glass-console">
 
     <%-- PRE-CALCULATIONS: Centralize logic to keep HTML clean --%>
     <g:set var="totalGames" value="${model?.stats?.totalTests ?: 9}" />
@@ -416,5 +405,3 @@
     });
 </script>
 </body>
-
-</html>

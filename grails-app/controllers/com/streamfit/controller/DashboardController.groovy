@@ -182,7 +182,7 @@ class DashboardController {
             suggestedStreams: suggestedStreams
         ]
 
-        [model: model]
+        [model: model, pageBodyClass: 'dashboard-body']
     }
 
     /**
