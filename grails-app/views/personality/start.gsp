@@ -854,6 +854,14 @@
         flex-direction: column;
         justify-content: flex-start;
         gap: 0;
+        scroll-behavior: auto;
+        scroll-margin-top: 0;
+    }
+    
+    /* Ensure game container starts from top when shown */
+    .question-container:not(.hidden) {
+        scroll-margin-top: 0;
+        scroll-padding-top: 0;
     }
 
     /* Split-screen layout: fixed game zone + flexible scrollable options zone */
@@ -1597,7 +1605,7 @@
     .challenge-card {
         background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.6) 100%);
         border-radius: 26px;
-        border: 3px solid rgba(139, 127, 232, 0.25);
+        border: none;
         box-shadow:
             0 14px 28px -14px rgba(45, 42, 69, 0.22),
             0 10px 22px -16px rgba(139, 127, 232, 0.28),
@@ -2617,7 +2625,7 @@
             </div>
 
             <!-- Progress Bar - REMOVED -->
-            <div class="progress-container" style="background: transparent !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; box-shadow: none !important; border: none !important;">
+            <div class="progress-container" style="display: none !important; background: transparent !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; box-shadow: none !important; border: none !important;">
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressBar"></div>
                 </div>
@@ -2894,6 +2902,16 @@
                         document.getElementById('testSelection').classList.add('hidden');
                         document.getElementById('questionContainer').classList.remove('hidden');
                         document.body.classList.add('game-active');
+                        
+                        // Force scroll to top after DOM changes
+                        window.scrollTo(0, 0);
+                        document.documentElement.scrollTop = 0;
+                        document.body.scrollTop = 0;
+                        // Also reset the game container scroll position
+                        const gameContainer = document.getElementById('questionContainer');
+                        if (gameContainer) {
+                            gameContainer.scrollTop = 0;
+                        }
 
                         // Show game title
                         const testEmojis = {
@@ -3065,6 +3083,11 @@
         }
         // Start the test
         async function startTest() {
+            // Scroll to top immediately when starting any game
+            window.scrollTo(0, 0);
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+            
             try {
                 // Ensure a test is selected; fallback to first available
                 if (!selectedTest && allTests && allTests.length > 0) {
@@ -3118,6 +3141,18 @@
                 document.getElementById('testSelection').classList.add('hidden');
                 document.getElementById('questionContainer').classList.remove('hidden');
                 document.body.classList.add('game-active'); // Prevent mobile scrolling
+                
+                // Force scroll to top after DOM changes
+                setTimeout(() => {
+                    window.scrollTo(0, 0);
+                    document.documentElement.scrollTop = 0;
+                    document.body.scrollTop = 0;
+                    // Also reset the game container scroll position
+                    const gameContainer = document.getElementById('questionContainer');
+                    if (gameContainer) {
+                        gameContainer.scrollTop = 0;
+                    }
+                }, 10);
                 updateProgress(0, 'Question 1 of ' + questions.length);
 
                 // Show big game title at top
