@@ -102,9 +102,9 @@
                             <asset:image src="${animalImage}" alt="${model.spiritAnimal.resultTitle}" class="avatar-img" />
                         </div>
                     </div>
-                    <div class="animal-title">You are the ${model.spiritAnimal.resultTitle}!</div>
+                    <div class="animal-title">You are ${resultTitlesMap[model.spiritAnimal.resultType] ?: model.spiritAnimal.resultTitle}!</div>
                     <div class="animal-archetype">"${model.spiritAnimal.resultType.replaceAll('_', ' ')}"</div>
-                    <div class="archetype-desc" style="font-style: italic; max-width: 85%; margin: 16px auto 24px auto;">“${model.spiritAnimal.resultSummary}”</div>
+                    <div class="archetype-desc" style="font-style: italic; max-width: 85%; margin: 16px auto 24px auto;">“${model.spiritAnimal.summary ?: model.spiritAnimal.resultSummary}”</div>
                 </g:if>
                 <g:else>
                     <div class="panel-label" style="justify-content: center; color: var(--text-grey); font-size: 0.8rem;">

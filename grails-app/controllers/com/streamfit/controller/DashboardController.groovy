@@ -115,7 +115,7 @@ class DashboardController {
                 def resultTitle = resultType?.toString()?.toLowerCase()?.replace('_', ' ')?.capitalize()
                 def resultKey = resultType // Default to the existing resultType
 
-                if (test.testId == 'COGNICLE_RADAR') {
+                if (test.testId == 'COGNITIVE_RADAR') {
                     def pillar = resultData.result.primaryPillar?.toString()
                     if (pillar == 'LOGIC') resultKey = 'ANALYTICAL_DIAMOND'
                     else if (pillar == 'VERBAL') resultKey = 'VERBAL_VIRTUOSO'
@@ -145,6 +145,14 @@ class DashboardController {
         ]
         
         def spiritAnimalResult = latestGameResults['SPIRIT_ANIMAL']?.result
+        
+        def spiritAnimalSummaries = [
+            'WISE_OWL': "You like to understand everything deeply before moving forward. You won't start Chapter 2 until you've completely mastered Chapter 1.",
+            'STRATEGIC_WOLF': "You have a good sense for finding the right answer. You're great at eliminating wrong options and using smart shortcuts.",
+            'DISCIPLINED_BEE': "You love structure and routine. You believe in steady improvement and can study consistently for long periods.",
+            'BOLD_TIGER': "You perform best under pressure and love competition. You're fast, bold, and thrive on challenges."
+        ]
+        
         def cognitiveRadarResult = latestGameResults['COGNITIVE_RADAR']?.result
         def workModeResult = latestGameResults['WORK_MODE']?.result
 
@@ -169,7 +177,7 @@ class DashboardController {
             spiritAnimal: spiritAnimalResult ? [
                 resultType: spiritAnimalResult.resultType,
                 resultTitle: spiritAnimalResult.resultType?.toString()?.toLowerCase()?.replace('_', ' ')?.capitalize(),
-                resultSummary: "Your unique strengths are becoming clear.", // Placeholder summary
+                resultSummary: spiritAnimalResult.summary ?: spiritAnimalSummaries[spiritAnimalResult.resultType] ?: "Your unique strengths are becoming clear.",
                 scoreBreakdown: [
                     primaryTrait: spiritAnimalResult.primaryTrait,
                     secondaryTrait: spiritAnimalResult.secondaryTrait

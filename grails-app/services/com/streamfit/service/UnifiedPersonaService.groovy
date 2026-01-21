@@ -532,8 +532,16 @@ class UnifiedPersonaService {
             'BOLD_TIGER': (resultType == 'BOLD_TIGER' ? 10 : 0)
         ]
         
+        def summaries = [
+            'WISE_OWL': "You like to understand everything deeply before moving forward. You won't start Chapter 2 until you've completely mastered Chapter 1.",
+            'STRATEGIC_WOLF': "You have a good sense for finding the right answer. You're great at eliminating wrong options and using smart shortcuts.",
+            'DISCIPLINED_BEE': "You love structure and routine. You believe in steady improvement and can study consistently for long periods.",
+            'BOLD_TIGER': "You perform best under pressure and love competition. You're fast, bold, and thrive on challenges."
+        ]
+        
         return [
             resultType: resultType,
+            summary: summaries[resultType],
             processCount: processCount,
             intuitionCount: intuitionCount,
             accuracyCount: accuracyCount,
@@ -841,7 +849,14 @@ class UnifiedPersonaService {
             'BOLD_TIGER': (resultType == 'BOLD_TIGER' ? 10 : 0)
         ]
         
-        return [resultType: resultType, processCount: processCount, intuitionCount: intuitionCount,
+        def summaries = [
+            'WISE_OWL': "You like to understand everything deeply before moving forward. You won't start Chapter 2 until you've completely mastered Chapter 1.",
+            'STRATEGIC_WOLF': "You have a good sense for finding the right answer. You're great at eliminating wrong options and using smart shortcuts.",
+            'DISCIPLINED_BEE': "You love structure and routine. You believe in steady improvement and can study consistently for long periods.",
+            'BOLD_TIGER': "You perform best under pressure and love competition. You're fast, bold, and thrive on challenges."
+        ]
+        
+        return [resultType: resultType, summary: summaries[resultType], processCount: processCount, intuitionCount: intuitionCount,
                 accuracyCount: accuracyCount, speedCount: speedCount, primaryTrait: primaryTrait,
                 secondaryTrait: secondaryTrait, personaScores: personaScores]
     }

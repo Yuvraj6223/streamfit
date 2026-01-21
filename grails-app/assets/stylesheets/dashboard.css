@@ -363,6 +363,7 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    width: 100%;
 }
 .latest-result-content p {
     text-align: center; 
@@ -380,6 +381,7 @@
     transition: transform 0.3s var(--ease-elastic), box-shadow 0.3s ease;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.5);
+    min-height: 110px;
 }
 
 .history-card:hover {
@@ -1255,8 +1257,10 @@
 
 .latest-result-content {
     display: flex;
-    align-items: center;
-    gap: 20px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    width: 100%;
 }
 
 .latest-result-emoji {
