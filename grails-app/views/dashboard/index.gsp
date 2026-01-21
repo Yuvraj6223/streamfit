@@ -154,7 +154,7 @@
             </div>
             <g:if test="${model?.completedTestResults}">
                 <div class="latest-result-content">
-                    <g:each in="${model?.completedTestResults?.sort { a, b -> (b.session?.completedAt?.time ?: 0) <=> (a.session?.completedAt?.time ?: 0) }?.take(5)}" var="test">
+                    <g:each in="${model?.completedTestResults?.sort { a, b -> (b.session?.completedAt?.time ?: 0) <=> (a.session?.completedAt?.time ?: 0) }?.take(9)}" var="test">
                         <g:link controller="result" action="resultPage" params="[sessionId: test.session?.sessionId]" class="history-card">
                             <div class="history-card-icon">${test.result?.emoji}</div>
                             <div class="history-card-info">
