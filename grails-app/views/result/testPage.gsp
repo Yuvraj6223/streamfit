@@ -547,6 +547,59 @@
         let autoAdvanceTimer = null;
         const testId = '${test.testId}';
 
+        // Enhanced scroll-to-top function for mobile-first games
+        function scrollToTop(immediate = false) {
+            try {
+                // Force immediate scroll for critical game moments
+                if (immediate) {
+                    // Multiple scroll methods for maximum compatibility
+                    window.scrollTo(0, 0);
+                    document.documentElement.scrollTop = 0;
+                    document.body.scrollTop = 0;
+                    
+                    // Handle mobile browsers that might resist scrolling
+                    if (window.scrollY !== 0 || window.pageYOffset !== 0) {
+                        window.scrollTo(0, 0);
+                        document.documentElement.scrollTop = 0;
+                        document.body.scrollTop = 0;
+                    }
+                    
+                    // Reset any scrollable containers
+                    const scrollableElements = document.querySelectorAll('.question-card, .test-container, .options-container');
+                    scrollableElements.forEach(element => {
+                        if (element && element.scrollTop !== undefined) {
+                            element.scrollTop = 0;
+                        }
+                    });
+                } else {
+                    // Smooth scroll for less critical moments
+                    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+                    
+                    // Fallback for browsers that don't support smooth scrolling
+                    setTimeout(() => {
+                        window.scrollTo(0, 0);
+                        document.documentElement.scrollTop = 0;
+                        document.body.scrollTop = 0;
+                    }, 100);
+                }
+                
+                // Additional mobile viewport fix
+                if (window.visualViewport) {
+                    window.visualViewport.scrollTo({ top: 0, left: 0, behavior: immediate ? 'auto' : 'smooth' });
+                }
+            } catch (error) {
+                console.warn('Scroll-to-top failed:', error);
+                // Emergency fallback
+                try {
+                    window.scrollTo(0, 0);
+                    document.documentElement.scrollTop = 0;
+                    document.body.scrollTop = 0;
+                } catch (fallbackError) {
+                    console.warn('Emergency scroll fallback failed:', fallbackError);
+                }
+            }
+        }
+
         // Save page state to localStorage
         function savePageState() {
             const state = {
@@ -596,6 +649,9 @@
         // Load questions and start session
         async function initTest() {
             try {
+                // Enhanced scroll to top when starting any diagnostic game
+                scrollToTop(true);
+
                 // Try to restore saved state first
                 const restored = restorePageState();
 
@@ -626,6 +682,10 @@
                     }));
 
                     renderQuestions();
+                    
+                    // Enhanced scroll to top before showing first question
+                    scrollToTop(true);
+                    
                     showQuestion(0);
                     savePageState();
                 }
@@ -662,6 +722,9 @@
                 clearTimeout(autoAdvanceTimer);
                 autoAdvanceTimer = null;
             }
+
+            // Enhanced scroll to top for each new question to ensure mobile-first experience
+            scrollToTop(true);
 
             // Hide all cards
             document.querySelectorAll('.question-card').forEach(function(card) {
