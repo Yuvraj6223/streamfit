@@ -162,6 +162,53 @@ class DashboardController {
             primaryPillar: cognitiveRadarResult.primaryPillar
         ] : null
 
+        def nextStepSuggestions = []
+        if (cognitiveRadarModel?.scoreBreakdown) {
+            // Map skills to real-world suggestions with specific icons
+            def suggestionsMap = [
+                    logic: [
+                            icon: "🧩",
+                            title: "Sharpen Your Logic",
+                            suggestion: "Try activities like Sudoku, chess, or logic puzzles to boost your reasoning skills."
+                    ],
+                    verbal: [
+                            icon: "🗣️",
+                            title: "Boost Your Verbal Skills",
+                            suggestion: "Engage in crossword puzzles, read challenging articles, or practice debating to enhance your verbal fluency."
+                    ],
+                    spatial: [
+                            icon: "📐",
+                            title: "Enhance Your Spatial Awareness",
+                            suggestion: "Practice with jigsaw puzzles, try 3D modeling software, or solve a Rubik's cube to improve spatial reasoning."
+                    ],
+                    speed: [
+                            icon: "⚡",
+                            title: "Increase Your Processing Speed",
+                            suggestion: "Play reaction-based video games or use brain-training apps to quicken your mental reflexes."
+                    ]
+            ]
+
+            // Priority 1: Check for skills with 0 score
+            def zeroSkills = cognitiveRadarModel.scoreBreakdown.findAll { it.value == 0 }
+
+            if (zeroSkills) {
+                // Add suggestions for ALL skills with 0 score
+                zeroSkills.each { skillName, score ->
+                    if (suggestionsMap[skillName]) {
+                        nextStepSuggestions << suggestionsMap[skillName]
+                    }
+                }
+            } else {
+                // Priority 2: Fallback to the single lowest skill
+                def weakestSkill = cognitiveRadarModel.scoreBreakdown.min { it.value }
+                def weakestSkillName = weakestSkill?.key
+
+                if (weakestSkillName && suggestionsMap[weakestSkillName]) {
+                    nextStepSuggestions << suggestionsMap[weakestSkillName]
+                }
+            }
+        }
+
         def suggestedStreams = []
         // Business logic moved from GSP to controller/service
         // Only calculate if the panel will be shown (all tests completed)
@@ -172,7 +219,7 @@ class DashboardController {
         def model = [
             user: user,
             stats: stats,
-            completedTestResults: completedTestResults,
+            completedTestResults: completedTestResults.sort { a, b -> (b.session?.completedAt?.time ?: 0) <=> (a.session?.completedAt?.time ?: 0) }.take(9),
             pendingTests: pendingTests,
             spiritAnimal: spiritAnimalResult ? [
                 resultType: spiritAnimalResult.resultType,
@@ -187,7 +234,8 @@ class DashboardController {
             workMode: workModeResult ? [
                 resultTitle: workModeResult.resultType?.toString()?.toLowerCase()?.replace('_', ' ')?.capitalize()
             ] : null,
-            suggestedStreams: suggestedStreams
+            suggestedStreams: suggestedStreams,
+            nextSteps: nextStepSuggestions
         ]
 
         [model: model, pageBodyClass: 'dashboard-body']

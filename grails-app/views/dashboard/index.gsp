@@ -11,7 +11,9 @@
     <link
             href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
             rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <asset:stylesheet src="dashboard.css"/>
+    <asset:stylesheet src="sharing.css"/>
 </head>
 
 <body>
@@ -150,40 +152,38 @@
 
         <div class="glass-panel anim-pop d-4 area-latest-result">
             <div class="panel-label">
-                <span>Game History</span>
+                <span>Game Badges</span>
             </div>
             <g:if test="${model?.completedTestResults}">
-                <div class="latest-result-content">
-                    <g:each in="${model?.completedTestResults?.sort { a, b -> (b.session?.completedAt?.time ?: 0) <=> (a.session?.completedAt?.time ?: 0) }?.take(9)}" var="test">
-                        <g:link controller="result" action="resultPage" params="[sessionId: test.session?.sessionId]" class="history-card">
-                            <div class="history-card-icon">${test.result?.emoji}</div>
-                            <div class="history-card-info">
-                                <div class="history-card-title">${test.result?.testName}</div>
+                <div class="badge-grid">
+                    <g:each in="${model?.completedTestResults}" var="test">
 
-                                <g:set var="rawTitle" value="${test.result?.resultTitle}" />
-                                <g:set var="lookupKey" value="${rawTitle?.toString()?.trim()?.toUpperCase()?.replaceAll(' ', '_')}" />
-                                
-                                <g:if test="${rawTitle}">
-                                    <div class="history-card-one-liner">
-                                        ${(resultTitlesMap && resultTitlesMap[lookupKey]) ? resultTitlesMap[lookupKey] : rawTitle}
-                                    </div>
-                                </g:if>
-                                <div class="history-card-date">Completed on <g:formatDate date="${test.session?.completedAt}" format="dd MMM yyyy"/></div>
+                        <g:set var="rawTitle" value="${test.result?.resultTitle}"/>
+                        <g:set var="lookupKey"
+                               value="${rawTitle?.toString()?.trim()?.toUpperCase()?.replaceAll(' ', '_')}"/>
+
+                        <g:link controller="result" action="resultPage"
+                                params="[sessionId: test.session?.sessionId]" class="badge">
+                            <div class="badge-icon">${test.result?.emoji}</div>
+                            <div class="badge-title">
+                                ${(resultTitlesMap && resultTitlesMap[lookupKey]) ? resultTitlesMap[lookupKey] : rawTitle}
                             </div>
-                            <div class="history-card-action">View Result &rarr;</div>
+                            <div class="badge-subtitle">${test.result?.testName}</div>
+                            <div class="badge-date"><g:formatDate date="${test.session?.completedAt}"
+                                                                 format="dd MMM yyyy"/></div>
                         </g:link>
                     </g:each>
                 </div>
             </g:if>
             <g:else>
-                <div class="latest-result-content">
+                <div class="badge-grid-empty">
                     <p>No games completed yet. Complete a game to see your history.</p>
                 </div>
             </g:else>
 
-            <div class="pending-tests-container">
-                <h4>Available Games</h4>
-                <g:if test="${model?.pendingTests}">
+            <g:if test="${model?.pendingTests}">
+                <div class="pending-tests-container">
+                    <h4>Available Games</h4>
                     <div class="pending-tests-list">
                         <g:each in="${model?.pendingTests?.sort { it.testName }}" var="test">
                             <div class="pending-test-item">
@@ -194,13 +194,8 @@
                             </div>
                         </g:each>
                     </div>
-                </g:if>
-                <g:else>
-                    <p>
-                        You've completed all available games!
-                    </p>
-                </g:else>
-            </div>
+                </div>
+            </g:if>
         </div>
 
         <div class="glass-panel anim-pop d-1 area-traits ${completedGames < totalGames ? 'locked' : ''}">
@@ -271,36 +266,36 @@
                         <div class="skill-row">
                             <div class="skill-icon">🧩</div>
                             <div class="skill-data">
-                                <div class="sd-head"><span>Logic</span> <span>${logicPct.toInteger()}%</span></div>
+                                <div class="sd-head"><span>Logic</span> <span style="${logicPct == 0 ? 'font-size: 0.85rem; opacity: 0.9;' : ''}">${logicPct > 0 ? logicPct.toInteger() + '%' : 'Developing'}</span></div>
                                 <div class="sd-track">
-                                    <div class="sd-fill" style="width: ${logicPct}%"></div>
+                                    <div class="sd-fill" style="width: ${logicPct > 8 ? logicPct : 8}%"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="skill-row">
                             <div class="skill-icon">🗣️</div>
                             <div class="skill-data">
-                                <div class="sd-head"><span>Verbal</span> <span>${verbalPct.toInteger()}%</span></div>
+                                <div class="sd-head"><span>Verbal</span> <span style="${verbalPct == 0 ? 'font-size: 0.85rem; opacity: 0.9;' : ''}">${verbalPct > 0 ? verbalPct.toInteger() + '%' : 'Developing'}</span></div>
                                 <div class="sd-track">
-                                    <div class="sd-fill" style="width: ${verbalPct}%"></div>
+                                    <div class="sd-fill" style="width: ${verbalPct > 8 ? verbalPct : 8}%"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="skill-row">
                             <div class="skill-icon">📐</div>
                             <div class="skill-data">
-                                <div class="sd-head"><span>Spatial</span> <span>${spatialPct.toInteger()}%</span></div>
+                                <div class="sd-head"><span>Spatial</span> <span style="${spatialPct == 0 ? 'font-size: 0.85rem; opacity: 0.9;' : ''}">${spatialPct > 0 ? spatialPct.toInteger() + '%' : 'Developing'}</span></div>
                                 <div class="sd-track">
-                                    <div class="sd-fill" style="width: ${spatialPct}%"></div>
+                                    <div class="sd-fill" style="width: ${spatialPct > 8 ? spatialPct : 8}%"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="skill-row">
                             <div class="skill-icon">⚡</div>
                             <div class="skill-data">
-                                <div class="sd-head"><span>Speed</span> <span>${speedPct.toInteger()}%</span></div>
+                                <div class="sd-head"><span>Speed</span> <span style="${speedPct == 0 ? 'font-size: 0.85rem; opacity: 0.9;' : ''}">${speedPct > 0 ? speedPct.toInteger() + '%' : 'Developing'}</span></div>
                                 <div class="sd-track">
-                                    <div class="sd-fill" style="width: ${speedPct}%"></div>
+                                    <div class="sd-fill" style="width: ${speedPct > 8 ? speedPct : 8}%"></div>
                                 </div>
                             </div>
                         </div>
@@ -326,53 +321,96 @@
             <div class="panel-label">learnerDNA Suggestions (Top 3)</div>
 
             <div class="cards-scroller" id="stream-cards">
-                <g:each in="${suggestedStreams}" var="stream">
+                <g:each in="${suggestedStreams}" var="stream" status="i">
                     <div class="stream-card ${stream.isBest ? 'hero-card' : ''}">
                         <div class="sc-match-tag ${stream.isBest ? 'best' : ''}">
                             ${stream.match}% Match ${stream.isBest ? '• Best Fit' : ''}
                         </div>
-                        <div>
+                        <div class="sc-main-content">
                             <div class="sc-icon">${stream.icon}</div>
                             <div class="sc-title">${stream.title}</div>
-                            <div class="sc-desc">${stream.desc}</div>
+                            <div class="sc-desc">${stream.engagingDescription}</div>
+                            <div class="sc-power">
+                                <span>${stream.ultimatePower}</span>
+                            </div>
+                            <div class="sc-action">
+                                <button class="sc-toggle-btn" data-target="collapsible-stream-${i}">Learn More</button>
+                            </div>
                         </div>
-                        <div class="sc-action">
-                            <span style="font-size:0.7rem; color:${stream.isBest ? 'var(--text-dark); font-weight: 600;' : 'var(--text-grey);'}">Outcome: ${stream.outcome}</span>
+                        <div class="sc-collapsible-content" id="collapsible-stream-${i}">
+                            <div class="sc-detail-block">
+                                <h4>Your Strengths</h4>
+                                <p>${raw(stream.personalizedRationale)}</p>
+                            </div>
+                            <div class="sc-detail-block">
+                                <h4>Your First Quest</h4>
+                                <p>${raw(stream.firstQuest)}</p>
+                            </div>
+                            <div class="sc-detail-block">
+                                <h4>Level Up Your Skills</h4>
+                                <p>${stream.levelUp}</p>
+                            </div>
                         </div>
                     </div>
                 </g:each>
             </div>
         </div>
 
-        <div class="glass-panel area-next anim-pop d-3">
-            <div class="panel-label">Your Next Steps</div>
-            <div class="next-steps-list">
-
-                <g:link controller="result" action="testPage" params="[testId: 'GUESSWORK_QUOTIENT']" class="ns-item primary">
-                    <span class="ns-tag">Start Here</span>
-                    <h4>Calibrate Decisions</h4>
-                    <p>Play the 2-minute Guesswork Quotient game to complete your profile.</p>
-                </g:link>
-
-                <g:link controller="career" action="details" id="engineering" class="ns-item secondary">
-                    <h4>Explore Engineering</h4>
-                    <p>See how your logic score maps to this career path.</p>
-                </g:link>
-
-                <g:link controller="training" action="spatialDrill"  class="ns-item secondary">
-                <h4>Train Spatial Skills</h4>
-                    <p>Start a quick 5-minute drill to boost your stats.</p>
-                </g:link>
-
+        <g:if test="${completedGames >= totalGames}">
+            <div class="glass-panel area-next anim-pop d-3">
+                <div class="panel-label">Your Next Step${model.nextSteps?.size() > 1 ? 's' : ''}</div>
+                <g:if test="${model.nextSteps}">
+                    <div class="next-steps-container" style="display: flex; flex-direction: column; gap: 0px;">
+                        <g:each in="${model.nextSteps}" var="step">
+                            <div class="next-step-card-link" style="cursor: default;">
+                                <div class="next-step-content-v2">
+                                    <div class="next-step-icon">${step.icon}</div>
+                                    <div class="next-step-text">
+                                        <h4>${step.title}</h4>
+                                        <p>${step.suggestion}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </g:each>
+                    </div>
+                </g:if>
+                <g:else>
+                    <div class="next-steps-list" style="text-align: center; padding: 16px;">
+                        <p>Complete the Brain Power game to unlock your personalized next step!</p>
+                    </div>
+                </g:else>
             </div>
+        </g:if>
+
+        <g:if test="${completedGames >= totalGames}">
+            <div class="glass-panel area-share anim-pop d-3">
+                <div class="share-section-title" style="text-align:center; font-family:Fredoka,sans-serif; font-weight:700; font-size:1.1rem; color:#5D4037; margin:0 0 0px; opacity:1;">SHARE YOUR LEARNING DNA!</div>
+                <div class="share-section-title" style="text-align:center; font-family:Fredoka,sans-serif; font-weight:700; font-size:1.1rem; color:#5D4037; margin:0 0 15px; opacity:1;">Challenge your friends to discover theirs!</div>
+                <div class="share-buttons-row">
+                    <div class="share-btn-large" style="background: #1DA1F2" onclick="shareOnTwitter()" title="Share on Twitter"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></div>
+                    <div class="share-btn-large" style="background: #25D366" onclick="shareOnWhatsApp()" title="Share on WhatsApp"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.52 3.48A11.77 11.77 0 0 0 12.02 0C5.39.04.08 5.35.08 12c0 2.11.55 4.14 1.59 5.95L0 24l6.2-1.62A11.9 11.9 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.48-8.52zM12 22a9.9 9.9 0 0 1-5.04-1.39l-.36-.21-3.68.96.98-3.58-.24-.37A9.91 9.91 0 1 1 12 22zm5.43-7.45c-.3-.15-1.78-.88-2.06-.97-.28-.1-.48-.15-.69.15-.2.3-.79.97-.97 1.17-.18.2-.36.22-.66.07-.3-.15-1.27-.47-2.42-1.5-.89-.79-1.49-1.76-1.67-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.33.45-.5.15-.17.2-.29.3-.49.1-.2.05-.37-.02-.52-.07-.15-.69-1.65-.95-2.26-.25-.6-.5-.52-.69-.53h-.59c-.2 0-.52..07-.79.37s-1.04 1.02-1.04 2.49 1.07 2.89 1.22 3.09c.15.2 2.1 3.2 5.1 4.49.71.31 1.26.5 1.69.64.71.23 1.36.2 1.87.12.57-.08 1.78-.73 2.03-1.44.25-.71.25-1.32.17-1.44-.08-.12-.27-.2-.57-.35z"/></svg></div>
+                    <div class="share-btn-large" style="background: #E1306C" onclick="shareOnInstagram()" title="Share on Instagram"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></div>
+                    <div class="share-btn-large" style="background: #0077B5" onclick="shareOnLinkedIn()" title="Share on LinkedIn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></div>
+                    <div class="share-btn-large" style="background: #6c5ce7" onclick="copyToClipboard()" title="Copy link to clipboard"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="10" height="12" rx="2"></rect><rect x="5" y="5" width="10" height="12" rx="2"></rect></svg></div>
+                </div>
+                <div class="share-labels">
+                    <span>Twitter</span>
+                    <span>WhatsApp</span>
+                    <span>Instagram</span>
+                    <span>LinkedIn</span>
+                    <span>Copy</span>
+                </div>
+            </div>
+        </g:if>
+
+    </div>
+
+    <g:if test="${completedGames >= totalGames}">
+        <div style="text-align: center; margin-top: 20px; color: var(--text-dark); opacity: 0.8; font-weight: 600; font-size: 1.1rem; font-family: var(--font-display);"
+             class="anim-pop d-3">
+            Your potential is mapped. Trust your unique strengths.
         </div>
-
-    </div>
-
-    <div style="text-align: center; margin-top: 40px; margin-bottom: 10px; color: var(--text-dark); opacity: 0.8; font-weight: 600; font-size: 1.1rem; font-family: var(--font-display);"
-         class="anim-pop d-3">
-        Your potential is mapped. Trust your unique strengths.
-    </div>
+    </g:if>
 
 </div>
 
@@ -402,6 +440,112 @@
             }
         }, 500);
 
+        // Stream card toggle functionality
+        const toggleButtons = document.querySelectorAll('.sc-toggle-btn');
+        toggleButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetId = button.dataset.target;
+                const targetContent = document.getElementById(targetId);
+                if (targetContent) {
+                    const isExpanded = targetContent.classList.contains('expanded');
+                    if (isExpanded) {
+                        targetContent.classList.remove('expanded');
+                        button.textContent = 'Learn More';
+                    } else {
+                        targetContent.classList.add('expanded');
+                        button.textContent = 'Show Less';
+                    }
+                }
+            });
+        });
     });
+
+    // Sharing functions
+    function getShareData() {
+        // 1. Scrape the result from the UI
+        const titleEl = document.querySelector('.animal-title');
+        let animalName = "a Unique Thinker";
+        
+        if (titleEl) {
+            // Text is usually "You are THE STRATEGIC WOLF!" -> extract "THE STRATEGIC WOLF"
+            let text = titleEl.innerText || titleEl.textContent;
+            // Remove "You are " and punctuation
+            text = text.replace(/You are /i, '').replace(/[!.]/g, '').trim();
+            if (text && text !== 'Discover Your Inner Spark') {
+                animalName = text;
+            }
+        }
+
+        // 2. Point to Home Page (Viral Loop) - New users start here
+        const shareUrl = window.location.origin; 
+
+        return {
+            name: animalName,
+            url: shareUrl
+        };
+    }
+
+    function shareOnTwitter() {
+        const data = getShareData();
+        const text = "I just discovered I'm " + data.name + " on learnerDNA! 🦉 My superpower is unique. What is your Learning DNA? Find out here:";
+        window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(data.url), '_blank');
+    }
+    function shareOnWhatsApp() {
+        const data = getShareData();
+        const text = "I just discovered I'm " + data.name + " on learnerDNA! 🦉 My superpower is unique. What is your Learning DNA? Find out here: " + data.url;
+        if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            window.location.href = 'whatsapp://send?text=' + encodeURIComponent(text);
+        } else {
+            window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+        }
+    }
+    function shareOnInstagram() {
+        const data = getShareData();
+        const caption = "I just discovered I'm " + data.name + " on learnerDNA! 🦉 What is your Learning DNA? @learnerDNA";
+        
+        // Instagram Strategy: Copy Caption + Prompt for Screenshot
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(caption).then(function() {
+                alert("Caption copied! 📸\n\n1. Take a screenshot of your badge.\n2. Post it to your Story.\n3. Paste this caption!");
+            }).catch(function() {
+                alert("Take a screenshot of your badge and share it on your Story!");
+            });
+        } else {
+            alert("Take a screenshot of your badge and share it on your Story!");
+        }
+    }
+    function shareOnLinkedIn() {
+        const data = getShareData();
+        window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(data.url), '_blank');
+    }
+    function copyToClipboard(message) {
+        const data = getShareData();
+        const textToCopy = "I just discovered I'm " + data.name + " on learnerDNA! 🦉 What is your Learning DNA? Find out here: " + data.url;
+        
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(textToCopy).then(function() {
+                alert(message || '✅ Result & Link copied to clipboard!');
+            }).catch(function() {
+                fallbackCopy(textToCopy, message);
+            });
+        } else {
+            fallbackCopy(textToCopy, message);
+        }
+    }
+    function fallbackCopy(text, message) {
+        var t = document.createElement('textarea');
+        t.value = text;
+        t.style.position = 'fixed';
+        t.style.left = '-9999px';
+        document.body.appendChild(t);
+        t.select();
+        try {
+            document.execCommand('copy');
+            alert(message || '✅ Link copied to clipboard!');
+        } catch(e) {
+            prompt('Copy this link:', text);
+        }
+        document.body.removeChild(t);
+    }
 </script>
 </body>

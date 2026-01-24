@@ -663,205 +663,6 @@
         transform: scale(0.95);
     }
 
-    .auth-modal {
-        position: fixed;
-        inset: 0;
-        background: radial-gradient(circle at top, rgba(159,151,243,.35), rgba(15,23,42,.95));
-        backdrop-filter: blur(12px);
-        z-index: 10001;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        padding: 16px;
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
-
-    .auth-modal.active {
-        display: flex;
-        animation: fadeInModal 0.4s ease;
-    }
-
-    @keyframes fadeInModal {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-
-    .auth-modal-content {
-        background: linear-gradient(180deg, #FFFFFF 0%, #F8F4FF 50%, #FFF4F0 100%);
-        border-radius: 24px;
-        padding: 32px 24px;
-        width: 100%;
-        max-width: 400px;
-        position: relative;
-        box-shadow: 0 20px 40px rgba(0,0,0,.3);
-        animation: popInModal 0.6s cubic-bezier(.34,1.56,.64,1);
-        border: 2px solid rgba(159,151,243,.2);
-        overflow-x: hidden;
-        box-sizing: border-box;
-    }
-
-    @keyframes popInModal {
-        from { transform: scale(.85) translateY(20px); opacity: 0; }
-        to { transform: scale(1) translateY(0); opacity: 1; }
-    }
-
-    .auth-close-btn {
-        position: absolute;
-        top: 12px;
-        right: 12px;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        border: 2px solid rgba(0,0,0,.08);
-        background: linear-gradient(135deg, #FFE8E8, #FFF);
-        font-size: 1.2rem;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        color: #64748b;
-    }
-
-    .auth-close-btn:active {
-        transform: scale(0.9);
-    }
-
-    .auth-header {
-        text-align: center;
-        margin-bottom: 24px;
-        position: relative;
-    }
-
-    .auth-header::before {
-        content: '✨';
-        position: absolute;
-        top: -12px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 1.8rem;
-    }
-
-    .auth-header h2 {
-        font-size: 1.8rem;
-        font-weight: 900;
-        background: linear-gradient(135deg, #1a1a2e 0%, #6366F1 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 6px;
-    }
-
-    .auth-header p {
-        font-size: 0.9rem;
-        color: #64748b;
-        font-weight: 600;
-    }
-
-    .auth-form-group {
-        margin-bottom: 16px;
-        position: relative;
-    }
-
-    .auth-form-label {
-        display: block;
-        font-size: 0.8rem;
-        font-weight: 800;
-        margin-bottom: 6px;
-        color: #1a1a2e;
-        text-transform: uppercase;
-    }
-
-    .auth-form-input {
-        width: 100%;
-        padding: 14px 14px 14px 44px;
-        border-radius: 14px;
-        border: 2px solid #E8E4FF;
-        background: white;
-        font-size: 0.95rem;
-        font-weight: 600;
-        color: #1a1a2e;
-        transition: all 0.3s ease;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-
-    .auth-form-input::placeholder {
-        color: #94a3b8;
-        font-weight: 500;
-    }
-
-    .auth-form-input:focus {
-        border-color: #9F97F3;
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(159,151,243,.15);
-        transform: translateY(-2px);
-    }
-
-    .input-icon {
-        position: absolute;
-        left: 14px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 1.2rem;
-        pointer-events: none;
-        z-index: 1;
-    }
-
-    .auth-submit-btn {
-        width: 100%;
-        padding: 16px;
-        border-radius: 80px;
-        background: linear-gradient(135deg, #9F97F3 0%, #FF8F7D 100%);
-        color: white;
-        font-weight: 900;
-        font-size: 1rem;
-        border: none;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 10px 20px rgba(159,151,243,.35);
-        text-transform: uppercase;
-    }
-
-    .auth-submit-btn:active {
-        transform: scale(0.95);
-    }
-
-    .auth-footer {
-        text-align: center;
-        margin-top: 20px;
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: #64748b;
-    }
-
-    .auth-footer a {
-        color: #9F97F3;
-        font-weight: 800;
-        cursor: pointer;
-        text-decoration: none;
-    }
-
-    .auth-message {
-        padding: 12px 16px;
-        border-radius: 12px;
-        font-weight: 700;
-        font-size: 0.85rem;
-        margin-bottom: 14px;
-        text-align: center;
-        display: none;
-    }
-
-    .auth-message.success {
-        background: linear-gradient(135deg, #D4FFEA, #B4F8D8);
-        color: #065f46;
-        border: 2px solid #6EE7B7;
-    }
-
-    .auth-message.error {
-        background: linear-gradient(135deg, #FFEAEA, #FFD4D4);
-        color: #991b1b;
-        border: 2px solid #FCA5A5;
-    }
-
     @media (max-width: 480px) {
         .results-container {
             padding: 50px 12px 70px;
@@ -976,18 +777,6 @@
         <button class="continue-btn" id="continue-btn-reward" type="button">
             See Your Results →
         </button>
-    </div>
-</div>
-
-<div id="auth-modal" class="auth-modal">
-    <div class="auth-modal-content">
-        <button class="auth-close-btn" id="auth-close-btn">×</button>
-        <div id="signup-form-container">
-            <g:render template="/auth/signupForm"/>
-        </div>
-        <div id="login-form-container" style="display:none">
-            <g:render template="/auth/loginForm"/>
-        </div>
     </div>
 </div>
 
@@ -1895,35 +1684,6 @@
         document.body.removeChild(t);
     }
 
-    function clearAuthMessages() {
-        ['signup-error-message', 'signup-success-message', 'login-error-message', 'login-success-message'].forEach(function(id) {
-            var el = document.getElementById(id);
-            if (el) { el.style.display = 'none'; el.textContent = ''; }
-        });
-    }
-
-    function showAuthMessage(type, status, msg) {
-        var el = document.getElementById(type + '-' + status + '-message');
-        if (el) { el.textContent = msg; el.style.display = 'block'; }
-    }
-
-    function openAuthModal(mode) {
-        var m = document.getElementById('auth-modal');
-        var s = document.getElementById('signup-form-container');
-        var l = document.getElementById('login-form-container');
-        clearAuthMessages();
-        if (mode === 'signup') { s.style.display = 'block'; l.style.display = 'none'; }
-        else { s.style.display = 'none'; l.style.display = 'block'; }
-        m.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeAuthModal() {
-        document.getElementById('auth-modal').classList.remove('active');
-        document.body.style.overflow = '';
-        clearAuthMessages();
-    }
-
     document.getElementById('scrollToTop').addEventListener('click', function() { window.scrollTo({top: 0, behavior: 'smooth'}); });
     window.addEventListener('scroll', function() {
         var btn = document.getElementById('scrollToTop');
@@ -1958,58 +1718,12 @@
             revealResults();
         }
 
-        var closeBtn = document.getElementById('auth-close-btn');
-        if (closeBtn) closeBtn.addEventListener('click', function(e) { e.preventDefault(); closeAuthModal(); });
+    });
+</script>
 
-        document.body.addEventListener('click', function(e) {
-            if (e.target.id === 'open-dashboard-modal' || e.target.closest('#open-dashboard-modal')) {
-                e.preventDefault();
-                // If user is already logged in, go to dashboard. Otherwise, show auth modal.
-                if (window.authManager && window.authManager.isLoggedIn()) {
-                    window.location.href = '/dashboard';
-                } else {
-                    openAuthModal('signup');
-                }
-            }
-            if (e.target.id === 'switch-to-login-link' || e.target.closest('#switch-to-login-link')) {
-                e.preventDefault();
-                openAuthModal('login');
-            }
-            if (e.target.id === 'switch-to-signup-link' || e.target.closest('#switch-to-signup-link')) {
-                e.preventDefault();
-                openAuthModal('signup');
-            }
-        });
+</body>
+</html>
 
-        document.getElementById('auth-modal').addEventListener('click', function(e) { if (e.target.id === 'auth-modal') closeAuthModal(); });
-
-        var signupForm = document.getElementById('signup-form');
-        if (signupForm) {
-            signupForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                clearAuthMessages();
-                var ageValue = document.getElementById('signup-age').value;
-                // Get guest session ID from localStorage if it exists
-                const guestSessionState = JSON.parse(localStorage.getItem('personality_start_state') || '{}');
-                const guestSessionId = guestSessionState.sessionId;
-
-                fetch('/api/signup', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        name: document.getElementById('signup-name').value,
-                        email: document.getElementById('signup-email').value,
-                        age: ageValue ? parseInt(ageValue) : null,
-                        sessionId: guestSessionId // Pass guest session ID
-                    })
-                }).then(function(res) { return res.json(); }).then(function(data) {
-                    if (data.success) {
-                        showAuthMessage('signup', 'success', 'Success! Redirecting...');
-                        // Store tokens and user info
-                        if (window.authManager) {
-                            window.authManager.storeAuthData(data);
-                        }
-                        // Redirect to dashboard
                         setTimeout(function() { location.href = '/dashboard'; }, 1500);
                     } else {
                         showAuthMessage('signup', 'error', data.error || 'Signup failed. Please try again.');

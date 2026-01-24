@@ -191,7 +191,7 @@
 
         /* Subtle overflow handling like footer */
         position: relative;
-        overflow: hidden;
+        overflow: visible;
 
         /* Will be controlled by JavaScript */
         opacity: 1;
@@ -793,15 +793,146 @@
             <img src="${assetPath(src: 'logo1.png')}" alt="LearnerDNA - Free Student Aptitude Test" width="120" height="120"/>
         </a>
 
-        <div class="nav-cta-wrapper">
-            <a href="#" id="navStartPlaying"
-               class="btn btn-primary nav-cta">
-                <span>▶</span>
-                <span>Start Playing</span>
-            </a>
+        <style>
+            .nav-menu-wrapper {
+                position: relative;
+            }
+
+            .nav-menu-button {
+                background: transparent;
+                border: none;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: transform 0.2s ease;
+            }
+
+            .nav-menu-button:hover {
+                transform: scale(1.1);
+            }
+
+            .nav-menu-button svg {
+                width: 20px;
+                height: 20px;
+                stroke: var(--deep-night-blue);
+            }
+
+            .nav-menu-button svg line {
+                transition: transform 0.3s ease, opacity 0.3s ease;
+                transform-origin: center;
+            }
+
+            .nav-menu-button.is-active svg line:nth-child(1) {
+                opacity: 0;
+            }
+            .nav-menu-button.is-active svg line:nth-child(2) {
+                transform: translateY(6px) rotate(45deg);
+            }
+            .nav-menu-button.is-active svg line:nth-child(3) {
+                transform: translateY(-6px) rotate(-45deg);
+            }
+
+            .nav-menu-panel {
+                display: none;
+                position: absolute;
+                top: calc(100% + 10px);
+                right: 0;
+                background: white;
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border-radius: 16px;
+                border: 1px solid rgba(255, 255, 255, 0.6);
+                box-shadow: 0 12px 30px -10px rgba(28, 26, 40, 0.1);
+                width: 200px;
+                padding: 8px;
+                z-index: 1100;
+                overflow: hidden;
+            }
+
+            .nav-menu-panel.is-open {
+                display: block;
+            }
+
+            .nav-menu-panel a {
+                display: block;
+                padding: 12px 16px;
+                text-decoration: none;
+                color: var(--deep-night-blue);
+                font-weight: 600;
+                border-radius: 12px;
+                transition: background 0.2s ease, color 0.2s ease;
+            }
+
+            .nav-menu-panel a:hover {
+                background-color: var(--sky-blue);
+                color: #fff;
+            }
+            
+            .nav-menu-panel hr {
+                border: none;
+                border-top: 1px solid rgba(0, 0, 0, 0.08);
+                margin: 8px 0;
+            }
+
+            /* Logic for showing/hiding menu items */
+            .nav-menu-panel .nav-menu-loggedin,
+            .nav-menu-panel .nav-menu-anonymous {
+                display: none;
+            }
+
+            .nav-menu-panel.is-anonymous .nav-menu-anonymous {
+                display: block;
+            }
+
+            .nav-menu-panel.is-loggedin .nav-menu-loggedin {
+                display: block;
+            }
+
+            #newNavLogoutBtn {
+                color: #D9534F; /* A reddish color for sign out */
+            }
+            #newNavLogoutBtn:hover {
+                background-color: #D9534F;
+                color: #fff;
+            }
+        </style>
+        <div class="nav-menu-wrapper">
+            <button class="nav-menu-button" id="navMenuBtn" aria-label="Open navigation menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+            <div class="nav-menu-panel" id="navMenuPanel">
+                <div class="nav-menu-anonymous">
+                    <a href="#" id="nav-signin-btn">Sign In</a>
+                </div>
+                <div class="nav-menu-loggedin">
+                    <a href="${createLink(controller: 'dashboard', action: 'index')}">Dashboard</a>
+                    <hr>
+                    <a href="#" id="newNavLogoutBtn">Sign Out</a>
+                </div>
+            </div>
         </div>
     </div>
 </nav>
+
+<!-- AUTH MODAL -->
+<div id="auth-modal" class="auth-modal">
+    <div class="auth-modal-content">
+        <button class="auth-close-btn" id="auth-close-btn">×</button>
+        <div id="signup-form-container">
+            <g:render template="/auth/signupForm"/>
+        </div>
+        <div id="login-form-container" style="display:none">
+            <g:render template="/auth/loginForm"/>
+        </div>
+    </div>
+</div>
 
 <!-- MAIN CONTENT -->
 <g:layoutBody/>
@@ -889,7 +1020,66 @@
 </div>
 
 <script>
-    // Continue Game Modal Logic - Global for all pages
+    // New Navigation Menu Logic
+    (function() {
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuButton = document.getElementById('navMenuBtn');
+            const menuPanel = document.getElementById('navMenuPanel');
+            const logoutButton = document.getElementById('newNavLogoutBtn');
+
+            if (!menuButton || !menuPanel) return;
+
+            // Toggle menu visibility
+            menuButton.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent the document click listener from closing it immediately
+                menuPanel.classList.toggle('is-open');
+                menuButton.classList.toggle('is-active');
+            });
+
+            // Close menu if clicking outside
+            document.addEventListener('click', function(e) {
+                if (menuPanel.classList.contains('is-open') && !menuPanel.contains(e.target) && e.target !== menuButton) {
+                    menuPanel.classList.remove('is-open');
+                    menuButton.classList.remove('is-active');
+                }
+            });
+
+            // Check login state and set menu variant
+            try {
+                // Re-uses the same token key as auth.js
+                const token = localStorage.getItem('streamfit_accessToken');
+                if (token) {
+                    menuPanel.classList.add('is-loggedin');
+                } else {
+                    menuPanel.classList.add('is-anonymous');
+                }
+            } catch (e) {
+                console.error("Could not access localStorage.", e);
+                menuPanel.classList.add('is-anonymous');
+            }
+
+
+            // Wire up logout button
+            if (logoutButton) {
+                logoutButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Call the globally available logout function from auth.js
+                    if (window.authManager && typeof window.authManager.logout === 'function') {
+                        window.authManager.logout();
+                    } else {
+                        console.error('authManager.logout() function not found.');
+                        // Fallback in case the global function isn't there
+                        localStorage.removeItem('streamfit_accessToken');
+                        localStorage.removeItem('streamfit_refreshToken');
+                        window.location.href = '/';
+                    }
+                });
+            }
+        });
+    })();
+</script>
+
+<script>
     (function() {
         // Wait for DOM to be ready
         function initContinueGameModal() {

@@ -1116,20 +1116,79 @@ class UnifiedPersonaService {
 
         def s = cognitiveRadarResult.scoreBreakdown
 
-        // Normalize scores (same logic as was in the GSP)
-        // Note: The controller is responsible for passing lowercase keys (logic, verbal, etc.)
+        // Normalize scores
         def logic = (s.logic ?: 0) / 2.0 * 100
         def verbal = (s.verbal ?: 0) / 2.0 * 100
         def spatial = (s.spatial ?: 0) * 100
         def speed = (s.speed ?: 0) * 100
 
         def streamLibrary = [
-            [id: 'engineering', title: 'Engineering', icon: '🏗️', w: [logic: 0.5, spatial: 0.5], outcome: 'Build Systems'],
-            [id: 'law', title: 'Law', icon: '⚖️', w: [verbal: 0.8, logic: 0.2], outcome: 'Defend Rights'],
-            [id: 'cs', title: 'Comp. Science', icon: '💻', w: [logic: 0.6, speed: 0.4], outcome: 'Innovate Tech'],
-            [id: 'design', title: 'Design', icon: '🎨', w: [spatial: 0.8, verbal: 0.2], outcome: 'Create Art'],
-            [id: 'medicine', title: 'Medicine', icon: '🩺', w: [logic: 0.4, speed: 0.3, verbal: 0.3], outcome: 'Heal Others'],
-            [id: 'business', title: 'Business', icon: '💼', w: [verbal: 0.5, logic: 0.3, speed: 0.2], outcome: 'Lead Teams']
+            [
+                id: 'engineering',
+                title: 'Tech, Engineering & Innovation',
+                icon: '🚀',
+                w: [logic: 0.5, spatial: 0.5],
+                engagingDescription: "For creators and problem-solvers who want to build the future. You love taking things apart, figuring out how they work, and building new things. This is for those who want to create real-world solutions, from robots to next-gen tech.",
+                personalizedRationale: "Your high scores in **Logic** and **Spatial** abilities are a perfect match for this field. You can visualize complex systems and develop logical solutions.",
+                firstQuest: "Grab a Raspberry Pi or Arduino kit and build something cool. Try creating a custom light controller for your room or a simple robot. YouTube is your best friend for tutorials and inspiration.",
+                levelUp: "Practice explaining your projects to friends. Being able to get others excited about your ideas is a superpower for any innovator.",
+                ultimatePower: "You get to **build the world you want to live in**, creating the technology that will define the future."
+            ],
+            [
+                id: 'law',
+                title: 'Law, Policy & Social Justice',
+                icon: '⚖️',
+                w: [verbal: 0.8, logic: 0.2],
+                engagingDescription: "For advocates and leaders passionate about shaping a better society. You are a natural debater, love a good argument, and can spot inconsistencies from a mile away. This stream is for those who want to use their words to make a real impact.",
+                personalizedRationale: "Your killer combo of a high **Verbal** score and sharp **Logic** makes you a natural persuader. You can build arguments that are not just convincing but also smart and hard to beat.",
+                firstQuest: "Join your school's Debate Club or Model UN. It’s the perfect arena to practice thinking on your feet and arguing for what's right.",
+                levelUp: "Work on your **speed**. The best advocates can come up with brilliant counter-arguments in seconds. Try some fast-paced trivia games to sharpen your quick-thinking skills.",
+                ultimatePower: "You can **be a voice for others**, using your intelligence to argue for justice and even change the rules."
+            ],
+            [
+                id: 'cs',
+                title: 'Tech, Engineering & Innovation',
+                icon: '💻',
+                w: [logic: 0.6, speed: 0.4],
+                engagingDescription: "For creators and problem-solvers who want to build the future. You love solving puzzles, making things happen with code, and building your own digital creations. This is for anyone who wants to build video games, create viral apps, or train AI.",
+                personalizedRationale: "Your profile is a coder's dream: top-tier **Logic** for designing systems and lightning-fast **Speed** for making it happen efficiently. You don’t just write code; you write *smart* code.",
+                firstQuest: "Start building! Try making a simple game in Roblox or Unity, or code a custom Discord bot for your friend group. The best way to learn is by creating something you and your friends can use.",
+                levelUp: "Team up! Find a friend or two and join a weekend 'hackathon' or 'game jam'. Coding the next big thing is a team sport, and learning to work with others is key.",
+                ultimatePower: "You have the ability to **create something from nothing**, building the games, apps, and websites that millions of people will use and love."
+            ],
+            [
+                id: 'design',
+                title: 'Design, Arts & Creative Media',
+                icon: '🎨',
+                w: [spatial: 0.8, verbal: 0.2],
+                engagingDescription: "For storytellers and artists who bring ideas to life through design, media, and technology. You have 'the eye' for what looks good, from your favorite YouTuber’s thumbnails to the UI of a cool app. This is for people who want to create stunning visuals and experiences.",
+                personalizedRationale: "Your high **Spatial** score is your superpower. It means you have a natural, intuitive sense of what looks good—balance, color, and form. You see the world like a designer.",
+                firstQuest: "You're a **'Visual Visionary,'** so learn by seeing and doing. Try a free tool like Canva to create amazing graphics for your social media, or learn Figma (it's free!) to design the screens for your own dream app.",
+                levelUp: "Learn to tell the story behind your art. Practice explaining why you chose a certain color or font. A great creator can not only make cool stuff but also get others excited about it.",
+                ultimatePower: "You get to **define the look of the future**, creating the visuals and styles that everyone else will follow."
+            ],
+            [
+                id: 'medicine',
+                title: 'Medicine & Life Sciences',
+                icon: '🩺',
+                w: [logic: 0.4, speed: 0.3, verbal: 0.3],
+                engagingDescription: "For healers and discoverers dedicated to advancing health and understanding the natural world. You're fascinated by how the human body works and love solving complex mysteries. This is for the detectives of the medical world.",
+                personalizedRationale: "You have the perfect brain for a medical detective: strong **Logic** to analyze clues (symptoms), good **Verbal** skills to communicate with people (patients), and the **Speed** to act fast in an emergency.",
+                firstQuest: "You're a **'Wise Owl'** who likes to go deep. Check out medical mystery channels on YouTube like Chubbyemu or Doctor Mike. It's a fun way to see how real doctors solve bizarre cases.",
+                levelUp: "Practice your **empathy**. The best doctors don't just treat diseases; they treat people. Understanding what someone is feeling is just as important as knowing the science.",
+                ultimatePower: "You can **be the hero in someone's story**, using your skills to save lives and help people when they need it most."
+            ],
+            [
+                id: 'business',
+                title: 'Business & Entrepreneurship',
+                icon: '📈',
+                w: [verbal: 0.5, logic: 0.3, speed: 0.2],
+                engagingDescription: "For visionaries and strategists ready to create, lead, and innovate in the world of commerce. You are a natural leader, the one who organizes the group, plans the projects, and has the next big idea. This is for those who want to build their own brand and lead a team to success.",
+                personalizedRationale: "Your strong **Verbal** skills mean you can inspire people, and your **Logical** mind helps you make smart plans. People will listen when you talk, and they'll trust you to lead the way.",
+                firstQuest: "You're a **'Collaborator,'** so start a project with friends! Launch a YouTube channel, a podcast, or an online shop for something you're passionate about. You'll learn a ton about marketing, planning, and leading a team.",
+                levelUp: "Get good with numbers. Look at the analytics on your YouTube video or the sales from your shop. A great captain knows how to use data to make winning decisions.",
+                ultimatePower: "You get to **be the boss of your own dream**, building a team and a project from the ground up and leading them to victory."
+            ]
         ]
 
         def calculatedStreams = streamLibrary.collect { item ->
@@ -1139,8 +1198,18 @@ class UnifiedPersonaService {
             if (item.w.spatial) score += spatial * item.w.spatial
             if (item.w.speed) score += speed * item.w.speed
             
-            def desc = score > 85 ? "Your profile is a strong match." : (score > 70 ? "Good potential with effort." : "A challenging path.")
-            [id: item.id, title: item.title, icon: item.icon, match: score.toInteger(), isBest: false, desc: desc, outcome: item.outcome]
+            [
+                id: item.id,
+                title: item.title,
+                icon: item.icon,
+                match: score.toInteger(),
+                isBest: false,
+                engagingDescription: item.engagingDescription,
+                personalizedRationale: item.personalizedRationale,
+                firstQuest: item.firstQuest,
+                levelUp: item.levelUp,
+                ultimatePower: item.ultimatePower
+            ]
         }.sort { -it.match }.take(3)
 
         if (calculatedStreams) {
