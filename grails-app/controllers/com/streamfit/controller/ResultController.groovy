@@ -394,6 +394,33 @@ class ResultController {
     def resultPage() {
         def sessionId = params.sessionId
         def result = diagnosticService.getResults(sessionId)
+        
+        // If diagnostic service fails, check if it's a personality test result
+        if (!result.success) {
+            def testSession = com.streamfit.UserSession.findBySessionId(sessionId)
+            
+            if (testSession && testSession.status == 'COMPLETED') {
+                // Parse personality test results from UserSession
+                def results = null
+                if (testSession.gameResults) {
+                    try {
+                        results = new groovy.json.JsonSlurper().parseText(testSession.gameResults)
+                    } catch (Exception e) {
+                        log.error "Failed to parse game results JSON: ${e.message}"
+                    }
+                }
+                
+                // Create result object compatible with the view
+                result = [
+                    success: true,
+                    sessionId: testSession.sessionId,
+                    testType: 'PERSONALITY',
+                    results: results,
+                    completedAt: testSession.endTime,
+                    gameDominantPersonas: results?.gameDominantPersonas
+                ]
+            }
+        }
 
         if (!result.success) {
             response.status = 404
